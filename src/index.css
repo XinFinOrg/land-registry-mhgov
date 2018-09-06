@@ -1,0 +1,33 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
+  color: #333333;
+  font-size:16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  background: #f7f9fc;
+  -webkit-font-smoothing:antialiased;
+  letter-spacing: normal;
+}
+input {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-height: 19px;
+}
+h1,h2,h3,h4,h5,h6,p{
+  padding: 0;
+  margin: 0;
+  font-weight: normal;
+}
+a{
+  text-decoration: none;
+  color: #333333;
+}

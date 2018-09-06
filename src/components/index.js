@@ -1,0 +1,8 @@
+export { default as Header } from './Header'
+export { Button } from './Button'
+export * from './StyledComponents'
+export { Paper } from './Paper'
+export { Icon } from './Icon'
+export { Footer } from './Footer'
+export { Input } from './Input'
+export { TextInput } from './TextInput'
