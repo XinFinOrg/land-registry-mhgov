@@ -12,8 +12,8 @@ body {
   font-stretch: normal;
   line-height: normal;
   background: #f7f9fc;
-  -webkit-font-smoothing:antialiased;
   letter-spacing: normal;
+  -webkit-font-smoothing:antialiased;
 }
 input {
   font-family: 'Open Sans', sans-serif;

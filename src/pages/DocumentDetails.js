@@ -20,7 +20,13 @@ import {
   InformTitle,
   InformSubTitle,
   Button,
-  ButtonWrapper
+  ButtonWrapper,
+  Font14,
+  FieldsTuple,
+  NormalFieldsTuple,
+  PaymentTuple,
+  PaymentText,
+  PaymentWrapper
 } from '../components'
 
 const PageTitleWrapper = styled.div`
@@ -58,7 +64,20 @@ class DocumentDetails extends Component {
             localGoverning: '',
             cityVillage: '',
             location: '',
-            surveyNumber: ''
+            surveyNumber: '',
+            areaOfConstructurePropertySquareMeter: '',
+            areaOfConstructurePropertyBuildUpArea: '',
+            areaOfConstructureProperty: 0,
+            openParking: 0,
+            openParkingSquareMeter: '',
+            coveredParking: 0,
+            coveredParkingSquareMeter: '',
+            coveredParkingBulidArea: '',
+            shopFloorBasement: '',
+            propertyAddress: '',
+            propertyDescription: '',
+            selectPartyType: '',
+            selectPartyCategory: 'Individual'
           }}
           onSubmit={formData => console.log(formData)}
           render={formikBag => (
@@ -152,12 +171,180 @@ class DocumentDetails extends Component {
                         <InformSubTitle>Non Agriculture Build And Open > Shop</InformSubTitle>
                       </StaticField>
                     </StaticFieldWrapper>
+                    <FormDetailsContainer display={'block'} paddingTop={46}>
+                      <InformTitle>Non Agriculture Build and open >> Shop >> Big Shop in Complex</InformTitle>
+                      <StaticField>
+                        <Font14>Area of constructure Property</Font14>
+                        <FieldsTuple>
+                          <Field
+                            name="areaOfConstructureProperty"
+                            render={({ field }) => (
+                              <Input
+                                {...field}
+                                width={'100%'}
+                                height={'100%'}
+                                marginBottom={30}
+                                padding={'23px 16px 23px'}
+                                background={'rgba(235,235,235,0.2)'}
+                                radius={'0'}
+                                border={'none'}
+                                shadow={'none'}
+                                type="text"
+                              />
+                            )}
+                          />
+                          <Field
+                            name="areaOfConstructurePropertySquareMeter"
+                            render={({ field }) => (
+                              <TextInput {...field} label="Sqaure Meter" placeholder={'Sqaure Meter'} />
+                            )}
+                          />
+                          <Field
+                            name="areaOfConstructurePropertyBuildUpArea"
+                            render={({ field }) => (
+                              <TextInput {...field} label="Build Up Area" placeholder={'Build Up Area'} />
+                            )}
+                          />
+                        </FieldsTuple>
+                      </StaticField>
+                      <StaticField>
+                        <Font14>Open Parking</Font14>
+                        <NormalFieldsTuple>
+                          <Field
+                            name="openParking"
+                            render={({ field }) => (
+                              <Input
+                                {...field}
+                                width={'100%'}
+                                height={'100%'}
+                                marginBottom={30}
+                                padding={'23px 16px 23px'}
+                                background={'rgba(235,235,235,0.2)'}
+                                radius={'0'}
+                                border={'none'}
+                                shadow={'none'}
+                                type="text"
+                              />
+                            )}
+                          />
+                          <Field
+                            name="openParkingSquareMeter"
+                            render={({ field }) => (
+                              <TextInput {...field} label="Sqaure Meter" placeholder={'Sqaure Meter'} />
+                            )}
+                          />
+                        </NormalFieldsTuple>
+                      </StaticField>
+                      <StaticField>
+                        <Font14>Covered Parking</Font14>
+                        <FieldsTuple>
+                          <Field
+                            name="coveredParking"
+                            render={({ field }) => (
+                              <Input
+                                {...field}
+                                width={'100%'}
+                                height={'100%'}
+                                marginBottom={30}
+                                padding={'23px 16px 23px'}
+                                background={'rgba(235,235,235,0.2)'}
+                                radius={'0'}
+                                border={'none'}
+                                shadow={'none'}
+                                type="text"
+                              />
+                            )}
+                          />
+                          <Field
+                            name="coveredParkingSquareMeter"
+                            render={({ field }) => (
+                              <TextInput {...field} label="Sqaure Meter" placeholder={'Sqaure Meter'} />
+                            )}
+                          />
+                          <Field
+                            name="coveredParkingBulidArea"
+                            render={({ field }) => (
+                              <TextInput {...field} label="Build Up Area" placeholder={'Build Up Area'} />
+                            )}
+                          />
+                        </FieldsTuple>
+                      </StaticField>
+                      <StaticField>
+                        <Font14>Shop Floor</Font14>
+                        <FieldsTuple>
+                          <Field
+                            name="shopFloorBasement"
+                            render={({ field }) => <TextInput {...field} label="Basement" placeholder={'Basement'} />}
+                          />
+                        </FieldsTuple>
+                      </StaticField>
+                    </FormDetailsContainer>
+                    <FormDetailsContainer display={'block'} paddingTop={46}>
+                      <InformTitle>Property Details</InformTitle>
+                      <NormalFieldsTuple flex>
+                        <Field
+                          name="propertyAddress"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Property Address" placeholder={'Property Address'} />
+                          )}
+                        />
+                        <Field
+                          name="propertyDescription"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Property Description" placeholder={'Property Description'} />
+                          )}
+                        />
+                      </NormalFieldsTuple>
+                    </FormDetailsContainer>
                   </React.Fragment>
+                )}
+                {activeTab === '/dashboard/document-details/owner-details' && (
+                  <FormDetailsContainer flexBasis={'calc(50% - 10px)'}>
+                    <Field
+                      name="selectPartyType"
+                      render={({ field }) => (
+                        <TextInput {...field} label="Select Party Type" placeholder={'Select Party Type'} />
+                      )}
+                    />
+
+                    <Field
+                      name="selectPartyCategory"
+                      render={({ field }) => (
+                        <TextInput {...field} label="Select Party Category" placeholder={'Select Party Category'} />
+                      )}
+                    />
+                  </FormDetailsContainer>
+                )}
+                {activeTab === '/dashboard/document-details/payment' && (
+                  <PaymentWrapper>
+                    <PaymentTuple>
+                      <PaymentText>Total Amount</PaymentText>
+                      <PaymentText>Rs. 1,00,000</PaymentText>
+                    </PaymentTuple>
+                    <PaymentTuple>
+                      <PaymentText>Total Amount</PaymentText>
+                      <PaymentText>Rs. 1,00,000</PaymentText>
+                    </PaymentTuple>
+                    <PaymentTuple>
+                      <PaymentText>Total Amount</PaymentText>
+                      <PaymentText>Rs. 1,00,000</PaymentText>
+                    </PaymentTuple>
+                  </PaymentWrapper>
                 )}
               </Paper>
               <ButtonWrapper>
-                <Button size={'medium'} width={'150px'} title="Save" type="button" />
-                <Button size={'medium'} width={'150px'} title="Submit" type="submit" />
+                {activeTab === '/dashboard/document-details/property-details' && (
+                  <React.Fragment>
+                    <Button size={'medium'} width={'150px'} title="Save" type="button" />
+                    <Button size={'medium'} width={'150px'} title="Submit" type="submit" />
+                  </React.Fragment>
+                )}
+                {activeTab === '/dashboard/document-details/owner-details' && (
+                  <Button size={'medium'} width={'150px'} title="Submit" type="submit" />
+                )}
+                {activeTab === '/dashboard/document-details/payment' && (
+                  <Button size={'medium'} width={'150px'} title="Pay Now" type="submit" />
+                )}
               </ButtonWrapper>
             </Form>
           )}

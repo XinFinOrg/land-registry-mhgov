@@ -7,10 +7,11 @@ const Container = styled.div`
 `
 const InputWrapper = styled.input`
   width: ${props => (props.width ? props.width : '293px')};
-  height: ${props => (props.height ? props.height : 40)}px;
-  border-radius: 6px;
-  border: solid 1px rgba(221, 221, 221, 0.6);
-  box-shadow: 0px 1px 5.7px 0.3px rgba(124, 124, 124, 0.13);
+  height: ${props => (props.height ? props.height : '40px')};
+  border-radius: ${props => (props.radius ? props.radius : 6)}px;
+  border: ${props => (props.border ? props.border : 'solid 1px rgba(221, 221, 221, 0.6)')};
+  box-shadow: ${props => (props.shadow ? props.shadow : '0px 1px 5.7px 0.3px rgba(124, 124, 124, 0.13)')};
+  background: ${props => (props.background ? props.background : 'transparent')};
   line-height: 1.2;
   letter-spacing: 0.1px;
   color: #000;
@@ -18,7 +19,7 @@ const InputWrapper = styled.input`
   padding: ${props => (props.padding ? props.padding : '26px 16px')};
   font-family: 'Open Sans', sans-serif;
   font-size: 15px;
-
+  margin-bottom: ${props => (props.marginBottom ? props.marginBottom : 0)}px;
   ::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #000000;
@@ -60,7 +61,7 @@ class Input extends Component {
     const { password } = this.state
     return (
       <Container width={width}>
-        <InputWrapper width={width} type={password ? 'text' : type} {...props} />
+        <InputWrapper width={width} height={height} type={password ? 'text' : type} {...props} />
         {type === 'password' && (
           <Show onClick={() => this.setState({ password: !password })} height={height}>
             {password ? 'Hide' : 'Show'}

@@ -83,8 +83,8 @@ class Home extends Component {
                 Lorem ipsum dolor sit amet, consectetur nteger non placerat nisi. Nullam faucibus cursus.
               </PaperSubTitle>
               <Form>
-                <Input width={'100%'} height={64} type="email" placeholder="Email Id" autoFocus required />
-                <Input width={'100%'} height={64} type="password" placeholder="Password" required />
+                <Input width={'100%'} height={'64px'} type="email" placeholder="Email Id" autoFocus required />
+                <Input width={'100%'} height={'64px'} type="password" placeholder="Password" required />
                 <ForgotPassword>Forgot Password ?</ForgotPassword>
                 <Button
                   fontSize={20}
@@ -102,7 +102,7 @@ class Home extends Component {
         </BackgroundWrapper>
         {/*   <Button size="action" height="action" title="Action" />
         <Paper shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}>Hey</Paper>
-        <Input placeholder="Password" height={64} type="password" /> */}
+        <Input placeholder="Password" height={"64px"} type="password" /> */}
         <Footer color={'#fff'} opacity={0.6} position={'fixed'} background={'rgba(31, 137, 245, 0)'} />
       </Background>
     )
