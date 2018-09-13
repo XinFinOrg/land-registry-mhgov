@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 const ButtonWrapper = styled.button`
   width: ${props => {
@@ -43,12 +43,36 @@ const ButtonWrapper = styled.button`
   line-height: normal;
   letter-spacing: normal;
   color: ${props => (props.color ? props.color : '#ffffff')};
+  ${props =>
+    props.disabled &&
+    `
+  
+  background-color: #9ca29b;
+  box-shadow: 0px 3px 9.9px 1.1px rgba(18, 101, 131, 0.13);
+  cursor: not-allowed;
+  `};
 `
-
+const spin = keyframes`
+0% { transform: rotate(0deg) }
+100% {transform: rotate(360deg) }
+`
+const Circle = styled.div`
+  border: 3px solid ${props => (props.loadingBgColor ? props.loadingBgColor : '#b0d5ff')};
+  border-radius: 50%;
+  border-top: 3px solid ${props => (props.loadingFgColor ? props.loadingFgColor : '#ffffff')};
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  animation: ${spin} 2s linear infinite;
+`
 class Button extends Component {
   render() {
-    const { title, ...props } = this.props
-    return <ButtonWrapper {...props}>{title}</ButtonWrapper>
+    const { title, disbaled, isLoading, loadingBgColor, loadingFgColor, ...props } = this.props
+    return (
+      <ButtonWrapper disabled={disbaled} {...props} isLoading={isLoading}>
+        {isLoading ? <Circle loadingBgColor={loadingBgColor} loadingFgColor={loadingFgColor} /> : title}
+      </ButtonWrapper>
+    )
   }
 }
 export { Button }

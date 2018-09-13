@@ -114,6 +114,11 @@ const NormalFieldsTuple = styled.div`
     }
   }
   ${props =>
+    props.shrink &&
+    `
+    flex-basis: 100% !important;
+    padding-top: 22px;
+  `} ${props =>
     props.flex &&
     `
     &>div:last-child{
@@ -148,6 +153,29 @@ const PaymentText = styled.p`
   color: rgba(51, 51, 51, 0.8);
   text-transform: capitalize;
 `
+const FieldGroupWithTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  flex-basis: 100% !important;
+  padding-top: 22px;
+  & > div {
+    margin-right: 22px;
+    flex-basis: calc(33.33% - 30px) !important;
+    & > div {
+      flex-basis: calc(33.33% - 10px) !important;
+    }
+  }
+  ${props =>
+    props.flex &&
+    `
+    &>div:last-child{
+      flex: 1;
+      margin-right: 0;
+    }
+  `};
+`
 export {
   PaperTitle,
   PaperSubTitle,
@@ -168,5 +196,6 @@ export {
   NormalFieldsTuple,
   PaymentText,
   PaymentTuple,
-  PaymentWrapper
+  PaymentWrapper,
+  FieldGroupWithTitle
 }

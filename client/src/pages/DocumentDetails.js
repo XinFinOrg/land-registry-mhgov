@@ -26,7 +26,8 @@ import {
   NormalFieldsTuple,
   PaymentTuple,
   PaymentText,
-  PaymentWrapper
+  PaymentWrapper,
+  FieldGroupWithTitle
 } from '../components'
 
 const PageTitleWrapper = styled.div`
@@ -38,9 +39,14 @@ const PageTitleWrapper = styled.div`
 `
 class DocumentDetails extends Component {
   state = {
-    activeTab: '/dashboard/document-details/property-details'
+    activeTab: this.props.location.pathname
   }
+  /* componentDidMount = () => {
+    this.setState({activeTab: "/dashboard/document-details/property-details"})
+  } */
+
   render() {
+    console.log(this.props)
     const { activeTab } = this.state
     return (
       <React.Fragment>
@@ -184,7 +190,7 @@ class DocumentDetails extends Component {
                                 width={'100%'}
                                 height={'100%'}
                                 marginBottom={30}
-                                padding={'23px 16px 23px'}
+                                padding={'18px 16px 23px'}
                                 background={'rgba(235,235,235,0.2)'}
                                 radius={'0'}
                                 border={'none'}
@@ -218,7 +224,7 @@ class DocumentDetails extends Component {
                                 width={'100%'}
                                 height={'100%'}
                                 marginBottom={30}
-                                padding={'23px 16px 23px'}
+                                padding={'18px 16px 23px'}
                                 background={'rgba(235,235,235,0.2)'}
                                 radius={'0'}
                                 border={'none'}
@@ -246,7 +252,7 @@ class DocumentDetails extends Component {
                                 width={'100%'}
                                 height={'100%'}
                                 marginBottom={30}
-                                padding={'23px 16px 23px'}
+                                padding={'18px 16px 23px'}
                                 background={'rgba(235,235,235,0.2)'}
                                 radius={'0'}
                                 border={'none'}
@@ -299,21 +305,80 @@ class DocumentDetails extends Component {
                   </React.Fragment>
                 )}
                 {activeTab === '/dashboard/document-details/owner-details' && (
-                  <FormDetailsContainer flexBasis={'calc(50% - 10px)'}>
-                    <Field
-                      name="selectPartyType"
-                      render={({ field }) => (
-                        <TextInput {...field} label="Select Party Type" placeholder={'Select Party Type'} />
-                      )}
-                    />
+                  <React.Fragment>
+                    <FormDetailsContainer flexBasis={'calc(50% - 10px)'}>
+                      <Field
+                        name="selectPartyType"
+                        render={({ field }) => (
+                          <TextInput {...field} label="Select Party Type" placeholder={'Select Party Type'} />
+                        )}
+                      />
 
-                    <Field
-                      name="selectPartyCategory"
-                      render={({ field }) => (
-                        <TextInput {...field} label="Select Party Category" placeholder={'Select Party Category'} />
-                      )}
-                    />
-                  </FormDetailsContainer>
+                      <Field
+                        name="selectPartyCategory"
+                        render={({ field }) => (
+                          <TextInput {...field} label="Select Party Category" placeholder={'Select Party Category'} />
+                        )}
+                      />
+                    </FormDetailsContainer>
+                    <FormDetailsContainer>
+                      <StaticFieldWrapper>
+                        <InformTitle>List of Properties</InformTitle>
+                      </StaticFieldWrapper>
+                    </FormDetailsContainer>
+                    <FormDetailsContainer>
+                      <InformTitle>Parties Details</InformTitle>
+                      <FieldGroupWithTitle>
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                      </FieldGroupWithTitle>
+                    </FormDetailsContainer>
+                    <FormDetailsContainer>
+                      <StaticFieldWrapper>
+                        <InformTitle>Details Of Parties</InformTitle>
+                      </StaticFieldWrapper>
+                    </FormDetailsContainer>
+                    <FormDetailsContainer>
+                      <InformTitle>Financier Details</InformTitle>
+                      <FieldGroupWithTitle>
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                      </FieldGroupWithTitle>
+                    </FormDetailsContainer>
+                    <FormDetailsContainer>
+                      <InformTitle>Outstanding Loan Amount</InformTitle>
+                      <NormalFieldsTuple shrink>
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                        <TextInput label="Local Governing No." placeholder={'Local Governing No.'} />
+                      </NormalFieldsTuple>
+                    </FormDetailsContainer>
+                  </React.Fragment>
                 )}
                 {activeTab === '/dashboard/document-details/payment' && (
                   <PaymentWrapper>
@@ -340,7 +405,7 @@ class DocumentDetails extends Component {
                   </React.Fragment>
                 )}
                 {activeTab === '/dashboard/document-details/owner-details' && (
-                  <Button size={'medium'} width={'150px'} title="Submit" type="submit" />
+                  <Button size={'medium'} width={'150px'} isLoading={false} title="Submit" type="submit" />
                 )}
                 {activeTab === '/dashboard/document-details/payment' && (
                   <Button size={'medium'} width={'150px'} title="Pay Now" type="submit" />

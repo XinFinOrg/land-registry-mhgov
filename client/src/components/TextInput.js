@@ -20,7 +20,7 @@ const TextInputWrapper = styled.div`
   & label {
     font-family: 'Open Sans', sans-serif !important;
     font-size: 16px !important;
-    color: rgba(51, 51, 51, 0.6) !important;
+    color: rgba(51, 51, 51, 0.6);
   }
   .MuiFormLabel-root-10.MuiFormLabel-filled-14 {
     color: #1f89f5 !important;
