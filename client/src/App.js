@@ -5,6 +5,7 @@ import Route from 'react-router-dom/Route'
 import { withRouter, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import { Home, Dashboard, DocumentDetails } from './pages'
+import { SignUp } from './components'
 const PrivateOnlyRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
@@ -35,6 +36,7 @@ class App extends Component {
         <RoutedScroll>
           <Switch>
             <PublicOnlyRoute exact path="/" component={Home} />
+            <PublicOnlyRoute exact path="/signup" component={SignUp} />
             <PrivateOnlyRoute exact path="/dashboard" component={Dashboard} />
             <PrivateOnlyRoute exact path="/dashboard/document-details" component={DocumentDetails} />
             <PrivateOnlyRoute exact path="/dashboard/document-details/:tab" component={DocumentDetails} />

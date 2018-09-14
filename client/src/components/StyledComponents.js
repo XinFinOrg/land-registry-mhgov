@@ -106,6 +106,7 @@ const FieldsTuple = styled.div`
 const NormalFieldsTuple = styled.div`
   display: flex;
   align-items: center;
+  padding-top: 22px;
   & > div {
     margin-right: 22px;
     flex-basis: calc(33.33% - 10px);
@@ -176,6 +177,19 @@ const FieldGroupWithTitle = styled.div`
     }
   `};
 `
+const StyledHeader = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+  color: #333333;
+  display: flex;
+  align-items: center;
+`
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+`
 export {
   PaperTitle,
   PaperSubTitle,
@@ -197,5 +211,7 @@ export {
   PaymentText,
   PaymentTuple,
   PaymentWrapper,
-  FieldGroupWithTitle
+  FieldGroupWithTitle,
+  StyledHeader,
+  IconWrapper
 }

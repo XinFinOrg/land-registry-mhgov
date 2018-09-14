@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Header, Button, Paper, Footer, Input, PaperTitle, PaperSubTitle } from '../components'
 import house from '../static/images/house.jpeg'
+import { Formik, Form, Field } from 'formik'
 
 const Background = styled.div`
   content: '';
@@ -54,7 +55,7 @@ const ForgotPassword = styled.p`
   padding: 17px 0 25px 0;
   cursor: pointer;
 `
-const Form = styled.form`
+const FormWrapper = styled.div`
   & input:first-child {
     border-radius: 0px 0px 6px 6px;
     border-bottom: none;
@@ -64,7 +65,11 @@ const Form = styled.form`
   }
 `
 class Home extends Component {
+  state = {
+    showSignUp: false
+  }
   render() {
+    const { showSignUp } = this.state
     return (
       <Background>
         <Header />
@@ -78,25 +83,152 @@ class Home extends Component {
           </Wrapper>
           <Wrapper>
             <Paper padding={'30px 35px'}>
-              <PaperTitle>Login</PaperTitle>
+              <PaperTitle>{showSignUp ? 'Sign Up' : 'Login'}</PaperTitle>
               <PaperSubTitle>
-                Lorem ipsum dolor sit amet, consectetur nteger non placerat nisi. Nullam faucibus cursus.
+                {showSignUp
+                  ? 'We connect Global Buyers, Suppliers & Financiers'
+                  : 'Lorem ipsum dolor sit amet, consectetur nteger non placerat nisi. Nullam faucibus cursus.'}
               </PaperSubTitle>
-              <Form>
-                <Input width={'100%'} height={'64px'} type="email" placeholder="Email Id" autoFocus required />
-                <Input width={'100%'} height={'64px'} type="password" placeholder="Password" required />
-                <ForgotPassword>Forgot Password ?</ForgotPassword>
-                <Button
-                  fontSize={20}
-                  width={'100%'}
-                  onClick={() => this.props.history.push('/dashboard')}
-                  height={'50px'}
-                  title="Next"
+              {showSignUp ? (
+                <Formik
+                  enableReinitialize={true}
+                  initialValues={{
+                    firstName: '',
+                    lastName: '',
+                    password: ''
+                  }}
+                  onSubmit={formData => console.log('FORM DATA', formData)}
+                  render={formikBag => (
+                    <Form>
+                      <FormWrapper>
+                        <Field
+                          name="firstName"
+                          render={({ field }) => (
+                            <Input
+                              {...field}
+                              width={'100%'}
+                              height={'64px'}
+                              type="text"
+                              placeholder="First Name"
+                              autoFocus
+                              required
+                            />
+                          )}
+                        />
+                        <Field
+                          name="lastName"
+                          render={({ field }) => (
+                            <Input
+                              {...field}
+                              width={'100%'}
+                              height={'64px'}
+                              type="text"
+                              placeholder="Last Name"
+                              required
+                            />
+                          )}
+                        />
+                        <Field
+                          name="email"
+                          render={({ field }) => (
+                            <Input
+                              {...field}
+                              width={'100%'}
+                              height={'64px'}
+                              type="email"
+                              placeholder="Email id"
+                              required
+                            />
+                          )}
+                        />
+                        <Field
+                          name="password"
+                          render={({ field }) => (
+                            <Input
+                              {...field}
+                              width={'100%'}
+                              height={'64px'}
+                              type="password"
+                              placeholder="Password"
+                              required
+                            />
+                          )}
+                        />
+
+                        <ForgotPassword>Forgot Password ?</ForgotPassword>
+                        <Button
+                          fontSize={20}
+                          width={'100%'}
+                          // onClick={() => this.props.history.push('/dashboard')}
+                          height={'50px'}
+                          title="Next"
+                          type="submit"
+                        />
+                      </FormWrapper>
+                    </Form>
+                  )}
                 />
-              </Form>
-              <h6>
-                New to Home Registry ? <span>Register Now</span>
-              </h6>
+              ) : (
+                <Formik
+                  enableReinitialize={true}
+                  initialValues={{
+                    email: '',
+                    password: ''
+                  }}
+                  onSubmit={formData => console.log('FORM DATA', formData)}
+                  render={formikBag => (
+                    <Form>
+                      <FormWrapper>
+                        <Field
+                          name="email"
+                          render={({ field }) => (
+                            <Input
+                              {...field}
+                              width={'100%'}
+                              height={'64px'}
+                              type="email"
+                              placeholder="Email Id"
+                              autoFocus
+                              required
+                            />
+                          )}
+                        />
+                        <Field
+                          name="password"
+                          render={({ field }) => (
+                            <Input
+                              {...field}
+                              width={'100%'}
+                              height={'64px'}
+                              type="password"
+                              placeholder="Password"
+                              required
+                            />
+                          )}
+                        />
+                        <ForgotPassword>Forgot Password ?</ForgotPassword>
+                        <Button
+                          fontSize={20}
+                          width={'100%'}
+                          // onClick={() => this.props.history.push('/dashboard')}
+                          height={'50px'}
+                          title={showSignUp ? 'Sign Up' : 'Next'}
+                          type={'submit'}
+                        />
+                      </FormWrapper>
+                    </Form>
+                  )}
+                />
+              )}
+              {showSignUp ? (
+                <h6>
+                  Already signed up ? <span onClick={() => this.setState({ showSignUp: false })}>Login</span>
+                </h6>
+              ) : (
+                <h6>
+                  New to Home Registry ? <span onClick={() => this.setState({ showSignUp: true })}>Register Now</span>
+                </h6>
+              )}
             </Paper>
           </Wrapper>
         </BackgroundWrapper>

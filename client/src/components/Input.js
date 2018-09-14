@@ -43,7 +43,7 @@ const Show = styled.div`
   color: #5fae58;
   position: absolute;
   right: 16px;
-  top: calc(${props => props.height && props.height - 50}px);
+  top: 22px;
   cursor: pointer;
 `
 const Image = styled.div`

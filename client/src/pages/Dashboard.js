@@ -1,213 +1,26 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Header, Footer, MainWrapper, PageTitle, TopWrapper, Input, Button, Icon } from '../components'
+import {
+  Header,
+  Footer,
+  MainWrapper,
+  PageTitle,
+  TopWrapper,
+  Input,
+  Button,
+  Icon,
+  StyledHeader,
+  IconWrapper
+} from '../components'
 import { Table } from '../components/Table'
-/* const Pagination = styled.div`
-  width: 10px;
-  height: 10px;
-` */
-const StyledHeader = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  text-align: left;
-  color: #333333;
-  display: flex;
-  align-items: center;
-`
-const IconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  padding-left: 8px;
-`
+import { data } from '../constants'
+
 class Dashboard extends Component {
   handlePageChange = currentPage => {
     // this.setState({ currentPage })
     console.log('CURRENT PAGE', currentPage)
   }
   render() {
-    const data = [
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'pending',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'approved',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'pending',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'approved',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'pending',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'pending',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'approved',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'pending',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'approved',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'pending',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'pending',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'approved',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'pending',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'approved',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'pending',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'pending',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'approved',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'pending',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'approved',
-        view: 'view'
-      },
-      {
-        srNo: 1,
-        propertyId: 'ABC',
-        propertyType: 'Residential',
-        propertyLocation: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
-        city: 'Delhi',
-        status: 'pending',
-        view: 'view'
-      }
-    ]
-
     const columns = [
       {
         Header: (
