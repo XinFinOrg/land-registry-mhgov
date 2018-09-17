@@ -673,15 +673,29 @@ class DocumentDetails extends Component {
             )}
           />
         )}
-        {/*   <ButtonWrapper>
-          {activeTab === '/dashboard/document-details/owner-details' && (
-            <Button size={'medium'} width={'150px'} isLoading={false} title="Submit" type="submit" />
-          )}
-          {activeTab === '/dashboard/document-details/payment' && (
-            <Button size={'medium'} width={'150px'} title="Pay Now" type="submit" />
-          )}
-        </ButtonWrapper> */}
-        <Footer />
+        {activeTab === '/dashboard/document-details/payment' && (
+          <Paper
+            padding={'0 31px 20px'}
+            radius={'0 0 6px 6px'}
+            shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+            margin={'0 95px'}>
+            <PaymentWrapper>
+              <PaymentTuple>
+                <PaymentText>Total Amount</PaymentText>
+                <PaymentText>Rs. 1,00,000</PaymentText>
+              </PaymentTuple>
+              <PaymentTuple>
+                <PaymentText>Total Amount</PaymentText>
+                <PaymentText>Rs. 1,00,000</PaymentText>
+              </PaymentTuple>
+              <PaymentTuple>
+                <PaymentText>Total Amount</PaymentText>
+                <PaymentText>Rs. 1,00,000</PaymentText>
+              </PaymentTuple>
+            </PaymentWrapper>
+          </Paper>
+        )}
+        <Footer position={'fixed'} />
       </React.Fragment>
     )
   }
