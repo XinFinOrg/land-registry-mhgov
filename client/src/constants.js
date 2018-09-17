@@ -180,3 +180,24 @@ export const data = [
     view: 'view'
   }
 ]
+
+export const customData = [
+  {
+    srNo: 1,
+    location: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
+    usageCategory: 'Urban - Residential Flat - 19 Page No.12',
+    propertyDetails: 'Lorem ipsum dolor sit amet, consectetuer adipiscing '
+  },
+  {
+    srNo: 1,
+    location: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
+    usageCategory: 'Urban - Residential Flat - 19 Page No.12',
+    propertyDetails: 'Lorem ipsum dolor sit amet, consectetuer adipiscing '
+  },
+  {
+    srNo: 1,
+    location: 'Block 370, Clementi Avenue 2, #09-128, Singapore 120370',
+    usageCategory: 'Urban - Residential Flat - 19 Page No.12',
+    propertyDetails: 'Lorem ipsum dolor sit amet, consectetuer adipiscing '
+  }
+]

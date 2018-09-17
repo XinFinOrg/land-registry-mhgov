@@ -30,9 +30,10 @@ import {
   FieldGroupWithTitle,
   StyledHeader,
   IconWrapper,
-  Table
+  Table,
+  CustomTable
 } from '../components'
-import { data } from '../constants'
+import { data, customData } from '../constants'
 const PageTitleWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -48,6 +49,12 @@ const ButtonGroup = styled.div`
     margin-left: 14px;
   }
 `
+const StyledHead = styled.div`
+  font-size: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #333333;
+`
 const PropertyDetailsWrapper = styled.div``
 class DocumentDetails extends Component {
   state = {
@@ -60,95 +67,25 @@ class DocumentDetails extends Component {
   render() {
     const columns = [
       {
-        Header: (
-          <StyledHeader>
-            Sr. No.
-            <IconWrapper>
-              <Icon icon="downarrow" /> <Icon icon="uparrow" />
-            </IconWrapper>
-          </StyledHeader>
-        ),
+        Header: <StyledHead>Sr. No.</StyledHead>,
         accessor: 'srNo',
         maxWidth: 100
       },
       {
-        Header: (
-          <StyledHeader>
-            Property Id
-            <IconWrapper>
-              <Icon icon="downarrow" /> <Icon icon="uparrow" />
-            </IconWrapper>
-          </StyledHeader>
-        ),
-        accessor: 'propertyId',
+        Header: <StyledHead>Location</StyledHead>,
+        accessor: 'location',
         minWidth: 100,
         Cell: props => <span>{props.value}</span>
       },
       {
-        Header: (
-          <StyledHeader>
-            Property Type
-            <IconWrapper>
-              <Icon icon="downarrow" /> <Icon icon="uparrow" />
-            </IconWrapper>
-          </StyledHeader>
-        ),
-        accessor: 'propertyType',
+        Header: <StyledHead>Usage Category</StyledHead>,
+        accessor: 'usageCategory',
         minwidth: 120
       },
       {
-        Header: (
-          <StyledHeader>
-            Property Location
-            <IconWrapper>
-              <Icon icon="downarrow" /> <Icon icon="uparrow" />
-            </IconWrapper>
-          </StyledHeader>
-        ),
-        accessor: 'propertyLocation',
+        Header: <StyledHead>Property Details</StyledHead>,
+        accessor: 'propertyDetails',
         minwidth: 180
-      },
-      {
-        Header: (
-          <StyledHeader>
-            City
-            <IconWrapper>
-              <Icon icon="downarrow" /> <Icon icon="uparrow" />
-            </IconWrapper>
-          </StyledHeader>
-        ),
-        accessor: 'city',
-        maxWidth: 150
-      },
-      {
-        Header: (
-          <StyledHeader>
-            Status
-            <IconWrapper>
-              <Icon icon="downarrow" /> <Icon icon="uparrow" />
-            </IconWrapper>
-          </StyledHeader>
-        ),
-        accessor: 'status',
-        maxWidth: 150,
-        Cell: props => (
-          <Button
-            size="action"
-            title="View"
-            background={'#fff'}
-            shadow={'none'}
-            fontSize={16}
-            color={'#333333'}
-            radius={'4px'}
-            border={props.original.status === 'pending' ? 'solid 1px #ffae01' : 'solid 1px #6faa13'}
-          />
-        )
-      },
-      {
-        Header: 'View',
-        accessor: 'view',
-        maxWidth: 150,
-        Cell: props => <Button size="action" shadow={'none'} title="View" radius={'4px'} />
       }
     ]
     const { activeTab } = this.state
@@ -485,19 +422,19 @@ class DocumentDetails extends Component {
                       )}
                     />
                   </FormDetailsContainer>
-                  <FormDetailsContainer paddingTop={'0'}>
-                    <StaticFieldWrapper>
-                      <InformTitle>List of Properties</InformTitle>
-                      {/*  <Table
-                        data={data}
-                        columns={columns}
-                        resizable={false}
-                        showPagination={false}
-                        pageSize={10}
-                        defaultPageSize={10}
-                        minRows={0}
-                      /> */}
-                    </StaticFieldWrapper>
+                  <FormDetailsContainer paddingTop={'0'} display={'block'}>
+                    <InformTitle>List of Properties</InformTitle>
+                    <CustomTable
+                      data={customData}
+                      columns={columns}
+                      resizable={false}
+                      sortable={false}
+                      showPagination={false}
+                      pageSize={10}
+                      defaultPageSize={10}
+                      minRows={0}
+                    />{' '}
+                    {/* <CustomTable /> */}
                   </FormDetailsContainer>
                   <FormDetailsContainer>
                     <InformTitle>Parties Details</InformTitle>
@@ -651,10 +588,18 @@ class DocumentDetails extends Component {
                       />
                     </FieldGroupWithTitle>
                   </FormDetailsContainer>
-                  <FormDetailsContainer>
-                    <StaticFieldWrapper>
-                      <InformTitle>Details Of Parties</InformTitle>
-                    </StaticFieldWrapper>
+                  <FormDetailsContainer display="block">
+                    <InformTitle>Details Of Parties</InformTitle>
+                    <CustomTable
+                      data={customData}
+                      columns={columns}
+                      resizable={false}
+                      sortable={false}
+                      showPagination={false}
+                      pageSize={10}
+                      defaultPageSize={10}
+                      minRows={0}
+                    />
                   </FormDetailsContainer>
                   <FormDetailsContainer>
                     <InformTitle>Financier Details</InformTitle>
@@ -677,12 +622,12 @@ class DocumentDetails extends Component {
                       />
 
                       <Field
-                        name="totalValueOfproperty"
+                        name="totalValueOfProperty"
                         render={({ field }) => (
                           <TextInput
                             {...field}
-                            label="Total value of property"
-                            placeholder={'Total value of property'}
+                            label="Total Value of Property"
+                            placeholder={'Total Value of Property'}
                           />
                         )}
                       />
