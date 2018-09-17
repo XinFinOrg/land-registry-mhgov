@@ -61,7 +61,7 @@ class Header extends Component {
       <HeaderOuter>
         <HeaderWrapper>
           <LogoLink to="/">Home Registry</LogoLink>
-          {pathname === '/' ? (
+          {pathname === '/' || pathname === '/signup' ? (
             <MenuItemsWrapper>
               <MenuItems to="/">Home</MenuItems>
               <MenuItems to="/support">Support</MenuItems>

@@ -36,7 +36,7 @@ class App extends Component {
         <RoutedScroll>
           <Switch>
             <PublicOnlyRoute exact path="/" component={Home} />
-            <PublicOnlyRoute exact path="/signup" component={SignUp} />
+            <PublicOnlyRoute exact path="/signup" component={Home} />
             <PrivateOnlyRoute exact path="/dashboard" component={Dashboard} />
             <PrivateOnlyRoute exact path="/dashboard/document-details" component={DocumentDetails} />
             <PrivateOnlyRoute exact path="/dashboard/document-details/:tab" component={DocumentDetails} />

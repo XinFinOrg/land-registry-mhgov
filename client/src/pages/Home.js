@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Header, Button, Paper, Footer, Input, PaperTitle, PaperSubTitle } from '../components'
+import { Header, Button, Paper, Footer, Input, PaperTitle, PaperSubTitle, Radio, Checkbox } from '../components'
 import house from '../static/images/house.jpeg'
 import { Formik, Form, Field } from 'formik'
 
@@ -64,12 +64,39 @@ const FormWrapper = styled.div`
     border-radius: 6px 6px 0 0;
   }
 `
-class Home extends Component {
-  state = {
-    showSignUp: false
+const SignupFormWrapper = styled.div`
+  & > div > input {
+    border-radius: 0;
   }
+  & > div {
+    &:first-child > input {
+      border-radius: 6px 6px 0 0;
+    }
+    &:nth-child(4) > input {
+      border-radius: 0 0 6px 6px;
+    }
+  }
+`
+const RadioGroup = styled.div``
+const RadioWrap = styled.div`
+  & > p {
+    padding: 10px 0px;
+  }
+`
+const CheckboxWrap = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  & > span {
+    font-size: 14px;
+    padding-left: 4px;
+  }
+`
+class Home extends Component {
   render() {
-    const { showSignUp } = this.state
+    const {
+      location: { pathname }
+    } = this.props
     return (
       <Background>
         <Header />
@@ -83,24 +110,26 @@ class Home extends Component {
           </Wrapper>
           <Wrapper>
             <Paper padding={'30px 35px'}>
-              <PaperTitle>{showSignUp ? 'Sign Up' : 'Login'}</PaperTitle>
+              <PaperTitle>{pathname === '/signup' ? 'Sign Up' : 'Login'}</PaperTitle>
               <PaperSubTitle>
-                {showSignUp
+                {pathname === '/signup'
                   ? 'We connect Global Buyers, Suppliers & Financiers'
                   : 'Lorem ipsum dolor sit amet, consectetur nteger non placerat nisi. Nullam faucibus cursus.'}
               </PaperSubTitle>
-              {showSignUp ? (
+              {pathname === '/signup' ? (
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
                     firstName: '',
                     lastName: '',
-                    password: ''
+                    email: '',
+                    password: '',
+                    registerAs: 'buyer'
                   }}
                   onSubmit={formData => console.log('FORM DATA', formData)}
                   render={formikBag => (
                     <Form>
-                      <FormWrapper>
+                      <SignupFormWrapper>
                         <Field
                           name="firstName"
                           render={({ field }) => (
@@ -154,8 +183,34 @@ class Home extends Component {
                             />
                           )}
                         />
-
-                        <ForgotPassword>Forgot Password ?</ForgotPassword>
+                        <RadioWrap>
+                          <PaperSubTitle>Register As</PaperSubTitle>
+                          <RadioGroup>
+                            <Radio
+                              label="Buyer"
+                              value="buyer"
+                              name="registerAs"
+                              defaultChecked
+                              onChange={e => formikBag.setFieldValue('registerAs', e.target.value)}
+                            />
+                            <Radio
+                              label="Supplier"
+                              value="supplier"
+                              name="registerAs"
+                              onChange={e => formikBag.setFieldValue('registerAs', e.target.value)}
+                            />
+                            <Radio
+                              label="Financer"
+                              value="financer"
+                              name="registerAs"
+                              onChange={e => formikBag.setFieldValue('registerAs', e.target.value)}
+                            />
+                          </RadioGroup>
+                        </RadioWrap>
+                        <CheckboxWrap>
+                          <Checkbox name="tnc" defaultChecked required />
+                          <span>By continuing you agree to Terms & Conditions</span>
+                        </CheckboxWrap>
                         <Button
                           fontSize={20}
                           width={'100%'}
@@ -164,7 +219,7 @@ class Home extends Component {
                           title="Next"
                           type="submit"
                         />
-                      </FormWrapper>
+                      </SignupFormWrapper>
                     </Form>
                   )}
                 />
@@ -210,9 +265,9 @@ class Home extends Component {
                         <Button
                           fontSize={20}
                           width={'100%'}
-                          // onClick={() => this.props.history.push('/dashboard')}
+                          onClick={() => this.props.history.push('/dashboard')}
                           height={'50px'}
-                          title={showSignUp ? 'Sign Up' : 'Next'}
+                          title={pathname === '/' ? 'Next' : 'Sign Up'}
                           type={'submit'}
                         />
                       </FormWrapper>
@@ -220,13 +275,13 @@ class Home extends Component {
                   )}
                 />
               )}
-              {showSignUp ? (
+              {pathname === '/signup' ? (
                 <h6>
-                  Already signed up ? <span onClick={() => this.setState({ showSignUp: false })}>Login</span>
+                  Already signed up ? <span onClick={() => this.props.history.push('/')}>Login</span>
                 </h6>
               ) : (
                 <h6>
-                  New to Home Registry ? <span onClick={() => this.setState({ showSignUp: true })}>Register Now</span>
+                  New to Home Registry ? <span onClick={() => this.props.history.push('/signup')}>Register Now</span>
                 </h6>
               )}
             </Paper>

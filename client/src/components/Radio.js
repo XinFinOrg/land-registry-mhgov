@@ -4,8 +4,8 @@ import styled from 'styled-components'
 const Label = styled.label`
   position: relative;
   display: inline-flex;
-  padding: 0 8px;
-  flex-direction: row-reverse;
+  padding: 0 8px 0 0;
+  flex-direction: row;
   align-items: center;
   & span {
     font-size: 15px;
@@ -62,4 +62,4 @@ class Radio extends Component {
     )
   }
 }
-export { Radio} 
+export { Radio }
