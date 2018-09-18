@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 class Icon extends Component {
   render() {
+    const { icon, width, height, fill, color } = this.props
     const svg = {
       facebook: () => {
         return (
@@ -11,62 +12,13 @@ class Icon extends Component {
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
             y="0px"
-            width={this.props.width ? this.props.width : 16}
-            height={this.props.height ? this.props.height : 16}
+            width={width ? width : 16}
+            height={height ? height : 16}
             viewBox="0 0 16 16">
             <path
-              fill={this.props.color ? this.props.color : '#cccccc'}
+              fill={color ? color : '#cccccc'}
               d="M8.5,16H0.9C0.4,16,0,15.6,0,15.1V0.9C0,0.4,0.4,0,0.9,0h14.2C15.6,0,16,0.4,16,0.9v14.2c0,0.5-0.4,0.9-0.9,0.9
 	H11V9.8h2.1l0.3-2.4H11V5.8c0-0.7,0.2-1.2,1.2-1.2l1.3,0V2.5c-0.2,0-1-0.1-1.9-0.1c-1.8,0-3.1,1.1-3.1,3.2v1.8H6.5v2.4h2.1V16z"
-            />
-          </svg>
-        )
-      },
-      uparrow: () => {
-        return (
-          <svg height="7" width="11" viewBox="0 0 11 7" xmlns="http://www.w3.org/2000/svg">
-            <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-              <g
-                id="Overall-Performance"
-                transform="translate(-218.000000, -7.000000)"
-                fill="#808FA3"
-                stroke="#808FA3"
-                strokeWidth="0.3">
-                <g id="Group-12">
-                  <path
-                    d="M225.947435,14.0698393 C226.194471,14.3074092 226.20223,14.7003073 225.96466,14.947498 C225.842849,15.0741191 225.680072,15.1378953 225.517141,15.1378953 C225.362278,15.1378953 225.207415,15.0804812 225.087001,14.9647222 L221.052502,11.0853963 C220.930846,10.9683958 220.862105,10.8067055 220.862105,10.6378773 C220.862105,10.4692042 220.930846,10.3075139 221.052502,10.1905134 L225.087001,6.31118757 C225.334036,6.07361765 225.72709,6.08122113 225.96466,6.32841177 C226.20223,6.57560242 226.194471,6.96850054 225.947435,7.20607046 L222.3783,10.6378773 L225.947435,14.0698393 Z"
-                    id="chevron"
-                    transform="translate(223.500000, 10.637895) scale(-1, 1) rotate(-90.000000) translate(-223.500000, -10.637895) "
-                  />
-                </g>
-              </g>
-            </g>
-          </svg>
-        )
-      },
-      downarrow: () => {
-        return (
-          <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <g>
-              <g>
-                <defs>
-                  <path
-                    id="SVGID_1_"
-                    d="M15.432,14.446c0.236,0.247,0.63,0.255,0.878,0.018c0.126-0.122,0.189-0.284,0.189-0.447 c0-0.154-0.058-0.311-0.173-0.431l-3.879-4.034C12.33,9.431,12.169,9.363,12,9.363c-0.168,0-0.331,0.068-0.447,0.189 l-3.879,4.034c-0.237,0.247-0.229,0.641,0.017,0.878c0.248,0.237,0.641,0.229,0.879-0.018l3.43-3.569L15.432,14.446z"
-                  />
-                </defs>
-                <clipPath id="SVGID_2_">
-                  <use overflow="visible" />
-                </clipPath>
-                <rect x="2.499" y="4.363" clipPath="url(#SVGID_2_)" fill="#808FA3" width="19" height="15.275" />
-              </g>
-            </g>
-            <path
-              fill="none"
-              stroke="#808FA3"
-              strokeWidth="0.3"
-              strokeMiterlimit="10"
-              d="M15.432,14.446 c0.236,0.247,0.63,0.255,0.878,0.018c0.126-0.122,0.189-0.284,0.189-0.447c0-0.154-0.058-0.311-0.173-0.431l-3.879-4.034 C12.33,9.431,12.169,9.363,12,9.363c-0.168,0-0.331,0.068-0.447,0.189l-3.879,4.034c-0.237,0.247-0.229,0.641,0.017,0.878 c0.248,0.237,0.641,0.229,0.879-0.018l3.43-3.569L15.432,14.446z"
             />
           </svg>
         )
@@ -83,7 +35,7 @@ class Icon extends Component {
             height={13.5}
             viewBox="0 0 16 13.5">
             <path
-              fill={this.props.color ? this.props.color : '#cccccc'}
+              fill={color ? color : '#cccccc'}
               d="M16,1.6c-0.6,0.3-1.2,0.5-1.9,0.5c0.7-0.4,1.2-1.1,1.4-1.9c-0.6,0.4-1.3,0.7-2.1,0.8C12.9,0.4,12,0,11.1,0
 	C9.3,0,7.8,1.5,7.8,3.4c0,0.3,0,0.5,0.1,0.8C5.2,4,2.7,2.7,1.1,0.6C0.8,1.1,0.7,1.7,0.7,2.3c0,1.2,0.6,2.2,1.5,2.8
 	c-0.5,0-1-0.2-1.5-0.4v0c0,1.7,1.1,3,2.6,3.3C3,8.2,2.7,8.3,2.4,8.3c-0.2,0-0.4,0-0.6-0.1c0.4,1.4,1.6,2.3,3.1,2.4
@@ -105,7 +57,7 @@ class Icon extends Component {
             viewBox="0 0 15.9 14.8">
             <path
               id="Page-1_1_"
-              fill={this.props.color ? this.props.color : '#999999'}
+              fill={color ? color : '#999999'}
               d="M0,14.8h3.2V4.2H0V14.8z M1.6,0C0.7,0,0,0.7,0,1.6c0,0.9,0.7,1.6,1.6,1.6c0.9,0,1.6-0.7,1.6-1.6
          C3.2,0.7,2.5,0,1.6,0z M15.9,8.8v6h-3.2V9c0-1.2-0.3-2.4-1.7-2.4S8.5,7.8,8.5,9v5.8H5.3V4.2h3.2v1.5c1-1.2,2.4-1.8,3.9-1.8
          S15.9,4.6,15.9,8.8z"
@@ -116,8 +68,8 @@ class Icon extends Component {
       compass: () => {
         return (
           <svg
-            width={this.props.width ? this.props.width : '36'}
-            height={this.props.height ? this.props.height : '37'}
+            width={width ? width : '36'}
+            height={height ? height : '37'}
             viewBox="0 0 42 46"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg">
@@ -145,8 +97,8 @@ class Icon extends Component {
         return (
           <svg
             fill="none"
-            width={this.props.width ? this.props.width : '48'}
-            height={this.props.height ? this.props.height : '48'}
+            width={width ? width : '48'}
+            height={height ? height : '48'}
             viewBox="0 0 48 48"
             xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -166,7 +118,7 @@ class Icon extends Component {
         return (
           <svg width="16px" height="17px" viewBox="0 0 16 13" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <path
-              fill={this.props.color ? this.props.color : '#333333'}
+              fill={color ? color : '#333333'}
               d="M15.9979964,14.501 C15.9979964,14.777 15.7735896,15.001 15.4980903,15.001 L0.49990608,15.001 C0.223404921,15.001 0,14.777 0,14.501 L0,2.501 C0,2.498 0.00200363158,2.495 0.00200363158,2.491 C0.00200363158,2.484 0.00601089475,2.479 0.00601089475,2.472 C0.0120217895,2.356 0.0581053159,2.252 0.131237869,2.17 C0.139252395,2.161 0.135245132,2.147 0.144261474,2.138 C0.155281448,2.127 0.172312316,2.131 0.184334106,2.121 C0.258468474,2.058 0.350635527,2.019 0.453822553,2.01 C0.473858869,2.008 0.48788429,2 0.507920606,2 L15.4920794,2 C15.5121157,2 15.5261411,2.008 15.5451756,2.01 C15.6493645,2.02 15.7395279,2.059 15.8156659,2.121 C15.8276877,2.131 15.8447186,2.127 15.8557385,2.138 C15.8647549,2.147 15.8607476,2.161 15.8687621,2.17 C15.9418947,2.252 15.9869764,2.356 15.9939891,2.472 C15.9939891,2.479 15.9979964,2.484 15.9979964,2.491 C15.9979964,2.494 16,2.497 16,2.501 L16,14.501 L15.9979964,14.501 Z M0.99981216,13.501 C0.99981216,13.777 1.22321708,14.001 1.49971824,14.001 L14.4982781,14.001 C14.7737775,14.001 14.9981842,13.777 14.9981842,13.501 L14.9981842,3.519 L8.3681673,8.827 C8.36115459,8.834 8.36516186,8.846 8.35714733,8.853 C8.25796757,8.952 8.12773151,8.996 7.99949909,8.993 C7.86926304,8.995 7.73902699,8.952 7.64185085,8.853 C7.63383633,8.846 7.63784359,8.834 7.62982907,8.827 L1.00081398,3.519 L1.00081398,13.501 L0.99981216,13.501 Z M7.99849728,7.871 L14.0805209,3.001 L1.91446998,3.001 L7.99849728,7.871 Z"
               id="path-1"
             />
@@ -192,37 +144,119 @@ class Icon extends Component {
             <g id="Extract" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
               <g
                 transform="translate(-705.000000, -4709.000000)"
-                fill={this.props.color ? this.props.color : '#333333'}
+                fill={color ? color : '#333333'}
                 fillRule="nonzero"
                 id="Group-4">
                 <g transform="translate(706.000000, 4710.000000)">
                   <path
                     d="M9.83258952,0 L1.31101194,0 C0.586960037,-4.4335392e-17 0,0.586960037 0,1.31101194 L0,19.665179 C0,20.3892309 0.586960037,20.976191 1.31101194,20.976191 L9.83258952,20.976191 C10.5566414,20.976191 11.1436015,20.3892309 11.1436015,19.665179 L11.1436015,1.31101194 C11.1436015,0.586960037 10.5566414,4.4335392e-17 9.83258952,0 Z M1.31101194,0.655505968 L9.83258952,0.655505968 C10.1946155,0.655505968 10.4880955,0.948985986 10.4880955,1.31101194 L10.4880955,2.62202387 L0.655505968,2.62202387 L0.655505968,1.31101194 C0.655505968,0.948985986 0.948985986,0.655505968 1.31101194,0.655505968 Z M0.655505968,17.6986611 L0.655505968,3.27752984 L10.4880955,3.27752984 L10.4880955,17.6986611 L0.655505968,17.6986611 Z M9.83258952,20.320685 L1.31101194,20.320685 C0.948985986,20.320685 0.655505968,20.027205 0.655505968,19.665179 L0.655505968,18.3541671 L10.4880955,18.3541671 L10.4880955,19.665179 C10.4880955,20.027205 10.1946155,20.320685 9.83258952,20.320685 Z"
                     id="Shape"
-                    stroke={this.props.color ? this.props.color : '#333333'}
+                    stroke={color ? color : '#333333'}
                     strokeWidth="0.3"
                   />
                   <path
                     d="M4.50660353,1.9665179 L6.63699793,1.9665179 C6.8180109,1.9665179 6.96475091,1.81977789 6.96475091,1.63876492 C6.96475091,1.45775195 6.8180109,1.31101194 6.63699793,1.31101194 L4.50660353,1.31101194 C4.32559056,1.31101194 4.17885055,1.45775195 4.17885055,1.63876492 C4.17885055,1.81977789 4.32559056,1.9665179 4.50660353,1.9665179 Z"
                     id="Shape"
                   />
-                  <circle
-                    fill={this.props.color ? this.props.color : '#333333'}
-                    id="Oval"
-                    cx="5.57180073"
-                    cy="19.3374261"
-                    r="1"
-                  />
+                  <circle fill={color ? color : '#333333'} id="Oval" cx="5.57180073" cy="19.3374261" r="1" />
                 </g>
               </g>
             </g>
           </svg>
         )
       },
+      notification: () => {
+        return (
+          <svg
+            id="Layer_1"
+            width={width ? width : '53.95'}
+            height={height ? height : '71.44'}
+            dataname="Layer 1"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 53.95 71.44">
+            <path
+              className="cls-1"
+              fill={fill ? fill : '#fff'}
+              d="M52,60.83H4V31.55c-.06-.71-.09-1.38-.09-2A23.88,23.88,0,0,1,28,5.89,23.88,23.88,0,0,1,52.11,29.51c0,.66,0,1.33-.1,2ZM8.85,56H47.2V31.22c.06-.61.08-1.17.08-1.71A19.06,19.06,0,0,0,28,10.7,19.07,19.07,0,0,0,8.75,29.51c0,.54,0,1.1.09,1.71V56Z"
+              transform="translate(-1.05 -0.85)"
+            />
+            <rect className="cls-1" fill={fill ? fill : '#fff'} y="55.05" width="53.95" height="5.05" />
+            <path
+              className="cls-1"
+              fill={fill ? fill : '#fff'}
+              d="M28,72.29c-6.63,0-12-6-12-13.4v-2.4h24v2.4C40.05,66.28,34.65,72.29,28,72.29Zm-6.92-11c.87,3.56,3.65,6.18,6.92,6.18S34.07,64.86,35,61.3Z"
+              transform="translate(-1.05 -0.85)"
+            />
+            <rect className="cls-1" fill={fill ? fill : '#fff'} x="24.17" width="5.61" height="7.09" />
+          </svg>
+        )
+      },
+      search: () => {
+        return (
+          <svg
+            id="Layer_1"
+            dataname="Layer 1"
+            xmlns="http://www.w3.org/2000/svg"
+            width={width ? width : '17.75'}
+            height={height ? height : '17.75'}
+            viewBox="0 0 17.75 17.75">
+            <g id="search">
+              <path
+                className="cls-1"
+                fill={fill ? fill : '#fff'}
+                d="M13.93,12.41h-.81l-.31-.31a6.3,6.3,0,0,0,1.63-4.26,6.6,6.6,0,1,0-6.6,6.6,6.3,6.3,0,0,0,4.26-1.63l.31.31v.81L17.48,19,19,17.48Zm-6.09,0a4.57,4.57,0,1,1,4.57-4.57A4.55,4.55,0,0,1,7.84,12.41Z"
+                transform="translate(-1.25 -1.25)"
+              />
+            </g>
+          </svg>
+        )
+      },
+      uparrow: () => {
+        return (
+          <svg
+            id="Layer_1"
+            dataname="Layer 1"
+            xmlns="http://www.w3.org/2000/svg"
+            width={width ? width : '9'}
+            height={height ? height : '13'}
+            viewBox="0 0 9 13">
+            <path
+              className="cls-1"
+              fill={fill ? fill : '#ccc'}
+              d="M5.25,14V3.74L8,6.35l1-1L4.5,1,0,5.33l1.05,1,2.7-2.61V14Zm-1.5,0"
+              transform="translate(0 -1)"
+            />
+          </svg>
+        )
+      },
+      downarrow: () => {
+        return (
+          <svg
+            id="Layer_1"
+            dataname="Layer 1"
+            xmlns="http://www.w3.org/2000/svg"
+            width={width ? width : '9'}
+            height={height ? height : '13'}
+            viewBox="0 0 9 13">
+            <path
+              className="cls-1"
+              fill={fill ? fill : '#ccc'}
+              d="M3.75,1V11.26L1.05,8.65l-1,1L4.5,14,9,9.67l-1-1-2.7,2.61V1Zm0,0"
+              transform="translate(0 -1)"
+            />
+          </svg>
+        )
+      },
+      arrow: () => {
+        return (
+          <svg id="Layer_1" dataname="Layer 1" xmlns="http://www.w3.org/2000/svg" width={width ? width : '41.2'}
+          height={height ? height : '40'} viewBox="0 0 41.2 40"><polygon className="cls-1" fill={fill?fill: "#7d7e80"} points="0 3.85 4.1 0 22.17 19.52 3.37 38.31 0 33.98 14.22 19.16 0 3.85"/><polygon className="cls-1" fill={fill?fill: "#7d7e80"} points="19.04 5.54 23.13 1.69 41.2 21.2 22.41 40 19.04 35.66 33.25 20.84 19.04 5.54"/></svg>
+        )
+      },
       default: () => {
         return (
           <svg
-            fill={this.props.color ? this.props.color : '#cccccc'}
+            fill={color ? color : '#cccccc'}
             height="24"
             viewBox="0 0 24 24"
             width="24"
@@ -233,7 +267,7 @@ class Icon extends Component {
         )
       }
     }
-    return svg[this.props.icon || 'default']()
+    return svg[icon || 'default']()
   }
 }
 

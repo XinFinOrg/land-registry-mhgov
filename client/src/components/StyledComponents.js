@@ -19,6 +19,7 @@ const PageTitle = styled.h1`
 `
 const MainWrapper = styled.div`
   padding: 107px 95px 0;
+  margin-bottom: 100px;
 `
 const TopWrapper = styled.div`
   display: flex;

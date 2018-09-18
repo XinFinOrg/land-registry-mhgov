@@ -120,7 +120,7 @@ class Dashboard extends Component {
         <MainWrapper>
           <TopWrapper>
             <PageTitle>Dashboard</PageTitle>
-            <Input padding={'14px 36px'} type="text" icon="facebook" placeholder="Search" />
+            <Input padding={'14px 36px'} type="text" icon="search" background={"#fff"} fill="rgba(46, 55, 59, 0.5)" placeholder="Search" />
           </TopWrapper>
           <Table
             onSortedChange={(newSorted, column, shiftKey) => {
@@ -137,7 +137,7 @@ class Dashboard extends Component {
             onPageChange={this.handlePageChange}
           />
         </MainWrapper>
-        <Footer />
+        <Footer position={'fixed'} />
       </React.Fragment>
     )
   }

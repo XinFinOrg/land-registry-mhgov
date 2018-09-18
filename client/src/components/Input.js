@@ -57,7 +57,7 @@ class Input extends Component {
     password: false
   }
   render() {
-    const { icon, width, height, changeColor, type, ...props } = this.props
+    const { icon, width, height, changeColor, type,fill, ...props } = this.props
     const { password } = this.state
     return (
       <Container width={width}>
@@ -69,7 +69,7 @@ class Input extends Component {
         )}
         {icon && (
           <Image>
-            <Icon icon={icon} />
+            <Icon icon={icon} fill={fill} />
           </Image>
         )}
       </Container>

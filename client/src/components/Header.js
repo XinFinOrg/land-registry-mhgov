@@ -52,6 +52,17 @@ const UserImage = styled.div`
   height: 31px;
   border-radius: 50%;
 `
+const IconCircle = styled.div`
+width: 31px;
+height: 31px;
+opacity: 0.8;
+background-color: #1b73cd;
+border: solid 1px #e4e4e4;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+`
 class Header extends Component {
   render() {
     const {
@@ -70,7 +81,9 @@ class Header extends Component {
           ) : (
             <DashboardWrapper>
               <IconWrapper>
-                <Icon icon="facebook" width={31} height={31} />
+              <IconCircle>
+                <Icon icon="notification" width={15} height={19} />
+                </IconCircle>
                 <p>Notification</p>
               </IconWrapper>
               <IconWrapper>
