@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Link from 'react-router-dom/Link'
-
+import { Form } from 'formik'
 const PaperTitle = styled.h3`
   font-size: 25px;
   color: #333333;
@@ -198,6 +198,23 @@ const IconWrapper = styled.div`
   align-items: center;
   padding-left: 8px;
 `
+const FormikForm = styled(Form)`
+  margin-bottom: 100px;
+`
+const ButtonGroup = styled.div`
+  margin: 30px 95px 0;
+  display: flex;
+  justify-content: flex-end;
+  & button {
+    margin-left: 14px;
+  }
+`
+const StyledHead = styled.div`
+  font-size: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #333333;
+`
 export {
   PaperTitle,
   PaperSubTitle,
@@ -221,5 +238,8 @@ export {
   PaymentWrapper,
   FieldGroupWithTitle,
   StyledHeader,
-  IconWrapper
+  IconWrapper,
+  FormikForm,
+  ButtonGroup,
+  StyledHead
 }
