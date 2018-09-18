@@ -12,6 +12,7 @@ Object.assign(ReactTableDefaults, {
   PaginationComponent: <Pagination />
 }) */
 const TableWrapper = styled.div`
+  margin-bottom: 100px;
   .ReactTable {
     border-radius: 8px;
     background-color: #ffffff;
