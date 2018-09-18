@@ -57,11 +57,18 @@ class Input extends Component {
     password: false
   }
   render() {
-    const { icon, width, height, changeColor, type,fill, ...props } = this.props
+    const { icon, width, height, changeColor, type, background, disabled, fill, ...props } = this.props
     const { password } = this.state
     return (
       <Container width={width}>
-        <InputWrapper width={width} height={height} type={password ? 'text' : type} {...props} />
+        <InputWrapper
+          width={width}
+          height={height}
+          type={password ? 'text' : type}
+          background={disabled ? '#f4f8f9' : background}
+          disabled={disabled}
+          {...props}
+        />
         {type === 'password' && (
           <Show onClick={() => this.setState({ password: !password })} height={height}>
             {password ? 'Hide' : 'Show'}

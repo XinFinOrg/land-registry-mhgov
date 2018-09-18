@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Header, Button, Paper, Footer, Input, PaperTitle, PaperSubTitle, Radio, Checkbox } from '../components'
+import { Header, Button, Paper, Footer, Input, PaperTitle, PaperSubTitle, Radio, Checkbox, Modal } from '../components'
 import house from '../static/images/house.jpeg'
 import { Formik, Form, Field } from 'formik'
-
+import Select from 'react-select'
 const Background = styled.div`
   content: '';
   background-image: url(${house});
@@ -64,6 +64,25 @@ const FormWrapper = styled.div`
     border-radius: 6px 6px 0 0;
   }
 `
+const BankFormWrapper = styled.div`
+  margin-top: 20px;
+  & > div:first-child > input {
+    border-radius: 6px 6px 0px 0px;
+  }
+
+  & > div:nth-child(2) {
+    & > input {
+      border-radius: 0;
+      border-bottom: none;
+    }
+  }
+  & > div:nth-child(3) > input {
+    border-radius: 0 0 6px 6px;
+  }
+  & > button {
+    margin-top: 20px;
+  }
+`
 const SignupFormWrapper = styled.div`
   & > div > input {
     border-radius: 0;
@@ -92,11 +111,28 @@ const CheckboxWrap = styled.div`
     padding-left: 4px;
   }
 `
+const Close = styled.span``
+const CloseWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+const options = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' }
+]
+
 class Home extends Component {
+  state = {
+    openModal: false,
+    signUpData: {}
+  }
   render() {
     const {
       location: { pathname }
     } = this.props
+    const { openModal, signUpData } = this.state
     return (
       <Background>
         <Header />
@@ -124,9 +160,9 @@ class Home extends Component {
                     lastName: '',
                     email: '',
                     password: '',
-                    registerAs: 'buyer'
+                    registerAs: 'individual'
                   }}
-                  onSubmit={formData => console.log('FORM DATA', formData)}
+                  onSubmit={formData => this.setState({ signUpData: formData, openModal: true })}
                   render={formikBag => (
                     <Form>
                       <SignupFormWrapper>
@@ -187,21 +223,21 @@ class Home extends Component {
                           <PaperSubTitle>Register As</PaperSubTitle>
                           <RadioGroup>
                             <Radio
-                              label="Buyer"
-                              value="buyer"
+                              label="Individual"
+                              value="individual"
                               name="registerAs"
                               defaultChecked
                               onChange={e => formikBag.setFieldValue('registerAs', e.target.value)}
                             />
                             <Radio
-                              label="Supplier"
-                              value="supplier"
+                              label="Bank"
+                              value="bank"
                               name="registerAs"
                               onChange={e => formikBag.setFieldValue('registerAs', e.target.value)}
                             />
                             <Radio
-                              label="Financer"
-                              value="financer"
+                              label="Government"
+                              value="government"
                               name="registerAs"
                               onChange={e => formikBag.setFieldValue('registerAs', e.target.value)}
                             />
@@ -287,6 +323,134 @@ class Home extends Component {
             </Paper>
           </Wrapper>
         </BackgroundWrapper>
+        {console.log('signUpData', signUpData)}
+        {signUpData.registerAs === 'bank' && (
+          <Modal show={openModal}>
+            <Formik
+              enableReinitialize={true}
+              initialValues={{
+                name: '',
+                city: '',
+                branch: ''
+              }}
+              onSubmit={formData => console.log('FORM DATA', formData)}
+              render={formikBag => (
+                <Form>
+                  <CloseWrap>
+                    <PaperTitle>Financer Details</PaperTitle>
+                    <Close onClick={() => this.setState({ openModal: !openModal })}>x</Close>
+                  </CloseWrap>
+                  <BankFormWrapper>
+                    <Field
+                      name="name"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          type="text"
+                          placeholder="Full Name"
+                          autoFocus
+                          required
+                        />
+                      )}
+                    />
+                    <Field
+                      name="city"
+                      render={({ field }) => (
+                        <Input {...field} width={'100%'} height={'64px'} type="text" placeholder="City" required />
+                      )}
+                    />
+                    <Field
+                      name="branch"
+                      render={({ field }) => (
+                        <Input {...field} width={'100%'} height={'64px'} type="text" placeholder="Branch" required />
+                      )}
+                    />
+                    <Button
+                      fontSize={20}
+                      width={'100%'}
+                      // onClick={() => this.props.history.push('/dashboard')}
+                      height={'50px'}
+                      title={'Sign Up'}
+                      type={'submit'}
+                    />
+                  </BankFormWrapper>
+                </Form>
+              )}
+            />
+          </Modal>
+        )}
+        {signUpData.registerAs === 'government' && (
+          <Modal show={openModal}>
+            <Formik
+              enableReinitialize={true}
+              initialValues={{
+                name: '',
+                city: '',
+                department: 'Housing and Urban Development'
+              }}
+              onSubmit={formData => console.log('FORM DATA', formData)}
+              render={formikBag => (
+                <Form>
+                  <CloseWrap>
+                    <PaperTitle>Government Details</PaperTitle>
+                    <Close onClick={() => this.setState({ openModal: !openModal })}>x</Close>
+                  </CloseWrap>
+                  <BankFormWrapper>
+                    <Field
+                      name="name"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          type="text"
+                          placeholder="Full Name"
+                          autoFocus
+                          required
+                        />
+                      )}
+                    />
+                    <Field
+                      name="city"
+                      render={({ field }) => (
+                        <Select
+                          onChange={city => formikBag.setFieldValue('city', city.value)}
+                          options={options}
+                          placeholder="City"
+                        />
+                      )}
+                    />
+                    <Field
+                      name="department"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          type="text"
+                          placeholder="department"
+                          required
+                          disabled
+                        />
+                      )}
+                    />
+                    <Button
+                      fontSize={20}
+                      width={'100%'}
+                      // onClick={() => this.props.history.push('/dashboard')}
+                      height={'50px'}
+                      title={'Sign Up'}
+                      type={'submit'}
+                    />
+                  </BankFormWrapper>
+                </Form>
+              )}
+            />
+          </Modal>
+        )}
+
         {/*   <Button size="action" height="action" title="Action" />
         <Paper shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}>Hey</Paper>
         <Input placeholder="Password" height={"64px"} type="password" /> */}

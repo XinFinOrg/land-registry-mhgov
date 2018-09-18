@@ -128,7 +128,7 @@ class DocumentDetails extends Component {
           <TopWrapper>
             <PageTitleWrapper>
               <PageTitle>Dashboard</PageTitle>
-              <Icon icon="uparrow" />
+              <Icon icon="arrow" width={16} height={16} />
               <PageTitle>Document Details</PageTitle>
             </PageTitleWrapper>
           </TopWrapper>

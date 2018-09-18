@@ -111,7 +111,15 @@ class Dashboard extends Component {
         Header: 'View',
         accessor: 'view',
         maxWidth: 150,
-        Cell: props => <Button size="action" shadow={'none'} title="View" radius={'4px'} />
+        Cell: props => (
+          <Button
+            size="action"
+            shadow={'none'}
+            title="View"
+            radius={'4px'}
+            onClick={() => this.props.history.push('/dashboard/document-details/property-details')}
+          />
+        )
       }
     ]
     return (
@@ -120,7 +128,14 @@ class Dashboard extends Component {
         <MainWrapper>
           <TopWrapper>
             <PageTitle>Dashboard</PageTitle>
-            <Input padding={'14px 36px'} type="text" icon="search" background={"#fff"} fill="rgba(46, 55, 59, 0.5)" placeholder="Search" />
+            <Input
+              padding={'14px 36px'}
+              type="text"
+              icon="search"
+              background={'#fff'}
+              fill="rgba(46, 55, 59, 0.5)"
+              placeholder="Search"
+            />
           </TopWrapper>
           <Table
             onSortedChange={(newSorted, column, shiftKey) => {
