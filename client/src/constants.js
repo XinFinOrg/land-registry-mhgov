@@ -152,6 +152,26 @@ export const partyDetails = [
     action: 'view'
   }
 ]
+export const commonUploadDoc = [
+  {
+    docDetails: 'Documnet deed file',
+    select: 'Saurav',
+    download: 'Seller/ Executor 1/Vendor',
+    action: 'Individual'
+  },
+  {
+    docDetails: 'Documnet deed file',
+    select: 'Saurav',
+    download: 'Seller/ Executor 1/Vendor',
+    action: 'Individual'
+  },
+  {
+    docDetails: 'Documnet deed file',
+    select: 'Saurav',
+    download: 'Seller/ Executor 1/Vendor',
+    action: 'Individual'
+  }
+]
 
 export const states = [
   'Andaman & Nicobar Islands',

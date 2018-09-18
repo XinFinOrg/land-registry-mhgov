@@ -145,7 +145,6 @@ class OwnerDetailsForm extends Component {
                   defaultPageSize={10}
                   minRows={0}
                 />{' '}
-                {/* <CustomTable /> */}
               </FormDetailsContainer>
               <FormDetailsContainer>
                 <InformTitle>Parties Details</InformTitle>

@@ -168,6 +168,12 @@ class Home extends Component {
     openModal: false,
     signUpData: {}
   }
+  handleSignUp = async () => {
+    this.setState({
+      openModal: false
+    })
+    this.props.history.push('/')
+  }
   render() {
     const {
       location: { pathname }
@@ -652,7 +658,7 @@ class Home extends Component {
                     <Button
                       fontSize={20}
                       width={'100%'}
-                      onClick={() => this.props.history.push('/dashboard')}
+                      onClick={() => this.handleSignUp()}
                       height={'50px'}
                       title={'Submit'}
                       type={'submit'}
@@ -710,7 +716,7 @@ class Home extends Component {
                     <Button
                       fontSize={20}
                       width={'100%'}
-                      onClick={() => this.props.history.push('/dashboard')}
+                      onClick={() => this.handleSignUp()}
                       height={'50px'}
                       title={'Submit'}
                       type={'submit'}
@@ -780,7 +786,7 @@ class Home extends Component {
                     <Button
                       fontSize={20}
                       width={'100%'}
-                      onClick={() => this.props.history.push('/dashboard')}
+                      onClick={() => this.handleSignUp()}
                       height={'50px'}
                       title={'Submit'}
                       type={'submit'}

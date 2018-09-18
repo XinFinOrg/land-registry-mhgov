@@ -34,7 +34,7 @@ import {
   CustomTable,
   ButtonGroup
 } from '../components'
-import { data, customData, partyDetails } from '../constants'
+import { data, customData, partyDetails, commonUploadDoc } from '../constants'
 import { PropertyDetailsForm, OwnerDetailsForm, SellerDetailsForm } from '../forms'
 const PageTitleWrapper = styled.div`
   display: flex;
@@ -63,6 +63,29 @@ class DocumentDetails extends Component {
   } */
 
   render() {
+    const columns = [
+      {
+        Header: <StyledHead>Document Details</StyledHead>,
+        accessor: 'docDetails',
+        minWidth: 100
+      },
+      {
+        Header: <StyledHead>Select</StyledHead>,
+        accessor: 'select',
+        minWidth: 100,
+        Cell: props => <span>{props.value}</span>
+      },
+      {
+        Header: <StyledHead>Download</StyledHead>,
+        accessor: 'download',
+        minwidth: 120
+      },
+      {
+        Header: <StyledHead>Action</StyledHead>,
+        accessor: 'action',
+        minwidth: 180
+      }
+    ]
     const { activeTab } = this.state
     return (
       <React.Fragment>
@@ -154,6 +177,27 @@ class DocumentDetails extends Component {
                 <PaymentText>Rs. 1,00,000</PaymentText>
               </PaymentTuple>
             </PaymentWrapper>
+          </Paper>
+        )}
+        {activeTab === '/dashboard/document-details/upload-document' && (
+          <Paper
+            padding={'26px 31px 20px'}
+            radius={'0 0 6px 6px'}
+            shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+            margin={'0 95px'}>
+            <FormDetailsContainer paddingTop={'0'} display={'block'}>
+              <InformTitle>Common Upload Document</InformTitle>
+              <CustomTable
+                data={commonUploadDoc}
+                columns={columns}
+                resizable={false}
+                sortable={false}
+                showPagination={false}
+                pageSize={10}
+                defaultPageSize={10}
+                minRows={0}
+              />{' '}
+            </FormDetailsContainer>
           </Paper>
         )}
         <Footer position={'fixed'} />
