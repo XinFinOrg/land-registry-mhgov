@@ -158,12 +158,19 @@ const PaymentText = styled.p`
 const FieldGroupWithTitle = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: ${props => (props.justify ? props.justify : 'space-between')};
   flex-wrap: wrap;
   flex-basis: 100% !important;
   padding-top: 22px;
   & > div {
-    margin-right: 22px;
+    ${props =>
+      props.margin &&
+      `
+    margin: 0 15px;
+    margin-right:15px !important;
+
+    `}
+    margin-right: ${props => (props.marginRight ? props.marginRight : '22px')};
     flex-basis: calc(33.33% - 30px) !important;
     & > div {
       flex-basis: calc(33.33% - 10px) !important;

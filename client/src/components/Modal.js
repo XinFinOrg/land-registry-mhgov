@@ -34,7 +34,7 @@ const ModalWrapper = styled.div`
   width: 100%;
   padding: 24px;
   padding: 20px;
-  max-width: 650px;
+  max-width: ${props => (props.maxWidth ? props.maxWidth : '650px')};
   border-radius: 2px;
   background-color: #ffffff;
   box-shadow: 0 1px 3px 2px rgba(204, 204, 204, 0.5);

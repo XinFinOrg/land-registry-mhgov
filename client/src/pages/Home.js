@@ -1,9 +1,23 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Header, Button, Paper, Footer, Input, PaperTitle, PaperSubTitle, Radio, Checkbox, Modal } from '../components'
+import {
+  Header,
+  Button,
+  Paper,
+  Footer,
+  Input,
+  PaperTitle,
+  PaperSubTitle,
+  Radio,
+  Checkbox,
+  Modal,
+  SelectBox,
+  FieldGroupWithTitle
+} from '../components'
 import house from '../static/images/house.jpeg'
 import { Formik, Form, Field } from 'formik'
-import Select from 'react-select'
+import { states } from '../constants'
+
 const Background = styled.div`
   content: '';
   background-image: url(${house});
@@ -111,17 +125,43 @@ const CheckboxWrap = styled.div`
     padding-left: 4px;
   }
 `
-const Close = styled.span``
+const Close = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  &:after {
+    position: absolute;
+    content: ' ';
+    height: 33px;
+    width: 2px;
+    background-color: #333;
+    transform: rotate(-45deg);
+  }
+  &:before {
+    position: absolute;
+    content: ' ';
+    height: 33px;
+    width: 2px;
+    background-color: #333;
+    transform: rotate(45deg);
+  }
+`
 const CloseWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
 `
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
-]
+
+/* const ButtonWrap = styled.section`
+  margin-top: 20px;
+` */
+const statesOptions = states.map(item => {
+  return {
+    label: item,
+    value: item
+  }
+})
 
 class Home extends Component {
   state = {
@@ -156,10 +196,10 @@ class Home extends Component {
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    password: '',
+                    firstName: 'Saurav',
+                    lastName: 'Gupta',
+                    email: 's@s.com',
+                    password: 'sasasas',
                     registerAs: 'individual'
                   }}
                   onSubmit={formData => this.setState({ signUpData: formData, openModal: true })}
@@ -303,7 +343,7 @@ class Home extends Component {
                           width={'100%'}
                           onClick={() => this.props.history.push('/dashboard')}
                           height={'50px'}
-                          title={pathname === '/' ? 'Next' : 'Sign Up'}
+                          title={'Next'}
                           type={'submit'}
                         />
                       </FormWrapper>
@@ -323,7 +363,307 @@ class Home extends Component {
             </Paper>
           </Wrapper>
         </BackgroundWrapper>
-        {console.log('signUpData', signUpData)}
+        {signUpData.registerAs === 'individual' && (
+          <Modal maxWidth={'1024px'} show={openModal}>
+            <Formik
+              enableReinitialize={true}
+              initialValues={{
+                salutation: '',
+                firstName: '',
+                middleName: '',
+                lastName: '',
+                aliasName: '',
+                identificationMark1: '',
+                identificationMark2: '',
+                dateOfBirth: '',
+                age: '',
+                uid: '',
+                identificationTypeID: '',
+                identificationDescription: '',
+                panForm60: '',
+                occupation: '',
+                gender: '',
+                email: '',
+                mobileNo: '',
+                perAddress: '',
+                tempAddress: '',
+                addressSame: '',
+                district: '',
+                taluka: '',
+                village: ''
+              }}
+              onSubmit={formData => console.log('FORM DATA', formData)}
+              render={formikBag => (
+                <Form>
+                  <CloseWrap>
+                    <PaperTitle>Owner Details</PaperTitle>
+                    <Close onClick={() => this.setState({ openModal: !openModal })} />
+                  </CloseWrap>
+                  <FieldGroupWithTitle margin justify={'flex-start'}>
+                    <Field
+                      name="salutation"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="Salutation"
+                          placeholder={'Salutation'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="FirstName"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="First Name"
+                          placeholder={'First Name'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="MiddleName"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="Middle Name"
+                          placeholder={'Middle Name'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="LastName"
+                      render={({ field }) => (
+                        <Input {...field} width={'100%'} height={'64px'} label="Last Name" placeholder={'Last Name'} />
+                      )}
+                    />
+
+                    <Field
+                      name="aliasName"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="Alias Name"
+                          placeholder={'Alias Name'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="identificationMark1"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="Identification Mark 1"
+                          placeholder={'Identification Mark 1'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="identificationMark2"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="Identification Mark 2"
+                          placeholder={'Identification Mark 2'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="dateOfBirth"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="Date of Birth"
+                          placeholder={'Date of Birth'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="age"
+                      render={({ field }) => (
+                        <Input {...field} width={'100%'} height={'64px'} label="Age" placeholder={'Age'} />
+                      )}
+                    />
+
+                    <Field
+                      name="uid"
+                      render={({ field }) => (
+                        <Input {...field} width={'100%'} height={'64px'} label="UID" placeholder={'UID'} />
+                      )}
+                    />
+
+                    <Field
+                      name="identificationTypeID"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="Identification Type ID"
+                          placeholder={'Identification Type ID'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="identificationDescription"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="Identification Description"
+                          placeholder={'Identification Description'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="panForm60"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="PAN/Form 60/61"
+                          placeholder={'PAN/Form 60/61'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="occupation"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="Occupation"
+                          placeholder={'Occupation'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="gender"
+                      render={({ field }) => (
+                        <Input {...field} width={'100%'} height={'64px'} label="Gender" placeholder={'Gender'} />
+                      )}
+                    />
+
+                    <Field
+                      name="email"
+                      render={({ field }) => (
+                        <Input {...field} width={'100%'} height={'64px'} label="E-mail" placeholder={'E-mail'} />
+                      )}
+                    />
+
+                    <Field
+                      name="mobileNo"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="Mobile No."
+                          placeholder={'Mobile No.'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="perAddress"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="Permanent Address"
+                          placeholder={'Permanent Address'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="addressSame"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="Address Same As Above"
+                          placeholder={'Address Same As Above'}
+                        />
+                      )}
+                    />
+                    <Field
+                      name="tempAddress"
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          label="Temporary Address"
+                          placeholder={'Temporary Address'}
+                        />
+                      )}
+                    />
+
+                    <Field
+                      name="district"
+                      render={({ field }) => (
+                        <Input {...field} width={'100%'} height={'64px'} label="District" placeholder={'District'} />
+                      )}
+                    />
+
+                    <Field
+                      name="taluka"
+                      render={({ field }) => (
+                        <Input {...field} width={'100%'} height={'64px'} label="Taluka" placeholder={'Taluka'} />
+                      )}
+                    />
+
+                    <Field
+                      name="village"
+                      render={({ field }) => (
+                        <Input {...field} width={'100%'} height={'64px'} label="Village" placeholder={'Village'} />
+                      )}
+                    />
+                    <Button
+                      fontSize={20}
+                      width={'100%'}
+                      onClick={() => this.props.history.push('/dashboard')}
+                      height={'50px'}
+                      title={'Submit'}
+                      type={'submit'}
+                      margin={'20px 0 0'}
+                    />
+                  </FieldGroupWithTitle>
+                </Form>
+              )}
+            />
+          </Modal>
+        )}
         {signUpData.registerAs === 'bank' && (
           <Modal show={openModal}>
             <Formik
@@ -338,7 +678,7 @@ class Home extends Component {
                 <Form>
                   <CloseWrap>
                     <PaperTitle>Financer Details</PaperTitle>
-                    <Close onClick={() => this.setState({ openModal: !openModal })}>x</Close>
+                    <Close onClick={() => this.setState({ openModal: !openModal })} />
                   </CloseWrap>
                   <BankFormWrapper>
                     <Field
@@ -349,7 +689,7 @@ class Home extends Component {
                           width={'100%'}
                           height={'64px'}
                           type="text"
-                          placeholder="Full Name"
+                          placeholder="Name"
                           autoFocus
                           required
                         />
@@ -370,9 +710,9 @@ class Home extends Component {
                     <Button
                       fontSize={20}
                       width={'100%'}
-                      // onClick={() => this.props.history.push('/dashboard')}
+                      onClick={() => this.props.history.push('/dashboard')}
                       height={'50px'}
-                      title={'Sign Up'}
+                      title={'Submit'}
                       type={'submit'}
                     />
                   </BankFormWrapper>
@@ -387,7 +727,7 @@ class Home extends Component {
               enableReinitialize={true}
               initialValues={{
                 name: '',
-                city: '',
+                state: 'Maharashtra',
                 department: 'Housing and Urban Development'
               }}
               onSubmit={formData => console.log('FORM DATA', formData)}
@@ -395,7 +735,7 @@ class Home extends Component {
                 <Form>
                   <CloseWrap>
                     <PaperTitle>Government Details</PaperTitle>
-                    <Close onClick={() => this.setState({ openModal: !openModal })}>x</Close>
+                    <Close onClick={() => this.setState({ openModal: !openModal })} />
                   </CloseWrap>
                   <BankFormWrapper>
                     <Field
@@ -406,19 +746,20 @@ class Home extends Component {
                           width={'100%'}
                           height={'64px'}
                           type="text"
-                          placeholder="Full Name"
+                          placeholder="Name"
                           autoFocus
                           required
                         />
                       )}
                     />
                     <Field
-                      name="city"
+                      name="state"
                       render={({ field }) => (
-                        <Select
-                          onChange={city => formikBag.setFieldValue('city', city.value)}
-                          options={options}
+                        <SelectBox
+                          onChange={state => formikBag.setFieldValue('state', state.value)}
+                          options={statesOptions}
                           placeholder="City"
+                          defaultValue={{ label: 'Maharashtra', value: 'Maharashtra' }}
                         />
                       )}
                     />
@@ -439,9 +780,9 @@ class Home extends Component {
                     <Button
                       fontSize={20}
                       width={'100%'}
-                      // onClick={() => this.props.history.push('/dashboard')}
+                      onClick={() => this.props.history.push('/dashboard')}
                       height={'50px'}
-                      title={'Sign Up'}
+                      title={'Submit'}
                       type={'submit'}
                     />
                   </BankFormWrapper>
@@ -450,10 +791,6 @@ class Home extends Component {
             />
           </Modal>
         )}
-
-        {/*   <Button size="action" height="action" title="Action" />
-        <Paper shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}>Hey</Paper>
-        <Input placeholder="Password" height={"64px"} type="password" /> */}
         <Footer color={'#fff'} opacity={0.6} position={'fixed'} background={'rgba(31, 137, 245, 0)'} />
       </Background>
     )

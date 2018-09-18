@@ -26,6 +26,7 @@ const ButtonWrapper = styled.button`
         return props.height
     }
   }};
+  margin: ${props => (props.margin ? props.margin : '0px')};
   border-radius: ${props => (props.radius ? props.radius : '6px')};
   background-color: ${props => (props.background ? props.background : '#1f89f5')};
   box-shadow: ${props => (props.shadow ? props.shadow : '0px 3px 9.9px 1.1px rgba(18, 101, 131, 0.13)')};
