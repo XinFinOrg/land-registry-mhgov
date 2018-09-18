@@ -32,14 +32,14 @@ const Circle = styled.div`
   height: ${props => props.iconSize && props.iconSize};
   border-radius: 50%;
   position: relative;
-  border: 1px solid #333333;
+  border: 1.5px solid #333333;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: 0.2s;
   &:before {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     transition: 0.2s;
     content: '';
     position: absolute;
@@ -51,7 +51,7 @@ const Circle = styled.div`
 
 class Radio extends Component {
   render() {
-    const { label, iconSize = '14px', activeColor = '#1f89f5', labelStyle, ...props } = this.props
+    const { label, iconSize = '16px', activeColor = '#1f89f5', labelStyle, ...props } = this.props
 
     return (
       <Label>
