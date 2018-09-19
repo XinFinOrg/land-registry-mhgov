@@ -54,6 +54,11 @@ const PropertyDetailsWrapper = styled.div``
 const FormikForm = styled(Form)`
   margin-bottom: 100px;
 `
+
+const SubmissionWrap = styled.div`
+  width: 360px;
+`
+
 class DocumentDetails extends Component {
   state = {
     activeTab: this.props.location.pathname
@@ -211,7 +216,9 @@ class DocumentDetails extends Component {
               </FormDetailsContainer>
               <FormDetailsContainer paddingTop={'0'} display={'block'}>
                 <InformTitle>Final Submission</InformTitle>
-                <TextInput label="Select Party Category" placeholder={'Select Party Category'} />
+                <SubmissionWrap>
+                  <TextInput label="Select Party Category" placeholder={'Select Party Category'} />
+                </SubmissionWrap>
               </FormDetailsContainer>
             </Paper>
             <ButtonGroup>
