@@ -35,7 +35,9 @@ import {
   ButtonGroup
 } from '../components'
 import { data, customData, partyDetails, commonUploadDoc } from '../constants'
-import { PropertyDetailsForm, OwnerDetailsForm, SellerDetailsForm } from '../forms'
+
+import { PropertyDetailsForm, OwnerDetailsForm, SellerDetailsForm, StampDutyForm, Registeration } from '../forms'
+
 const PageTitleWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -171,7 +173,11 @@ class DocumentDetails extends Component {
           </PropertyDetailsWrapper>
         )}
         {activeTab === '/dashboard/document-details/owner-details' && <OwnerDetailsForm />}
+
         {activeTab === '/dashboard/document-details/seller-details' && <SellerDetailsForm />}
+
+        {activeTab === '/dashboard/document-details/registeration' && <Registeration />}
+
         {activeTab === '/dashboard/document-details/payment' && (
           <Paper
             padding={'0 31px 20px'}
@@ -194,6 +200,7 @@ class DocumentDetails extends Component {
             </PaymentWrapper>
           </Paper>
         )}
+        {activeTab === '/dashboard/document-details/stamp-duty' && <StampDutyForm />}
         {activeTab === '/dashboard/document-details/upload-document' && (
           <React.Fragment>
             <Paper

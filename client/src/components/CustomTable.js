@@ -4,6 +4,7 @@ import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 
 const TableWrapper = styled.section`
+  margin-top: ${props => props.marginTop && '20px'};
   .ReactTable {
     border: none !important;
   }
@@ -37,9 +38,9 @@ const StyledTable = styled(ReactTable)`
 class CustomTable extends Component {
   state = { activePage: 1 }
   render() {
-    const { resizable, sortable, data, columns, ...props } = this.props
+    const { resizable, sortable, data, columns, marginTop, ...props } = this.props
     return (
-      <TableWrapper>
+      <TableWrapper marginTop={marginTop}>
         <StyledTable data={data} columns={columns} resizable={resizable} sortable={sortable} {...props} />
       </TableWrapper>
     )

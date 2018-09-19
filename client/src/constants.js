@@ -108,7 +108,6 @@ export const data = [
     view: 'view'
   }
 ]
-
 export const customData = [
   {
     srNo: 1,
@@ -129,6 +128,31 @@ export const customData = [
     propertyDetails: 'Lorem ipsum dolor sit amet, consectetuer adipiscing '
   }
 ]
+
+export const stampDuty = [
+  {
+    duty: 1,
+    partyName: 'Saurav',
+    partyType: 'Seller/ Executor 1/Vendor',
+    partyCategory: 'Individual',
+    action: 'view'
+  },
+  {
+    duty: 1,
+    partyName: 'Saurav',
+    partyType: 'Seller/ Executor 1/Vendor',
+    partyCategory: 'Individual',
+    action: 'view'
+  },
+  {
+    duty: 1,
+    partyName: 'Saurav',
+    partyType: 'Seller/ Executor 1/Vendor',
+    partyCategory: 'Individual',
+    action: 'view'
+  }
+]
+
 export const partyDetails = [
   {
     srNo: 1,
@@ -152,6 +176,34 @@ export const partyDetails = [
     action: 'view'
   }
 ]
+export const dutyDetails = [
+  {
+    srNo: 11,
+    partyName: 'Handelling Chargesss Counter',
+    partyType: '720'
+  },
+  {
+    srNo: 11,
+    partyName: 'Handelling Chargess Counter',
+    partyType: '720'
+  }
+]
+
+export const DocumentDutyTotal = [
+  {
+    srNo: '$451',
+    partyName: '$452',
+    partyType: '$453',
+    Total: '$454'
+  },
+  {
+    srNo: '$451',
+    partyName: '$452',
+    partyType: '$453',
+    Total: '$454'
+  }
+]
+
 export const commonUploadDoc = [
   {
     docDetails: 'Documnet deed file',
