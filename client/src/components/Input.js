@@ -52,28 +52,64 @@ const Image = styled.div`
   left: 10px;
   top: 10px;
 `
+const InputFileLabel = styled.div`
+  width: 150px;
+  padding: 4px;
+  border: 1px solid #1f89f5;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  & input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+  }
+`
+const FieldWrap = styled.div`
+  display: flex;
+  align-items: center;
+  & > p {
+    padding-left: 8px;
+  }
+`
 class Input extends Component {
   state = {
     password: false
   }
   render() {
-    const { icon, width, height, changeColor, type, background, disabled, fill, ...props } = this.props
+    const { icon, width, height, changeColor, type, background, disabled, fill, accept, name, ...props } = this.props
     const { password } = this.state
     return (
       <Container width={width}>
-        <InputWrapper
-          width={width}
-          height={height}
-          type={password ? 'text' : type}
-          background={disabled ? '#f4f8f9' : background}
-          disabled={disabled}
-          {...props}
-        />
+        {type === 'file' ? (
+          <FieldWrap>
+            <InputFileLabel>
+              Choose File <input accept={accept} name={name} type={'file'} {...props} />
+            </InputFileLabel>
+            <p>No File Chosen</p>
+          </FieldWrap>
+        ) : (
+          <InputWrapper
+            width={width}
+            height={height}
+            type={password ? 'text' : type}
+            background={disabled ? '#f4f8f9' : background}
+            disabled={disabled}
+            {...props}
+          />
+        )}
+
         {type === 'password' && (
           <Show onClick={() => this.setState({ password: !password })} height={height}>
             {password ? 'Hide' : 'Show'}
           </Show>
         )}
+
         {icon && (
           <Image>
             <Icon icon={icon} fill={fill} />

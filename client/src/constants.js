@@ -155,21 +155,21 @@ export const partyDetails = [
 export const commonUploadDoc = [
   {
     docDetails: 'Documnet deed file',
-    select: 'Saurav',
+    select: 'uploadFile',
     download: 'Seller/ Executor 1/Vendor',
-    action: 'Individual'
+    action: 'view'
   },
   {
     docDetails: 'Documnet deed file',
-    select: 'Saurav',
+    select: 'uploadFile',
     download: 'Seller/ Executor 1/Vendor',
-    action: 'Individual'
+    action: 'view'
   },
   {
     docDetails: 'Documnet deed file',
-    select: 'Saurav',
+    select: 'uploadFile',
     download: 'Seller/ Executor 1/Vendor',
-    action: 'Individual'
+    action: 'view'
   }
 ]
 

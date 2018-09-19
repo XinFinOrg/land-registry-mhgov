@@ -73,7 +73,7 @@ class DocumentDetails extends Component {
         Header: <StyledHead>Select</StyledHead>,
         accessor: 'select',
         minWidth: 100,
-        Cell: props => <span>{props.value}</span>
+        Cell: props => <Input accept="image/*" name="newImage" type="file" onChange={e => console.log('e', e)} />
       },
       {
         Header: <StyledHead>Download</StyledHead>,
@@ -83,7 +83,17 @@ class DocumentDetails extends Component {
       {
         Header: <StyledHead>Action</StyledHead>,
         accessor: 'action',
-        minwidth: 180
+        minwidth: 180,
+        Cell: props => (
+          <Button
+            width={'150px'}
+            height={'32px'}
+            shadow={'none'}
+            title="Upload/Update"
+            radius={'4px'}
+            // onClick={() => this.props.history.push('/dashboard/document-details/property-details')}
+          />
+        )
       }
     ]
     const { activeTab } = this.state
@@ -180,25 +190,35 @@ class DocumentDetails extends Component {
           </Paper>
         )}
         {activeTab === '/dashboard/document-details/upload-document' && (
-          <Paper
-            padding={'26px 31px 20px'}
-            radius={'0 0 6px 6px'}
-            shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-            margin={'0 95px'}>
-            <FormDetailsContainer paddingTop={'0'} display={'block'}>
-              <InformTitle>Common Upload Document</InformTitle>
-              <CustomTable
-                data={commonUploadDoc}
-                columns={columns}
-                resizable={false}
-                sortable={false}
-                showPagination={false}
-                pageSize={10}
-                defaultPageSize={10}
-                minRows={0}
-              />{' '}
-            </FormDetailsContainer>
-          </Paper>
+          <React.Fragment>
+            <Paper
+              padding={'26px 31px 20px'}
+              radius={'0 0 6px 6px'}
+              shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+              margin={'0 95px'}>
+              <FormDetailsContainer paddingTop={'0'} display={'block'}>
+                <InformTitle>Common Upload Document</InformTitle>
+                <CustomTable
+                  data={commonUploadDoc}
+                  columns={columns}
+                  resizable={false}
+                  sortable={false}
+                  showPagination={false}
+                  pageSize={10}
+                  defaultPageSize={10}
+                  minRows={0}
+                />{' '}
+              </FormDetailsContainer>
+              <FormDetailsContainer paddingTop={'0'} display={'block'}>
+                <InformTitle>Final Submission</InformTitle>
+                <TextInput label="Select Party Category" placeholder={'Select Party Category'} />
+              </FormDetailsContainer>
+            </Paper>
+            <ButtonGroup>
+              <Button size={'medium'} width={'150px'} title="Previous" disabled={true} type="button" />
+              <Button size={'medium'} width={'150px'} title="Next" type="submit" />
+            </ButtonGroup>
+          </React.Fragment>
         )}
         <Footer position={'fixed'} />
       </React.Fragment>
