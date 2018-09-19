@@ -1,18 +1,11 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
 import { Formik, Form, Field } from 'formik'
 import {
   Paper,
   FormikForm,
   FormDetailsContainer,
   TextInput,
-  StaticFieldWrapper,
-  StaticField,
   InformTitle,
-  InformSubTitle,
-  Font14,
-  FieldsTuple,
-  Input,
   NormalFieldsTuple,
   Button,
   ButtonGroup,
@@ -154,8 +147,7 @@ class SellerDetailsForm extends Component {
                   pageSize={10}
                   defaultPageSize={10}
                   minRows={0}
-                />{' '}
-                {/* <CustomTable /> */}
+                />
               </FormDetailsContainer>
               <FormDetailsContainer>
                 <InformTitle>Parties Details</InformTitle>
