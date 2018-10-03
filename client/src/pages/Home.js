@@ -756,7 +756,7 @@ class Home extends Component {
                         onChange={e => formikBag.setFieldValue('govType', e.target.value)}
                       />
                       <Radio
-                        label="Corporation"
+                        label="Municipal Corporation"
                         value="corporation"
                         name="govType"
                         onChange={e => formikBag.setFieldValue('govType', e.target.value)}
