@@ -110,7 +110,9 @@ const SignupFormWrapper = styled.div`
     }
   }
 `
-const RadioGroup = styled.div``
+const RadioGroup = styled.div`
+  padding: ${props => (props.padding ? props.padding : '0px')};
+`
 const RadioWrap = styled.div`
   & > p {
     padding: 10px 0px;
@@ -734,7 +736,8 @@ class Home extends Component {
               initialValues={{
                 name: '',
                 state: 'Maharashtra',
-                department: 'Housing and Urban Development'
+                department: 'Housing and Urban Development',
+                govType: ''
               }}
               onSubmit={formData => console.log('FORM DATA', formData)}
               render={formikBag => (
@@ -744,6 +747,21 @@ class Home extends Component {
                     <Close onClick={() => this.setState({ openModal: !openModal })} />
                   </CloseWrap>
                   <BankFormWrapper>
+                    <RadioGroup padding={'20px 0'}>
+                      <Radio
+                        label="IGR"
+                        value="igr"
+                        name="govType"
+                        defaultChecked
+                        onChange={e => formikBag.setFieldValue('govType', e.target.value)}
+                      />
+                      <Radio
+                        label="Corporation"
+                        value="corporation"
+                        name="govType"
+                        onChange={e => formikBag.setFieldValue('govType', e.target.value)}
+                      />
+                    </RadioGroup>
                     <Field
                       name="name"
                       render={({ field }) => (
