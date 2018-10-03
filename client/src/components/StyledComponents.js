@@ -60,6 +60,8 @@ const FormDetailsContainer = styled.div`
 const InformTitle = styled.p`
   font-size: 20px;
   color: #1f89f5;
+  padding-top: ${props => (props.StampDutyHead ? props.StampDutyHead : 26)}px;
+  padding-bottom: ${props => (props.StampDutyHeadBot ? props.StampDutyHeadBot : 26)}px;
 `
 const InformSubTitle = styled.p`
   font-size: 15.5px;
@@ -107,7 +109,7 @@ const FieldsTuple = styled.div`
 const NormalFieldsTuple = styled.div`
   display: flex;
   align-items: center;
-  padding-top: 22px;
+  padding-top: 0px;
   & > div {
     margin-right: 22px;
     flex-basis: calc(33.33% - 10px);
@@ -119,7 +121,7 @@ const NormalFieldsTuple = styled.div`
     props.shrink &&
     `
     flex-basis: 100% !important;
-    padding-top: 22px;
+    padding-top: 10px;
   `} ${props =>
     props.flex &&
     `

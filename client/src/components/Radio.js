@@ -48,11 +48,9 @@ const Circle = styled.div`
     border-radius: 50%;
   }
 `
-
 class Radio extends Component {
   render() {
     const { label, iconSize = '16px', activeColor = '#1f89f5', labelStyle, ...props } = this.props
-
     return (
       <Label>
         <Input {...props} type="radio" activeColor={activeColor} />
