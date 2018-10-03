@@ -139,7 +139,7 @@ class DocumentDetails extends Component {
               onClick={() => this.setState({ activeTab: '/dashboard/document-details/seller-details' })}
               to="/dashboard/document-details/seller-details"
               selected={activeTab === '/dashboard/document-details/seller-details'}>
-              Seller Details
+              Buyer Details
             </Tab>
             <Tab
               onClick={() => this.setState({ activeTab: '/dashboard/document-details/payment' })}
