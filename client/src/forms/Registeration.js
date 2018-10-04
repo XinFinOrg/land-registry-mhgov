@@ -135,7 +135,7 @@ class Registeration extends Component {
               radius={'0 0 6px 6px'}
               shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
               margin={'0 95px'}>
-              <InformTitle StampDutyHead="20">Property Id 147</InformTitle>
+              <InformTitle paddingTop="20">Property Id 147</InformTitle>
               <DocketWrap>
                 <div>Article: Best Home Here</div>
                 <div>Will</div>
@@ -153,7 +153,7 @@ class Registeration extends Component {
                 </div>
               </DocketWrap>
               <PropertyWrapper>
-                <InformTitle StampDutyHead="20" StampDutyHeadBot="20">
+                <InformTitle paddingTop="20" paddingBottom="20">
                   Pre Registration Docket
                 </InformTitle>
                 <TableWrap>
@@ -178,7 +178,7 @@ class Registeration extends Component {
                 </TableWrap>
               </PropertyWrapper>
               <PropertyWrapper>
-                <InformTitle StampDutyHead="20" StampDutyHeadBot="20">
+                <InformTitle paddingTop="20" paddingBottom="20">
                   Property Id 148
                 </InformTitle>
                 <TableWrap>

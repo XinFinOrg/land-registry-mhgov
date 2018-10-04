@@ -60,8 +60,8 @@ const FormDetailsContainer = styled.div`
 const InformTitle = styled.p`
   font-size: 20px;
   color: #1f89f5;
-  padding-top: ${props => (props.StampDutyHead ? props.StampDutyHead : 26)}px;
-  padding-bottom: ${props => (props.StampDutyHeadBot ? props.StampDutyHeadBot : 26)}px;
+  padding-top: ${props => (props.paddingTop ? props.paddingTop : 26)}px;
+  padding-bottom: ${props => (props.paddingBottom ? props.paddingBottom : 26)}px;
 `
 const InformSubTitle = styled.p`
   font-size: 15.5px;
@@ -217,6 +217,31 @@ const StyledHead = styled.div`
   font-weight: 600;
   color: #333333;
 `
+const IconCircle = styled.div`
+  width: ${props => (props.width ? props.width : '31px')};
+  height: ${props => (props.height ? props.height : '31px')};
+  opacity: ${props => (props.opacity ? props.opacity : '0.8')};
+  background-color: ${props => (props.bgColor ? props.bgColor : '#1b73cd')};
+  border: solid 1px ${props => (props.borderColor ? props.borderColor : '#e4e4e4')};
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+const FlexWrapper = styled.div`
+  display: flex;
+  flex-direction: ${props => (props.flexDirection ? props.flexDirection : 'row')};
+  justify-content: ${props => (props.justifyContent ? props.justifyContent : 'flex-start')};
+  align-items: ${props => (props.justifyContent ? props.justifyContent : 'flex-start')};
+  padding: ${props => (props.padding ? props.padding : '0px')};
+  margin: ${props => (props.margin ? props.margin : '0px')};
+  border-width: ${props => (props.borderWidth ? props.borderWidth : '0 0 0 0')};
+  border-style: ${props => (props.borderStyle ? props.borderStyle : 'solid')};
+  border-color: ${props => (props.borderColor ? props.borderColor : '#ddd')};
+`
+const MediumText = styled.p`
+  font-size: 16px;
+`
 export {
   PaperTitle,
   PaperSubTitle,
@@ -243,5 +268,8 @@ export {
   IconWrapper,
   FormikForm,
   ButtonGroup,
-  StyledHead
+  StyledHead,
+  IconCircle,
+  FlexWrapper,
+  MediumText
 }

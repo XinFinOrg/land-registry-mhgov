@@ -191,16 +191,14 @@ export const dutyDetails = [
 
 export const DocumentDutyTotal = [
   {
-    srNo: '$451',
-    partyName: '$452',
-    partyType: '$453',
-    Total: '$454'
+    txInfo: 'First payment financier to supplier',
+    date: '27 july, 2018',
+    amount: '$8000'
   },
   {
-    srNo: '$451',
-    partyName: '$452',
-    partyType: '$453',
-    Total: '$454'
+    txInfo: 'First payment financier to supplier',
+    date: '27 july, 2018',
+    amount: '$8000'
   }
 ]
 

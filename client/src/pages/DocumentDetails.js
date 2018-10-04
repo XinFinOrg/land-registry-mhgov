@@ -15,27 +15,18 @@ import {
   FormDetailsContainer,
   Input,
   TextInput,
-  StaticFieldWrapper,
-  StaticField,
   InformTitle,
-  InformSubTitle,
   Button,
-  ButtonWrapper,
-  Font14,
-  FieldsTuple,
-  NormalFieldsTuple,
   PaymentTuple,
   PaymentText,
   PaymentWrapper,
-  FieldGroupWithTitle,
-  StyledHeader,
-  IconWrapper,
-  Table,
   CustomTable,
-  ButtonGroup
+  ButtonGroup,
+  IconCircle,
+  FlexWrapper,
+  MediumText
 } from '../components'
-import { data, customData, partyDetails, commonUploadDoc } from '../constants'
-
+import { commonUploadDoc, DocumentDutyTotal } from '../constants'
 import { PropertyDetailsForm, OwnerDetailsForm, SellerDetailsForm, StampDutyForm, Registeration } from '../forms'
 
 const PageTitleWrapper = styled.div`
@@ -101,6 +92,23 @@ class DocumentDetails extends Component {
             // onClick={() => this.props.history.push('/dashboard/document-details/property-details')}
           />
         )
+      }
+    ]
+    const DocumentDutyColumns = [
+      {
+        Header: <StyledHead>Transaction Info</StyledHead>,
+        accessor: 'txInfo',
+        minWidth: 100
+      },
+      {
+        Header: <StyledHead>Date</StyledHead>,
+        accessor: 'date',
+        minWidth: 100
+      },
+      {
+        Header: <StyledHead>Amount</StyledHead>,
+        accessor: 'amount',
+        minwidth: 120
       }
     ]
     const { activeTab } = this.state
@@ -234,6 +242,88 @@ class DocumentDetails extends Component {
             </ButtonGroup>
           </React.Fragment>
         )}
+        <Paper
+          padding={'26px 31px 20px'}
+          radius={'0 0 6px 6px'}
+          shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+          margin={'40px 95px 100px'}>
+          <InformTitle paddingTop={'0'} paddingBottom={'0'}>
+            Invoice History - Buyer Invoice Payment
+          </InformTitle>
+          <FlexWrapper flexDirection="row" justifyContent="flex-start" padding={'10px 0'} borderWidth={'0 0 1px 0'}>
+            <IconCircle width={'50px'} height={'50px'} bgColor="transparent" borderColor="#ddd">
+              <Icon icon="notification" fill="#1f89f5" width={15} height={19} />
+            </IconCircle>
+            <FlexWrapper flexDirection="column" justifyContent="flex-start" padding={'0 0 0 10px'}>
+              <MediumText paddingTop={'0'} paddingBottom={'0'}>
+                #0ada0da0eggq0wgegw89s89f8g9g8yv67c5ty
+              </MediumText>
+              <MediumText paddingTop={'0'} paddingBottom={'0'}>
+                27 Jul 2018, 01:11
+              </MediumText>
+            </FlexWrapper>
+          </FlexWrapper>
+          <Formik
+            enableReinitialize={true}
+            initialValues={{
+              address: '',
+              blockNumber: '',
+              id: '',
+              timestamp: '',
+              remark: ''
+            }}
+            onSubmit={formValues => console.log(formValues)}
+            render={formikBag => (
+              <Form>
+                <FormDetailsContainer flexBasis={'100%'}>
+                  <Field
+                    name="address"
+                    render={({ field }) => <TextInput {...field} label="Address" placeholder={'Address'} />}
+                  />
+                </FormDetailsContainer>
+                <FormDetailsContainer>
+                  <Field
+                    name="blockNumber"
+                    render={({ field }) => <TextInput {...field} label="Block Number" placeholder={'Block Number'} />}
+                  />
+
+                  <Field name="id" render={({ field }) => <TextInput {...field} label="Id" placeholder={'Id'} />} />
+
+                  <Field
+                    name="timestamp"
+                    render={({ field }) => <TextInput {...field} label="Timestamp" placeholder={'Timestamp'} />}
+                  />
+                </FormDetailsContainer>
+                <FormDetailsContainer>
+                  <Field
+                    name="remark"
+                    render={({ field }) => <TextInput {...field} label="Remark" placeholder={'Remark'} />}
+                  />
+                </FormDetailsContainer>
+              </Form>
+            )}
+          />
+        </Paper>
+        <Paper
+          padding={'26px 31px 20px'}
+          radius={'0 0 6px 6px'}
+          shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+          margin={'40px 95px 100px'}>
+          <InformTitle paddingTop={'0'} paddingBottom={'0'}>
+            Payment Details
+          </InformTitle>
+          <CustomTable
+            marginTop
+            data={DocumentDutyTotal}
+            columns={DocumentDutyColumns}
+            resizable={false}
+            sortable={false}
+            showPagination={false}
+            pageSize={10}
+            defaultPageSize={10}
+            minRows={0}
+          />
+        </Paper>
         <Footer position={'fixed'} />
       </React.Fragment>
     )

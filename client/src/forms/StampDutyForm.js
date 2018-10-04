@@ -174,7 +174,7 @@ class StampDutyForm extends Component {
               radius={'0 0 6px 6px'}
               shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
               margin={'0 95px'}>
-              <InformTitle StampDutyHead="20">Stamp Duty Calculation</InformTitle>
+              <InformTitle paddingTop="20">Stamp Duty Calculation</InformTitle>
               <FormDetailsContainer paddingTop={'10'} flexBasis={'calc(50% - 10px)'}>
                 <Field
                   name="selectPartyType"
