@@ -17,6 +17,9 @@ import {
 import house from '../static/images/house.jpeg'
 import { Formik, Form, Field } from 'formik'
 import { states } from '../constants'
+import axios from 'axios'
+import { API_URL } from '../constants'
+import { toast } from 'react-toastify'
 
 const Background = styled.div`
   content: '';
@@ -131,7 +134,7 @@ const Close = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 24px;
   &:after {
     position: absolute;
     content: ' ';
@@ -168,7 +171,8 @@ const statesOptions = states.map(item => {
 class Home extends Component {
   state = {
     openModal: false,
-    signUpData: {}
+    signUpData: {},
+    isLoading: false
   }
   handleSignUp = async () => {
     this.setState({
@@ -176,11 +180,112 @@ class Home extends Component {
     })
     this.props.history.push('/')
   }
+  handleSignupForm = values => {
+    console.log('VALUES', values)
+  }
+  submitIndividual = async values => {
+    this.setState({ isLoading: true })
+    try {
+      const { data } = await axios.post(`${API_URL}/signup/`, {
+        userDetails: {
+          email: this.state.signUpData.email,
+          password: this.state.signUpData.password,
+          role: this.state.signUpData.registerAs,
+          salutation: values.salutation,
+          firstName: values.firstName,
+          middleName: values.middleName,
+          lastName: values.lastName,
+          aliasName: values.aliasName,
+          identityMark1: values.identificationMark1,
+          identityMark2: values.identificationMark2,
+          dob: values.dateOfBirth,
+          age: values.age,
+          uid: values.uid,
+          identityTypeID: values.identificationTypeID,
+          identityDesc: values.identificationDescription,
+          pan: values.panForm60,
+          occupation: values.occupation,
+          gender: values.gender,
+          mobileNo: values.mobileNo,
+          permAddress: values.perAddress,
+          tempAddress: values.tempAddress,
+          district: values.district,
+          taluka: values.taluka,
+          village: values.village
+        }
+      })
+      toast.success(`${'Submitted successfully'}`, {
+        position: toast.POSITION.TOP_CENTER
+      })
+      this.setState({ isLoading: false })
+      console.log('DATA', data)
+    } catch (error) {
+      toast.error(`${'Error!!!'}`, {
+        position: toast.POSITION.TOP_CENTER
+      })
+      this.setState({ isLoading: false })
+      console.log('ERROR', error)
+    }
+  }
+  submitBank = async values => {
+    this.setState({ isLoading: true })
+
+    try {
+      const { data } = await axios.post(`${API_URL}/signup/`, {
+        userDetails: {
+          email: this.state.signUpData.email,
+          password: this.state.signUpData.password,
+          role: this.state.signUpData.registerAs,
+          name: values.name,
+          city: values.city,
+          branch: values.branch
+        }
+      })
+      console.log('DATA', data)
+      this.setState({ isLoading: false, openModal: false })
+      toast.success(`${'Submitted successfully'}`, {
+        position: toast.POSITION.TOP_CENTER
+      })
+    } catch (error) {
+      console.log('ERROR', error)
+      this.setState({ isLoading: false })
+      toast.error(`${'Error!!!'}`, {
+        position: toast.POSITION.TOP_CENTER
+      })
+    }
+  }
+  submitGovernment = async values => {
+    this.setState({ isLoading: true })
+
+    try {
+      const { data } = await axios.post(`${API_URL}/signup/`, {
+        userDetails: {
+          email: this.state.signUpData.email,
+          password: this.state.signUpData.password,
+          role: values.govType,
+          name: values.name,
+          state: values.state,
+          dept: values.department
+        }
+      })
+      console.log('DATA', data)
+      this.setState({ isLoading: false, openModal: false })
+      toast.success(`${'Submitted successfully'}`, {
+        position: toast.POSITION.TOP_CENTER
+      })
+    } catch (error) {
+      console.log('ERROR', error)
+      this.setState({ isLoading: false })
+      toast.error(`${'Error!!!'}`, {
+        position: toast.POSITION.TOP_CENTER
+      })
+    }
+  }
   render() {
     const {
       location: { pathname }
     } = this.props
-    const { openModal, signUpData } = this.state
+    const { openModal, signUpData, isLoading } = this.state
     return (
       <Background>
         <Header />
@@ -210,9 +315,14 @@ class Home extends Component {
                     password: 'sasasas',
                     registerAs: 'individual'
                   }}
-                  onSubmit={formData => this.setState({ signUpData: formData, openModal: true })}
+                  onSubmit={formData => {
+                    return (
+                      this.setState({ signUpData: { ...formData }, openModal: true }), this.handleSignupForm(formData)
+                    )
+                  }}
                   render={formikBag => (
                     <Form>
+                      {console.log('signUpData', signUpData)}
                       <SignupFormWrapper>
                         <Field
                           name="firstName"
@@ -400,7 +510,7 @@ class Home extends Component {
                 taluka: '',
                 village: ''
               }}
-              onSubmit={formData => console.log('FORM DATA', formData)}
+              onSubmit={formData => this.submitIndividual(formData)}
               render={formikBag => (
                 <Form>
                   <CloseWrap>
@@ -411,21 +521,21 @@ class Home extends Component {
                     <Field
                       name="salutation"
                       render={({ field }) => (
-                        <Input
-                          {...field}
-                          width={'100%'}
-                          height={'64px'}
-                          label="Salutation"
-                          placeholder={'Salutation'}
+                        <SelectBox
+                          onChange={salutation => formikBag.setFieldValue('salutation', salutation.value)}
+                          options={[{ label: 'Mr.', value: 'Mr.' }, { label: 'Mrs.', value: 'Mrs.' }]}
+                          placeholder="Salutation"
+                          defaultValue={{ label: 'Mr.', value: 'Mr.' }}
+                          isSearchable={false}
                         />
                       )}
                     />
-
                     <Field
-                      name="FirstName"
+                      name="firstName"
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="First Name"
@@ -435,10 +545,11 @@ class Home extends Component {
                     />
 
                     <Field
-                      name="MiddleName"
+                      name="middleName"
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="Middle Name"
@@ -448,9 +559,16 @@ class Home extends Component {
                     />
 
                     <Field
-                      name="LastName"
+                      name="lastName"
                       render={({ field }) => (
-                        <Input {...field} width={'100%'} height={'64px'} label="Last Name" placeholder={'Last Name'} />
+                        <Input
+                          {...field}
+                          required
+                          width={'100%'}
+                          height={'64px'}
+                          label="Last Name"
+                          placeholder={'Last Name'}
+                        />
                       )}
                     />
 
@@ -459,6 +577,7 @@ class Home extends Component {
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="Alias Name"
@@ -472,6 +591,7 @@ class Home extends Component {
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="Identification Mark 1"
@@ -485,6 +605,7 @@ class Home extends Component {
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="Identification Mark 2"
@@ -498,6 +619,7 @@ class Home extends Component {
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="Date of Birth"
@@ -509,14 +631,14 @@ class Home extends Component {
                     <Field
                       name="age"
                       render={({ field }) => (
-                        <Input {...field} width={'100%'} height={'64px'} label="Age" placeholder={'Age'} />
+                        <Input {...field} required width={'100%'} height={'64px'} label="Age" placeholder={'Age'} />
                       )}
                     />
 
                     <Field
                       name="uid"
                       render={({ field }) => (
-                        <Input {...field} width={'100%'} height={'64px'} label="UID" placeholder={'UID'} />
+                        <Input {...field} required width={'100%'} height={'64px'} label="UID" placeholder={'UID'} />
                       )}
                     />
 
@@ -525,6 +647,7 @@ class Home extends Component {
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="Identification Type ID"
@@ -538,6 +661,7 @@ class Home extends Component {
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="Identification Description"
@@ -551,6 +675,7 @@ class Home extends Component {
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="PAN/Form 60/61"
@@ -564,6 +689,7 @@ class Home extends Component {
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="Occupation"
@@ -575,14 +701,27 @@ class Home extends Component {
                     <Field
                       name="gender"
                       render={({ field }) => (
-                        <Input {...field} width={'100%'} height={'64px'} label="Gender" placeholder={'Gender'} />
+                        <SelectBox
+                          onChange={gender => formikBag.setFieldValue('gender', gender.value)}
+                          options={[{ label: 'Male', value: 'Male' }, { label: 'Female', value: 'Female' }]}
+                          placeholder="Gender"
+                          defaultValue={{ label: 'Male', value: 'Male' }}
+                          isSearchable={false}
+                        />
                       )}
                     />
 
                     <Field
                       name="email"
                       render={({ field }) => (
-                        <Input {...field} width={'100%'} height={'64px'} label="E-mail" placeholder={'E-mail'} />
+                        <Input
+                          {...field}
+                          required
+                          width={'100%'}
+                          height={'64px'}
+                          label="E-mail"
+                          placeholder={'E-mail'}
+                        />
                       )}
                     />
 
@@ -591,6 +730,7 @@ class Home extends Component {
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="Mobile No."
@@ -604,6 +744,7 @@ class Home extends Component {
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="Permanent Address"
@@ -617,6 +758,7 @@ class Home extends Component {
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="Address Same As Above"
@@ -629,6 +771,7 @@ class Home extends Component {
                       render={({ field }) => (
                         <Input
                           {...field}
+                          required
                           width={'100%'}
                           height={'64px'}
                           label="Temporary Address"
@@ -640,27 +783,49 @@ class Home extends Component {
                     <Field
                       name="district"
                       render={({ field }) => (
-                        <Input {...field} width={'100%'} height={'64px'} label="District" placeholder={'District'} />
+                        <Input
+                          {...field}
+                          required
+                          width={'100%'}
+                          height={'64px'}
+                          label="District"
+                          placeholder={'District'}
+                        />
                       )}
                     />
 
                     <Field
                       name="taluka"
                       render={({ field }) => (
-                        <Input {...field} width={'100%'} height={'64px'} label="Taluka" placeholder={'Taluka'} />
+                        <Input
+                          {...field}
+                          required
+                          width={'100%'}
+                          height={'64px'}
+                          label="Taluka"
+                          placeholder={'Taluka'}
+                        />
                       )}
                     />
 
                     <Field
                       name="village"
                       render={({ field }) => (
-                        <Input {...field} width={'100%'} height={'64px'} label="Village" placeholder={'Village'} />
+                        <Input
+                          {...field}
+                          required
+                          width={'100%'}
+                          height={'64px'}
+                          label="Village"
+                          placeholder={'Village'}
+                        />
                       )}
                     />
                     <Button
                       fontSize={20}
                       width={'100%'}
-                      onClick={() => this.handleSignUp()}
+                      // onClick={() => this.handleSignUp()}
+                      isLoading={isLoading}
                       height={'50px'}
                       title={'Submit'}
                       type={'submit'}
@@ -681,7 +846,7 @@ class Home extends Component {
                 city: '',
                 branch: ''
               }}
-              onSubmit={formData => console.log('FORM DATA', formData)}
+              onSubmit={formData => this.submitBank(formData)}
               render={formikBag => (
                 <Form>
                   <CloseWrap>
@@ -718,10 +883,10 @@ class Home extends Component {
                     <Button
                       fontSize={20}
                       width={'100%'}
-                      onClick={() => this.handleSignUp()}
                       height={'50px'}
                       title={'Submit'}
                       type={'submit'}
+                      isLoading={isLoading}
                     />
                   </BankFormWrapper>
                 </Form>
@@ -737,9 +902,9 @@ class Home extends Component {
                 name: '',
                 state: 'Maharashtra',
                 department: 'Housing and Urban Development',
-                govType: ''
+                govType: 'igr'
               }}
-              onSubmit={formData => console.log('FORM DATA', formData)}
+              onSubmit={formData => this.submitGovernment(formData)}
               render={formikBag => (
                 <Form>
                   <CloseWrap>
@@ -752,13 +917,14 @@ class Home extends Component {
                         label="IGR"
                         value="igr"
                         name="govType"
-                        defaultChecked
+                        checked={formikBag.values.govType === 'igr'}
                         onChange={e => formikBag.setFieldValue('govType', e.target.value)}
                       />
                       <Radio
                         label="Municipal Corporation"
                         value="corporation"
                         name="govType"
+                        checked={formikBag.values.govType === 'corporation'}
                         onChange={e => formikBag.setFieldValue('govType', e.target.value)}
                       />
                     </RadioGroup>
@@ -804,7 +970,7 @@ class Home extends Component {
                     <Button
                       fontSize={20}
                       width={'100%'}
-                      onClick={() => this.handleSignUp()}
+                      isLoading={isLoading}
                       height={'50px'}
                       title={'Submit'}
                       type={'submit'}

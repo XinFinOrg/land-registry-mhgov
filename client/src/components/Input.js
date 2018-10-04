@@ -86,30 +86,20 @@ class Input extends Component {
     const { password } = this.state
     return (
       <Container width={width}>
-        {type === 'file' ? (
-          <FieldWrap>
-            <InputFileLabel>
-              Choose File <input accept={accept} name={name} type={'file'} {...props} />
-            </InputFileLabel>
-            <p>No File Chosen</p>
-          </FieldWrap>
-        ) : (
-          <InputWrapper
-            width={width}
-            height={height}
-            type={password ? 'text' : type}
-            background={disabled ? '#f4f8f9' : background}
-            disabled={disabled}
-            {...props}
-          />
-        )}
-
+        <InputWrapper
+          name={name}
+          width={width}
+          height={height}
+          type={password ? 'text' : type}
+          background={disabled ? '#f4f8f9' : background}
+          disabled={disabled}
+          {...props}
+        />
         {type === 'password' && (
           <Show onClick={() => this.setState({ password: !password })} height={height}>
             {password ? 'Hide' : 'Show'}
           </Show>
         )}
-
         {icon && (
           <Image>
             <Icon icon={icon} fill={fill} />
