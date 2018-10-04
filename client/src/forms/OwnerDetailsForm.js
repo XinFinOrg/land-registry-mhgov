@@ -132,7 +132,7 @@ class OwnerDetailsForm extends Component {
                   )}
                 />
               </FormDetailsContainer>
-              <FormDetailsContainer paddingTop={'0'} display={'block'}>
+              {/* <FormDetailsContainer paddingTop={'0'} display={'block'}>
                 <InformTitle>List of Properties</InformTitle>
                 <CustomTable
                   data={customData}
@@ -144,7 +144,7 @@ class OwnerDetailsForm extends Component {
                   defaultPageSize={10}
                   minRows={0}
                 />{' '}
-              </FormDetailsContainer>
+              </FormDetailsContainer> */}
               <FormDetailsContainer>
                 <InformTitle>Parties Details</InformTitle>
                 <FieldGroupWithTitle>
@@ -287,7 +287,7 @@ class OwnerDetailsForm extends Component {
                   />
                 </FieldGroupWithTitle>
               </FormDetailsContainer>
-              <FormDetailsContainer display="block">
+              {/* <FormDetailsContainer display="block">
                 <InformTitle>Details Of Parties</InformTitle>
                 <CustomTable
                   data={partyDetails}
@@ -299,7 +299,7 @@ class OwnerDetailsForm extends Component {
                   defaultPageSize={10}
                   minRows={0}
                 />
-              </FormDetailsContainer>
+              </FormDetailsContainer> */}
               <FormDetailsContainer>
                 <InformTitle>Financier Details</InformTitle>
                 <FieldGroupWithTitle>

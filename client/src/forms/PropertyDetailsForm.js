@@ -17,10 +17,50 @@ import {
   Button,
   ButtonGroup
 } from '../components'
+import axios from 'axios'
+import { API_URL } from '../constants'
+import Cookies from 'js-cookie'
+import { toast } from 'react-toastify'
 
 class PropertyDetailsForm extends Component {
-  state = {}
+  state = {
+    isLoading: false
+  }
+  handleFormSubmit = async values => {
+    this.setState({ isLoading: true })
+    try {
+      const { data } = await axios.post(`${API_URL}/addProperty`, {
+        propertyDetails: {
+          district: values.district,
+          landType: values.landType,
+          taluka: values.taluka,
+          localGovNo: values.localGoverning,
+          city: values.cityVillage,
+          location: values.location,
+          surveyNo: values.surveyNumber,
+          usage: 'shop',
+          usageCategory: 'Non-Agriculture',
+          constructedArea: values.areaOfConstructurePropertySquareMeter,
+          openParking: values.openParking,
+          coveredParking: values.coveredParking,
+          shopFloor: values.shopFloorBasement,
+          address: values.propertyAddress,
+          description: values.propertyDescription,
+          currentOwner: Cookies.get('email')
+          /* address:values.,
+          description:values.,
+          currentOwner:values., */
+        }
+      })
+      this.setState({ isLoading: false })
+      console.log('DATA', data)
+    } catch (error) {
+      this.setState({ isLoading: false })
+      console.log('ERROR', error)
+    }
+  }
   render() {
+    const { isLoading } = this.state
     return (
       <Formik
         enableReinitialize={true}
@@ -44,7 +84,7 @@ class PropertyDetailsForm extends Component {
           propertyAddress: '',
           propertyDescription: ''
         }}
-        onSubmit={formData => console.log(formData)}
+        onSubmit={formData => this.handleFormSubmit(formData)}
         render={formikBag => (
           <FormikForm>
             <Paper
@@ -216,8 +256,8 @@ class PropertyDetailsForm extends Component {
               </FormDetailsContainer>
             </Paper>
             <ButtonGroup>
-              <Button size={'medium'} width={'150px'} title="Save" type="button" />
-              <Button size={'medium'} width={'150px'} title="Submit" type="submit" />
+              <Button size={'medium'} width={'150px'} disabled title="Save" type="button" />
+              <Button size={'medium'} width={'150px'} isLoading={isLoading} title="Submit" type="submit" />
             </ButtonGroup>
           </FormikForm>
         )}

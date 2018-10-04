@@ -10,11 +10,12 @@ import {
   Button,
   Icon,
   StyledHeader,
-  IconWrapper
+  IconWrapper,
+  FlexWrapper
 } from '../components'
 import { Table } from '../components/Table'
 import { data } from '../constants'
-
+import Cookies from 'js-cookie'
 class Dashboard extends Component {
   handlePageChange = currentPage => {
     // this.setState({ currentPage })
@@ -128,14 +129,26 @@ class Dashboard extends Component {
         <MainWrapper>
           <TopWrapper>
             <PageTitle>Dashboard</PageTitle>
-            <Input
-              padding={'14px 36px'}
-              type="text"
-              icon="search"
-              background={'#fff'}
-              fill="rgba(46, 55, 59, 0.5)"
-              placeholder="Search"
-            />
+            <FlexWrapper>
+              {Cookies.get('role') === 'individual' && (
+                <Button
+                  size={'medium'}
+                  width={'150px'}
+                  title="Add Property"
+                  type="submit"
+                  onClick={() => this.props.history.push('/dashboard/document-details/property-details')}
+                />
+              )}
+
+              {/* <Input
+                padding={'14px 36px'}
+                type="text"
+                icon="search"
+                background={'#fff'}
+                fill="rgba(46, 55, 59, 0.5)"
+                placeholder="Search"
+              /> */}
+            </FlexWrapper>
           </TopWrapper>
           <Table
             onSortedChange={(newSorted, column, shiftKey) => {

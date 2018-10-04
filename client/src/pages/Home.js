@@ -20,6 +20,7 @@ import { states } from '../constants'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import { toast } from 'react-toastify'
+import Cookies from 'js-cookie'
 
 const Background = styled.div`
   content: '';
@@ -281,6 +282,23 @@ class Home extends Component {
       })
     }
   }
+  handleLogin = async values => {
+    this.setState({ isLoading: true })
+    try {
+      const { data } = await axios.post(`${API_URL}/login`, {
+        email: values.email,
+        password: values.password
+      })
+      console.log('DATA', data.data.role)
+      await Cookies.set('role', data.data.role)
+      await Cookies.set('email', data.data.email)
+      this.props.history.push('/dashboard/document-details/property-details')
+      this.setState({ isLoading: false })
+    } catch (error) {
+      console.log('ERROR', error)
+      this.setState({ isLoading: false })
+    }
+  }
   render() {
     const {
       location: { pathname }
@@ -309,10 +327,10 @@ class Home extends Component {
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
-                    firstName: 'Saurav',
-                    lastName: 'Gupta',
-                    email: 's@s.com',
-                    password: 'sasasas',
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    password: '',
                     registerAs: 'individual'
                   }}
                   onSubmit={formData => {
@@ -424,7 +442,7 @@ class Home extends Component {
                     email: '',
                     password: ''
                   }}
-                  onSubmit={formData => console.log('FORM DATA', formData)}
+                  onSubmit={formData => this.handleLogin(formData)}
                   render={formikBag => (
                     <Form>
                       <FormWrapper>
@@ -459,7 +477,7 @@ class Home extends Component {
                         <Button
                           fontSize={20}
                           width={'100%'}
-                          onClick={() => this.props.history.push('/dashboard')}
+                          isLoading={isLoading}
                           height={'50px'}
                           title={'Next'}
                           type={'submit'}
