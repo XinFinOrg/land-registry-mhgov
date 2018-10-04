@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const uuid = require('uuid/v4');
 
 var helper = require('./helper');
 var db = require('./../config/db');
@@ -96,6 +97,21 @@ router.post('/signup', function(req, res) {
 	});
 });
 
+router.post('/login', function(req, res) {
+	console.log('login : start')
+	let email = req.body.email;
+	let password = req.body.password;
+	if (!email || !password) {
+        return res.send({status : false, error : "Invalid Email/Password"});
+	}
+	helper.getUserDetails({email : email, password : password}, function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true, data : data});
+	});
+});
+
 router.get('/getUserDetails', function(req, res) {
 	console.log('getUserDetails : start')
 	let email = req.params.email || req.query.email;
@@ -114,6 +130,54 @@ router.get('/getUsers', function(req, res) {
 	        return res.send({status : false, error : err});
 	    }
 	    return res.send({status : true, data : data});
+	});
+});
+
+router.post('/addPorperty', function(req, res) {
+	console.log('addPorperty : start');
+	let propertyDetails = req.body.propertyDetails;
+	propertyDetails.propertyId = uuid(); // ⇨ '10ba038e-48da-487b-96e8-8d3b99b6d18a'
+	propertyDetails.status = 'new';
+	helper.insertCollection('properties', propertyDetails, function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true});
+	});
+});
+
+router.post('/confirmPorperty', function(req, res) {
+	let propertyId = req.body.propertyId;
+	let status = req.body.status; //new, verified, rejected
+	let query = {propertyId : propertyId};
+	let updateQuery = {$set : {status : status}};
+	helper.updateCollection('properties', query,
+		updateQuery, function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true});
+	});
+});
+
+router.post('/sellPorperty', function(req, res) {
+	let propertyId = req.body.propertyId;
+	let email = req.body.currentOwner;
+	let registryId = uuid();
+	let query = {
+		registryId : registryId,
+		propertyId : propertyId,
+		owner : {
+			email : email
+		},
+		status : "new"
+	};
+	helper.insertCollection('registry', query,
+		updateQuery, function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true});
 	});
 });
 

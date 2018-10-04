@@ -97,9 +97,30 @@ let updatePolicy = function(query, update, cb) {
     });
 };
 
+let updateCollection = function(coll, query, update, cb) {
+    var collection = db.getCollection(coll);
+    collection.update(query, update, function(err, data) {
+        if (err) {
+            return cb(true, err);
+        }
+        return cb(false, data);
+    });
+};
+
 let savePolicy = function(input, cb) {
     console.log('start : savePolicy');
     var collection = db.getCollection('policys');
+    collection.save(input, function(err, data) {
+        if (err) {
+            return cb(true, err);
+        }
+        return cb(false, data);
+    });
+};
+
+let insertCollection = function(coll, input, cb) {
+    console.log('insert', coll);
+    var collection = db.getCollection(coll);
     collection.save(input, function(err, data) {
         if (err) {
             return cb(true, err);
@@ -218,5 +239,7 @@ module.exports = {
     processEventBigNumbers : processEventBigNumbers,
     getUserDetails : getUserDetails,
     addUser : addUser,
-    getUsers : getUsers
+    getUsers : getUsers,
+    insertCollection : insertCollection,
+    updateCollection : updateCollection
 };
