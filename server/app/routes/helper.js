@@ -21,6 +21,16 @@ let getUsers = function(query, cb) {
     });
 };
 
+let getRecords = function(coll, query, cb) {
+    var collection = db.getCollection(coll);
+    collection.find(query).toArray(function(err, data) {
+        if (err) {
+            return cb(true, err);
+        }
+        return cb(false, data);
+    });
+};
+
 let getUserDetails = function(query, cb) {
     console.log('query', query)
     var collection = db.getCollection('users');
@@ -242,5 +252,6 @@ module.exports = {
     addUser : addUser,
     getUsers : getUsers,
     insertCollection : insertCollection,
-    updateCollection : updateCollection
+    updateCollection : updateCollection,
+    getRecords : getRecords
 };

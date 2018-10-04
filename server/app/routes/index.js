@@ -85,6 +85,24 @@ router.get('/getPolicyDetails', async function(req, res) {
     return res.send({status : true, data : data});
 });*/
 
+router.post('/getDashboard', function(req, res) {
+	console.log('getUsers : start')
+	let email = req.body.email;
+	let role = req.body.role;
+	let query = {};
+	if (role == 'individual') {
+		query = {$or : [{owner : email}, {buyer : email}]}
+	} else if (role == 'bank') {
+		query = {$or : [{ownerFinancer : email}, {buyerFinancer : email}]};
+	}
+	helper.getRecords('properties', query, function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true, data : data});
+	});
+});
+
 router.post('/signup', function(req, res) {
 	console.log('signup : start')
 	let userDetails = req.body.userDetails;
@@ -162,7 +180,7 @@ router.post('/confirmProperty', function(req, res) {
 	});
 });
 
-router.post('/sellPorperty', function(req, res) {
+router.post('/sellProperty', function(req, res) {
 	let propertyId = req.body.propertyId;
 	let email = req.body.owner;
 	let registryId = uuid();
