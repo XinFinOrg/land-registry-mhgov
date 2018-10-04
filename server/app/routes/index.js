@@ -133,20 +133,22 @@ router.get('/getUsers', function(req, res) {
 	});
 });
 
-router.post('/addPorperty', function(req, res) {
+router.post('/addProperty', function(req, res) {
 	console.log('addPorperty : start');
 	let propertyDetails = req.body.propertyDetails;
-	propertyDetails.propertyId = uuid(); // ⇨ '10ba038e-48da-487b-96e8-8d3b99b6d18a'
+	propertyDetails.propertyId = uuid();
+	// ⇨ '10ba038e-48da-487b-96e8-8d3b99b6d18a'
 	propertyDetails.status = 'new';
 	helper.insertCollection('properties', propertyDetails, function(err, data) {
 	    if (err) {
 	        return res.send({status : false, error : err});
 	    }
-	    return res.send({status : true});
+	    return res.send({status : true, data : propertyDetails});
 	});
 });
 
-router.post('/confirmPorperty', function(req, res) {
+router.post('/confirmProperty', function(req, res) {
+	console.log('confirmPorperty : start');
 	let propertyId = req.body.propertyId;
 	let status = req.body.status; //new, verified, rejected
 	let query = {propertyId : propertyId};
@@ -162,23 +164,39 @@ router.post('/confirmPorperty', function(req, res) {
 
 router.post('/sellPorperty', function(req, res) {
 	let propertyId = req.body.propertyId;
-	let email = req.body.currentOwner;
+	let email = req.body.owner;
 	let registryId = uuid();
-	let query = {
-		registryId : registryId,
-		propertyId : propertyId,
-		owner : {
-			email : email
-		},
-		status : "new"
+	let query = {propertyId : propertyId};
+	let updateQuery = {
+		onSell : 'active',
+		status : "on_sell",
+		registryId : registryId
 	};
-	helper.insertCollection('registry', query,
+
+	helper.updateCollection('properties', query,
 		updateQuery, function(err, data) {
 	    if (err) {
 	        return res.send({status : false, error : err});
 	    }
-	    return res.send({status : true});
+		query = {
+			registryId : registryId,
+			propertyId : propertyId,
+			owner : {
+				email : email
+			},
+			status : "new"
+		};
+		helper.insertCollection('registry', query,
+			function(err, data) {
+		    if (err) {
+		        return res.send({status : false, error : err});
+		    }
+		    return res.send({status : true,
+		    	data : {propertyId : propertyId, registryId : registryId}
+		    });
+		});
 	});
+
 });
 
 router.get('*', function(req, res) {

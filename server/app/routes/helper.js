@@ -99,6 +99,7 @@ let updatePolicy = function(query, update, cb) {
 
 let updateCollection = function(coll, query, update, cb) {
     var collection = db.getCollection(coll);
+    console.log('updateCollection', coll, query, update)
     collection.update(query, update, function(err, data) {
         if (err) {
             return cb(true, err);
