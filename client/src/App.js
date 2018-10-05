@@ -5,7 +5,8 @@ import Route from 'react-router-dom/Route'
 import { withRouter, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import { Home, Dashboard, DocumentDetails } from './pages'
-import { SignUp } from './components'
+import { SignUp, Toastify } from './components'
+
 const PrivateOnlyRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
@@ -32,17 +33,21 @@ const RoutedScroll = withRouter(ScrollToTop)
 class App extends Component {
   render() {
     return (
-      <Router>
-        <RoutedScroll>
-          <Switch>
-            <PublicOnlyRoute exact path="/" component={Home} />
-            <PublicOnlyRoute exact path="/signup" component={Home} />
-            <PrivateOnlyRoute exact path="/dashboard" component={Dashboard} />
-            <PrivateOnlyRoute exact path="/dashboard/document-details" component={DocumentDetails} />
-            <PrivateOnlyRoute exact path="/dashboard/document-details/:tab" component={DocumentDetails} />
-          </Switch>
-        </RoutedScroll>
-      </Router>
+      <React.Fragment>
+        <Toastify />
+        <Router>
+          <RoutedScroll>
+            <Switch>
+              <PublicOnlyRoute exact path="/" component={Home} />
+              <PublicOnlyRoute exact path="/signup" component={Home} />
+              <PrivateOnlyRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateOnlyRoute exact path="/dashboard/:tab/:tab" component={DocumentDetails} />
+              <PrivateOnlyRoute exact path="/dashboard/document-details" component={DocumentDetails} />
+              <PrivateOnlyRoute exact path="/dashboard/document-details/:tab" component={DocumentDetails} />
+            </Switch>
+          </RoutedScroll>
+        </Router>
+      </React.Fragment>
     )
   }
 }

@@ -43,6 +43,7 @@ const ButtonWrapper = styled.button`
   font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
+  text-transform: capitalize;
   color: ${props => (props.color ? props.color : '#ffffff')};
   ${props =>
     props.disabled &&

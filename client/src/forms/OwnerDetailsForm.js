@@ -14,10 +14,12 @@ import {
   StyledHead
 } from '../components'
 import { customData, partyDetails } from '../constants'
+import get from 'lodash/get'
 
 class OwnerDetailsForm extends Component {
   state = {}
   render() {
+    console.log('OwnerDetailsForm', this.props)
     const columns = [
       {
         Header: <StyledHead>Sr. No.</StyledHead>,
@@ -74,40 +76,40 @@ class OwnerDetailsForm extends Component {
       <Formik
         enableReinitialize={true}
         initialValues={{
-          selectPartyType: '',
-          selectPartyCategory: '',
-          isExecuter: '',
-          salutation: '',
-          partyFirstName: '',
-          partyMiddleName: '',
-          partyLastName: '',
-          aliasName: '',
-          identificationMark1: '',
-          identificationMark2: '',
-          dateOfBirth: '',
-          age: '',
-          uid: '',
-          identificationTypeID: '',
-          identificationDescription: '',
-          panForm60: '',
-          occupation: '',
-          gender: '',
-          email: '',
-          mobileNo: '',
-          presentationExemption: '',
-          pinCode: '',
-          addressSame: '',
-          district: '',
-          taluka: '',
-          village: '',
-          financierName: '',
-          city: '',
-          branch: '',
-          totalValueOfProperty: '',
-          totalFinanceAmount: '',
-          financeAmountDueNow: '',
-          totalSaveAmount: '',
-          tokenAmount: ''
+          selectPartyType: 'Admin',
+          selectPartyCategory: 'Admin',
+          isExecuter: 'Yes',
+          salutation: get(this.props.data, 'salutation', ''),
+          partyFirstName: get(this.props.data, 'firstName', ''),
+          partyMiddleName: get(this.props.data, 'middleName', ''),
+          partyLastName: get(this.props.data, 'lastName', ''),
+          aliasName: get(this.props.data, 'aliasName', ''),
+          identificationMark1: get(this.props.data, 'identityMark1', ''),
+          identificationMark2: get(this.props.data, 'identityMark2', ''),
+          dateOfBirth: get(this.props.data, 'dob', ''),
+          age: get(this.props.data, 'age', ''),
+          uid: get(this.props.data, 'uid', ''),
+          identificationTypeID: get(this.props.data, 'identityTypeID', ''),
+          identificationDescription: get(this.props.data, 'identityDesc', ''),
+          panForm60: get(this.props.data, 'pan', ''),
+          occupation: get(this.props.data, 'occupation', ''),
+          gender: get(this.props.data, 'gender', ''),
+          email: get(this.props.data, 'email', ''),
+          mobileNo: get(this.props.data, 'mobileNo', ''),
+          presentationExemption: 'Yes', //
+          pinCode: '110019', //
+          addressSame: get(this.props.data, 'permAddress', ''),
+          district: get(this.props.data, 'district', ''),
+          taluka: get(this.props.data, 'taluka', ''),
+          village: get(this.props.data, 'village', ''),
+          financierName: 'Yes', //
+          city: 'Pune', //
+          branch: 'Pune', //
+          totalValueOfProperty: '1000000', //
+          totalFinanceAmount: '10000', //
+          financeAmountDueNow: '1000000', //
+          totalSaveAmount: '1000000', //
+          tokenAmount: '100000' //
         }}
         onSubmit={formData => console.log(formData)}
         render={formikBag => (

@@ -181,9 +181,7 @@ class Home extends Component {
     })
     this.props.history.push('/')
   }
-  handleSignupForm = values => {
-    console.log('VALUES', values)
-  }
+  handleSignupForm = values => {}
   submitIndividual = async values => {
     this.setState({ isLoading: true })
     try {
@@ -270,7 +268,7 @@ class Home extends Component {
         }
       })
       console.log('DATA', data)
-      this.setState({ isLoading: false, openModal: false })
+      this.setState({ isLoading: false, openModal: false }, () => this.props.history.push('/'))
       toast.success(`${'Submitted successfully'}`, {
         position: toast.POSITION.TOP_CENTER
       })
@@ -292,7 +290,7 @@ class Home extends Component {
       console.log('DATA', data.data.role)
       await Cookies.set('role', data.data.role)
       await Cookies.set('email', data.data.email)
-      this.props.history.push('/dashboard/document-details/property-details')
+      this.props.history.push('/dashboard')
       this.setState({ isLoading: false })
     } catch (error) {
       console.log('ERROR', error)
@@ -340,7 +338,6 @@ class Home extends Component {
                   }}
                   render={formikBag => (
                     <Form>
-                      {console.log('signUpData', signUpData)}
                       <SignupFormWrapper>
                         <Field
                           name="firstName"

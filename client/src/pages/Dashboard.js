@@ -16,12 +16,40 @@ import {
 import { Table } from '../components/Table'
 import { data } from '../constants'
 import Cookies from 'js-cookie'
+import axios from 'axios'
+import { API_URL } from '../constants'
+
 class Dashboard extends Component {
+  state = {
+    dashboardData: []
+  }
   handlePageChange = currentPage => {
     // this.setState({ currentPage })
     console.log('CURRENT PAGE', currentPage)
   }
+  async componentDidMount() {
+    try {
+      const { data } = await axios.post(`${API_URL}/getDashboard`, {
+        email: Cookies.get('email'),
+        role: Cookies.get('role')
+      })
+      console.log('DATA', data.data)
+      this.setState({ dashboardData: data.data })
+    } catch (error) {
+      console.log('ERROR', error)
+    }
+  }
   render() {
+    const { dashboardData } = this.state
+    console.log('dashboardData=====>', dashboardData)
+    const tableData = dashboardData.map(item => ({
+      srNo: 1,
+      propertyId: item.propertyId,
+      propertyType: item.landType,
+      propertyLocation: item.address,
+      city: item.city,
+      status: item.status
+    }))
     const columns = [
       {
         Header: (
@@ -95,32 +123,37 @@ class Dashboard extends Component {
         ),
         accessor: 'status',
         maxWidth: 150,
-        Cell: props => (
-          <Button
-            size="action"
-            title="View"
-            background={'#fff'}
-            shadow={'none'}
-            fontSize={16}
-            color={'#333333'}
-            radius={'4px'}
-            border={props.original.status === 'pending' ? 'solid 1px #ffae01' : 'solid 1px #6faa13'}
-          />
-        )
+        Cell: props => {
+          return (
+            <Button
+              size="action"
+              title={props.original.status}
+              background={'#fff'}
+              shadow={'none'}
+              fontSize={16}
+              color={'#333333'}
+              radius={'4px'}
+              border={props.original.status === 'new' ? 'solid 1px #ffae01' : 'solid 1px #6faa13'}
+            />
+          )
+        }
       },
       {
         Header: 'View',
         accessor: 'view',
         maxWidth: 150,
-        Cell: props => (
-          <Button
-            size="action"
-            shadow={'none'}
-            title="View"
-            radius={'4px'}
-            onClick={() => this.props.history.push('/dashboard/document-details/property-details')}
-          />
-        )
+        Cell: props => {
+          console.log('PROPS==>', props.original.propertyId)
+          return (
+            <Button
+              size="action"
+              shadow={'none'}
+              title="View"
+              radius={'4px'}
+              onClick={() => this.props.history.push(`/dashboard/property-details/${props.original.propertyId}`)}
+            />
+          )
+        }
       }
     ]
     return (
@@ -136,7 +169,7 @@ class Dashboard extends Component {
                   width={'150px'}
                   title="Add Property"
                   type="submit"
-                  onClick={() => this.props.history.push('/dashboard/document-details/property-details')}
+                  onClick={() => this.props.history.push('/dashboard/property-details/add-property')}
                 />
               )}
 
@@ -154,13 +187,13 @@ class Dashboard extends Component {
             onSortedChange={(newSorted, column, shiftKey) => {
               console.log(newSorted)
             }}
-            data={data}
+            data={tableData}
             columns={columns}
             resizable={false}
-            showPagination={false}
-            pageSize={10}
             defaultPageSize={10}
+            pageSize={10}
             minRows={0}
+            showPagination={false}
             totalNumberOfResults={100}
             onPageChange={this.handlePageChange}
           />

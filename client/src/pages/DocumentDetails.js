@@ -28,6 +28,10 @@ import {
 } from '../components'
 import { commonUploadDoc, DocumentDutyTotal } from '../constants'
 import { PropertyDetailsForm, OwnerDetailsForm, SellerDetailsForm, StampDutyForm, Registeration } from '../forms'
+import Cookies from 'js-cookie'
+import axios from 'axios'
+import { API_URL } from '../constants'
+import get from 'lodash/get'
 
 const PageTitleWrapper = styled.div`
   display: flex;
@@ -54,11 +58,23 @@ const SubmissionWrap = styled.div`
 
 class DocumentDetails extends Component {
   state = {
-    activeTab: this.props.location.pathname
+    activeTab: this.props.match.url,
+    dashboardData: []
   }
   /* componentDidMount = () => {
-    this.setState({activeTab: "/dashboard/document-details/property-details"})
+    this.setState({activeTab: "/dashboard/property-details"})
   } */
+  async componentDidMount() {
+    const propertyId = this.props.match.url.split('/')[3]
+    console.log('propertyId', propertyId)
+    try {
+      const { data } = await axios.get(`${API_URL}/getPropertyDetails?propertyId=${propertyId}`)
+      console.log('DATA', data.data)
+      this.setState({ dashboardData: data.data })
+    } catch (error) {
+      console.log('ERROR', error)
+    }
+  }
 
   render() {
     const columns = [
@@ -89,7 +105,7 @@ class DocumentDetails extends Component {
             shadow={'none'}
             title="Upload/Update"
             radius={'4px'}
-            // onClick={() => this.props.history.push('/dashboard/document-details/property-details')}
+            // onClick={() => this.props.history.push('/dashboard/property-details')}
           />
         )
       }
@@ -111,14 +127,17 @@ class DocumentDetails extends Component {
         minwidth: 120
       }
     ]
-    const { activeTab } = this.state
+    const { activeTab, dashboardData } = this.state
+    console.log('PROPS=====>', this.state.dashboardData)
     return (
       <React.Fragment>
         <Header />
         <MainWrapper>
           <TopWrapper>
             <PageTitleWrapper>
-              <PageTitle>Dashboard</PageTitle>
+              <PageTitle color="#1f89f5" onClick={() => this.props.history.push('/dashboard')}>
+                Dashboard
+              </PageTitle>
               <Icon icon="arrow" width={16} height={16} />
               <PageTitle>Document Details</PageTitle>
             </PageTitleWrapper>
@@ -132,61 +151,75 @@ class DocumentDetails extends Component {
           <InsideTitle>Pre Reg. No.: 20170000092</InsideTitle>
           <Tabber>
             <Tab
-              onClick={() => this.setState({ activeTab: '/dashboard/document-details/property-details' })}
-              to="/dashboard/document-details/property-details"
-              selected={activeTab === '/dashboard/document-details/property-details'}>
+              onClick={() =>
+                this.setState({ activeTab: `/dashboard/property-details/${this.props.match.url.split('/')[3]}` })
+              }
+              to={`/dashboard/property-details/${this.props.match.url.split('/')[3]}`}
+              selected={activeTab === `/dashboard/property-details/${this.props.match.url.split('/')[3]}`}>
               Property Details
             </Tab>
             <Tab
-              onClick={() => this.setState({ activeTab: '/dashboard/document-details/owner-details' })}
-              to="/dashboard/document-details/owner-details"
-              selected={activeTab === '/dashboard/document-details/owner-details'}>
+              onClick={() =>
+                this.setState({ activeTab: `/dashboard/owner-details/${this.props.match.url.split('/')[3]}` })
+              }
+              to={`/dashboard/owner-details/${this.props.match.url.split('/')[3]}`}
+              selected={activeTab === `/dashboard/owner-details/${this.props.match.url.split('/')[3]}`}>
               Owner Details
             </Tab>
             <Tab
-              onClick={() => this.setState({ activeTab: '/dashboard/document-details/seller-details' })}
-              to="/dashboard/document-details/seller-details"
-              selected={activeTab === '/dashboard/document-details/seller-details'}>
+              onClick={() =>
+                this.setState({ activeTab: `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}` })
+              }
+              to={`/dashboard/buyer-details/${this.props.match.url.split('/')[3]}`}
+              selected={activeTab === `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}`}>
               Buyer Details
             </Tab>
             <Tab
-              onClick={() => this.setState({ activeTab: '/dashboard/document-details/payment' })}
-              to="/dashboard/document-details/payment"
-              selected={activeTab === '/dashboard/document-details/payment'}>
+              onClick={() => this.setState({ activeTab: `/dashboard/payment/${this.props.match.url.split('/')[3]}` })}
+              to={`/dashboard/payment/${this.props.match.url.split('/')[3]}`}
+              selected={activeTab === `/dashboard/payment/${this.props.match.url.split('/')[3]}`}>
               Payment
             </Tab>
             <Tab
-              onClick={() => this.setState({ activeTab: '/dashboard/document-details/stamp-duty' })}
-              to="/dashboard/document-details/stamp-duty"
-              selected={activeTab === '/dashboard/document-details/stamp-duty'}>
+              onClick={() =>
+                this.setState({ activeTab: `/dashboard/stamp-duty/${this.props.match.url.split('/')[3]}` })
+              }
+              to={`/dashboard/stamp-duty/${this.props.match.url.split('/')[3]}`}
+              selected={activeTab === `/dashboard/stamp-duty/${this.props.match.url.split('/')[3]}`}>
               Stamp Duty
             </Tab>
             <Tab
-              onClick={() => this.setState({ activeTab: '/dashboard/document-details/registeration' })}
-              to="/dashboard/document-details/registeration"
-              selected={activeTab === '/dashboard/document-details/registeration'}>
+              onClick={() =>
+                this.setState({ activeTab: `/dashboard/registeration/${this.props.match.url.split('/')[3]}` })
+              }
+              to={`/dashboard/registeration/${this.props.match.url.split('/')[3]}`}
+              selected={activeTab === `/dashboard/registeration/${this.props.match.url.split('/')[3]}`}>
               Registeration
             </Tab>
             <Tab
-              onClick={() => this.setState({ activeTab: '/dashboard/document-details/upload-document' })}
-              to="/dashboard/document-details/upload-document"
-              selected={activeTab === '/dashboard/document-details/upload-document'}>
+              onClick={() =>
+                this.setState({ activeTab: `/dashboard/upload-document/${this.props.match.url.split('/')[3]}` })
+              }
+              to={`/dashboard/upload-document/${this.props.match.url.split('/')[3]}`}
+              selected={activeTab === `/dashboard/upload-document/${this.props.match.url.split('/')[3]}`}>
               Upload Document
             </Tab>
           </Tabber>
         </Paper>
-        {activeTab === '/dashboard/document-details/property-details' && (
+        {activeTab === `/dashboard/property-details/${this.props.match.url.split('/')[3]}` && (
           <PropertyDetailsWrapper>
-            <PropertyDetailsForm />
+            <PropertyDetailsForm data={get(dashboardData, 'property', [])} />
           </PropertyDetailsWrapper>
         )}
-        {activeTab === '/dashboard/document-details/owner-details' && <OwnerDetailsForm />}
+        {activeTab === `/dashboard/owner-details/${this.props.match.url.split('/')[3]}` && (
+          <OwnerDetailsForm data={get(dashboardData, 'owner', [])} />
+        )}
 
-        {activeTab === '/dashboard/document-details/seller-details' && <SellerDetailsForm />}
+        {activeTab === `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}` && <SellerDetailsForm />}
 
-        {activeTab === '/dashboard/document-details/registeration' && <Registeration />}
+        {activeTab === `/dashboard/registeration/${this.props.match.url.split('/')[3]}` && <Registeration />}
 
-        {activeTab === '/dashboard/document-details/payment' && (
+        {activeTab === `/dashboard/payment/${this.props.match.url.split('/')[3]}` && (
           <Paper
             padding={'0 31px 20px'}
             radius={'0 0 6px 6px'}
@@ -208,8 +241,8 @@ class DocumentDetails extends Component {
             </PaymentWrapper>
           </Paper>
         )}
-        {activeTab === '/dashboard/document-details/stamp-duty' && <StampDutyForm />}
-        {activeTab === '/dashboard/document-details/upload-document' && (
+        {activeTab === `/dashboard/stamp-duty/${this.props.match.url.split('/')[3]}` && <StampDutyForm />}
+        {activeTab === `/dashboard/upload-document/${this.props.match.url.split('/')[3]}` && (
           <React.Fragment>
             <Paper
               padding={'26px 31px 20px'}

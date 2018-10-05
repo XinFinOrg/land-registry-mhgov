@@ -21,6 +21,7 @@ import axios from 'axios'
 import { API_URL } from '../constants'
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
+import get from 'lodash/get'
 
 class PropertyDetailsForm extends Component {
   state = {
@@ -46,7 +47,7 @@ class PropertyDetailsForm extends Component {
           shopFloor: values.shopFloorBasement,
           address: values.propertyAddress,
           description: values.propertyDescription,
-          currentOwner: Cookies.get('email')
+          owner: Cookies.get('email')
           /* address:values.,
           description:values.,
           currentOwner:values., */
@@ -61,28 +62,29 @@ class PropertyDetailsForm extends Component {
   }
   render() {
     const { isLoading } = this.state
+    console.log('FORM DATA', get(this.props, 'data', {}))
     return (
       <Formik
         enableReinitialize={true}
         initialValues={{
-          district: '',
-          landType: '',
-          taluka: '',
-          localGoverning: '',
-          cityVillage: '',
-          location: '',
-          surveyNumber: '',
-          areaOfConstructurePropertySquareMeter: '',
-          areaOfConstructurePropertyBuildUpArea: '',
-          areaOfConstructureProperty: 0,
-          openParking: 0,
-          openParkingSquareMeter: '',
-          coveredParking: 0,
-          coveredParkingSquareMeter: '',
-          coveredParkingBulidArea: '',
-          shopFloorBasement: '',
-          propertyAddress: '',
-          propertyDescription: ''
+          district: get(this.props.data, 'district', 'Pune'),
+          landType: get(this.props.data, 'landType', 'Agricultural'),
+          taluka: get(this.props.data, 'taluka', 'Pune'),
+          localGoverning: get(this.props.data, 'localGovNo', 'ABC001'),
+          cityVillage: get(this.props.data, 'city', 'Pune'),
+          location: get(this.props.data, 'location', 'Maharastra'),
+          surveyNumber: get(this.props.data, 'surveyNo', '120#12BB'),
+          areaOfConstructurePropertySquareMeter: get(this.props.data, 'constructedArea', '20'),
+          areaOfConstructurePropertyBuildUpArea: '30',
+          areaOfConstructureProperty: '30',
+          openParking: get(this.props.data, 'openParking', 'yes'),
+          openParkingSquareMeter: '10',
+          coveredParking: get(this.props.data, 'coveredParking', '10'),
+          coveredParkingSquareMeter: '10',
+          coveredParkingBulidArea: '10',
+          shopFloorBasement: get(this.props.data, 'shopFloor', 'Yes'),
+          propertyAddress: get(this.props.data, 'address', 'Street Address'),
+          propertyDescription: get(this.props.data, 'description', 'Ground floor')
         }}
         onSubmit={formData => this.handleFormSubmit(formData)}
         render={formikBag => (

@@ -15,7 +15,8 @@ const PaperSubTitle = styled.p`
 const PageTitle = styled.h1`
   opacity: 0.7;
   font-size: 30px;
-  color: #000;
+  color: ${props => (props.color ? props.color : '#000')};
+  cursor: pointer;
 `
 const MainWrapper = styled.div`
   padding: 107px 95px 0;

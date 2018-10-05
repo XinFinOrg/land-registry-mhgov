@@ -59,7 +59,7 @@ const TableWrapper = styled.div`
   }
 `
 const StyledTable = styled(ReactTable)`
-  min-height: 600px;
+  // min-height: 600px;
   max-height: 600px;
 `
 const Pager = styled.div`
