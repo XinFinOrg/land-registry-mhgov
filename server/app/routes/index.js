@@ -141,6 +141,44 @@ router.get('/getUserDetails', function(req, res) {
 	});
 });
 
+router.get('/getPropertyDetails', function(req, res) {
+	console.log('getPropertyDetails : start')
+	let propertyId = req.params.propertyId || req.query.propertyId;
+	console.log('propertyId', propertyId)
+	var responseData = {};
+
+
+	helper.getRecord('properties', {propertyId : propertyId}, function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    console.log(err, data);
+	    var propertyDetails = data;
+	    var status = data.status;
+	    var owner = data.owner;
+	    responseData.property = propertyDetails;
+	    var statusNo = helper.propertyStatusMap[status];
+	    if (statusNo < 5) {
+			helper.getUserDetails({email : owner}, function(err, data) {
+			    if (err) {
+			        return res.send({status : false, error : err});
+			    }
+			    responseData.owner = data;
+			    return res.send({status : true, data : responseData});
+			});
+	    } else {
+	    	var registryId = propertyDetails.registryId;
+			helper.getRecord('registry', {registryId : registryId}, function(err, data) {
+			    if (err) {
+			        return res.send({status : false, error : err});
+			    }
+			    return res.send({status : true, data : data});
+			});
+	    }
+	});
+});
+
+
 router.get('/getUsers', function(req, res) {
 	console.log('getUsers : start')
 	helper.getUsers({}, function(err, data) {

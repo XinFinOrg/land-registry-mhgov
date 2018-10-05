@@ -31,6 +31,16 @@ let getRecords = function(coll, query, cb) {
     });
 };
 
+let getRecord = function(coll, query, cb) {
+    var collection = db.getCollection(coll);
+    collection.find(query).toArray(function(err, data) {
+        if (err) {
+            return cb(true, err);
+        }
+        return cb(false, data[0]);
+    });
+};
+
 let getUserDetails = function(query, cb) {
     console.log('query', query)
     var collection = db.getCollection('users');
@@ -232,6 +242,17 @@ let addPolicyMiddlewares = [requestAuth, validatePolicyDetails, isPolicyExist, d
 let debitStatusMiddlewares = [requestAuth, debitStatusHelper, issuePolicy];
 let issuePolicyMiddlewares = [requestAuth, issuePolicyHelper, issuePolicy];
 
+var propertyStatusMap = {
+    new : 1,
+    rejected : 2,
+    verified : 3,
+    on_sell : 4,
+    registry_owner : 5,
+    registry_ownerFinancer : 6,
+    registry_buyer : 7,
+    registry_buyerFinancer : 8
+};
+
 module.exports = {
     getErrorResponse : getErrorResponse,
     requestAuth : requestAuth,
@@ -253,5 +274,7 @@ module.exports = {
     getUsers : getUsers,
     insertCollection : insertCollection,
     updateCollection : updateCollection,
-    getRecords : getRecords
+    getRecord : getRecord,
+    getRecords : getRecords,
+    propertyStatusMap : propertyStatusMap
 };
