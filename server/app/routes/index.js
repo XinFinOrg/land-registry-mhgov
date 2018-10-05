@@ -85,6 +85,15 @@ router.get('/getPolicyDetails', async function(req, res) {
     return res.send({status : true, data : data});
 });*/
 
+router.get('/getFinancers', async function(req, res) {
+    helper.getRecords({'role' : 'bank'}, function(err, data) {
+        if (err) {
+            return res.send({status : false, msg : err});
+        }
+        return res.send({status : true, data : data});
+    });																																																																																																																								
+});
+
 router.post('/getDashboard', function(req, res) {
 	console.log('getUsers : start')
 	let email = req.body.email;
@@ -146,7 +155,6 @@ router.get('/getPropertyDetails', function(req, res) {
 	let propertyId = req.params.propertyId || req.query.propertyId;
 	console.log('propertyId', propertyId)
 	var responseData = {};
-
 
 	helper.getRecord('properties', {propertyId : propertyId}, function(err, data) {
 	    if (err) {
@@ -218,15 +226,78 @@ router.post('/confirmProperty', function(req, res) {
 	});
 });
 
+router.post('/addOwner', function(req, res) {
+	console.log('confirmPorperty : start');
+	let propertyId = req.body.propertyId;
+	let registryId = req.body.registryId;
+	let ownerDetails = req.body.owner;
+	let query = {propertyId : propertyId};
+	let updateQuery = {$set : {status : 'registry_owner'}};
+	helper.updateCollection('properties', query,
+		updateQuery, function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+		query = {registryId : registryId};
+	    updateQuery = {
+	    	$set : {
+	    		owner : ownerDetails,
+	    		status : 'registry_owner'
+	    	}
+	    }
+		helper.updateCollection('registry', query, updateQuery,
+			function(err, data) {
+		    if (err) {
+		        return res.send({status : false, error : err});
+		    }
+		    return res.send({status : true});
+		});
+	});
+});
+
+router.post('/addOwnerFinacer', function(req, res) {
+	console.log('addOwnerFinacer : start');
+	let propertyId = req.body.propertyId;
+	let registryId = req.body.registryId;
+	let ownerDetails = req.body.ownerFinancer;
+	let query = {propertyId : propertyId};
+	let updateQuery = {$set : {
+		status : 'registry_owner_financer',
+		ownerFinancer : ownerDetails.email
+	}};
+	helper.updateCollection('properties', query,
+		updateQuery, function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+		query = {registryId : registryId};
+	    updateQuery = {
+	    	$set : {
+	    		ownerFinancer : ownerDetails,
+	    		status : 'registry_owner_financer'
+	    	}
+	    }
+		helper.updateCollection('registry', query, updateQuery,
+			function(err, data) {
+		    if (err) {
+		        return res.send({status : false, error : err});
+		    }
+		    return res.send({status : true});
+		});
+	});
+});
+
 router.post('/sellProperty', function(req, res) {
 	let propertyId = req.body.propertyId;
 	let email = req.body.owner;
 	let registryId = uuid();
 	let query = {propertyId : propertyId};
 	let updateQuery = {
-		onSell : 'active',
-		status : "on_sell",
-		registryId : registryId
+		$set : {
+			onSell : 'active',
+			status : "on_sell",
+			registryId : registryId
+		}
 	};
 
 	helper.updateCollection('properties', query,
