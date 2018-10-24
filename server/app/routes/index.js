@@ -8,7 +8,7 @@ var config = require('./../config/config');
 var constants = require('../constants/constants')
 var web3Conf = false;
 if (web3Conf) {
-	var gpa = require('../web3Helpers/gpa');	
+	var gpa = require('../web3Helpers/gpa');
 }
 
 router.post('/confirmIssuePolicy', helper.requestAuth, function(req, res) {
@@ -94,27 +94,66 @@ router.get('/getFinancers', async function(req, res) {
     });																																																																																																																								
 });
 
-router.post('/getDashboard', function(req, res) {
+router.post('/getDashboard', async function(req, res) {
 	console.log('getUsers : start')
 	let email = req.body.email;
 	let role = req.body.role;
+
 	let query = {};
 	if (role == 'individual') {
 		query = {$or : [{owner : email}, {buyer : email}]}
 	} else if (role == 'bank') {
 		query = {$or : [{ownerFinancer : email}, {buyerFinancer : email}]};
 	}
-	helper.getRecords('properties', query, function(err, data) {
-	    if (err) {
-	        return res.send({status : false, error : err});
-	    }
-	    return res.send({status : true, data : data});
-	});
+
+    try {
+    	let records = [];
+    	if (role != "bank") {
+			var collection = db.getCollection('properties');   		
+			query = {"$and" : [{isNewProperty : true}]};
+			if (role == "individual") {
+				query["$and"].push({"owner" : email});
+			} else {
+				query["$and"].push({"status" : {"$ne" : "property_rejected"}});
+			}
+			console.log("query", query);
+	        let p = await collection.find(query).toArray();
+	        console.log(p);
+	        records = records.concat(p);
+    	}
+
+		var collection = db.getCollection('registry');
+		query = {};
+		if (role == 'bank') {
+			query = {$or : [
+				{"ownerFinancer.email" : email},
+				{"buyerFinancer.email" : email}
+			]};
+		} else if (role == 'individual') {
+			query = {$or : [
+				{"owner.email" : email},
+				{"buyer.email" : email}
+			]};
+		}
+		console.log("query", query);
+        let q = await collection.find(query).toArray();
+        console.log(q)
+        records = records.concat(q);
+		return res.send({status : true, data : records});
+	} catch(err) {
+        return res.send({status : false, error : err});
+    }
 });
 
 router.post('/signup', function(req, res) {
+	//check user exists
 	console.log('signup : start')
 	let userDetails = req.body.userDetails;
+	if (!true) {
+		//create a new address => personal.newAccount()
+	} else {
+		userDetails.address = "0x0638e1574728b6d862dd5d3a3e0942c3be47d996";
+	}
 	console.log('userDetails', userDetails)
 	helper.addUser(userDetails, async function(err, data) {
 	    if (err) {
@@ -197,26 +236,91 @@ router.get('/getUsers', function(req, res) {
 	});
 });
 
+router.get('/getPropertyData', async function(req, res) {
+	console.log('getPropertyData : start')
+	let registryId = req.query.registryId||req.params.registryId;
+	let propertyId = req.query.propertyId||req.params.propertyId;
+	let allData = false;
+	if (registryId) {
+		var collection = db.getCollection('registry');
+	    allData = await collection.findOne({registryId : registryId});
+		propertyId = allData.propertyId;
+	}
+	var collection = db.getCollection('properties');
+    let propertyDetails = await collection.findOne({propertyId : propertyId});
+    let userList = [];
+    if (!allData) {
+    	userList.push(propertyDetails.owner);
+    } else {
+    	if (allData.owner && allData.owner.email) {
+    		userList.push(allData.owner.email);
+    	}
+    	if (allData.ownerFinancer && allData.ownerFinancer.email) {
+    		userList.push(allData.ownerFinancer.email);
+    	}
+    	if (allData.buyer && allData.buyer.email) {
+    		userList.push(allData.buyer.email);
+    	}
+    	if (allData.buyerFinancer && allData.buyerFinancer.email) {
+    		userList.push(allData.buyerFinancer.email);
+    	}
+    }
+    console.log(userList);
+	var collection = db.getCollection('users');
+    let userDetails = await collection.find({email : {$in : userList}}).toArray();
+    userDetails = helper.arrayToObject(userDetails, "email");
+
+    let responseData = {};
+    if (!allData) {
+    	responseData.propertyId = propertyId;
+    	responseData.propertyDetails = propertyDetails;
+    	responseData.owner = {};
+    	responseData.owner.userDetails = userDetails[propertyDetails.owner];
+    } else {
+ 	  	allData.propertyDetails = propertyDetails;
+    	if (allData.owner && allData.owner.email) {
+    		allData.owner.userDetails = userDetails[allData.owner.email];
+    	}
+    	if (allData.ownerFinancer && allData.ownerFinancer.email) {
+    		allData.ownerFinancer.userDetails = userDetails[allData.ownerFinancer.email];
+    	}
+    	if (allData.buyer && allData.buyer.email) {
+    		allData.buyer.userDetails = userDetails[allData.buyer.email];
+    	}
+    	if (allData.buyerFinancer && allData.buyerFinancer.email) {
+    		allData.buyerFinancer.userDetails = userDetails[allData.buyerFinancer.email];
+    	}
+    	responseData = allData;
+    }
+    return res.send({status : true, data : responseData});
+});
+
 router.post('/addProperty', function(req, res) {
 	console.log('addPorperty : start');
 	let propertyDetails = req.body.propertyDetails;
 	propertyDetails.propertyId = uuid();
 	// ⇨ '10ba038e-48da-487b-96e8-8d3b99b6d18a'
-	propertyDetails.status = 'new';
+	propertyDetails.isNewProperty = true;
+	propertyDetails.status = 'property_new';
+	propertyDetails.created = Date.now();
+	propertyDetails.modified = Date.now();
+
 	helper.insertCollection('properties', propertyDetails, function(err, data) {
 	    if (err) {
 	        return res.send({status : false, error : err});
 	    }
+	    //add property on blockchain
 	    return res.send({status : true, data : propertyDetails});
 	});
 });
 
 router.post('/confirmProperty', function(req, res) {
 	console.log('confirmPorperty : start');
+	//verify token (email and role)
 	let propertyId = req.body.propertyId;
 	let status = req.body.status; //new, verified, rejected
 	let query = {propertyId : propertyId};
-	let updateQuery = {$set : {status : status}};
+	let updateQuery = {$set : {status : status, modified : Date.now()}};
 	helper.updateCollection('properties', query,
 		updateQuery, function(err, data) {
 	    if (err) {
@@ -226,92 +330,51 @@ router.post('/confirmProperty', function(req, res) {
 	});
 });
 
-router.post('/addOwner', function(req, res) {
-	console.log('confirmPorperty : start');
-	let propertyId = req.body.propertyId;
-	let registryId = req.body.registryId;
-	let ownerDetails = req.body.owner;
-	let query = {propertyId : propertyId};
-	let updateQuery = {$set : {status : 'registry_owner'}};
-	helper.updateCollection('properties', query,
-		updateQuery, function(err, data) {
-	    if (err) {
-	        return res.send({status : false, error : err});
-	    }
-		query = {registryId : registryId};
-	    updateQuery = {
-	    	$set : {
-	    		owner : ownerDetails,
-	    		status : 'registry_owner'
-	    	}
-	    }
-		helper.updateCollection('registry', query, updateQuery,
-			function(err, data) {
-		    if (err) {
-		        return res.send({status : false, error : err});
-		    }
-		    return res.send({status : true});
-		});
-	});
-});
+router.post('/sellProperty', async function(req, res) {
+	console.log('sellProperty : start')
+	let body = req.body;
+	let [propertyId, owner, sellPrice, tokenAmt] = [
+		body.propertyId,
+		body.owner,
+		parseInt(body.sellPrice) || 0,
+		parseInt(body.tokenAmt) || 0
+	];
 
-router.post('/addOwnerFinacer', function(req, res) {
-	console.log('addOwnerFinacer : start');
-	let propertyId = req.body.propertyId;
-	let registryId = req.body.registryId;
-	let ownerDetails = req.body.ownerFinancer;
-	let query = {propertyId : propertyId};
-	let updateQuery = {$set : {
-		status : 'registry_owner_financer',
-		ownerFinancer : ownerDetails.email
-	}};
-	helper.updateCollection('properties', query,
-		updateQuery, function(err, data) {
-	    if (err) {
-	        return res.send({status : false, error : err});
-	    }
-		query = {registryId : registryId};
-	    updateQuery = {
-	    	$set : {
-	    		ownerFinancer : ownerDetails,
-	    		status : 'registry_owner_financer'
-	    	}
-	    }
-		helper.updateCollection('registry', query, updateQuery,
-			function(err, data) {
-		    if (err) {
-		        return res.send({status : false, error : err});
-		    }
-		    return res.send({status : true});
-		});
-	});
-});
-
-router.post('/sellProperty', function(req, res) {
-	let propertyId = req.body.propertyId;
-	let email = req.body.owner;
 	let registryId = uuid();
 	let query = {propertyId : propertyId};
 	let updateQuery = {
 		$set : {
-			onSell : 'active',
-			status : "on_sell",
-			registryId : registryId
+			isNewProperty : false,
+			modified : Date.now(),
+			onSell : true
 		}
 	};
 
+	let propertyDetails = {};
+	let collection = db.getCollection('properties');
+	try {
+		let propertyDetails = await collection.findOne({propertyId : propertyId});
+		console.log(propertyDetails)
+	} catch(e) {
+		console.log(e)
+	}
 	helper.updateCollection('properties', query,
 		updateQuery, function(err, data) {
 	    if (err) {
 	        return res.send({status : false, error : err});
 	    }
+	   	//console.log(data);
 		query = {
 			registryId : registryId,
 			propertyId : propertyId,
-			owner : {
-				email : email
-			},
-			status : "new"
+			propertyDetails : propertyDetails,
+			owner : {email : owner},
+			sellPrice : sellPrice,
+			tokenAmt : tokenAmt,
+			paymentRemaining : sellPrice,
+			status : "registry_new",
+			created : Date.now(),
+			modified : Date.now()
 		};
 		helper.insertCollection('registry', query,
 			function(err, data) {
@@ -324,6 +387,263 @@ router.post('/sellProperty', function(req, res) {
 		});
 	});
 
+});
+
+router.post('/addOwner', function(req, res) {
+	console.log('confirmPorperty : start');
+	let registryId = req.body.registryId;
+	let ownerDetails = req.body.owner;
+	let query = {registryId : registryId};
+	let updateQuery = {
+		$set : {
+			owner : ownerDetails,
+			status : 'registry_owner',
+			modified : Date.now()
+		}
+	};
+	helper.updateCollection('registry', query, updateQuery,
+		function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true});
+	});
+});
+
+router.post('/addOwnerFinancer', function(req, res) {
+	console.log('addOwnerFinancer : start');
+	let registryId = req.body.registryId;
+	let ownerFinancer  = req.body.ownerFinancer || false;
+	let status = req.body.status || (
+		!ownerFinancer ?
+		"registry_skip_owner_financer" : "registry_owner_financer"
+	);
+	let query = {registryId : registryId};
+	let updateQuery = {$set : {
+		ownerFinancer : ownerFinancer,
+		status : status,
+		modified : Date.now()
+	}};
+	helper.updateCollection('registry', query, updateQuery,
+		function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true});
+	});
+});
+
+router.post('/confirmFinancer', function(req, res) {
+	console.log('addOwnerFinancer : start');
+	let registryId = req.body.registryId;
+	let currentStatus= req.body.currentStatus;
+	let approved = req.body.approved;
+	let status = false;
+	switch(currentStatus) {
+		case 'registry_owner_financer' :
+			status = (!approved ? "registry_owner_financer_verified" :
+			"registry_owner_financer_rejected");
+		case 'registry_buyer_financer' :
+			status = (!approved ? "registry_buyer_financer_verified" :
+			"registry_buyer_financer_rejected");
+	}
+	if (!status) {
+		return {status : false, error : 'Invalid request'};
+	}
+	let query = {registryId : registryId};
+
+	let updateQuery = {$set : {
+		status : status,
+		modified : Date.now()
+	}};
+	helper.updateCollection('registry', query, updateQuery,
+		function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true});
+	});
+});
+
+router.post('/addBuyer', function(req, res) {
+	console.log('addBuyer : start');
+	let registryId = req.body.registryId;
+	let buyerDetails = req.body.buyer;
+	let query = {registryId : registryId};
+	let updateQuery = {
+		$set : {
+			buyer : buyerDetails,
+			status : 'registry_buyer',
+			modified : Date.now()
+		}
+	};
+	helper.updateCollection('registry', query, updateQuery,
+		function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true});
+	});
+});
+
+router.post('/confirmBuyer', function(req, res) {
+	console.log('addBuyer : start');
+	let registryId = req.body.registryId;
+	let status = req.body.status;
+	let query = {registryId : registryId};
+	let updateQuery = {
+		$set : {status : status, modified : Date.now()}
+	};
+	helper.updateCollection('registry', query, updateQuery,
+		function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true});
+	});
+});
+
+router.post('/addBuyerFinancer', function(req, res) {
+	console.log('addBuyerFinancer : start');
+	let registryId = req.body.registryId;
+	let buyerFinancer  = req.body.buyerFinancer || false;
+	let status = req.body.status || (
+		!buyerFinancer ?
+		"registry_skip_buyer_financer" : "registry_buyer_financer"
+	);
+	let query = {registryId : registryId};
+	let updateQuery = {$set : {
+		buyerFinancer : buyerFinancer,
+		status : status,
+		modified : Date.now()
+	}};
+	helper.updateCollection('registry', query, updateQuery,
+		function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true});
+	});
+});
+
+router.post('/payTokenAmount', async function(req, res) {
+	console.log('addBuyerFinancer : start');
+	let registryId = req.body.registryId;
+	let query = {registryId : registryId};
+	//return if no balance
+	let collection = db.getCollection('registry');
+	let registryData;
+	try {
+		registryData = await collection.findOne(query);
+	} catch(e) {
+		console.log(e)
+	}
+	console.log('registryData', registryData)
+	let tokenAmt = registryData.tokenAmt || 0;
+	//transfer amount from buyer to owner
+	let paymentRemaining = registryData.paymentRemaining || 0;
+	paymentRemaining -= tokenAmt;
+
+	let updateQuery = {$set : {
+		paymentRemaining : paymentRemaining,
+		status : "registry_token_amount",
+		modified : Date.now()
+	}};
+	helper.updateCollection('registry', query, updateQuery,
+		function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true});
+	});
+});
+
+router.post('/financerPayment', async function(req, res) {
+	console.log('financerPayment : start');
+	let registryId = req.body.registryId;
+	let query = {registryId : registryId};
+	//return if no balance
+	let collection = db.getCollection('registry');
+	let registryData;
+	try {
+		registryData = await collection.findOne(query);
+	} catch(e) {
+		console.log(e)
+	}
+	if (!registryData.buyerFinancer) {
+		return res.send({status : false, error : 'financer not available'})
+	}
+	let financeAmount = registryData.buyerFinancer.financeAmount;
+	let outstandingLoan = (!registryData.ownerFinancer) ? 0 :
+		registryData.ownerFinancer.outstandingLoan;
+	let paymentRemaining = registryData.paymentRemaining || 0;
+	//if (buyerFinancer.balance < financeAmount) => return("insufficient balance");
+	if (financeAmount > outstandingLoan) {
+		//transfer(buyerFinancer, ownerFinancer, outstandingLoan)
+		paymentRemaining -= outstandingLoan;
+		let fAmt = financeAmount - outstandingLoan;
+		outstandingLoan = 0;
+		//transfer(buyerFinancer, owner, fAmt)
+		paymentRemaining -= fAmt;
+	} else {
+		//transfer(buyerFinancer, ownerFinancer, financeAmount)
+		paymentRemaining -= financeAmount;
+		outstandingLoan -= financeAmount;
+	}
+
+	let updateQuery = {$set : {
+		paymentRemaining : paymentRemaining,
+		"ownerFinancer.outstandingLoan" : outstandingLoan,
+		status : "registry_buyer_pay",
+		modified : Date.now()
+	}};
+	helper.updateCollection('registry', query, updateQuery,
+		function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true});
+	});
+});
+
+router.post('/buyerPayment', async function(req, res) {
+	console.log('buyerPayment : start');
+	let registryId = req.body.registryId;
+	let query = {registryId : registryId};
+	//return if no balance
+	let collection = db.getCollection('registry');
+	let registryData;
+	try {
+		registryData = await collection.findOne(query);
+	} catch(e) {
+		console.log(e)
+	}
+	let outstandingLoan = (!registryData.ownerFinancer) ? 0 :
+		registryData.ownerFinancer.outstandingLoan;
+	let paymentRemaining = registryData.paymentRemaining || 0;
+
+	//if (buyer.getBalance() < paymentRemaining) => return("insufficientBalance");
+	if (outstandingLoan > 0) {
+		//transfer(buyer, ownerFinancer, outstandingLoan)
+		paymentRemaining -= outstandingLoan;
+		outstandingLoan = 0;
+	}
+	//transfer(buyer, owner, paymentRemaining)
+	paymentRemaining = 0;
+
+	let updateQuery = {$set : {
+		paymentRemaining : paymentRemaining,
+		"buyerFinancer.outstandingLoan" : outstandingLoan,
+		status : "registry_buyer_pay",
+		modified : Date.now()
+	}};
+	helper.updateCollection('registry', query, updateQuery,
+		function(err, data) {
+	    if (err) {
+	        return res.send({status : false, error : err});
+	    }
+	    return res.send({status : true});
+	});
 });
 
 router.get('*', function(req, res) {

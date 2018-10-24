@@ -2,6 +2,17 @@ const db = require('./../config/db');
 const errorCodes = require('../constants/errorCodes');
 var ethers = require('ethers');
 
+let arrayToObject = (arr, key) => {
+    var result = Object.assign(...arr.map(x =>({[x[key]]:x})));
+    //var result = a.reduce((obj, v)=> {obj[v[key]] = v; return obj} , {})
+    console.log(result);
+    return result;
+}
+/*var a = [
+    {a : 10, name  : "atul"},
+    {a : 10, name  : "vijay"}
+];
+arrayToObject(a, 'name');*/
 let getErrorResponse = function(errorKey) {
     var errorXX = errorCodes.getErrorCodes(errorKey);
     var statusCode = errorXX.statusCode;
@@ -242,6 +253,8 @@ let addPolicyMiddlewares = [requestAuth, validatePolicyDetails, isPolicyExist, d
 let debitStatusMiddlewares = [requestAuth, debitStatusHelper, issuePolicy];
 let issuePolicyMiddlewares = [requestAuth, issuePolicyHelper, issuePolicy];
 
+
+
 var propertyStatusMap = {
     new : 1,
     rejected : 2,
@@ -276,5 +289,6 @@ module.exports = {
     updateCollection : updateCollection,
     getRecord : getRecord,
     getRecords : getRecords,
-    propertyStatusMap : propertyStatusMap
+    propertyStatusMap : propertyStatusMap,
+    arrayToObject : arrayToObject
 };
