@@ -281,7 +281,7 @@ class DocumentDetails extends Component {
           shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
           margin={'40px 95px 100px'}>
           <InformTitle paddingTop={'0'} paddingBottom={'0'}>
-            Invoice History - Buyer Invoice Payment
+            Property History - Add Property
           </InformTitle>
           <FlexWrapper flexDirection="row" justifyContent="flex-start" padding={'10px 0'} borderWidth={'0 0 1px 0'}>
             <IconCircle width={'50px'} height={'50px'} bgColor="transparent" borderColor="#ddd">
