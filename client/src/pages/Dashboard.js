@@ -25,7 +25,7 @@ class Dashboard extends Component {
   }
   handlePageChange = currentPage => {
     // this.setState({ currentPage })
-    console.log('CURRENT PAGE', currentPage)
+    // console.log('CURRENT PAGE', currentPage)
   }
   async componentDidMount() {
     try {
@@ -41,7 +41,7 @@ class Dashboard extends Component {
   }
   render() {
     const { dashboardData } = this.state
-    console.log('dashboardData=====>', dashboardData)
+    // console.log('dashboardData=====>', dashboardData)
     const tableData = dashboardData.map(item => ({
       srNo: 1,
       propertyId: item.propertyId,
@@ -194,7 +194,7 @@ class Dashboard extends Component {
             pageSize={10}
             minRows={0}
             showPagination={false}
-            totalNumberOfResults={100}
+            totalNumberOfResults={222}
             onPageChange={this.handlePageChange}
           />
         </MainWrapper>
