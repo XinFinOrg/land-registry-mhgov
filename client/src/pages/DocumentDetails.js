@@ -61,9 +61,6 @@ class DocumentDetails extends Component {
     activeTab: this.props.match.url,
     dashboardData: []
   }
-  /* componentDidMount = () => {
-    this.setState({activeTab: "/dashboard/property-details"})
-  } */
   async componentDidMount() {
     const propertyId = this.props.match.url.split('/')[3]
     console.log('propertyId', propertyId)

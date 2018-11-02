@@ -1,4 +1,4 @@
-export const API_URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : 'http://localhost:8001'
+export const API_URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : 'http://217.23.12.125:8001'
 
 export const data = [
   {

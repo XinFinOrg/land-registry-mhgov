@@ -32,7 +32,7 @@ class Toastify extends Component {
   render() {
     return (
       <ToastifyWrapper>
-        <ToastContainer autoClose={500000} />
+        <ToastContainer autoClose={5000} />
       </ToastifyWrapper>
     )
   }

@@ -182,121 +182,7 @@ class Home extends Component {
     this.props.history.push('/')
   }
   handleSignupForm = values => {}
-  submitIndividual = async values => {
-    this.setState({ isLoading: true })
-    try {
-      const { data } = await axios.post(`${API_URL}/signup/`, {
-        userDetails: {
-          email: this.state.signUpData.email,
-          password: this.state.signUpData.password,
-          role: this.state.signUpData.registerAs,
-          salutation: values.salutation,
-          firstName: values.firstName,
-          middleName: values.middleName,
-          lastName: values.lastName,
-          aliasName: values.aliasName,
-          identityMark1: values.identificationMark1,
-          identityMark2: values.identificationMark2,
-          dob: values.dateOfBirth,
-          age: values.age,
-          uid: values.uid,
-          identityTypeID: values.identificationTypeID,
-          identityDesc: values.identificationDescription,
-          pan: values.panForm60,
-          occupation: values.occupation,
-          gender: values.gender,
-          mobileNo: values.mobileNo,
-          permAddress: values.perAddress,
-          tempAddress: values.tempAddress,
-          district: values.district,
-          taluka: values.taluka,
-          village: values.village
-        }
-      })
-      toast.success(`${'Submitted successfully'}`, {
-        position: toast.POSITION.TOP_CENTER
-      })
-      this.setState({ isLoading: false })
-      console.log('DATA', data)
-    } catch (error) {
-      toast.error(`${'Error!!!'}`, {
-        position: toast.POSITION.TOP_CENTER
-      })
-      this.setState({ isLoading: false })
-      console.log('ERROR', error)
-    }
-  }
-  submitBank = async values => {
-    this.setState({ isLoading: true })
 
-    try {
-      const { data } = await axios.post(`${API_URL}/signup/`, {
-        userDetails: {
-          email: this.state.signUpData.email,
-          password: this.state.signUpData.password,
-          role: this.state.signUpData.registerAs,
-          name: values.name,
-          city: values.city,
-          branch: values.branch
-        }
-      })
-      console.log('DATA', data)
-      this.setState({ isLoading: false, openModal: false })
-      toast.success(`${'Submitted successfully'}`, {
-        position: toast.POSITION.TOP_CENTER
-      })
-    } catch (error) {
-      console.log('ERROR', error)
-      this.setState({ isLoading: false })
-      toast.error(`${'Error!!!'}`, {
-        position: toast.POSITION.TOP_CENTER
-      })
-    }
-  }
-  submitGovernment = async values => {
-    this.setState({ isLoading: true })
-
-    try {
-      const { data } = await axios.post(`${API_URL}/signup/`, {
-        userDetails: {
-          email: this.state.signUpData.email,
-          password: this.state.signUpData.password,
-          role: values.govType,
-          name: values.name,
-          state: values.state,
-          dept: values.department
-        }
-      })
-      console.log('DATA', data)
-      this.setState({ isLoading: false, openModal: false }, () => this.props.history.push('/'))
-      toast.success(`${'Submitted successfully'}`, {
-        position: toast.POSITION.TOP_CENTER
-      })
-    } catch (error) {
-      console.log('ERROR', error)
-      this.setState({ isLoading: false })
-      toast.error(`${'Error!!!'}`, {
-        position: toast.POSITION.TOP_CENTER
-      })
-    }
-  }
-  handleLogin = async values => {
-    this.setState({ isLoading: true })
-    try {
-      const { data } = await axios.post(`${API_URL}/login`, {
-        email: values.email,
-        password: values.password
-      })
-      console.log('DATA', data.data.role)
-      await Cookies.set('role', data.data.role)
-      await Cookies.set('email', data.data.email)
-      this.props.history.push('/dashboard')
-      this.setState({ isLoading: false })
-    } catch (error) {
-      console.log('ERROR', error)
-      this.setState({ isLoading: false })
-    }
-  }
   render() {
     const {
       location: { pathname }
@@ -439,7 +325,24 @@ class Home extends Component {
                     email: '',
                     password: ''
                   }}
-                  onSubmit={formData => this.handleLogin(formData)}
+                  onSubmit={async (values, { resetForm }) => {
+                    this.setState({ isLoading: true })
+                    try {
+                      const { data } = await axios.post(`${API_URL}/login`, {
+                        email: values.email,
+                        password: values.password
+                      })
+                      console.log('DATA', data.data.role)
+                      await Cookies.set('role', data.data.role)
+                      await Cookies.set('email', data.data.email)
+                      this.props.history.push('/dashboard')
+                      await this.setState({ isLoading: false })
+                      resetForm()
+                    } catch (error) {
+                      console.log('ERROR', error)
+                      this.setState({ isLoading: false })
+                    }
+                  }}
                   render={formikBag => (
                     <Form>
                       <FormWrapper>
@@ -525,7 +428,51 @@ class Home extends Component {
                 taluka: '',
                 village: ''
               }}
-              onSubmit={formData => this.submitIndividual(formData)}
+              onSubmit={async (values, { resetForm }) => {
+                this.setState({ isLoading: true })
+                try {
+                  const { data } = await axios.post(`${API_URL}/signup/`, {
+                    userDetails: {
+                      email: this.state.signUpData.email,
+                      password: this.state.signUpData.password,
+                      role: this.state.signUpData.registerAs,
+                      salutation: values.salutation,
+                      firstName: values.firstName,
+                      middleName: values.middleName,
+                      lastName: values.lastName,
+                      aliasName: values.aliasName,
+                      identityMark1: values.identificationMark1,
+                      identityMark2: values.identificationMark2,
+                      dob: values.dateOfBirth,
+                      age: values.age,
+                      uid: values.uid,
+                      identityTypeID: values.identificationTypeID,
+                      identityDesc: values.identificationDescription,
+                      pan: values.panForm60,
+                      occupation: values.occupation,
+                      gender: values.gender,
+                      mobileNo: values.mobileNo,
+                      permAddress: values.perAddress,
+                      tempAddress: values.tempAddress,
+                      district: values.district,
+                      taluka: values.taluka,
+                      village: values.village
+                    }
+                  })
+                  toast.success(`${'Submitted successfully'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                  await this.setState({ isLoading: false })
+                  resetForm()
+                  console.log('DATA', data)
+                } catch (error) {
+                  toast.error(`${'Error!!!'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                  this.setState({ isLoading: false })
+                  console.log('ERROR', error)
+                }
+              }}
               render={formikBag => (
                 <Form>
                   <CloseWrap>
@@ -861,7 +808,33 @@ class Home extends Component {
                 city: '',
                 branch: ''
               }}
-              onSubmit={formData => this.submitBank(formData)}
+              onSubmit={async (values, { resetForm }) => {
+                this.setState({ isLoading: true })
+                try {
+                  const { data } = await axios.post(`${API_URL}/signup/`, {
+                    userDetails: {
+                      email: this.state.signUpData.email,
+                      password: this.state.signUpData.password,
+                      role: this.state.signUpData.registerAs,
+                      name: values.name,
+                      city: values.city,
+                      branch: values.branch
+                    }
+                  })
+                  console.log('DATA', data)
+                  this.setState({ isLoading: false, openModal: false })
+                  resetForm()
+                  toast.success(`${'Submitted successfully'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                } catch (error) {
+                  console.log('ERROR', error)
+                  this.setState({ isLoading: false })
+                  toast.error(`${'Error!!!'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                }
+              }}
               render={formikBag => (
                 <Form>
                   <CloseWrap>
@@ -919,7 +892,33 @@ class Home extends Component {
                 department: 'Housing and Urban Development',
                 govType: 'igr'
               }}
-              onSubmit={formData => this.submitGovernment(formData)}
+              onSubmit={async (values, { resetForm }) => {
+                this.setState({ isLoading: true })
+                try {
+                  const { data } = await axios.post(`${API_URL}/signup/`, {
+                    userDetails: {
+                      email: this.state.signUpData.email,
+                      password: this.state.signUpData.password,
+                      role: values.govType,
+                      name: values.name,
+                      state: values.state,
+                      dept: values.department
+                    }
+                  })
+                  console.log('DATA', data)
+                  this.setState({ isLoading: false, openModal: false }, () => this.props.history.push('/'))
+                  resetForm()
+                  toast.success(`${'Submitted successfully'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                } catch (error) {
+                  console.log('ERROR', error)
+                  this.setState({ isLoading: false })
+                  toast.error(`${'Error!!!'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                }
+              }}
               render={formikBag => (
                 <Form>
                   <CloseWrap>
