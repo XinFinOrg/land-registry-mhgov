@@ -39,12 +39,21 @@ class Dashboard extends Component {
       console.log('ERROR', error)
     }
   }
+
+  handleRedirect = (registryId, propertyId) => {
+    if (registryId === '') {
+      this.props.history.push(`/dashboard/property-details/propertyId/${propertyId}`)
+    } else {
+      this.props.history.push(`/dashboard/property-details/registryId/${registryId}`)
+    }
+  }
   render() {
     const { dashboardData } = this.state
     // console.log('dashboardData=====>', dashboardData)
     const tableData = dashboardData.map(item => ({
       srNo: 1,
       propertyId: item.propertyId,
+      registryId: item.registryId || '',
       propertyType: item.landType,
       propertyLocation: item.address,
       city: item.city,
@@ -143,14 +152,13 @@ class Dashboard extends Component {
         accessor: 'view',
         maxWidth: 150,
         Cell: props => {
-          console.log('PROPS==>', props.original.propertyId)
           return (
             <Button
               size="action"
               shadow={'none'}
               title="View"
               radius={'4px'}
-              onClick={() => this.props.history.push(`/dashboard/property-details/${props.original.propertyId}`)}
+              onClick={() => this.handleRedirect(props.original.registryId, props.original.propertyId)}
             />
           )
         }

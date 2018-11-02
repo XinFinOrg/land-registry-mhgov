@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Field } from 'formik'
 import {
   Paper,
   FormikForm,
@@ -15,17 +14,22 @@ import {
   Input,
   NormalFieldsTuple,
   Button,
-  ButtonGroup
+  ButtonGroup,
+  SelectBox
 } from '../components'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
 import get from 'lodash/get'
+import withRouter from 'react-router/withRouter'
 
 class PropertyDetailsForm extends Component {
   state = {
     isLoading: false
+  }
+  componentDidMount() {
+    console.log('this.props', this.props)
   }
   handleFormSubmit = async values => {
     this.setState({ isLoading: true })
@@ -53,11 +57,20 @@ class PropertyDetailsForm extends Component {
           currentOwner:values., */
         }
       })
-      this.setState({ isLoading: false })
+      await this.setState({ isLoading: false })
+      await toast.success(`${'Property added successfully'}`, {
+        position: toast.POSITION.TOP_CENTER
+      })
+      this.props.history.push('/dashboard')
+      // show toast
       console.log('DATA', data)
     } catch (error) {
-      this.setState({ isLoading: false })
+      await this.setState({ isLoading: false })
+      toast.error(`${'Error!!!'}`, {
+        position: toast.POSITION.TOP_CENTER
+      })
       console.log('ERROR', error)
+      // show toast
     }
   }
   render() {
@@ -70,10 +83,12 @@ class PropertyDetailsForm extends Component {
           district: get(this.props.data, 'district', 'Pune'),
           landType: get(this.props.data, 'landType', 'Agricultural'),
           taluka: get(this.props.data, 'taluka', 'Pune'),
-          localGoverning: get(this.props.data, 'localGovNo', 'ABC001'),
+          localGoverning: get(this.props.data, 'localGovNo', 'MV123'),
           cityVillage: get(this.props.data, 'city', 'Pune'),
           location: get(this.props.data, 'location', 'Maharastra'),
-          surveyNumber: get(this.props.data, 'surveyNo', '120#12BB'),
+          surveyNumber: get(this.props.data, 'surveyNo', 'S12345'),
+          propertyUsage: get(this.props.data, 'propertyUsage', 'Shop'),
+          usage: get(this.props.data, 'usage', 'Non-Agriculture'),
           areaOfConstructurePropertySquareMeter: get(this.props.data, 'constructedArea', '20'),
           areaOfConstructurePropertyBuildUpArea: '30',
           areaOfConstructureProperty: '30',
@@ -116,7 +131,7 @@ class PropertyDetailsForm extends Component {
                 />
                 <Field
                   name="cityVillage"
-                  render={({ field }) => <TextInput {...field} label="City Village" placeholder={'City Village'} />}
+                  render={({ field }) => <TextInput {...field} label="City" placeholder={'City'} />}
                 />
                 <Field
                   name="location"
@@ -130,11 +145,33 @@ class PropertyDetailsForm extends Component {
               <StaticFieldWrapper>
                 <StaticField>
                   <InformTitle>Property Usage</InformTitle>
-                  <InformSubTitle>Non Developed Solar Energy / Wind Mill Project 20 Page 13</InformSubTitle>
+                  <Field
+                    name="propertyUsage"
+                    render={({ field }) => (
+                      <SelectBox
+                        onChange={propertyUsage => formikBag.setFieldValue('propertyUsage', propertyUsage.value)}
+                        options={[{ label: 'Shop', value: 'Shop' }]}
+                        placeholder="Property Usage"
+                        defaultValue={{ label: 'Shop', value: 'Shop' }}
+                        isSearchable={false}
+                      />
+                    )}
+                  />
                 </StaticField>
                 <StaticField>
                   <InformTitle>Usage Main Category</InformTitle>
-                  <InformSubTitle>Non Agriculture Build And Open > Shop</InformSubTitle>
+                  <Field
+                    name="usage"
+                    render={({ field }) => (
+                      <SelectBox
+                        onChange={usage => formikBag.setFieldValue('usage', usage.value)}
+                        options={[{ label: 'Non-Agriculture', value: 'Non-Agriculture' }]}
+                        placeholder="Usage Main Category"
+                        value={{ label: 'Non-Agriculture', value: 'Non-Agriculture' }}
+                        isSearchable={false}
+                      />
+                    )}
+                  />
                 </StaticField>
               </StaticFieldWrapper>
               <FormDetailsContainer display={'block'} paddingTop={46}>
@@ -258,7 +295,7 @@ class PropertyDetailsForm extends Component {
               </FormDetailsContainer>
             </Paper>
             <ButtonGroup>
-              <Button size={'medium'} width={'150px'} disabled title="Save" type="button" />
+              {/* <Button size={'medium'} width={'150px'} disabled title="Save" type="button" /> */}
               <Button size={'medium'} width={'150px'} isLoading={isLoading} title="Submit" type="submit" />
             </ButtonGroup>
           </FormikForm>
@@ -268,4 +305,4 @@ class PropertyDetailsForm extends Component {
   }
 }
 
-export default PropertyDetailsForm
+export default withRouter(PropertyDetailsForm)

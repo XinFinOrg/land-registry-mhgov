@@ -16,7 +16,7 @@ const ToastifyWrapper = styled.div`
   .Toastify__toast--success {
     color: #3089f5;
     background: #fff;
-    border: 2px solid #3089f5;
+    border: 0.5px solid #3089f5;
   }
   .Toastify__close-button {
     color: #3089f5;

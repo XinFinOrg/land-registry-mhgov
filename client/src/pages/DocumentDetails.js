@@ -62,14 +62,24 @@ class DocumentDetails extends Component {
     dashboardData: []
   }
   async componentDidMount() {
-    const propertyId = this.props.match.url.split('/')[3]
-    console.log('propertyId', propertyId)
-    try {
-      const { data } = await axios.get(`${API_URL}/getPropertyDetails?propertyId=${propertyId}`)
-      console.log('DATA', data.data)
-      this.setState({ dashboardData: data.data })
-    } catch (error) {
-      console.log('ERROR', error)
+    const type = this.props.match.url.split('/')[3]
+    const id = this.props.match.url.split('/')[4]
+    if (type === 'propertyId') {
+      try {
+        const { data } = await axios.get(`${API_URL}/getPropertyData?propertyId=${id}`)
+        console.log('DATA', data.data)
+        this.setState({ dashboardData: data.data })
+      } catch (error) {
+        console.log('ERROR', error)
+      }
+    } else {
+      try {
+        const { data } = await axios.get(`${API_URL}/getPropertyData?registryId=${id}`)
+        console.log('DATA', data.data)
+        this.setState({ dashboardData: data.data })
+      } catch (error) {
+        console.log('ERROR', error)
+      }
     }
   }
 
@@ -149,10 +159,21 @@ class DocumentDetails extends Component {
           <Tabber>
             <Tab
               onClick={() =>
-                this.setState({ activeTab: `/dashboard/property-details/${this.props.match.url.split('/')[3]}` })
+                this.setState({
+                  activeTab: `/dashboard/property-details/${this.props.match.url.split('/')[3]}/${
+                    this.props.match.url.split('/')[4]
+                  }`
+                })
               }
-              to={`/dashboard/property-details/${this.props.match.url.split('/')[3]}`}
-              selected={activeTab === `/dashboard/property-details/${this.props.match.url.split('/')[3]}`}>
+              to={`/dashboard/property-details/${this.props.match.url.split('/')[3]}/${
+                this.props.match.url.split('/')[4]
+              }`}
+              selected={
+                activeTab ===
+                `/dashboard/property-details/${this.props.match.url.split('/')[3]}/${
+                  this.props.match.url.split('/')[4]
+                }`
+              }>
               Property Details
             </Tab>
             <Tab
@@ -203,7 +224,8 @@ class DocumentDetails extends Component {
             </Tab>
           </Tabber>
         </Paper>
-        {activeTab === `/dashboard/property-details/${this.props.match.url.split('/')[3]}` && (
+        {activeTab ===
+          `/dashboard/property-details/${this.props.match.url.split('/')[3]}/${this.props.match.url.split('/')[4]}` && (
           <PropertyDetailsWrapper>
             <PropertyDetailsForm data={get(dashboardData, 'property', [])} />
           </PropertyDetailsWrapper>
