@@ -11,15 +11,18 @@ import {
   ButtonGroup,
   FieldGroupWithTitle,
   CustomTable,
-  StyledHead
+  StyledHead,
+  SelectBox
 } from '../components'
 import { customData, partyDetails } from '../constants'
 import get from 'lodash/get'
 
 class OwnerDetailsForm extends Component {
-  state = {}
   render() {
     console.log('OwnerDetailsForm', this.props)
+    const {
+      data: { userDetails }
+    } = this.props
     const columns = [
       {
         Header: <StyledHead>Sr. No.</StyledHead>,
@@ -79,29 +82,29 @@ class OwnerDetailsForm extends Component {
           selectPartyType: 'Admin',
           selectPartyCategory: 'Admin',
           isExecuter: 'Yes',
-          salutation: get(this.props.data, 'salutation', 'Mr'),
-          partyFirstName: get(this.props.data, 'firstName', 'Saurav'),
-          partyMiddleName: get(this.props.data, 'middleName', ''),
-          partyLastName: get(this.props.data, 'lastName', 'Gupta'),
-          aliasName: get(this.props.data, 'aliasName', 'saurav'),
-          identificationMark1: get(this.props.data, 'identityMark1', 'Mole'),
-          identificationMark2: get(this.props.data, 'identityMark2', 'Mole'),
-          dateOfBirth: get(this.props.data, 'dob', '22/12/1994'),
-          age: get(this.props.data, 'age', '24'),
-          uid: get(this.props.data, 'uid', 'safffa'),
-          identificationTypeID: get(this.props.data, 'identityTypeID', 'aasas'),
-          identificationDescription: get(this.props.data, 'identityDesc', 'assa'),
-          panForm60: get(this.props.data, 'pan', 'BHXHBH99'),
-          occupation: get(this.props.data, 'occupation', 'Employee'),
-          gender: get(this.props.data, 'gender', 'Male'),
-          email: get(this.props.data, 'email', 's@s.com'),
-          mobileNo: get(this.props.data, 'mobileNo', '999999999999'),
+          salutation: get(userDetails, 'salutation', 'Mr'),
+          partyFirstName: get(userDetails, 'firstName', 'Saurav'),
+          partyMiddleName: get(userDetails, 'middleName', ''),
+          partyLastName: get(userDetails, 'lastName', 'Gupta'),
+          aliasName: get(userDetails, 'aliasName', 'saurav'),
+          identificationMark1: get(userDetails, 'identityMark1', 'Mole'),
+          identificationMark2: get(userDetails, 'identityMark2', 'Mole'),
+          dateOfBirth: get(userDetails, 'dob', '22/12/1994'),
+          age: get(userDetails, 'age', '24'),
+          uid: get(userDetails, 'uid', 'safffa'),
+          identificationTypeID: get(userDetails, 'identityTypeID', 'aasas'),
+          identificationDescription: get(userDetails, 'identityDesc', 'assa'),
+          panForm60: get(userDetails, 'pan', 'BHXHBH99'),
+          occupation: get(userDetails, 'occupation', 'Employee'),
+          gender: get(userDetails, 'gender', 'Male'),
+          email: get(userDetails, 'email', 's@s.com'),
+          mobileNo: get(userDetails, 'mobileNo', '999999999999'),
           presentationExemption: 'Yes', //
           pinCode: '110019', //
-          addressSame: get(this.props.data, 'permAddress', 'Delhi'),
-          district: get(this.props.data, 'district', 'Delhi'),
-          taluka: get(this.props.data, 'taluka', 'Delhi'),
-          village: get(this.props.data, 'village', 'Delhi'),
+          addressSame: get(userDetails, 'permAddress', 'Delhi'),
+          district: get(userDetails, 'district', 'Delhi'),
+          taluka: get(userDetails, 'taluka', 'Delhi'),
+          village: get(userDetails, 'village', 'Delhi'),
           financierName: 'Yes', //
           city: 'Pune', //
           branch: 'Pune', //
@@ -123,14 +126,28 @@ class OwnerDetailsForm extends Component {
                 <Field
                   name="selectPartyType"
                   render={({ field }) => (
-                    <TextInput {...field} label="Select Party Type" placeholder={'Select Party Type'} />
+                    <SelectBox
+                      onChange={selectPartyType => formikBag.setFieldValue('selectPartyType', selectPartyType.value)}
+                      options={[{ label: 'Admin', value: 'Admin' }, { label: 'User', value: 'User' }]}
+                      placeholder="Select Party Type"
+                      defaultValue={{ label: 'Admin', value: 'Admin' }}
+                      isSearchable={false}
+                    />
                   )}
                 />
 
                 <Field
                   name="selectPartyCategory"
                   render={({ field }) => (
-                    <TextInput {...field} label="Select Party Category" placeholder={'Select Party Category'} />
+                    <SelectBox
+                      onChange={selectPartyCategory =>
+                        formikBag.setFieldValue('selectPartyCategory', selectPartyCategory.value)
+                      }
+                      options={[{ label: 'Admin', value: 'Admin' }, { label: 'User', value: 'User' }]}
+                      placeholder="Select Party Type"
+                      defaultValue={{ label: 'Admin', value: 'Admin' }}
+                      isSearchable={false}
+                    />
                   )}
                 />
               </FormDetailsContainer>
@@ -152,7 +169,15 @@ class OwnerDetailsForm extends Component {
                 <FieldGroupWithTitle>
                   <Field
                     name="isExecuter"
-                    render={({ field }) => <TextInput {...field} label="Is Executer?" placeholder={'Is Executer?'} />}
+                    render={({ field }) => (
+                      <SelectBox
+                        onChange={isExecuter => formikBag.setFieldValue('isExecuter', isExecuter.value)}
+                        options={[{ label: 'Yes', value: 'Yes' }, { label: 'No', value: 'No' }]}
+                        placeholder="Select Party Type"
+                        defaultValue={{ label: 'Yes', value: 'Yes' }}
+                        isSearchable={false}
+                      />
+                    )}
                   />
 
                   <Field
@@ -302,7 +327,7 @@ class OwnerDetailsForm extends Component {
                   minRows={0}
                 />
               </FormDetailsContainer> */}
-              <FormDetailsContainer>
+              {/* <FormDetailsContainer>
                 <InformTitle>Financier Details</InformTitle>
                 <FieldGroupWithTitle>
                   <Field
@@ -359,7 +384,7 @@ class OwnerDetailsForm extends Component {
                     render={({ field }) => <TextInput {...field} label="Token amount" placeholder={'Token amount'} />}
                   />
                 </NormalFieldsTuple>
-              </FormDetailsContainer>
+              </FormDetailsContainer> */}
             </Paper>
             <ButtonGroup>
               <Button size={'medium'} width={'150px'} title="Submit" type="submit" />

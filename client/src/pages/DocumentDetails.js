@@ -178,10 +178,19 @@ class DocumentDetails extends Component {
             </Tab>
             <Tab
               onClick={() =>
-                this.setState({ activeTab: `/dashboard/owner-details/${this.props.match.url.split('/')[3]}` })
+                this.setState({
+                  activeTab: `/dashboard/owner-details/${this.props.match.url.split('/')[3]}/${
+                    this.props.match.url.split('/')[4]
+                  }`
+                })
               }
-              to={`/dashboard/owner-details/${this.props.match.url.split('/')[3]}`}
-              selected={activeTab === `/dashboard/owner-details/${this.props.match.url.split('/')[3]}`}>
+              to={`/dashboard/owner-details/${this.props.match.url.split('/')[3]}/${
+                this.props.match.url.split('/')[4]
+              }`}
+              selected={
+                activeTab ===
+                `/dashboard/owner-details/${this.props.match.url.split('/')[3]}/${this.props.match.url.split('/')[4]}`
+              }>
               Owner Details
             </Tab>
             <Tab
@@ -230,7 +239,8 @@ class DocumentDetails extends Component {
             <PropertyDetailsForm data={get(dashboardData, 'propertyDetails', [])} />
           </PropertyDetailsWrapper>
         )}
-        {activeTab === `/dashboard/owner-details/${this.props.match.url.split('/')[3]}` && (
+        {activeTab ===
+          `/dashboard/owner-details/${this.props.match.url.split('/')[3]}/${this.props.match.url.split('/')[4]}` && (
           <OwnerDetailsForm data={get(dashboardData, 'owner', [])} />
         )}
 
