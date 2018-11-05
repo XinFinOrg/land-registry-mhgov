@@ -67,7 +67,7 @@ class DocumentDetails extends Component {
     if (type === 'propertyId') {
       try {
         const { data } = await axios.get(`${API_URL}/getPropertyData?propertyId=${id}`)
-        console.log('DATA', data.data)
+        // console.log('DATA', data.data)
         this.setState({ dashboardData: data.data })
       } catch (error) {
         console.log('ERROR', error)
@@ -135,7 +135,7 @@ class DocumentDetails extends Component {
       }
     ]
     const { activeTab, dashboardData } = this.state
-    console.log('PROPS=====>', this.state.dashboardData)
+    console.log('dashboardData=====>', dashboardData)
     return (
       <React.Fragment>
         <Header />
@@ -227,7 +227,7 @@ class DocumentDetails extends Component {
         {activeTab ===
           `/dashboard/property-details/${this.props.match.url.split('/')[3]}/${this.props.match.url.split('/')[4]}` && (
           <PropertyDetailsWrapper>
-            <PropertyDetailsForm data={get(dashboardData, 'property', [])} />
+            <PropertyDetailsForm data={get(dashboardData, 'propertyDetails', [])} />
           </PropertyDetailsWrapper>
         )}
         {activeTab === `/dashboard/owner-details/${this.props.match.url.split('/')[3]}` && (

@@ -177,7 +177,7 @@ class Dashboard extends Component {
                   width={'150px'}
                   title="Add Property"
                   type="submit"
-                  onClick={() => this.props.history.push('/dashboard/property-details/add-property')}
+                  onClick={() => this.props.history.push('/dashboard/property-details/add-property/undefined')}
                 />
               )}
 
