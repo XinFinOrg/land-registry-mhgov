@@ -18,6 +18,12 @@ const SelectWrapper = styled.div`
   .css-1aya2g8:hover {
     border-color: rgba(221, 221, 221, 0.6);
   }
+  .css-vj8t7z {
+    min-height: 62px !important;
+  }
+  .css-2o5izw {
+    min-height: 62px !important;
+  }
 `
 class SelectBox extends Component {
   state = {}
