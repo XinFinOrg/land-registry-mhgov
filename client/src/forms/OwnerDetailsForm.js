@@ -36,8 +36,7 @@ class OwnerDetailsForm extends Component {
         params: { tab }
       }
     } = this.props
-    const id = this.props.match.url.split('/')[4]
-    const type = this.props.match.url.split('/')[3]
+
     try {
       this.setState({ isLoadingSkip: true })
       const { data } = await axios.post(`${API_URL}/addOwnerFinancer`, {
@@ -46,7 +45,7 @@ class OwnerDetailsForm extends Component {
         status: 'registry_skip_owner_financer'
       })
       await this.setState({ isLoadingSkip: false })
-      this.props.history.push(`/dashboard/buyer-details/${type}/${id}`)
+      this.props.history.push('/dashboard/buyer-details')
       // this.props.history.push('/dashboard/buyer-details')
       /* await toast.success(`${'Owner Added!'}`, {
         position: toast.POSITION.TOP_CENTER
@@ -500,8 +499,6 @@ class OwnerDetailsForm extends Component {
                 try {
                   this.setState({ isLoading: true })
 
-                  const id = this.props.match.url.split('/')[4]
-                  const type = this.props.match.url.split('/')[3]
                   const { data } = await axios.post(`${API_URL}/addOwner`, {
                     registryId: tab,
                     ownerFinancer: {
@@ -517,7 +514,7 @@ class OwnerDetailsForm extends Component {
                     position: toast.POSITION.TOP_CENTER
                   })
                   await this.setState({ isLoading: false })
-                  this.props.history.push(`/dashboard/buyer-details/${type}/${id}`)
+                  this.props.history.push('/dashboard/buyer-details')
                 } catch (error) {
                   await this.setState({ isLoading: false })
                   toast.error(`${'Some error occurred!'}`, {

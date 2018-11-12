@@ -135,7 +135,10 @@ class DocumentDetails extends Component {
       }
     ]
     const { activeTab, dashboardData } = this.state
-    console.log('dashboardData=====>', dashboardData)
+    console.log('dashboardData=====>', this.props)
+    const {
+      location: { pathname }
+    } = this.props
     return (
       <React.Fragment>
         <Header />
@@ -196,18 +199,11 @@ class DocumentDetails extends Component {
             <Tab
               onClick={() =>
                 this.setState({
-                  activeTab: `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}/${
-                    this.props.match.url.split('/')[4]
-                  }`
+                  activeTab: '/dashboard/buyer-details'
                 })
               }
-              to={`/dashboard/buyer-details/${this.props.match.url.split('/')[3]}/${
-                this.props.match.url.split('/')[4]
-              }`}
-              selected={
-                activeTab ===
-                `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}/${this.props.match.url.split('/')[4]}`
-              }>
+              to={'/dashboard/buyer-details'}
+              selected={activeTab === '/dashboard/buyer-details'}>
               Buyer Details
             </Tab>
             <Tab
@@ -253,10 +249,7 @@ class DocumentDetails extends Component {
           <OwnerDetailsForm data={get(dashboardData, 'owner', [])} />
         )}
 
-        {activeTab ===
-          `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}/${this.props.match.url.split('/')[4]}` && (
-          <BuyerDetailsForm />
-        )}
+        {activeTab === '/dashboard/buyer-details' || (pathname === '/dashboard/buyer-details' && <BuyerDetailsForm />)}
 
         {activeTab === `/dashboard/registeration/${this.props.match.url.split('/')[3]}` && <Registeration />}
 
