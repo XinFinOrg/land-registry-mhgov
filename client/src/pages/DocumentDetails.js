@@ -83,6 +83,14 @@ class DocumentDetails extends Component {
     }
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const {
+      location: { pathname }
+    } = nextProps
+    // if()
+    console.log('nextProps', pathname)
+    return null
+  }
   render() {
     const columns = [
       {
@@ -135,7 +143,7 @@ class DocumentDetails extends Component {
       }
     ]
     const { activeTab, dashboardData } = this.state
-    console.log('dashboardData=====>', this.props)
+    // console.log('dashboardData=====>', this.props)
     const {
       location: { pathname }
     } = this.props
@@ -249,7 +257,8 @@ class DocumentDetails extends Component {
           <OwnerDetailsForm data={get(dashboardData, 'owner', [])} />
         )}
 
-        {activeTab === '/dashboard/buyer-details' || (pathname === '/dashboard/buyer-details' && <BuyerDetailsForm />)}
+        {(pathname === '/dashboard/buyer-details' && <BuyerDetailsForm />) ||
+          (activeTab === '/dashboard/buyer-details' && <BuyerDetailsForm />)}
 
         {activeTab === `/dashboard/registeration/${this.props.match.url.split('/')[3]}` && <Registeration />}
 
