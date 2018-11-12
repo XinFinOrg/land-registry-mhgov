@@ -14,6 +14,7 @@ import {
   StyledHead
 } from '../components'
 import { customData, partyDetails } from '../constants'
+import withRouter from 'react-router/withRouter'
 
 class SellerDetailsForm extends Component {
   state = {}
@@ -399,4 +400,4 @@ class SellerDetailsForm extends Component {
   }
 }
 
-export default SellerDetailsForm
+export default withRouter(SellerDetailsForm)

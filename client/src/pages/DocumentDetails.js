@@ -27,7 +27,7 @@ import {
   MediumText
 } from '../components'
 import { commonUploadDoc, DocumentDutyTotal } from '../constants'
-import { PropertyDetailsForm, OwnerDetailsForm, SellerDetailsForm, StampDutyForm, Registeration } from '../forms'
+import { PropertyDetailsForm, OwnerDetailsForm, BuyerDetailsForm, StampDutyForm, Registeration } from '../forms'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import { API_URL } from '../constants'
@@ -195,10 +195,19 @@ class DocumentDetails extends Component {
             </Tab>
             <Tab
               onClick={() =>
-                this.setState({ activeTab: `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}` })
+                this.setState({
+                  activeTab: `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}/${
+                    this.props.match.url.split('/')[4]
+                  }`
+                })
               }
-              to={`/dashboard/buyer-details/${this.props.match.url.split('/')[3]}`}
-              selected={activeTab === `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}`}>
+              to={`/dashboard/buyer-details/${this.props.match.url.split('/')[3]}/${
+                this.props.match.url.split('/')[4]
+              }`}
+              selected={
+                activeTab ===
+                `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}/${this.props.match.url.split('/')[4]}`
+              }>
               Buyer Details
             </Tab>
             <Tab
@@ -244,7 +253,10 @@ class DocumentDetails extends Component {
           <OwnerDetailsForm data={get(dashboardData, 'owner', [])} />
         )}
 
-        {activeTab === `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}` && <SellerDetailsForm />}
+        {activeTab ===
+          `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}/${this.props.match.url.split('/')[4]}` && (
+          <BuyerDetailsForm />
+        )}
 
         {activeTab === `/dashboard/registeration/${this.props.match.url.split('/')[3]}` && <Registeration />}
 
@@ -304,7 +316,7 @@ class DocumentDetails extends Component {
             </ButtonGroup>
           </React.Fragment>
         )}
-        <Paper
+        {/* <Paper
           padding={'26px 31px 20px'}
           radius={'0 0 6px 6px'}
           shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
@@ -365,7 +377,7 @@ class DocumentDetails extends Component {
               </Form>
             )}
           />
-        </Paper>
+        </Paper> */}
         <Paper
           padding={'26px 31px 20px'}
           radius={'0 0 6px 6px'}

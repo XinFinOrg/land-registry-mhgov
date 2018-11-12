@@ -25,14 +25,24 @@ const SelectWrapper = styled.div`
     min-height: 62px !important;
   }
 `
+const TopWrapper = styled.div`
+  & > p {
+    font-size: 14px;
+    color: rgba(51, 51, 51, 0.6);
+    padding-bottom: 2px;
+  }
+`
 class SelectBox extends Component {
   state = {}
   render() {
-    const { ...props } = this.props
+    const { label, ...props } = this.props
     return (
-      <SelectWrapper>
-        <Select {...props} />
-      </SelectWrapper>
+      <TopWrapper>
+        <p>{label}</p>
+        <SelectWrapper>
+          <Select {...props} />
+        </SelectWrapper>
+      </TopWrapper>
     )
   }
 }

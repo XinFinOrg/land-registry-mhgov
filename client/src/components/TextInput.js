@@ -37,11 +37,11 @@ const theme = createMuiTheme({
 
 class TextInput extends Component {
   render() {
-    const { label, placeholder, ...props } = this.props
+    const { label, placeholder, required, ...props } = this.props
     return (
       <MuiThemeProvider theme={theme}>
         <TextInputWrapper>
-          <TextField label={label} placeholder={placeholder} {...props} />
+          <TextField label={label} placeholder={placeholder} required={required} {...props} />
         </TextInputWrapper>
       </MuiThemeProvider>
     )

@@ -332,9 +332,10 @@ class Home extends Component {
                         email: values.email,
                         password: values.password
                       })
-                      console.log('DATA', data.data.role)
+                      console.log('DATA', data)
                       await Cookies.set('role', data.data.role)
                       await Cookies.set('email', data.data.email)
+                      await Cookies.set('address', data.data.address)
                       this.props.history.push('/dashboard')
                       await this.setState({ isLoading: false })
                       resetForm()
