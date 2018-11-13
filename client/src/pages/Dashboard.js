@@ -33,7 +33,7 @@ class Dashboard extends Component {
         email: Cookies.get('email'),
         role: Cookies.get('role')
       })
-      console.log('DATA', data.data)
+      // console.log('DATA', data.data)
       this.setState({ dashboardData: data.data })
     } catch (error) {
       console.log('ERROR', error)

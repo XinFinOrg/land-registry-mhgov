@@ -68,7 +68,7 @@ class PropertyDetailsForm extends Component {
         params: { tab }
       }
     } = this.props
-    console.log('DATA PROPERTY', owner, status)
+    // console.log('DATA PROPERTY', owner, status)
     return (
       <React.Fragment>
         <Formik

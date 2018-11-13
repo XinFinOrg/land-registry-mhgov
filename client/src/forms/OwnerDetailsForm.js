@@ -45,6 +45,7 @@ class OwnerDetailsForm extends Component {
         status: 'registry_skip_owner_financer'
       })
       await this.setState({ isLoadingSkip: false })
+      this.props.changeActiveTab('buyer-details')
       this.props.history.push('/dashboard/buyer-details')
       // this.props.history.push('/dashboard/buyer-details')
       /* await toast.success(`${'Owner Added!'}`, {
@@ -59,7 +60,7 @@ class OwnerDetailsForm extends Component {
     }
   }
   render() {
-    console.log('OwnerDetailsForm', this.props)
+    console.log('OwnerDetailsForm', this.props.changeActiveTab)
     const {
       data: { userDetails }
     } = this.props
@@ -510,11 +511,11 @@ class OwnerDetailsForm extends Component {
                     status: 'registry_owner_financer'
                   })
                   console.log('Add financier', data)
-                  await toast.success(`${'Financier Added!'}`, {
+                  await toast.success(`${'Onwer financier added!'}`, {
                     position: toast.POSITION.TOP_CENTER
                   })
                   await this.setState({ isLoading: false })
-                  this.props.history.push('/dashboard/buyer-details')
+                  this.props.changeActiveTab('buyer-details')
                 } catch (error) {
                   await this.setState({ isLoading: false })
                   toast.error(`${'Some error occurred!'}`, {

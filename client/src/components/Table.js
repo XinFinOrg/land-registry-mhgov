@@ -128,7 +128,7 @@ class Table extends Component {
     let current = activePage
     let start = 0
     let end = array.length
-    console.log('CURRENT', current)
+    // console.log('CURRENT', current)
     if (current - 5 > 0) {
       start = current - 5
     } else {
