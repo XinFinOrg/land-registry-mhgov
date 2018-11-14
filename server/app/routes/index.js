@@ -5,69 +5,70 @@ const uuid = require('uuid/v4');
 var helper = require('./helper');
 var db = require('./../config/db');
 var config = require('./../config/config');
-var constants = require('../constants/constants')
-var web3Conf = false;
-if (web3Conf) {
-	var gpa = require('../web3Helpers/gpa');
-}
+var constants = require('../constants/constants');
+// var validationHelper = require('./validationHelper');
+// var web3Conf = false;
+// if (web3Conf) {
+// 	var gpa = require('../web3Helpers/gpa');
+// }
 
-router.post('/confirmIssuePolicy', helper.requestAuth, function(req, res) {
-	let policyNo = req.body.policyNo;
-	var updateQuery = {$set : {policyState : 'ISSUED'}};
-	helper.updatePolicy({policyNo : policyNo}, updateQuery, async function(err, data) {
-	    if (err) {
-	        return res.send({status : false, error : err});
-	    }
-	    //set policy status to blockchain
-	    if (web3Conf) {
-	    	try {
-				var m = await gpa.setStatus(
-				    helper.web3StringToBytes32(policyInfo.policyNo),
-				    helper.web3StringToBytes32(policyInfo.policyState)
-				);
-		    } catch(err) {
-				console.log('error', err);
-				return res.send({status : false, error : err});
-			}
-	    }
-	    return res.send({status : true});
-	});
-});
+// router.post('/confirmIssuePolicy', helper.requestAuth, function(req, res) {
+// 	let policyNo = req.body.policyNo;
+// 	var updateQuery = {$set : {policyState : 'ISSUED'}};
+// 	helper.updatePolicy({policyNo : policyNo}, updateQuery, async function(err, data) {
+// 	    if (err) {
+// 	        return res.send({status : false, error : err});
+// 	    }
+// 	    //set policy status to blockchain
+// 	    if (web3Conf) {
+// 	    	try {
+// 				var m = await gpa.setStatus(
+// 				    helper.web3StringToBytes32(policyInfo.policyNo),
+// 				    helper.web3StringToBytes32(policyInfo.policyState)
+// 				);
+// 		    } catch(err) {
+// 				console.log('error', err);
+// 				return res.send({status : false, error : err});
+// 			}
+// 	    }
+// 	    return res.send({status : true});
+// 	});
+// });
 
-router.get('/getPolicies', async function(req, res) {
-	const SKIP = parseInt((req.params.skip) || (req.query.skip));
-	const LIMIT = parseInt((req.params.limit) || (req.query.limit));
-	console.log('SKIP', SKIP, 'LIMIT', LIMIT)
-    var collection = db.getCollection('policys');
-    try {
-        let data = await collection.find({}).skip(SKIP).limit(LIMIT).toArray();
-		//console.log('data',data);
-		return res.send({status : true, data : data});
-	} catch(err) {	
-        return res.send({status : false, error : err});
-    }
-});
+// router.get('/getPolicies', async function(req, res) {
+// 	const SKIP = parseInt((req.params.skip) || (req.query.skip));
+// 	const LIMIT = parseInt((req.params.limit) || (req.query.limit));
+// 	console.log('SKIP', SKIP, 'LIMIT', LIMIT)
+//     var collection = db.getCollection('policys');
+//     try {
+//         let data = await collection.find({}).skip(SKIP).limit(LIMIT).toArray();
+// 		//console.log('data',data);
+// 		return res.send({status : true, data : data});
+// 	} catch(err) {	
+//         return res.send({status : false, error : err});
+//     }
+// });
 
-router.get('/getTotalPoliciesCount', async function(req, res){
-	var collection = db.getCollection('policys');
-    try {
-        let count = await collection.count({});
-		// console.log('data',data);
-		return res.send({status : true, count : count});
-	} catch(err) {
-        return res.send({status : false, error : err});
-    }
-});
+// router.get('/getTotalPoliciesCount', async function(req, res){
+// 	var collection = db.getCollection('policys');
+//     try {
+//         let count = await collection.count({});
+// 		// console.log('data',data);
+// 		return res.send({status : true, count : count});
+// 	} catch(err) {
+//         return res.send({status : false, error : err});
+//     }
+// });
 
-router.get('/getPolicyDetails', async function(req, res) {
-	let policyNo = (req.param.policyNo) || req.query.policyNo;
-    helper.getPolicyDetails({'policyNo' : policyNo}, async function(err, data) {
-        if (err) {
-            return res.send({status : false, msg : data});
-        }
-        return res.send({status : true, data : data});
-    });																																																																																																																								
-});
+// router.get('/getPolicyDetails', async function(req, res) {
+// 	let policyNo = (req.param.policyNo) || req.query.policyNo;
+//     helper.getPolicyDetails({'policyNo' : policyNo}, async function(err, data) {
+//         if (err) {
+//             return res.send({status : false, msg : data});
+//         }
+//         return res.send({status : true, data : data});
+//     });																																																																																																																								
+// });
 
 /*router.get('/getExplorer', async function(req, res) {
 	let policyNo = (req.param.policyNo) || req.query.policyNo;
@@ -86,16 +87,19 @@ router.get('/getPolicyDetails', async function(req, res) {
 });*/
 
 router.get('/getFinancers', async function(req, res) {
-    helper.getRecords({'role' : 'bank'}, function(err, data) {
+	console.log('getFinancers : start');
+    helper.getRecords('a',{'role' : 'bank'}, function(err, data) { //change first parameter
         if (err) {
-            return res.send({status : false, msg : err});
+			// return res.send({status : false, msg : err});
+			let error = helper.getErrorResponse('DBError');
+			return res.status(error.statusCode).send(error.error);
         }
         return res.send({status : true, data : data});
     });																																																																																																																								
 });
 
 router.post('/getDashboard', async function(req, res) {
-	console.log('getUsers : start')
+	console.log('getDashboard : start');
 	let email = req.body.email;
 	let role = req.body.role;
 
@@ -141,7 +145,9 @@ router.post('/getDashboard', async function(req, res) {
         records = records.concat(q);
 		return res.send({status : true, data : records});
 	} catch(err) {
-        return res.send({status : false, error : err});
+		console.log(err);
+        let error = helper.getErrorResponse('DBError');
+		return res.status(error.statusCode).send(error.error);
     }
 });
 
@@ -157,9 +163,11 @@ router.post('/signup', function(req, res) {
 	console.log('userDetails', userDetails)
 	helper.addUser(userDetails, async function(err, data) {
 	    if (err) {
-	        return res.send({status : false, error : err});
+	        console.log(err);
+       	 	let error = helper.getErrorResponse('DBError');
+			return res.status(error.statusCode).send(error.error);
 	    }
-	    return res.send({status : true});
+	    return res.send({status : true, message: 'User added successfully.'});
 	});
 });
 
@@ -168,13 +176,17 @@ router.post('/login', function(req, res) {
 	let email = req.body.email;
 	let password = req.body.password;
 	if (!email || !password) {
-        return res.send({status : false, error : "Invalid Email/Password"});
+		// return res.send({status : false, error : "Invalid Email/Password"});
+		let error = helper.getErrorResponse('MissingParameter');
+		return res.status(error.statusCode).send(error.error);
 	}
 	helper.getUserDetails({email : email, password : password}, function(err, data) {
 	    if (err) {
-	        return res.send({status : false, error : err});
+			console.log('login: error:', err);
+			let error = helper.getErrorResponse('IncorrectEmailOrPassword');
+			return res.status(error.statusCode).send(error.error);
 	    }
-	    return res.send({status : true, data : data});
+	    return res.send({status : true, message: 'User logged in successfully.'});
 	});
 });
 
@@ -183,47 +195,49 @@ router.get('/getUserDetails', function(req, res) {
 	let email = req.params.email || req.query.email;
 	helper.getUserDetails({email : email}, function(err, data) {
 	    if (err) {
-	        return res.send({status : false, error : err});
-	    }
-	    return res.send({status : true, data : data});
+			console.log('error:', err, 'data:',data);
+			let error = helper.getErrorResponse(data);
+			return res.status(error.statusCode).send(error.error);
+		}
+		return res.send({status : true, data: data});
 	});
 });
 
-router.get('/getPropertyDetails', function(req, res) {
-	console.log('getPropertyDetails : start')
-	let propertyId = req.params.propertyId || req.query.propertyId;
-	console.log('propertyId', propertyId)
-	var responseData = {};
+// router.get('/getPropertyDetails', function(req, res) {
+// 	console.log('getPropertyDetails : start')
+// 	let propertyId = req.params.propertyId || req.query.propertyId;
+// 	console.log('propertyId', propertyId)
+// 	var responseData = {};
 
-	helper.getRecord('properties', {propertyId : propertyId}, function(err, data) {
-	    if (err) {
-	        return res.send({status : false, error : err});
-	    }
-	    console.log(err, data);
-	    var propertyDetails = data;
-	    var status = data.status;
-	    var owner = data.owner;
-	    responseData.property = propertyDetails;
-	    var statusNo = helper.propertyStatusMap[status];
-	    if (statusNo < 5) {
-			helper.getUserDetails({email : owner}, function(err, data) {
-			    if (err) {
-			        return res.send({status : false, error : err});
-			    }
-			    responseData.owner = data;
-			    return res.send({status : true, data : responseData});
-			});
-	    } else {
-	    	var registryId = propertyDetails.registryId;
-			helper.getRecord('registry', {registryId : registryId}, function(err, data) {
-			    if (err) {
-			        return res.send({status : false, error : err});
-			    }
-			    return res.send({status : true, data : data});
-			});
-	    }
-	});
-});
+// 	helper.getRecord('properties', {propertyId : propertyId}, function(err, data) {
+// 	    if (err) {
+// 	        return res.send({status : false, error : err});
+// 	    }
+// 	    console.log(err, data);
+// 	    var propertyDetails = data;
+// 	    var status = data.status;
+// 	    var owner = data.owner;
+// 	    responseData.property = propertyDetails;
+// 	    var statusNo = helper.propertyStatusMap[status];
+// 	    if (statusNo < 5) {
+// 			helper.getUserDetails({email : owner}, function(err, data) {
+// 			    if (err) {
+// 			        return res.send({status : false, error : err});
+// 			    }
+// 			    responseData.owner = data;
+// 			    return res.send({status : true, data : responseData});
+// 			});
+// 	    } else {
+// 	    	var registryId = propertyDetails.registryId;
+// 			helper.getRecord('registry', {registryId : registryId}, function(err, data) {
+// 			    if (err) {
+// 			        return res.send({status : false, error : err});
+// 			    }
+// 			    return res.send({status : true, data : data});
+// 			});
+// 	    }
+// 	});
+// });
 
 
 router.get('/getUsers', function(req, res) {
@@ -250,18 +264,22 @@ router.get('/getPropertyData', async function(req, res) {
     let propertyDetails = await collection.findOne({propertyId : propertyId});
     let userList = [];
     if (!allData) {
-    	userList.push(propertyDetails.owner);
+		userList.push(propertyDetails.owner);
     } else {
     	if (allData.owner && allData.owner.email) {
+			console.log(userList);
     		userList.push(allData.owner.email);
     	}
     	if (allData.ownerFinancer && allData.ownerFinancer.email) {
+			console.log(userList);
     		userList.push(allData.ownerFinancer.email);
     	}
     	if (allData.buyer && allData.buyer.email) {
+			console.log(userList);
     		userList.push(allData.buyer.email);
     	}
     	if (allData.buyerFinancer && allData.buyerFinancer.email) {
+			console.log(userList);
     		userList.push(allData.buyerFinancer.email);
     	}
     }
@@ -307,7 +325,9 @@ router.post('/addProperty', function(req, res) {
 
 	helper.insertCollection('properties', propertyDetails, function(err, data) {
 	    if (err) {
-	        return res.send({status : false, error : err});
+			console.log('error:', err, 'data:',data);
+			let error = helper.getErrorResponse('DbError');
+			return res.status(error.statusCode).send(error.error);
 	    }
 	    //add property on blockchain
 	    return res.send({status : true, data : propertyDetails});
@@ -315,7 +335,7 @@ router.post('/addProperty', function(req, res) {
 });
 
 router.post('/confirmProperty', function(req, res) {
-	console.log('confirmPorperty : start');
+	console.log('confirmProperty : start');
 	//verify token (email and role)
 	let propertyId = req.body.propertyId;
 	let status = req.body.status; //new, verified, rejected
@@ -324,7 +344,9 @@ router.post('/confirmProperty', function(req, res) {
 	helper.updateCollection('properties', query,
 		updateQuery, function(err, data) {
 	    if (err) {
-	        return res.send({status : false, error : err});
+			console.log('error:', err, 'data:',data);
+			let error = helper.getErrorResponse('DbError');
+			return res.status(error.statusCode).send(error.error);
 	    }
 	    return res.send({status : true});
 	});
@@ -346,7 +368,7 @@ router.post('/sellProperty', async function(req, res) {
 		$set : {
 			isNewProperty : false,
 			modified : Date.now(),
-			onSell : true
+			onSale : true
 		}
 	};
 
@@ -390,7 +412,7 @@ router.post('/sellProperty', async function(req, res) {
 });
 
 router.post('/addOwner', function(req, res) {
-	console.log('confirmPorperty : start');
+	console.log('addOwner : start');
 	let registryId = req.body.registryId;
 	let ownerDetails = req.body.owner;
 	let query = {registryId : registryId};
@@ -404,7 +426,10 @@ router.post('/addOwner', function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        return res.send({status : false, error : err});
+			console.log('error:', err, 'data:',data);
+			let error = helper.getErrorResponse('DbError');
+			return res.status(error.statusCode).send(error.error);
+	        // return res.send({status : false, error : err});
 	    }
 	    return res.send({status : true});
 	});
@@ -427,14 +452,16 @@ router.post('/addOwnerFinancer', function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        return res.send({status : false, error : err});
+			console.log('error:', err, 'data:',data);
+			let error = helper.getErrorResponse('DbError');
+			return res.status(error.statusCode).send(error.error);
 	    }
 	    return res.send({status : true});
 	});
 });
 
 router.post('/confirmFinancer', function(req, res) {
-	console.log('addOwnerFinancer : start');
+	console.log('confirmFinancer : start');
 	let registryId = req.body.registryId;
 	let currentStatus= req.body.currentStatus;
 	let approved = req.body.approved;
@@ -459,7 +486,9 @@ router.post('/confirmFinancer', function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        return res.send({status : false, error : err});
+	        console.log('error:', err, 'data:',data);
+			let error = helper.getErrorResponse('DbError');
+			return res.status(error.statusCode).send(error.error);
 	    }
 	    return res.send({status : true});
 	});
@@ -480,14 +509,16 @@ router.post('/addBuyer', function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        return res.send({status : false, error : err});
+	        console.log('error:', err, 'data:',data);
+			let error = helper.getErrorResponse('DbError');
+			return res.status(error.statusCode).send(error.error);
 	    }
 	    return res.send({status : true});
 	});
 });
 
 router.post('/confirmBuyer', function(req, res) {
-	console.log('addBuyer : start');
+	console.log('confirmBuyer : start');
 	let registryId = req.body.registryId;
 	let status = req.body.status;
 	let query = {registryId : registryId};
@@ -497,7 +528,9 @@ router.post('/confirmBuyer', function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        return res.send({status : false, error : err});
+	        console.log('error:', err, 'data:',data);
+			let error = helper.getErrorResponse('DbError');
+			return res.status(error.statusCode).send(error.error);
 	    }
 	    return res.send({status : true});
 	});
@@ -520,14 +553,16 @@ router.post('/addBuyerFinancer', function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        return res.send({status : false, error : err});
+	        console.log('error:', err, 'data:',data);
+			let error = helper.getErrorResponse('DbError');
+			return res.status(error.statusCode).send(error.error);
 	    }
 	    return res.send({status : true});
 	});
 });
 
 router.post('/payTokenAmount', async function(req, res) {
-	console.log('addBuyerFinancer : start');
+	console.log('payTokenAmount : start');
 	let registryId = req.body.registryId;
 	let query = {registryId : registryId};
 	//return if no balance
@@ -552,7 +587,9 @@ router.post('/payTokenAmount', async function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        return res.send({status : false, error : err});
+	        console.log('error:', err, 'data:',data);
+			let error = helper.getErrorResponse('DbError');
+			return res.status(error.statusCode).send(error.error);
 	    }
 	    return res.send({status : true});
 	});
@@ -568,7 +605,7 @@ router.post('/financerPayment', async function(req, res) {
 	try {
 		registryData = await collection.findOne(query);
 	} catch(e) {
-		console.log(e)
+		console.log(e);
 	}
 	if (!registryData.buyerFinancer) {
 		return res.send({status : false, error : 'financer not available'})
@@ -640,7 +677,9 @@ router.post('/buyerPayment', async function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        return res.send({status : false, error : err});
+	        console.log('error:', err, 'data:',data);
+			let error = helper.getErrorResponse('DbError');
+			return res.status(error.statusCode).send(error.error);
 	    }
 	    return res.send({status : true});
 	});
