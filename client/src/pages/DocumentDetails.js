@@ -88,6 +88,8 @@ class DocumentDetails extends Component {
   }
 
   render() {
+    console.log('this.state.dashboardData', this.state.dashboardData.status)
+
     // console.log('PROPS==>', this.props)
     const columns = [
       {
@@ -145,7 +147,7 @@ class DocumentDetails extends Component {
       match: { params }
     } = this.props
 
-    console.log('PARAMS', this.props)
+    // console.log('PARAMS', this.props)
     return (
       <React.Fragment>
         <Header />
@@ -225,7 +227,11 @@ class DocumentDetails extends Component {
         )}
 
         {activeTab === `/dashboard/buyer-details/${params.tab2}/${params.tab3}` && (
-          <BuyerDetailsForm changeActiveTab={this.changeActiveTab} />
+          <BuyerDetailsForm
+            data={get(dashboardData, 'buyer', {})}
+            status={get(dashboardData, 'status', '')}
+            changeActiveTab={this.changeActiveTab}
+          />
         )}
 
         {activeTab === `/dashboard/registeration/${params.tab2}` && (

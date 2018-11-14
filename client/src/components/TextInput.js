@@ -6,6 +6,7 @@ import blue from '@material-ui/core/colors/blue'
 
 const TextInputWrapper = styled.div`
   background-color: rgba(235, 235, 235, 0.2);
+  margin-top: ${props => props.marginTop && props.marginTop};
   margin-bottom: 30px;
   & > div {
     margin: 8px 16px;
@@ -37,10 +38,10 @@ const theme = createMuiTheme({
 
 class TextInput extends Component {
   render() {
-    const { label, placeholder, required, ...props } = this.props
+    const { label, placeholder, required, marginTop, ...props } = this.props
     return (
       <MuiThemeProvider theme={theme}>
-        <TextInputWrapper>
+        <TextInputWrapper marginTop={marginTop}>
           <TextField label={label} placeholder={placeholder} required={required} {...props} />
         </TextInputWrapper>
       </MuiThemeProvider>

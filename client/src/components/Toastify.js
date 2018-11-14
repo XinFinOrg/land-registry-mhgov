@@ -13,6 +13,11 @@ const ToastifyWrapper = styled.div`
     box-shadow: none !important;
     width: 24px !important;
   }
+  .Toastify__toast--error {
+    color: #e74c3c;
+    background: #fff;
+    border: 0.5px solid #e74c3c;
+  }
   .Toastify__toast--success {
     color: #3089f5;
     background: #fff;

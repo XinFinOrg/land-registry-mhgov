@@ -14,7 +14,7 @@ import {
   StyledHead,
   SelectBox
 } from '../components'
-import { customData, partyDetails } from '../constants'
+// import { customData, partyDetails } from '../constants'
 import withRouter from 'react-router/withRouter'
 
 import get from 'lodash/get'
@@ -43,7 +43,7 @@ class OwnerDetailsForm extends Component {
         status: 'registry_skip_owner_financer'
       })
       await this.setState({ isLoadingSkip: false })
-      this.props.changeActiveTab(`/dashboard/buyer-details/${params.tab2}/${params.tab3}`)
+      await this.props.changeActiveTab(`/dashboard/buyer-details/${params.tab2}/${params.tab3}`)
       this.props.history.push(`/dashboard/buyer-details/${params.tab2}/${params.tab3}`)
       /* await toast.success(`${'Owner Added!'}`, {
         position: toast.POSITION.TOP_CENTER
@@ -490,15 +490,14 @@ class OwnerDetailsForm extends Component {
               }}
               onSubmit={async values => {
                 const {
-                  match: {
-                    params: { tab }
-                  }
+                  match: { params }
                 } = this.props
+
                 try {
                   this.setState({ isLoading: true })
 
                   const { data } = await axios.post(`${API_URL}/addOwner`, {
-                    registryId: tab,
+                    registryId: params.tab,
                     ownerFinancer: {
                       email: Cookies.get('email'),
                       address: Cookies.get('address'),
@@ -508,11 +507,11 @@ class OwnerDetailsForm extends Component {
                     status: 'registry_owner_financer'
                   })
                   console.log('Add financier', data)
-                  await toast.success(`${'Onwer financier added!'}`, {
+                  await toast.success(`${'Owner financier added!'}`, {
                     position: toast.POSITION.TOP_CENTER
                   })
                   await this.setState({ isLoading: false })
-                  this.props.changeActiveTab('buyer-details')
+                  this.props.history.push('/dashboard')
                 } catch (error) {
                   await this.setState({ isLoading: false })
                   toast.error(`${'Some error occurred!'}`, {

@@ -341,7 +341,10 @@ class Home extends Component {
                       resetForm()
                     } catch (error) {
                       console.log('ERROR', error)
-                      this.setState({ isLoading: false })
+                      await this.setState({ isLoading: false })
+                      toast.error('User doesn\'t exist', {
+                        position: toast.POSITION.TOP_CENTER
+                      })
                     }
                   }}
                   render={formikBag => (
