@@ -32,22 +32,19 @@ class OwnerDetailsForm extends Component {
   }
   skipFinancier = async () => {
     const {
-      match: {
-        params: { tab }
-      }
+      match: { params }
     } = this.props
 
     try {
       this.setState({ isLoadingSkip: true })
       const { data } = await axios.post(`${API_URL}/addOwnerFinancer`, {
-        registryId: tab,
+        registryId: params.tab,
         ownerFinancer: false,
         status: 'registry_skip_owner_financer'
       })
       await this.setState({ isLoadingSkip: false })
-      this.props.changeActiveTab('buyer-details')
-      this.props.history.push('/dashboard/buyer-details')
-      // this.props.history.push('/dashboard/buyer-details')
+      this.props.changeActiveTab(`/dashboard/buyer-details/${params.tab2}/${params.tab3}`)
+      this.props.history.push(`/dashboard/buyer-details/${params.tab2}/${params.tab3}`)
       /* await toast.success(`${'Owner Added!'}`, {
         position: toast.POSITION.TOP_CENTER
       }) */
@@ -60,7 +57,7 @@ class OwnerDetailsForm extends Component {
     }
   }
   render() {
-    console.log('OwnerDetailsForm', this.props.changeActiveTab)
+    console.log('OwnerDetailsForm', this.props)
     const {
       data: { userDetails }
     } = this.props

@@ -41,7 +41,6 @@ class App extends Component {
               <PublicOnlyRoute exact path="/" component={Home} />
               <PublicOnlyRoute exact path="/signup" component={Home} />
               <PrivateOnlyRoute exact path="/dashboard" component={Dashboard} />
-              <PrivateOnlyRoute exact path="/dashboard/:tab" component={DocumentDetails} />
               <PrivateOnlyRoute exact path="/dashboard/:tab/:tab2" component={DocumentDetails} />
               <PrivateOnlyRoute exact path="/dashboard/:tab/:tab2/:tab3" component={DocumentDetails} />
               <PrivateOnlyRoute exact path="/dashboard/document-details" component={DocumentDetails} />

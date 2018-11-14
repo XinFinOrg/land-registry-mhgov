@@ -144,7 +144,8 @@ class DocumentDetails extends Component {
     const {
       match: { params }
     } = this.props
-    // console.log('PARAMS', params)
+
+    console.log('PARAMS', this.props)
     return (
       <React.Fragment>
         <Header />
@@ -167,64 +168,71 @@ class DocumentDetails extends Component {
           <InsideTitle>Pre Reg. No.: 20170000092</InsideTitle>
           <Tabber>
             <Tab
-              onClick={() => this.changeActiveTab('property-details')}
+              onClick={() => this.changeActiveTab(`/dashboard/property-details/${params.tab2}/${params.tab3}`)}
               to={`/dashboard/property-details/${params.tab2}/${params.tab3}`}
-              selected={activeTab === 'property-details'}>
+              selected={activeTab === `/dashboard/property-details/${params.tab2}/${params.tab3}`}>
               Property Details
             </Tab>
             <Tab
-              onClick={() => this.changeActiveTab('owner-details')}
+              onClick={() => this.changeActiveTab(`/dashboard/owner-details/${params.tab2}/${params.tab3}`)}
               to={`/dashboard/owner-details/${params.tab2}/${params.tab3}`}
-              selected={activeTab === 'owner-details'}>
+              selected={activeTab === `/dashboard/owner-details/${params.tab2}/${params.tab3}`}>
               Owner Details
             </Tab>
             <Tab
-              onClick={() => this.changeActiveTab('buyer-details')}
-              to={'/dashboard/buyer-details'}
-              selected={activeTab === 'buyer-details'}>
+              onClick={() => this.changeActiveTab(`/dashboard/buyer-details/${params.tab2}/${params.tab3}`)}
+              to={`/dashboard/buyer-details/${params.tab2}/${params.tab3}`}
+              selected={activeTab === `/dashboard/buyer-details/${params.tab2}/${params.tab3}`}>
               Buyer Details
             </Tab>
             <Tab
-              onClick={() => this.changeActiveTab('payment')}
+              onClick={() => this.changeActiveTab(`/dashboard/payment/${params.tab2}`)}
               to={`/dashboard/payment/${params.tab2}`}
-              selected={activeTab === 'payment'}>
+              selected={activeTab === `/dashboard/payment/${params.tab2}`}>
               Payment
             </Tab>
             <Tab
-              onClick={() => this.changeActiveTab('stamp-duty')}
+              onClick={() => this.changeActiveTab(`/dashboard/stamp-duty/${params.tab2}`)}
               to={`/dashboard/stamp-duty/${params.tab2}`}
-              selected={activeTab === 'stamp-duty'}>
+              selected={activeTab === `/dashboard/stamp-duty/${params.tab2}`}>
               Stamp Duty
             </Tab>
             <Tab
-              onClick={() => this.changeActiveTab('registeration')}
+              onClick={() => this.changeActiveTab(`/dashboard/registeration/${params.tab2}`)}
               to={`/dashboard/registeration/${params.tab2}`}
-              selected={activeTab === 'registeration'}>
+              selected={activeTab === `/dashboard/registeration/${params.tab2}`}>
               Registeration
             </Tab>
             <Tab
-              onClick={() => this.changeActiveTab('upload-document')}
+              onClick={() => this.changeActiveTab(`/dashboard/upload-document/${params.tab2}`)}
               to={`/dashboard/upload-document/${params.tab2}`}
-              selected={activeTab === 'upload-document'}>
+              selected={activeTab === `/dashboard/upload-document/${params.tab2}`}>
               Upload Document
             </Tab>
           </Tabber>
         </Paper>
 
-        {activeTab === 'property-details' && (
+        {activeTab === `/dashboard/property-details/${params.tab2}/${params.tab3}` && (
           <PropertyDetailsWrapper>
-            <PropertyDetailsForm data={get(dashboardData, 'propertyDetails', [])} />
+            <PropertyDetailsForm
+              data={get(dashboardData, 'propertyDetails', [])}
+              changeActiveTab={this.changeActiveTab}
+            />
           </PropertyDetailsWrapper>
         )}
-        {activeTab === 'owner-details' && (
+        {activeTab === `/dashboard/owner-details/${params.tab2}/${params.tab3}` && (
           <OwnerDetailsForm data={get(dashboardData, 'owner', [])} changeActiveTab={this.changeActiveTab} />
         )}
 
-        {activeTab === 'buyer-details' && <BuyerDetailsForm />}
+        {activeTab === `/dashboard/buyer-details/${params.tab2}/${params.tab3}` && (
+          <BuyerDetailsForm changeActiveTab={this.changeActiveTab} />
+        )}
 
-        {activeTab === 'registeration' && <Registeration changeActiveTab={this.changeActiveTab} />}
+        {activeTab === `/dashboard/registeration/${params.tab2}` && (
+          <Registeration changeActiveTab={this.changeActiveTab} />
+        )}
 
-        {activeTab === 'payment' && (
+        {activeTab === `/dashboard/payment/${params.tab2}` && (
           <Paper
             padding={'0 31px 20px'}
             radius={'0 0 6px 6px'}
@@ -246,8 +254,8 @@ class DocumentDetails extends Component {
             </PaymentWrapper>
           </Paper>
         )}
-        {activeTab === 'stamp-duty' && <StampDutyForm changeActiveTab={this.changeActiveTab} />}
-        {activeTab === 'upload-document' && (
+        {activeTab === `/dashboard/stamp-duty/${params.tab2}` && <StampDutyForm />}
+        {activeTab === `/dashboard/upload-document/${params.tab2}` && (
           <React.Fragment>
             <Paper
               padding={'26px 31px 20px'}
