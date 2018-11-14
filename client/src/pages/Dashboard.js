@@ -50,8 +50,8 @@ class Dashboard extends Component {
   render() {
     const { dashboardData } = this.state
     // console.log('dashboardData=====>', dashboardData)
-    const tableData = dashboardData.map(item => ({
-      srNo: 1,
+    const tableData = dashboardData.map((item, index) => ({
+      srNo: index + 1,
       propertyId: item.propertyId,
       registryId: item.registryId || '',
       propertyType: item.landType,
