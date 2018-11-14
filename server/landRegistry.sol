@@ -1,18 +1,12 @@
 pragma solidity ^0.4.0;
-contract LandRegistry {
+import "./LandRecordContract.sol";
+import 'zeppelin-solidity/contracts/token/ERC20/StandardToken.sol';
+
+contract LandRegistry is LandRecordContract, StandardToken {
     address admin;
 
-    struct LandRecord {
-        uint surveyNo;
-        bytes32 landType;
-        uint area;
-        uint openParking;
-        uint coveredParking;
-        uint8 floorNo;
-        address[] owners;
-    }
-
     struct RegistryRecord {
+        bytes32 propertyId;
         address owner;
         address buyer;
 
@@ -25,48 +19,28 @@ contract LandRegistry {
 
         bytes32 status;
 
-        uint sellPrie;
+        uint sellPrice;
         uint tokenAmount;
         uint registartionCharges;
     }
 
-    mapping(bytes32 => LandRecord) properties;
+    mapping(bytes32 => RegistryRecord) registry;
+    mapping(bytes32 => bool) registryMap;
+
     modifier isAdmin() {
         require(msg.sender == admin);
         _;
     }
 
-    modifier isNewLandrecord (bytes32 propertyId) {
-        require(properties[propertyId] == false);
+    modifier isNewRegistry (bytes32 registryId) {
+        require(registryMap[registryId] == false);
         _;
     }
 
-    modifier isPropertyExists (bytes32 propertyId) {
-        require(properties[propertyId] != false);
+    modifier isRegistryExists (bytes32 registryId) {
+        require(registryMap[registryId] != false);
         _;
     }
-
-    modifier isFundingEligibile(bytes32 _projectId) {
-        require(financeProjects[_projectId].fundedAmt < projects[_projectId].amount);
-        _;
-    }
-
-    modifier isPropertyOwner(bytes32 _projectId) {
-        require(msg.sender == projects[_projectId].owner);
-        _;
-    }
-
-    event CreateProperty (
-        bytes32 _propertyId,
-        uint _surveyNo,
-        bytes32 _landType,
-        uint _area,
-        uint _openParking,
-        uint _coveredParking,
-        uint8 _floorNo,
-        address _owner,
-        uint _created
-    );
 
     event AddRegistryRecord(
         bytes32 registryId,
@@ -75,18 +49,6 @@ contract LandRegistry {
         uint sellPrice,
         uint tokenAmount,
         uint created
-    );
-
-    event UpdateTokenAmount(
-        bytes32 registryId,
-        bytes32 propertyId,
-        uint tokenAmount
-    );
-
-    event UpdateSellPrice(
-        bytes32 registryId,
-        bytes32 propertyId,
-        uint sellPrice
     );
 
     event AddBuyer(
@@ -129,43 +91,21 @@ contract LandRegistry {
 
     constructor() internal {
         admin = msg.sender;
+        totalSupply_ = 10000000;
+        balances[msg.sender] = 10000000;
     }
 
-    function addProperty(
-        bytes32 _propertyId,
-        uint _surveyNo,
-        bytes32 _landType,
-        uint _area,
-        uint _openParking,
-        uint _coveredParking,
-        uint8 _floorNo,
-        address _owner,
-        bytes32 _status,
-        uint _created
-    ) public isAdmin isNewProperty(_propertyId) {
-        properties[_propertyId].surveyNo = _surveyNo;
-        properties[_propertyId].landType = _landType;
-        properties[_propertyId].area = _area;
-        properties[_propertyId].openParking = _openParking;
-        properties[_propertyId].coveredParking = _coveredParking;
-        properties[_propertyId].floorNo = _floorNo;
-        properties[_propertyId].owners = _owner;
-        properties[_propertyId].created = _created;
-        projects[_projectId].status = _status;
-        /*if (_projectType == 1) {
-            financeProjects[_projectId].id = id;
-        }*/
-        emit AddProperty(
-            _propertyId,
-            _surveyNo,
-            _landType,
-            _area,
-            _openParking,
-            _coveredParking,
-            _floorNo,
-            _owner,
-            _created
-        );
+    function getBalance(address _address) public view returns(uint) {
+         return balances[_address];
+    }
+
+    function getTotalSupply() public view returns(uint) {
+        return totalSupply_;
+    }
+
+    function addTokenSupply(uint _tokens) public isAdmin {
+        totalSupply_ += _tokens;
+        balances[msg.sender] += _tokens;
     }
 
     function addRegistryRecord(
@@ -175,12 +115,14 @@ contract LandRegistry {
         uint _sellPrice,
         uint _tokenAmount,
         uint _created
-    ) public isAdmin {
+    ) public isAdmin isNewRegistry(_registryId) isPropertyExists(_propertyId) {
 
         registry[_registryId].propertyId= _propertyId;
         registry[_registryId].owner= _owner;
         registry[_registryId].sellPrice= _sellPrice;
         registry[_registryId].tokenAmount= _tokenAmount;
+
+        registryMap[_registryId] = true;
 
         emit AddRegistryRecord(
             _registryId,
@@ -189,39 +131,7 @@ contract LandRegistry {
             _sellPrice,
             _tokenAmount,
             _created
-        )
-    }
-
-    function updateTokenAmount(
-        bytes32 _registryId,
-        bytes32 _propertyId,
-        uint _tokenAmount
-    ) public isAdmin {
-
-        registry[_registryId].propertyId= _propertyId;
-        registry[_registryId].tokenAmount= _tokenAmount;
-
-        emit UpdateTokenAmount(
-            _registryId,
-            _propertyId,
-            _tokenAmount
-        )
-    }
-
-    function updateSellPrice(
-        bytes32 _registryId,
-        bytes32 _propertyId,
-        uint _sellPrice
-    ) public isAdmin {
-
-        registry[_registryId].propertyId= _propertyId;
-        registry[_registryId].sellPrice= _sellPrice;
-
-        emit UpdateSellPrice(
-            _registryId,
-            _propertyId,
-            _sellPrice
-        )
+        );
     }
 
     function addBuyer(
@@ -229,8 +139,7 @@ contract LandRegistry {
         bytes32 _propertyId,
         address _buyer,
         uint _created
-    ) public isAdmin {
-        registry[_registryId].propertyId= _propertyId;
+    ) public isAdmin isRegistryExists(_registryId) {
         registry[_registryId].buyer= _buyer;
 
         emit AddBuyer(
@@ -238,7 +147,7 @@ contract LandRegistry {
             _propertyId,
             _buyer,
             _created
-        )
+        );
     }
 
     function addOwnerFinancer(
@@ -248,9 +157,7 @@ contract LandRegistry {
         uint _loanAmount,
         uint _outstandingLoan,
         uint _created
-    ) public isAdmin {
-
-        registry[_registryId].propertyId= _propertyId;
+    ) public isAdmin isRegistryExists(_registryId) {
         registry[_registryId].ownersFinancer= _ownersFinancer;
         registry[_registryId].loanAmount= _loanAmount;
         registry[_registryId].outstandingLoan= _outstandingLoan;
@@ -262,7 +169,7 @@ contract LandRegistry {
             _loanAmount,
             _outstandingLoan,
             _created
-        )
+        );
     }
 
     function addBuyerFinancer(
@@ -271,9 +178,7 @@ contract LandRegistry {
         address _buyersFinancer,
         uint _buyerFinanceAmount,
         uint _created
-    ) public isAdmin {
-
-        registry[_registryId].propertyId= _propertyId;
+    ) public isAdmin isRegistryExists(_registryId){
         registry[_registryId].buyersFinancer= _buyersFinancer;
         registry[_registryId].buyerFinanceAmount= _buyerFinanceAmount;
 
@@ -283,7 +188,7 @@ contract LandRegistry {
             _buyersFinancer,
             _buyerFinanceAmount,
             _created
-        )
+        );
     }
 
     function setRegistrationFees(
@@ -291,17 +196,14 @@ contract LandRegistry {
         bytes32 _propertyId,
         uint _registartionCharges,
         uint _created
-    ) public isAdmin {
-
-        registry[_registryId].propertyId= _propertyId;
+    ) public isAdmin isRegistryExists(_registryId) {
         registry[_registryId].registartionCharges= _registartionCharges;
-
         emit SetRegistrationFees(
             _registryId,
             _propertyId,
             _registartionCharges,
             _created
-        )
+        );
     }
 
     function setStatus(
@@ -309,17 +211,14 @@ contract LandRegistry {
         bytes32 _propertyId,
         bytes32 _status,
         uint _created
-    ) public isAdmin {
-
-        registry[_registryId].propertyId= _propertyId;
+    ) public isAdmin isRegistryExists(_registryId) {
         registry[_registryId].status= _status;
-
         emit SetStatus(
             _registryId,
             _propertyId,
             _status,
             _created
-        )
+        );
     }
 
     //fallback function
