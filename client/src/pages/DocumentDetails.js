@@ -27,7 +27,14 @@ import {
   MediumText
 } from '../components'
 import { commonUploadDoc, DocumentDutyTotal } from '../constants'
-import { PropertyDetailsForm, OwnerDetailsForm, BuyerDetailsForm, StampDutyForm, Registeration } from '../forms'
+import {
+  PropertyDetailsForm,
+  OwnerDetailsForm,
+  BuyerDetailsForm,
+  StampDutyForm,
+  Registeration,
+  PaymentForm
+} from '../forms'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import { API_URL } from '../constants'
@@ -88,7 +95,7 @@ class DocumentDetails extends Component {
   }
 
   render() {
-    console.log('this.state.dashboardData', this.state.dashboardData.status)
+    // console.log('this.state.dashboardData', this.state.dashboardData)
 
     // console.log('PROPS==>', this.props)
     const columns = [
@@ -147,7 +154,7 @@ class DocumentDetails extends Component {
       match: { params }
     } = this.props
 
-    // console.log('PARAMS', this.props)
+    console.log('this.props', this.props)
     return (
       <React.Fragment>
         <Header />
@@ -188,9 +195,9 @@ class DocumentDetails extends Component {
               Buyer Details
             </Tab>
             <Tab
-              onClick={() => this.changeActiveTab(`/dashboard/payment/${params.tab2}`)}
-              to={`/dashboard/payment/${params.tab2}`}
-              selected={activeTab === `/dashboard/payment/${params.tab2}`}>
+              onClick={() => this.changeActiveTab(`/dashboard/payment/${params.tab2}/${params.tab3}`)}
+              to={`/dashboard/payment/${params.tab2}/${params.tab3}`}
+              selected={activeTab === `/dashboard/payment/${params.tab2}/${params.tab3}`}>
               Payment
             </Tab>
             <Tab
@@ -234,31 +241,12 @@ class DocumentDetails extends Component {
           />
         )}
 
-        {activeTab === `/dashboard/registeration/${params.tab2}` && (
+        {activeTab === `/dashboard/registeration/${params.tab2}/${params.tab3}` && (
           <Registeration changeActiveTab={this.changeActiveTab} />
         )}
 
-        {activeTab === `/dashboard/payment/${params.tab2}` && (
-          <Paper
-            padding={'0 31px 20px'}
-            radius={'0 0 6px 6px'}
-            shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-            margin={'0 95px'}>
-            <PaymentWrapper>
-              <PaymentTuple>
-                <PaymentText>Total Amount</PaymentText>
-                <PaymentText>Rs. 1,00,000</PaymentText>
-              </PaymentTuple>
-              <PaymentTuple>
-                <PaymentText>Total Amount</PaymentText>
-                <PaymentText>Rs. 1,00,000</PaymentText>
-              </PaymentTuple>
-              <PaymentTuple>
-                <PaymentText>Total Amount</PaymentText>
-                <PaymentText>Rs. 1,00,000</PaymentText>
-              </PaymentTuple>
-            </PaymentWrapper>
-          </Paper>
+        {activeTab === `/dashboard/payment/${params.tab2}/${params.tab3}` && (
+          <PaymentForm data={dashboardData} changeActiveTab={this.changeActiveTab} />
         )}
         {activeTab === `/dashboard/stamp-duty/${params.tab2}` && <StampDutyForm />}
         {activeTab === `/dashboard/upload-document/${params.tab2}` && (

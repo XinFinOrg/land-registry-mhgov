@@ -59,6 +59,31 @@ class BuyerDetailsForm extends Component {
       console.log('ERROR', error)
     }
   }
+  rejectBuyerFinancer = async values => {
+    const {
+      match: { params }
+    } = this.props
+    try {
+      this.setState({ isLoading: true })
+      const { data } = await axios.post(`${API_URL}/confirmFinancer`, {
+        registryId: params.tab3,
+        currentStatus: 'registry_buyer_financer',
+        approved: false
+      })
+      await this.setState({ isLoading: false })
+      await toast.success(`${'Financier Rejected!'}`, {
+        position: toast.POSITION.TOP_CENTER
+      })
+      this.props.history.push('/dashboard')
+      console.log('DATA', data)
+    } catch (error) {
+      await this.setState({ isLoading: false })
+      toast.error(`${'Some error occurred!'}`, {
+        position: toast.POSITION.TOP_CENTER
+      })
+      console.log('ERROR', error)
+    }
+  }
 
   skipFinancier = async () => {
     const {
@@ -69,11 +94,10 @@ class BuyerDetailsForm extends Component {
       this.setState({ isLoadingSkip: true })
       const { data } = await axios.post(`${API_URL}/addBuyerFinancer`, {
         registryId: params.tab3,
-        buyerFinancer: false
+        buyerFinancer: false,
+        status: 'registry_skip_buyer_financer'
       })
       await this.setState({ isLoadingSkip: false })
-      // await this.props.changeActiveTab(`/dashboard/buyer-details/${params.tab2}/${params.tab3}`)
-      // this.props.history.push(`/dashboard/buyer-details/${params.tab2}/${params.tab3}`)
       /* await toast.success(`${'Owner Added!'}`, {
         position: toast.POSITION.TOP_CENTER
       }) */
@@ -203,6 +227,30 @@ class BuyerDetailsForm extends Component {
                 })
                 await this.setState({ isLoading: false })
                 await toast.success(`${'Confirmed buyer!'}`, {
+                  position: toast.POSITION.TOP_CENTER
+                })
+                this.props.history.push('/dashboard')
+                console.log('DATA', data)
+              } catch (error) {
+                await this.setState({ isLoading: false })
+                toast.error(`${'Some error occurred!'}`, {
+                  position: toast.POSITION.TOP_CENTER
+                })
+                console.log('ERROR', error)
+              }
+            } else if (
+              Cookies.get('email') === get(userDetails, 'buyerFinancer.email', Cookies.get('email')) &&
+              this.props.status === 'registry_buyer_financer'
+            ) {
+              try {
+                this.setState({ isLoading: true })
+                const { data } = await axios.post(`${API_URL}/confirmFinancer`, {
+                  registryId: params.tab3,
+                  currentStatus: 'registry_buyer_financer',
+                  approved: true
+                })
+                await this.setState({ isLoading: false })
+                await toast.success(`${'Financier confirmed!'}`, {
                   position: toast.POSITION.TOP_CENTER
                 })
                 this.props.history.push('/dashboard')
@@ -604,6 +652,27 @@ class BuyerDetailsForm extends Component {
                       type="submit"
                     />
                   </React.Fragment>
+                ) : Cookies.get('email') === get(userDetails, 'buyerFinancer.email', Cookies.get('email')) &&
+                this.props.status === 'registry_buyer_financer' ? (
+                  <React.Fragment>
+                    <Button
+                      size={'large'}
+                      width={'150px'}
+                      isLoading={isLoadingReject}
+                      title="reject financer"
+                      type="button"
+                      disabled={isLoadingReject}
+                      onClick={() => this.rejectBuyerFinancer()}
+                    />
+                    <Button
+                      size={'large'}
+                      width={'150px'}
+                      isLoading={isLoading}
+                      disabled={isLoading}
+                      title="Confirm financer"
+                      type="submit"
+                    />
+                  </React.Fragment>
                 ) : (
                   <Button size={'medium'} width={'150px'} title="Add" isLoading={isLoading} disabled={isLoading} />
                 )}
@@ -641,7 +710,7 @@ class BuyerDetailsForm extends Component {
                       email: Cookies.get('email'),
                       financeAmount: values.financeAmount
                     },
-                    status: 'registry_owner_financer'
+                    status: 'registry_buyer_financer'
                   })
                   console.log('Add financier', data)
                   await toast.success(`${'Buyer financier added!'}`, {

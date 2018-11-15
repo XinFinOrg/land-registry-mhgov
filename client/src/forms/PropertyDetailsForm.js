@@ -63,7 +63,6 @@ class PropertyDetailsForm extends Component {
   render() {
     const { isLoading, isLoadingReject, openModal } = this.state
     const {
-      data: { owner, status },
       match: {
         params: { tab }
       }
@@ -382,8 +381,8 @@ class PropertyDetailsForm extends Component {
                     />
                   </React.Fragment>
                 ) : Cookies.get('role') === 'individual' &&
-                owner === Cookies.get('email') &&
-                status === 'property_verified' ? (
+                get(this.props.data, 'owner', {}) === Cookies.get('email') &&
+                get(this.props.data, 'status', {}) === 'property_verified' ? (
                   <Button
                     size={'medium'}
                     width={'150px'}
@@ -419,7 +418,7 @@ class PropertyDetailsForm extends Component {
               try {
                 const { data } = await axios.post(`${API_URL}/sellProperty`, {
                   propertyId: tab,
-                  owner: owner,
+                  owner: get(this.props.data, 'owner', {}),
                   sellPrice: values.sellPrice,
                   tokenAmt: values.tokenAmt
                 })
