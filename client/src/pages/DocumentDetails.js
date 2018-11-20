@@ -282,13 +282,13 @@ class DocumentDetails extends Component {
             </ButtonGroup>
           </React.Fragment>
         )}
-        {/* <Paper
+        <Paper
           padding={'26px 31px 20px'}
           radius={'0 0 6px 6px'}
           shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
           margin={'40px 95px 100px'}>
           <InformTitle paddingTop={'0'} paddingBottom={'0'}>
-            Property History - Add Property
+            Property History - Add Property(Event name)
           </InformTitle>
           <FlexWrapper flexDirection="row" justifyContent="flex-start" padding={'10px 0'} borderWidth={'0 0 1px 0'}>
             <IconCircle width={'50px'} height={'50px'} bgColor="transparent" borderColor="#ddd">
@@ -296,10 +296,10 @@ class DocumentDetails extends Component {
             </IconCircle>
             <FlexWrapper flexDirection="column" justifyContent="flex-start" padding={'0 0 0 10px'}>
               <MediumText paddingTop={'0'} paddingBottom={'0'}>
-                #0ada0da0eggq0wgegw89s89f8g9g8yv67c5ty
+                #0ada0da0eggq0wgegw89s89f8g9g8yv67c5ty: Block hash
               </MediumText>
               <MediumText paddingTop={'0'} paddingBottom={'0'}>
-                27 Jul 2018, 01:11
+                27 Jul 2018, 01:11(Time StampDutyForm)
               </MediumText>
             </FlexWrapper>
           </FlexWrapper>
@@ -318,7 +318,7 @@ class DocumentDetails extends Component {
                 <FormDetailsContainer flexBasis={'100%'}>
                   <Field
                     name="address"
-                    render={({ field }) => <TextInput {...field} label="Address" placeholder={'Address'} />}
+                    render={({ field }) => <TextInput {...field} label="Block Address" placeholder={'Block Address'} />}
                   />
                 </FormDetailsContainer>
                 <FormDetailsContainer>
@@ -327,23 +327,23 @@ class DocumentDetails extends Component {
                     render={({ field }) => <TextInput {...field} label="Block Number" placeholder={'Block Number'} />}
                   />
 
-                  <Field name="id" render={({ field }) => <TextInput {...field} label="Id" placeholder={'Id'} />} />
+                  {/* <Field name="id" render={({ field }) => <TextInput {...field} label="Id" placeholder={'Id'} />} /> */}
 
-                  <Field
+                  {/*  <Field
                     name="timestamp"
                     render={({ field }) => <TextInput {...field} label="Timestamp" placeholder={'Timestamp'} />}
-                  />
+                  /> */}
                 </FormDetailsContainer>
-                <FormDetailsContainer>
+                {/* <FormDetailsContainer>
                   <Field
                     name="remark"
                     render={({ field }) => <TextInput {...field} label="Remark" placeholder={'Remark'} />}
                   />
-                </FormDetailsContainer>
+                </FormDetailsContainer> */}
               </Form>
             )}
           />
-        </Paper> */}
+        </Paper>
         {/*  <Paper
           padding={'26px 31px 20px'}
           radius={'0 0 6px 6px'}
