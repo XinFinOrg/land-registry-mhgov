@@ -32,13 +32,13 @@ contract LandRegistry is LandRecordContract, StandardToken {
         _;
     }
 
-    modifier isNewRegistry (bytes32 registryId) {
-        require(registryMap[registryId] == false);
+    modifier isNewRegistry(bytes32 registryId) {
+        require(!registryMap[registryId]);
         _;
     }
 
-    modifier isRegistryExists (bytes32 registryId) {
-        require(registryMap[registryId] != false);
+    modifier isRegistryExists(bytes32 registryId) {
+        require(registryMap[registryId]);
         _;
     }
 
@@ -115,7 +115,7 @@ contract LandRegistry is LandRecordContract, StandardToken {
         uint _sellPrice,
         uint _tokenAmount,
         uint _created
-    ) public isAdmin isNewRegistry(_registryId) isPropertyExists(_propertyId) {
+    ) public isAdmin isNewRegistry(_registryId) {
 
         registry[_registryId].propertyId= _propertyId;
         registry[_registryId].owner= _owner;

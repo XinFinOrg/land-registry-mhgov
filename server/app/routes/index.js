@@ -6,6 +6,12 @@ var helper = require('./helper');
 var db = require('./../config/db');
 var config = require('./../config/config');
 var constants = require('../constants/constants');
+
+var init = require('../web3Helpers/init.js');
+var landRecords = require('../web3Helpers/landRecords.js');
+var landRegistry = require('../web3Helpers/landRegistry.js');
+
+var web3Conf = true;
 // var validationHelper = require('./validationHelper');
 // var web3Conf = false;
 // if (web3Conf) {
@@ -155,10 +161,14 @@ router.post('/signup', function(req, res) {
 	//check user exists
 	console.log('signup : start')
 	let userDetails = req.body.userDetails;
-	if (!true) {
+	if (web3Conf) {
 		//create a new address => personal.newAccount()
+		userDetails.address = init.createAccount('123');
+		console.log('address', userDetails.address);
+		userDetails.passPhrase = '123';
 	} else {
 		userDetails.address = "0x0638e1574728b6d862dd5d3a3e0942c3be47d996";
+		userDetails.passPhrase = '123';
 	}
 	console.log('userDetails', userDetails)
 	helper.addUser(userDetails, async function(err, data) {
@@ -188,6 +198,47 @@ router.post('/login', function(req, res) {
 	    }
 	    return res.send({status : true, message: 'User logged in successfully.'});
 	});
+});
+
+router.post('/getBalance', async function(req, res) {
+	console.log('getBalance : start')
+	let address = req.body.address;
+	console.log(address)
+	if (!address) {
+		let error = helper.getErrorResponse('MissingParameter');
+		return res.status(error.statusCode).send(error.error);
+	}
+	if (web3Conf) {
+		try {
+	        var balance = await landRegistry.getBalance(address);
+	        res.send({balance : balance.toNumber()});
+		} catch(e) {
+			res.send({err : e});
+		}
+	} else {
+		res.send({balance : 0});
+	}
+});
+
+router.post('/buyTokens', async function(req, res) {
+	console.log('login : start');
+	let address = req.body.address;
+	let amount = req.body.amount;
+	if (!address || !amount) {
+		let error = helper.getErrorResponse('MissingParameter');
+		return res.status(error.statusCode).send(error.error);
+	}
+	if (web3Conf) {
+		try {
+	        var buyTokens = await landRegistry.buyTokens(address, amount);
+	        res.send({status : true});
+		} catch(e) {
+			console.log(e);
+			res.send({status : false, error : e});
+		}
+	} else {
+		res.send({status : true});
+	}
 });
 
 router.get('/getUserDetails', function(req, res) {
@@ -386,6 +437,7 @@ router.post('/sellProperty', async function(req, res) {
 	        return res.send({status : false, error : err});
 	    }
 	   	//console.log(data);
+	   	let stampDuty = (sellPrice * 5)/100 + 2000;
 		query = {
 			registryId : registryId,
 			propertyId : propertyId,
@@ -393,6 +445,7 @@ router.post('/sellProperty', async function(req, res) {
 			owner : {email : owner},
 			sellPrice : sellPrice,
 			tokenAmt : tokenAmt,
+			stampDuty : stampDuty, 
 			paymentRemaining : sellPrice,
 			status : "registry_new",
 			created : Date.now(),
@@ -672,6 +725,27 @@ router.post('/buyerPayment', async function(req, res) {
 		paymentRemaining : paymentRemaining,
 		"buyerFinancer.outstandingLoan" : outstandingLoan,
 		status : "registry_buyer_pay",
+		modified : Date.now()
+	}};
+	helper.updateCollection('registry', query, updateQuery,
+		function(err, data) {
+	    if (err) {
+	        console.log('error:', err, 'data:',data);
+			let error = helper.getErrorResponse('DbError');
+			return res.status(error.statusCode).send(error.error);
+	    }
+	    return res.send({status : true});
+	});
+});
+
+router.post('/payStampDuty', async function(req, res) {
+	console.log('payStampDuty : start');
+	let registryId = req.body.registryId;
+	let query = {registryId : registryId};
+	//return if no balance
+	let updateQuery = {$set : {
+		stampDutyRemaining : 0,
+		status : "registry_stamp_duty",
 		modified : Date.now()
 	}};
 	helper.updateCollection('registry', query, updateQuery,
