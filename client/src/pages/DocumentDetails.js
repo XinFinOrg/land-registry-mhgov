@@ -344,7 +344,7 @@ class DocumentDetails extends Component {
             )}
           />
         </Paper> */}
-        <Paper
+        {/*  <Paper
           padding={'26px 31px 20px'}
           radius={'0 0 6px 6px'}
           shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
@@ -363,7 +363,7 @@ class DocumentDetails extends Component {
             defaultPageSize={10}
             minRows={0}
           />
-        </Paper>
+        </Paper> */}
         <Footer position={'fixed'} />
       </React.Fragment>
     )

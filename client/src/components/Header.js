@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import Link from 'react-router-dom/Link'
 import withRouter from 'react-router/withRouter'
-import { Icon, IconCircle } from '../components'
+// import { Icon, IconCircle } from '../components'
+import axios from 'axios'
+import { API_URL } from '../constants'
+import Cookies from 'js-cookie'
+
 const HeaderOuter = styled.nav`
   width: 100%;
   position: fixed;
@@ -54,10 +58,26 @@ const UserImage = styled.div`
 `
 
 class Header extends Component {
+  state = {
+    balance: null
+  }
+  componentDidMount = async () => {
+    try {
+      const { data } = await axios.post(`${API_URL}/getBalance`, {
+        address: Cookies.get('address')
+      })
+      this.setState({ balance: data.balance })
+      // this.setState({balan})
+    } catch (error) {
+      console.log('ERROR', error)
+    }
+  }
   render() {
     const {
       location: { pathname }
     } = this.props
+    const { balance } = this.state
+    console.log('DATA', balance)
     return (
       <HeaderOuter>
         <HeaderWrapper>
@@ -71,10 +91,7 @@ class Header extends Component {
           ) : (
             <DashboardWrapper>
               <IconWrapper>
-                <IconCircle>
-                  <Icon icon="notification" width={15} height={19} />
-                </IconCircle>
-                <p>Notification</p>
+                <p>Balance: ${balance || 0}</p>
               </IconWrapper>
               <IconWrapper>
                 <UserImage />
