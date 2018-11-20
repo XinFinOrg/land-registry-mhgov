@@ -287,6 +287,25 @@ router.get('/getPropertyData', async function(req, res) {
     return res.send({status : true, data : responseData});
 });
 
+router.post('/getExplorer', async function(req, res) {
+	let registryId = req.body.registryId;
+	let propertyId = req.body.propertyId;
+	let data, data1, data2;
+	if (web3Conf) {
+	    try {
+			data1 = await landRecords.getAllEvents(propertyId);
+			data2 = await landRegistry.getAllEvents(registryId);
+			data = {propertyData : data2, registryData : data1};
+	    } catch(err) {
+			console.log('error', err);
+			return res.send({status : false, error : err});
+		}
+	} else {
+		data = constants.dummyExplorerData;
+	}
+    return res.send({status : true, data : data});
+});
+
 router.post('/addProperty', async function(req, res) {
 	console.log('addPorperty : start');
 	let propertyDetails = req.body.propertyDetails;
