@@ -7,11 +7,14 @@ var db = require('./../config/db');
 var config = require('./../config/config');
 var constants = require('../constants/constants');
 
-var init = require('../web3Helpers/init.js');
-var landRecords = require('../web3Helpers/landRecords.js');
-var landRegistry = require('../web3Helpers/landRegistry.js');
+var web3Conf = false;
 
-var web3Conf = true;
+if (web3Conf) {
+	var init = require('../web3Helpers/init.js');
+	var landRecords = require('../web3Helpers/landRecords.js');
+	var landRegistry = require('../web3Helpers/landRegistry.js');
+}
+
 // var validationHelper = require('./validationHelper');
 // var web3Conf = false;
 // if (web3Conf) {
@@ -234,10 +237,10 @@ router.post('/buyTokens', async function(req, res) {
 	        res.send({status : true});
 		} catch(e) {
 			console.log(e);
-			res.send({status : false, error : e});
+			return res.send({status : false, error : e});
 		}
 	} else {
-		res.send({status : true});
+		return res.send({status : true});
 	}
 });
 
