@@ -43,6 +43,7 @@ class BuyerDetailsForm extends Component {
       this.setState({ isLoadingReject: true })
       const { data } = await axios.post(`${API_URL}/confirmBuyer`, {
         registryId: params.tab3,
+        propertyId: Cookies.get('propertyId'),
         status: '_rejected'
       })
       await this.setState({ isLoadingReject: false })
@@ -67,6 +68,7 @@ class BuyerDetailsForm extends Component {
       this.setState({ isLoading: true })
       const { data } = await axios.post(`${API_URL}/confirmFinancer`, {
         registryId: params.tab3,
+        propertyId: Cookies.get('propertyId'),
         currentStatus: 'registry_buyer_financer',
         approved: false
       })
@@ -95,6 +97,7 @@ class BuyerDetailsForm extends Component {
       const { data } = await axios.post(`${API_URL}/addBuyerFinancer`, {
         registryId: params.tab3,
         buyerFinancer: false,
+        propertyId: Cookies.get('propertyId'),
         status: 'registry_skip_buyer_financer'
       })
       await this.setState({ isLoadingSkip: false })
@@ -223,6 +226,7 @@ class BuyerDetailsForm extends Component {
                 this.setState({ isLoading: true })
                 const { data } = await axios.post(`${API_URL}/confirmBuyer`, {
                   registryId: params.tab3,
+                  propertyId: Cookies.get('propertyId'),
                   status: 'registry_buyer_confirmed'
                 })
                 await this.setState({ isLoading: false })
@@ -246,6 +250,7 @@ class BuyerDetailsForm extends Component {
                 this.setState({ isLoading: true })
                 const { data } = await axios.post(`${API_URL}/confirmFinancer`, {
                   registryId: params.tab3,
+                  propertyId: Cookies.get('propertyId'),
                   currentStatus: 'registry_buyer_financer',
                   approved: true
                 })
@@ -268,6 +273,7 @@ class BuyerDetailsForm extends Component {
 
                 const { data } = await axios.post(`${API_URL}/addBuyer`, {
                   registryId: params.tab3,
+                  propertyId: Cookies.get('propertyId'),
                   buyer: {
                     email: values.email,
                     partyType: values.selectPartyType,
@@ -706,6 +712,7 @@ class BuyerDetailsForm extends Component {
 
                   const { data } = await axios.post(`${API_URL}/addBuyerFinancer`, {
                     registryId: params.tab3,
+                    propertyId: Cookies.get('propertyId'),
                     buyerFinancer: {
                       email: Cookies.get('email'),
                       financeAmount: values.financeAmount

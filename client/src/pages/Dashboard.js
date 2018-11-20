@@ -41,6 +41,7 @@ class Dashboard extends Component {
   }
 
   handleRedirect = (registryId, propertyId) => {
+    Cookies.set('propertyId', propertyId)
     if (registryId === '') {
       this.props.history.push(`/dashboard/property-details/propertyId/${propertyId}`)
     } else {

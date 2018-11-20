@@ -20,7 +20,8 @@ class PaymentForm extends Component {
       try {
         this.setState({ isLoading: true })
         const { data } = await axios.post(`${API_URL}/financerPayment`, {
-          registryId: params.tab3
+          registryId: params.tab3,
+          propertyId: Cookies.get('propertyId')
         })
         await this.setState({ isLoading: false, amtPaid: true })
         await toast.success(`${'Financer amount paid!'}`, {
@@ -38,6 +39,7 @@ class PaymentForm extends Component {
       try {
         this.setState({ isLoading: true })
         const { data } = await axios.post(`${API_URL}/payTokenAmount`, {
+          propertyId: Cookies.get('propertyId'),
           registryId: params.tab3
         })
         await this.setState({ isLoading: false, amtPaid: true })

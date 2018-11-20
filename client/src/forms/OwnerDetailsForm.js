@@ -39,6 +39,7 @@ class OwnerDetailsForm extends Component {
       this.setState({ isLoadingSkip: true })
       const { data } = await axios.post(`${API_URL}/addOwnerFinancer`, {
         registryId: params.tab,
+        propertyId: Cookies.get('propertyId'),
         ownerFinancer: false,
         status: 'registry_skip_owner_financer'
       })
@@ -156,6 +157,7 @@ class OwnerDetailsForm extends Component {
               this.setState({ isLoading: true })
               const { data } = await axios.post(`${API_URL}/addOwner`, {
                 registryId: tab,
+                propertyId: Cookies.get('propertyId'),
                 owner: {
                   email: Cookies.get('email'),
                   address: Cookies.get('address'),
@@ -498,6 +500,7 @@ class OwnerDetailsForm extends Component {
 
                   const { data } = await axios.post(`${API_URL}/addOwner`, {
                     registryId: params.tab,
+                    propertyId: Cookies.get('propertyId'),
                     ownerFinancer: {
                       email: Cookies.get('email'),
                       address: Cookies.get('address'),
