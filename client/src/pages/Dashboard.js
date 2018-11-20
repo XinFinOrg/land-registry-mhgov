@@ -25,7 +25,7 @@ class Dashboard extends Component {
   }
   handlePageChange = currentPage => {
     // this.setState({ currentPage })
-    console.log('CURRENT PAGE', currentPage)
+    // console.log('CURRENT PAGE', currentPage)
   }
   async componentDidMount() {
     try {
@@ -33,18 +33,28 @@ class Dashboard extends Component {
         email: Cookies.get('email'),
         role: Cookies.get('role')
       })
-      console.log('DATA', data.data)
+      // console.log('DATA', data.data)
       this.setState({ dashboardData: data.data })
     } catch (error) {
       console.log('ERROR', error)
     }
   }
+
+  handleRedirect = (registryId, propertyId) => {
+    Cookies.set('propertyId', propertyId)
+    if (registryId === '') {
+      this.props.history.push(`/dashboard/property-details/propertyId/${propertyId}`)
+    } else {
+      this.props.history.push(`/dashboard/property-details/registryId/${registryId}`)
+    }
+  }
   render() {
     const { dashboardData } = this.state
-    console.log('dashboardData=====>', dashboardData)
-    const tableData = dashboardData.map(item => ({
-      srNo: 1,
+    // console.log('dashboardData=====>', dashboardData)
+    const tableData = dashboardData.map((item, index) => ({
+      srNo: index + 1,
       propertyId: item.propertyId,
+      registryId: item.registryId || '',
       propertyType: item.landType,
       propertyLocation: item.address,
       city: item.city,
@@ -143,14 +153,13 @@ class Dashboard extends Component {
         accessor: 'view',
         maxWidth: 150,
         Cell: props => {
-          console.log('PROPS==>', props.original.propertyId)
           return (
             <Button
               size="action"
               shadow={'none'}
               title="View"
               radius={'4px'}
-              onClick={() => this.props.history.push(`/dashboard/property-details/${props.original.propertyId}`)}
+              onClick={() => this.handleRedirect(props.original.registryId, props.original.propertyId)}
             />
           )
         }
@@ -169,7 +178,7 @@ class Dashboard extends Component {
                   width={'150px'}
                   title="Add Property"
                   type="submit"
-                  onClick={() => this.props.history.push('/dashboard/property-details/add-property')}
+                  onClick={() => this.props.history.push('/dashboard/property-details/add-property/undefined')}
                 />
               )}
 
@@ -194,7 +203,7 @@ class Dashboard extends Component {
             pageSize={10}
             minRows={0}
             showPagination={false}
-            totalNumberOfResults={100}
+            totalNumberOfResults={222}
             onPageChange={this.handlePageChange}
           />
         </MainWrapper>

@@ -1,5 +1,6 @@
 export { default as PropertyDetailsForm } from './PropertyDetailsForm'
 export { default as OwnerDetailsForm } from './OwnerDetailsForm'
-export { default as SellerDetailsForm } from './SellerDetailsForm'
+export { default as BuyerDetailsForm } from './BuyerDetailsForm'
 export { default as StampDutyForm } from './StampDutyForm'
 export { default as Registeration } from './Registeration'
+export { default as PaymentForm } from './PaymentForm'

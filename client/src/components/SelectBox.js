@@ -18,15 +18,31 @@ const SelectWrapper = styled.div`
   .css-1aya2g8:hover {
     border-color: rgba(221, 221, 221, 0.6);
   }
+  .css-vj8t7z {
+    min-height: 62px !important;
+  }
+  .css-2o5izw {
+    min-height: 62px !important;
+  }
+`
+const TopWrapper = styled.div`
+  & > p {
+    font-size: 14px;
+    color: rgba(51, 51, 51, 0.6);
+    padding-bottom: 2px;
+  }
 `
 class SelectBox extends Component {
   state = {}
   render() {
-    const { ...props } = this.props
+    const { label, ...props } = this.props
     return (
-      <SelectWrapper>
-        <Select {...props} />
-      </SelectWrapper>
+      <TopWrapper>
+        <p>{label}</p>
+        <SelectWrapper>
+          <Select {...props} />
+        </SelectWrapper>
+      </TopWrapper>
     )
   }
 }
