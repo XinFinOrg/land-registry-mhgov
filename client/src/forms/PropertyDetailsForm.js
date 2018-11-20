@@ -137,7 +137,10 @@ class PropertyDetailsForm extends Component {
                     shopFloor: values.shopFloorBasement,
                     address: values.propertyAddress,
                     description: values.propertyDescription,
-                    owner: Cookies.get('email')
+                    owner: {
+                      email: Cookies.get('email'),
+                      address: Cookies.get('address')
+                    }
                     /* address:values.,
                   description:values.,
                   currentOwner:values., */
@@ -418,7 +421,10 @@ class PropertyDetailsForm extends Component {
               try {
                 const { data } = await axios.post(`${API_URL}/sellProperty`, {
                   propertyId: tab,
-                  owner: get(this.props.data, 'owner', {}),
+                  owner: {
+                    email: Cookies.get('email'),
+                    address: Cookies.get('address')
+                  },
                   sellPrice: values.sellPrice,
                   tokenAmt: values.tokenAmt
                 })
