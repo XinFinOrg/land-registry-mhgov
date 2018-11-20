@@ -207,7 +207,7 @@ const FormikForm = styled(Form)`
 const ButtonGroup = styled.div`
   margin: 30px 95px 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: ${props => (props.justifyContent ? props.justifyContent : 'flex-end')};
   & button {
     margin-left: 14px;
   }

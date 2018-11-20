@@ -336,13 +336,15 @@ class Home extends Component {
                       await Cookies.set('role', data.data.role)
                       await Cookies.set('email', data.data.email)
                       await Cookies.set('address', data.data.address)
+                      await Cookies.set('firstName', data.data.firstName)
+                      await Cookies.set('lastName', data.data.lastName)
                       this.props.history.push('/dashboard')
                       await this.setState({ isLoading: false })
                       resetForm()
                     } catch (error) {
                       console.log('ERROR', error)
                       await this.setState({ isLoading: false })
-                      toast.error('User doesn\'t exist', {
+                      toast.error("User doesn't exist", {
                         position: toast.POSITION.TOP_CENTER
                       })
                     }

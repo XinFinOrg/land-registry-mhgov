@@ -2,10 +2,13 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import Link from 'react-router-dom/Link'
 import withRouter from 'react-router/withRouter'
-// import { Icon, IconCircle } from '../components'
+import { IconMenu, Modal, Button, ButtonGroup, PaperTitle, FlexWrapper } from '../components'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import Cookies from 'js-cookie'
+import { Formik, Form, Field } from 'formik'
+import { TextInput } from './TextInput'
+import { toast } from 'react-toastify'
 
 const HeaderOuter = styled.nav`
   width: 100%;
@@ -59,7 +62,9 @@ const UserImage = styled.div`
 
 class Header extends Component {
   state = {
-    balance: null
+    balance: null,
+    showModal: false,
+    isLoading: false
   }
   componentDidMount = async () => {
     try {
@@ -76,7 +81,7 @@ class Header extends Component {
     const {
       location: { pathname }
     } = this.props
-    const { balance } = this.state
+    const { balance, showModal, isLoading } = this.state
     console.log('DATA', balance)
     return (
       <HeaderOuter>
@@ -94,12 +99,74 @@ class Header extends Component {
                 <p>Balance: ${balance || 0}</p>
               </IconWrapper>
               <IconWrapper>
-                <UserImage />
-                <p>Michael</p>
+                <IconMenu icon={'user'} iconColor="#fff" iconActiveColor="#fff" component={<UserImage />}>
+                  <p onClick={() => this.setState({ showModal: true })}>Buy Token</p>
+                  <p onClick={() => this.logout()}>Logout</p>
+                </IconMenu>
+
+                <p>
+                  {Cookies.get('firstName')} {Cookies.get('lastName')}
+                </p>
               </IconWrapper>
             </DashboardWrapper>
           )}
         </HeaderWrapper>
+        <Modal maxWidth={'1024px'} show={showModal}>
+          <FlexWrapper justifyContent="center">
+            <PaperTitle>Buy Token</PaperTitle>
+          </FlexWrapper>
+          <Formik
+            enableReinitialize={true}
+            initialValues={{ amount: '' }}
+            onSubmit={async values => {
+              this.setState({ isLoading: true })
+              try {
+                const { data } = await axios.post(`${API_URL}/buyTokens`, {
+                  address: Cookies.get('address'),
+                  amount: values.amount
+                })
+                console.log('DATA', data)
+                this.setState({ isLoading: false, showModal: false })
+                toast.success(`${'Token successfully bought'}`, {
+                  position: toast.POSITION.TOP_CENTER
+                })
+              } catch (error) {
+                console.log('ERROR', error)
+                this.setState({ isLoading: false })
+                toast.error(`${'Error!!!'}`, {
+                  position: toast.POSITION.TOP_CENTER
+                })
+              }
+            }}
+            render={formikBag => (
+              <Form>
+                <Field
+                  name="amount"
+                  render={({ field }) => (
+                    <TextInput {...field} label="Token Amount" placeholder={'Token Amount'} required />
+                  )}
+                />
+                <ButtonGroup justifyContent="center">
+                  <Button
+                    size={'medium'}
+                    width={'150px'}
+                    title="Close"
+                    type="button"
+                    onClick={() => this.setState({ showModal: false })}
+                  />
+                  <Button
+                    size={'medium'}
+                    width={'150px'}
+                    isLoading={isLoading}
+                    disabled={isLoading}
+                    title="Buy"
+                    type="submit"
+                  />
+                </ButtonGroup>
+              </Form>
+            )}
+          />
+        </Modal>
       </HeaderOuter>
     )
   }
