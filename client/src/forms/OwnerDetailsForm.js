@@ -149,14 +149,12 @@ class OwnerDetailsForm extends Component {
           }}
           onSubmit={async (formData, { resetForm }) => {
             const {
-              match: {
-                params: { tab }
-              }
+              match: { params }
             } = this.props
             try {
               this.setState({ isLoading: true })
               const { data } = await axios.post(`${API_URL}/addOwner`, {
-                registryId: tab,
+                registryId: params.tab3,
                 propertyId: Cookies.get('propertyId'),
                 owner: {
                   email: Cookies.get('email'),

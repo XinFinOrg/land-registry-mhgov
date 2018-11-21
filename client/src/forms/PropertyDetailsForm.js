@@ -34,14 +34,12 @@ class PropertyDetailsForm extends Component {
 
   rejectProperty = async values => {
     const {
-      match: {
-        params: { tab }
-      }
+      match: { params }
     } = this.props
     try {
       this.setState({ isLoadingReject: true })
       const { data } = await axios.post(`${API_URL}/confirmProperty`, {
-        propertyId: tab,
+        propertyId: params.tab3,
         status: 'property_rejected',
         email: Cookies.get('email'),
         role: Cookies.get('role')
