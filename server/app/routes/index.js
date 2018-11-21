@@ -72,6 +72,9 @@ router.post('/getDashboard', async function(req, res) {
         let q = await collection.find(query).sort({_id : -1}).toArray();
         console.log(q)
         records = records.concat(q);
+	    records.sort(function(x, y){
+	        return y.created - x.created;
+	    });   
 		return res.send({status : true, data : records});
 	} catch(err) {
 		console.log(err);
@@ -385,7 +388,7 @@ router.post('/confirmProperty', async function(req, res) {
 });
 
 router.post('/sellProperty', async function(req, res) {
-	console.log('sellProperty : start')
+	console.log('sellProperty : start');
 	let body = req.body;
 	let [propertyId, owner, sellPrice, tokenAmt] = [
 		body.propertyId,
@@ -407,8 +410,7 @@ router.post('/sellProperty', async function(req, res) {
 	let propertyDetails = {};
 	let collection = db.getCollection('properties');
 	try {
-		let propertyDetails = await collection.findOne({propertyId : propertyId});
-		console.log(propertyDetails)
+		propertyDetails = await collection.findOne({propertyId : propertyId});
 	} catch(e) {
 		console.log(e)
 	}
@@ -448,6 +450,7 @@ router.post('/sellProperty', async function(req, res) {
 			created : Date.now(),
 			modified : Date.now()
 		};
+		console.log(query);
 		helper.insertCollection('registry', query,
 			function(err, data) {
 		    if (err) {
@@ -458,7 +461,6 @@ router.post('/sellProperty', async function(req, res) {
 		    });
 		});
 	});
-
 });
 
 router.post('/addOwner', async function(req, res) {
