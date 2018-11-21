@@ -19,6 +19,7 @@ import Cookies from 'js-cookie'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import styled from 'styled-components'
+import get from 'lodash/get'
 
 const Status = styled.div`
   border-radius: 4px;
@@ -70,9 +71,9 @@ class Dashboard extends Component {
       srNo: index + 1,
       propertyId: item.propertyId,
       registryId: item.registryId || '',
-      propertyType: item.landType || item.propertyDetails.landType,
-      propertyLocation: item.address || item.propertyDetails.address,
-      city: item.city || item.propertyDetails.city,
+      propertyType: item.landType || get(item, 'propertyDetails.landType', ''),
+      propertyLocation: item.address || get(item, 'propertyDetails.address', ''),
+      city: item.city || get(item, 'propertyDetails.city', ''),
       status: item.status
     }))
     const columns = [
