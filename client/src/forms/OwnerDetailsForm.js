@@ -38,7 +38,7 @@ class OwnerDetailsForm extends Component {
     try {
       this.setState({ isLoadingSkip: true })
       const { data } = await axios.post(`${API_URL}/addOwnerFinancer`, {
-        registryId: params.tab,
+        registryId: params.tab3,
         propertyId: Cookies.get('propertyId'),
         ownerFinancer: false,
         status: 'registry_skip_owner_financer'
@@ -497,7 +497,7 @@ class OwnerDetailsForm extends Component {
                   this.setState({ isLoading: true })
 
                   const { data } = await axios.post(`${API_URL}/addOwner`, {
-                    registryId: params.tab,
+                    registryId: params.tab3,
                     propertyId: Cookies.get('propertyId'),
                     ownerFinancer: {
                       email: Cookies.get('email'),

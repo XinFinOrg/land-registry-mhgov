@@ -40,6 +40,8 @@ import Cookies from 'js-cookie'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import get from 'lodash/get'
+import keys from 'lodash/keys'
+import values from 'lodash/values'
 import moment from 'moment'
 
 const PageTitleWrapper = styled.div`
@@ -64,7 +66,20 @@ const FormikForm = styled(Form)`
 const SubmissionWrap = styled.div`
   width: 360px;
 `
-
+const TupleContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+const TupleWrapper = styled.div``
+const Tuple = styled.div`
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 14px;
+  padding-right: 14px;
+  & > p {
+    text-transform: capitalize;
+    font-weight: ${props => (props.fontWeight ? props.fontWeight : 'normal')};
+  }
+`
 class DocumentDetails extends Component {
   state = {
     activeTab: this.props.match.url,
@@ -205,14 +220,10 @@ class DocumentDetails extends Component {
       }
     ]
     const { activeTab, dashboardData, historyData } = this.state
-    console.log('historyData', historyData.propertyData)
     const {
       match: { params }
     } = this.props
 
-    console.log('DocumentDutyTotal', DocumentDutyTotal)
-
-    console.log('this.props', this.props)
     return (
       <React.Fragment>
         <Header />
@@ -407,7 +418,23 @@ class DocumentDetails extends Component {
                   </Form>
                 )}
               />
-              <CustomTable
+              <TupleContainer>
+                <TupleWrapper>
+                  {keys(item.args).map(item => (
+                    <Tuple fontWeight="bold">
+                      <p>{item}</p>
+                    </Tuple>
+                  ))}
+                </TupleWrapper>
+                <TupleWrapper>
+                  {values(item.args).map(item => (
+                    <Tuple>
+                      <p>{item}</p>
+                    </Tuple>
+                  ))}
+                </TupleWrapper>
+              </TupleContainer>
+              {/* <CustomTable
                 marginTop
                 data={DocumentDutyTotal}
                 columns={DocumentDutyColumns}
@@ -417,7 +444,7 @@ class DocumentDetails extends Component {
                 pageSize={10}
                 defaultPageSize={10}
                 minRows={0}
-              />
+              /> */}
             </Paper>
           )
         })}
@@ -481,7 +508,23 @@ class DocumentDetails extends Component {
                   </Form>
                 )}
               />
-              <CustomTable
+              <TupleContainer>
+                <TupleWrapper>
+                  {keys(item.args).map(item => (
+                    <Tuple fontWeight="bold">
+                      <p>{item}</p>
+                    </Tuple>
+                  ))}
+                </TupleWrapper>
+                <TupleWrapper>
+                  {values(item.args).map(item => (
+                    <Tuple>
+                      <p>{item}</p>
+                    </Tuple>
+                  ))}
+                </TupleWrapper>
+              </TupleContainer>
+              {/* <CustomTable
                 marginTop
                 data={DocumentDutyTotal}
                 columns={RegistryHistoryColumns}
@@ -491,7 +534,7 @@ class DocumentDetails extends Component {
                 pageSize={10}
                 defaultPageSize={10}
                 minRows={0}
-              />
+              /> */}
             </Paper>
           )
         })}
