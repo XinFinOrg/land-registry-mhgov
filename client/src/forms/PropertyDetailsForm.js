@@ -49,7 +49,6 @@ class PropertyDetailsForm extends Component {
         position: toast.POSITION.TOP_CENTER
       })
       this.props.history.push('/dashboard')
-      console.log('DATA', data)
     } catch (error) {
       await this.setState({ isLoadingReject: false })
       toast.error(`${'Some error occurred!'}`, {
@@ -65,7 +64,6 @@ class PropertyDetailsForm extends Component {
       match: { params },
       data
     } = this.props
-    console.log('PROPS data==>', data)
     return (
       <React.Fragment>
         <Formik
@@ -108,7 +106,6 @@ class PropertyDetailsForm extends Component {
                   position: toast.POSITION.TOP_CENTER
                 })
                 this.props.history.push('/dashboard')
-                console.log('DATA', data)
               } catch (error) {
                 await this.setState({ isLoading: false })
                 toast.error(`${'Some error occurred!'}`, {
@@ -149,8 +146,6 @@ class PropertyDetailsForm extends Component {
                   position: toast.POSITION.TOP_CENTER
                 })
                 this.props.history.push('/dashboard')
-                // show toast
-                console.log('DATA', data)
               } catch (error) {
                 await this.setState({ isLoading: false })
                 toast.error(`${'Error!!!'}`, {
@@ -360,7 +355,6 @@ class PropertyDetailsForm extends Component {
                 </FormDetailsContainer>
               </Paper>
               <ButtonGroup>
-                {/* <Button size={'medium'} width={'150px'} disabled title="Save" type="button" /> */}
                 {Cookies.get('role') === 'corporation' && get(data, 'status', {}) === 'property_new' ? (
                   <React.Fragment>
                     <Button
@@ -393,7 +387,7 @@ class PropertyDetailsForm extends Component {
                     type="button"
                     onClick={() => this.setState({ openModal: true })}
                   />
-                ) : (
+                ) : params.tab2 === 'add-property' ? (
                   <Button
                     size={'medium'}
                     width={'150px'}
@@ -402,7 +396,7 @@ class PropertyDetailsForm extends Component {
                     title="submit"
                     type="submit"
                   />
-                )}
+                ) : null}
               </ButtonGroup>
             </FormikForm>
           )}
@@ -432,7 +426,6 @@ class PropertyDetailsForm extends Component {
                   position: toast.POSITION.TOP_CENTER
                 })
                 this.props.history.push('/dashboard')
-                console.log('DATA', data)
               } catch (error) {
                 await this.setState({ isLoading: false })
                 toast.error(`${'Some error occurred!'}`, {
