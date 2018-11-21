@@ -259,9 +259,9 @@ class DocumentDetails extends Component {
               Payment
             </Tab>
             <Tab
-              onClick={() => this.changeActiveTab(`/dashboard/stamp-duty/${params.tab2}`)}
-              to={`/dashboard/stamp-duty/${params.tab2}`}
-              selected={activeTab === `/dashboard/stamp-duty/${params.tab2}`}>
+              onClick={() => this.changeActiveTab(`/dashboard/stamp-duty/${params.tab2}/${params.tab3}`)}
+              to={`/dashboard/stamp-duty/${params.tab2}/${params.tab3}`}
+              selected={activeTab === `/dashboard/stamp-duty/${params.tab2}/${params.tab3}`}>
               Stamp Duty
             </Tab>
             {/*  <Tab
@@ -306,7 +306,7 @@ class DocumentDetails extends Component {
         {activeTab === `/dashboard/payment/${params.tab2}/${params.tab3}` && (
           <PaymentForm data={dashboardData} changeActiveTab={this.changeActiveTab} />
         )}
-        {activeTab === `/dashboard/stamp-duty/${params.tab2}` && <StampDutyForm />}
+        {activeTab === `/dashboard/stamp-duty/${params.tab2}/${params.tab3}` && <StampDutyForm />}
         {activeTab === `/dashboard/upload-document/${params.tab2}` && (
           <React.Fragment>
             <Paper

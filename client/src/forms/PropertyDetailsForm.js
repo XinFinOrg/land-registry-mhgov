@@ -363,9 +363,8 @@ class PropertyDetailsForm extends Component {
               </Paper>
               <ButtonGroup>
                 {/* <Button size={'medium'} width={'150px'} disabled title="Save" type="button" /> */}
-                {data.status === 'property_verified' && Cookies.get('role') === 'corporation' ? null : Cookies.get(
-                  'role'
-                ) === 'corporation' ? (
+                {get(data, 'status', '') === 'property_verified' &&
+                Cookies.get('role') === 'corporation' ? null : Cookies.get('role') === 'corporation' ? (
                   <React.Fragment>
                     <Button
                       size={'medium'}
