@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
-import { Icon } from './Icon'
+import slice from 'lodash/slice'
 // import { ReactTableDefaults } from 'react-table'
 /* const Pagination = styled.div`
   width: 10px;
@@ -101,6 +101,7 @@ class Table extends Component {
   state = { activePage: 1 }
   render() {
     const pagesize = 10
+
     const {
       resizable,
       sortable,
@@ -111,13 +112,35 @@ class Table extends Component {
       totalNumberOfResults,
       ...props
     } = this.props
+
     const { activePage } = this.state
+
     const pageNumbers = []
+
     const totalPage = Math.ceil(totalNumberOfResults / defaultPageSize)
+    // console.log('MODE', totalPage % 10)
+
     for (let i = 1; i <= totalPage; i++) {
       pageNumbers.push(i)
     }
-    const renderPageNumbers = pageNumbers.map(number => {
+
+    let array = pageNumbers
+    let current = activePage
+    let start = 0
+    let end = array.length
+    // console.log('CURRENT', current)
+    if (current - 5 > 0) {
+      start = current - 5
+    } else {
+      start = 0
+    }
+    if (start + 10 < array.length) {
+      end = start + 10
+    } else {
+      end = array.length
+    }
+
+    const renderPageNumbers = slice(array, start, end).map(number => {
       return (
         <Page
           active={number === activePage}
@@ -131,9 +154,11 @@ class Table extends Component {
         </Page>
       )
     })
+
     return (
       <TableWrapper>
         <StyledTable data={data} columns={columns} resizable={resizable} sortable={sortable} {...props} />
+        {/*********** Pagination ****************/}
         <Pager>
           <PagerGroup>
             <Page

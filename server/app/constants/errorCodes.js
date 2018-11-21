@@ -45,11 +45,11 @@ let getErrorCodes = function(errorKey) {
 			appErrorCode : 1009,
 			errMessage : 'Invalid date format'
 		},
-		InvalidAddress : {
-			statusCode : 400,
-			appErrorCode : 1010,
-			errMessage : 'Invalid XDC address'
-		},
+		// InvalidAddress : {
+		// 	statusCode : 400,
+		// 	appErrorCode : 1010,
+		// 	errMessage : 'Invalid XDC address'
+		// },
 		OutOfRange : {
 			statusCode : 400,
 			appErrorCode : 1011,
@@ -105,16 +105,16 @@ let getErrorCodes = function(errorKey) {
 			appErrorCode : 1111,
 			errMessage: 'Given email id does not exist'
 		},
-		Web3UnlockAccount:{
-			statusCode : 500,
-			appErrorCode : 1108,
-			errMessage: 'Cannot unlock account.'
-		},
-		Web3NewAccount:{
-			statusCode : 500,
-			appErrorCode : 1109,
-			errMessage: 'Cannot create new account.'
-		},
+		// Web3UnlockAccount:{
+		// 	statusCode : 500,
+		// 	appErrorCode : 1108,
+		// 	errMessage: 'Cannot unlock account.'
+		// },
+		// Web3NewAccount:{
+		// 	statusCode : 500,
+		// 	appErrorCode : 1109,
+		// 	errMessage: 'Cannot create new account.'
+		// },
 		ResetLinkExpired:{
 			statusCode : 404,
 			appErrorCode : 1112,
@@ -130,21 +130,26 @@ let getErrorCodes = function(errorKey) {
 			appErrorCode : 1115,
 			errMessage: 'Something went wrong. Cannot process the request'
 		},
-		XdcAccountInvalid:{
-			statusCode : 400,
-			appErrorCode : 1117,
-			errMessage: 'Account is invalid'
-		},
+		// XdcAccountInvalid:{
+		// 	statusCode : 400,
+		// 	appErrorCode : 1117,
+		// 	errMessage: 'Account is invalid'
+		// },
 		IncorrectPassword:{
 			statusCode : 400,
 			appErrorCode : 1118,
 			errMessage: 'Incorrect Password'
 		},
-		AccSetup:{
+		IncorrectEmailOrPassword:{
 			statusCode : 400,
-			appErrorCode : 1120,
-			errMessage: 'Cannot setup new account'
+			appErrorCode : 1119,
+			errMessage: 'Incorrect Email or Password'
 		},
+		// AccSetup:{
+		// 	statusCode : 400,
+		// 	appErrorCode : 1120,
+		// 	errMessage: 'Cannot setup new account'
+		// },
 		AccNotExists:{
 			statusCode : 404,
 			appErrorCode : 1121,

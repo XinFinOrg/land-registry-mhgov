@@ -101,9 +101,9 @@ const FieldsTuple = styled.div`
   align-items: center;
   justify-content: space-between;
   & > div {
-    flex-basis: calc(33.33% - 10px);
+    flex-basis: ${props => (props.flexBasis ? props.flexBasis : 'calc(33.33% - 10px)')};
     & > div {
-      flex-basis: calc(33.33% - 10px);
+      flex-basis: ${props => (props.flexBasis ? props.flexBasis : 'calc(33.33% - 10px)')};
     }
   }
 `
@@ -207,7 +207,7 @@ const FormikForm = styled(Form)`
 const ButtonGroup = styled.div`
   margin: 30px 95px 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: ${props => (props.justifyContent ? props.justifyContent : 'flex-end')};
   & button {
     margin-left: 14px;
   }

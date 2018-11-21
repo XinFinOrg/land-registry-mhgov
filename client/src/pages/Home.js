@@ -5,20 +5,20 @@ import {
   Button,
   Paper,
   Footer,
-  Input,
+  TextInput,
   PaperTitle,
   PaperSubTitle,
   Radio,
   Checkbox,
   Modal,
   SelectBox,
-  FieldGroupWithTitle
+  FieldGroupWithTitle,
+  FormDetailsContainer
 } from '../components'
 import house from '../static/images/house.jpeg'
 import { Formik, Form, Field } from 'formik'
-import { states } from '../constants'
 import axios from 'axios'
-import { API_URL } from '../constants'
+import { API_URL, states } from '../constants'
 import { toast } from 'react-toastify'
 import Cookies from 'js-cookie'
 
@@ -182,121 +182,7 @@ class Home extends Component {
     this.props.history.push('/')
   }
   handleSignupForm = values => {}
-  submitIndividual = async values => {
-    this.setState({ isLoading: true })
-    try {
-      const { data } = await axios.post(`${API_URL}/signup/`, {
-        userDetails: {
-          email: this.state.signUpData.email,
-          password: this.state.signUpData.password,
-          role: this.state.signUpData.registerAs,
-          salutation: values.salutation,
-          firstName: values.firstName,
-          middleName: values.middleName,
-          lastName: values.lastName,
-          aliasName: values.aliasName,
-          identityMark1: values.identificationMark1,
-          identityMark2: values.identificationMark2,
-          dob: values.dateOfBirth,
-          age: values.age,
-          uid: values.uid,
-          identityTypeID: values.identificationTypeID,
-          identityDesc: values.identificationDescription,
-          pan: values.panForm60,
-          occupation: values.occupation,
-          gender: values.gender,
-          mobileNo: values.mobileNo,
-          permAddress: values.perAddress,
-          tempAddress: values.tempAddress,
-          district: values.district,
-          taluka: values.taluka,
-          village: values.village
-        }
-      })
-      toast.success(`${'Submitted successfully'}`, {
-        position: toast.POSITION.TOP_CENTER
-      })
-      this.setState({ isLoading: false })
-      console.log('DATA', data)
-    } catch (error) {
-      toast.error(`${'Error!!!'}`, {
-        position: toast.POSITION.TOP_CENTER
-      })
-      this.setState({ isLoading: false })
-      console.log('ERROR', error)
-    }
-  }
-  submitBank = async values => {
-    this.setState({ isLoading: true })
 
-    try {
-      const { data } = await axios.post(`${API_URL}/signup/`, {
-        userDetails: {
-          email: this.state.signUpData.email,
-          password: this.state.signUpData.password,
-          role: this.state.signUpData.registerAs,
-          name: values.name,
-          city: values.city,
-          branch: values.branch
-        }
-      })
-      console.log('DATA', data)
-      this.setState({ isLoading: false, openModal: false })
-      toast.success(`${'Submitted successfully'}`, {
-        position: toast.POSITION.TOP_CENTER
-      })
-    } catch (error) {
-      console.log('ERROR', error)
-      this.setState({ isLoading: false })
-      toast.error(`${'Error!!!'}`, {
-        position: toast.POSITION.TOP_CENTER
-      })
-    }
-  }
-  submitGovernment = async values => {
-    this.setState({ isLoading: true })
-
-    try {
-      const { data } = await axios.post(`${API_URL}/signup/`, {
-        userDetails: {
-          email: this.state.signUpData.email,
-          password: this.state.signUpData.password,
-          role: values.govType,
-          name: values.name,
-          state: values.state,
-          dept: values.department
-        }
-      })
-      console.log('DATA', data)
-      this.setState({ isLoading: false, openModal: false }, () => this.props.history.push('/'))
-      toast.success(`${'Submitted successfully'}`, {
-        position: toast.POSITION.TOP_CENTER
-      })
-    } catch (error) {
-      console.log('ERROR', error)
-      this.setState({ isLoading: false })
-      toast.error(`${'Error!!!'}`, {
-        position: toast.POSITION.TOP_CENTER
-      })
-    }
-  }
-  handleLogin = async values => {
-    this.setState({ isLoading: true })
-    try {
-      const { data } = await axios.post(`${API_URL}/login`, {
-        email: values.email,
-        password: values.password
-      })
-      console.log('DATA', data.data.role)
-      await Cookies.set('role', data.data.role)
-      await Cookies.set('email', data.data.email)
-      this.props.history.push('/dashboard')
-      this.setState({ isLoading: false })
-    } catch (error) {
-      console.log('ERROR', error)
-      this.setState({ isLoading: false })
-    }
-  }
   render() {
     const {
       location: { pathname }
@@ -338,12 +224,14 @@ class Home extends Component {
                   }}
                   render={formikBag => (
                     <Form>
+                      {console.log('signUpData', signUpData)}
                       <SignupFormWrapper>
                         <Field
                           name="firstName"
                           render={({ field }) => (
-                            <Input
+                            <TextInput
                               {...field}
+                              label="First Name"
                               width={'100%'}
                               height={'64px'}
                               type="text"
@@ -356,8 +244,9 @@ class Home extends Component {
                         <Field
                           name="lastName"
                           render={({ field }) => (
-                            <Input
+                            <TextInput
                               {...field}
+                              label="Last Name"
                               width={'100%'}
                               height={'64px'}
                               type="text"
@@ -369,8 +258,9 @@ class Home extends Component {
                         <Field
                           name="email"
                           render={({ field }) => (
-                            <Input
+                            <TextInput
                               {...field}
+                              label="Email"
                               width={'100%'}
                               height={'64px'}
                               type="email"
@@ -382,8 +272,9 @@ class Home extends Component {
                         <Field
                           name="password"
                           render={({ field }) => (
-                            <Input
+                            <TextInput
                               {...field}
+                              label="Password"
                               width={'100%'}
                               height={'64px'}
                               type="password"
@@ -420,14 +311,7 @@ class Home extends Component {
                           <Checkbox name="tnc" defaultChecked required />
                           <span>By continuing you agree to Terms & Conditions</span>
                         </CheckboxWrap>
-                        <Button
-                          fontSize={20}
-                          width={'100%'}
-                          // onClick={() => this.props.history.push('/dashboard')}
-                          height={'50px'}
-                          title="Next"
-                          type="submit"
-                        />
+                        <Button fontSize={20} width={'100%'} height={'50px'} title="Next" type="submit" />
                       </SignupFormWrapper>
                     </Form>
                   )}
@@ -439,15 +323,39 @@ class Home extends Component {
                     email: '',
                     password: ''
                   }}
-                  onSubmit={formData => this.handleLogin(formData)}
+                  onSubmit={async (values, { resetForm }) => {
+                    this.setState({ isLoading: true })
+                    try {
+                      const { data } = await axios.post(`${API_URL}/login`, {
+                        email: values.email,
+                        password: values.password
+                      })
+                      console.log('DATA', data)
+                      await Cookies.set('role', data.data.role)
+                      await Cookies.set('email', data.data.email)
+                      await Cookies.set('address', data.data.address)
+                      await Cookies.set('firstName', data.data.firstName)
+                      await Cookies.set('lastName', data.data.lastName)
+                      this.props.history.push('/dashboard')
+                      await this.setState({ isLoading: false })
+                      resetForm()
+                    } catch (error) {
+                      console.log('ERROR', error)
+                      await this.setState({ isLoading: false })
+                      toast.error('User doesn\'t exist', {
+                        position: toast.POSITION.TOP_CENTER
+                      })
+                    }
+                  }}
                   render={formikBag => (
                     <Form>
                       <FormWrapper>
                         <Field
                           name="email"
                           render={({ field }) => (
-                            <Input
+                            <TextInput
                               {...field}
+                              label="Email"
                               width={'100%'}
                               height={'64px'}
                               type="email"
@@ -460,8 +368,9 @@ class Home extends Component {
                         <Field
                           name="password"
                           render={({ field }) => (
-                            <Input
+                            <TextInput
                               {...field}
+                              label="Password"
                               width={'100%'}
                               height={'64px'}
                               type="password"
@@ -470,7 +379,7 @@ class Home extends Component {
                             />
                           )}
                         />
-                        <ForgotPassword>Forgot Password ?</ForgotPassword>
+                        {/* <ForgotPassword>Forgot Password ?</ForgotPassword> */}
                         <Button
                           fontSize={20}
                           width={'100%'}
@@ -502,37 +411,81 @@ class Home extends Component {
               enableReinitialize={true}
               initialValues={{
                 salutation: '',
-                firstName: '',
-                middleName: '',
-                lastName: '',
-                aliasName: '',
-                identificationMark1: '',
-                identificationMark2: '',
-                dateOfBirth: '',
-                age: '',
-                uid: '',
-                identificationTypeID: '',
-                identificationDescription: '',
-                panForm60: '',
-                occupation: '',
+                firstName: signUpData.firstName || 'Viral',
+                middleName: 'Mahendra',
+                lastName: signUpData.lastName || 'Pasad',
+                aliasName: 'viral',
+                identificationMark1: 'Mole on Left Hand',
+                identificationMark2: 'Mark above left eye',
+                dateOfBirth: '07/12/1995',
+                age: '28',
+                uid: '123456789923',
+                identificationTypeID: 'Aadhar',
+                identificationDescription: 'Aadhar card',
+                panForm60: 'BCPPT9089H',
+                occupation: 'Salaried Employee',
                 gender: '',
-                email: '',
-                mobileNo: '',
-                perAddress: '',
-                tempAddress: '',
+                email: signUpData.email || '',
+                mobileNo: '9664818286',
+                perAddress: 'Pali Hill, Bandra',
+                tempAddress: 'Pali Hill, Bandra',
                 addressSame: '',
-                district: '',
-                taluka: '',
-                village: ''
+                district: 'Mumbai',
+                taluka: 'Mumbai',
+                village: 'Mumbai'
               }}
-              onSubmit={formData => this.submitIndividual(formData)}
+              onSubmit={async (values, { resetForm }) => {
+                this.setState({ isLoading: true })
+                try {
+                  const { data } = await axios.post(`${API_URL}/signup/`, {
+                    userDetails: {
+                      email: this.state.signUpData.email,
+                      password: this.state.signUpData.password,
+                      role: this.state.signUpData.registerAs,
+                      salutation: values.salutation,
+                      firstName: values.firstName,
+                      middleName: values.middleName,
+                      lastName: values.lastName,
+                      aliasName: values.aliasName,
+                      identityMark1: values.identificationMark1,
+                      identityMark2: values.identificationMark2,
+                      dob: values.dateOfBirth,
+                      age: values.age,
+                      uid: values.uid,
+                      identityTypeID: values.identificationTypeID,
+                      identityDesc: values.identificationDescription,
+                      pan: values.panForm60,
+                      occupation: values.occupation,
+                      gender: values.gender,
+                      mobileNo: values.mobileNo,
+                      permAddress: values.perAddress,
+                      tempAddress: values.tempAddress,
+                      district: values.district,
+                      taluka: values.taluka,
+                      village: values.village
+                    }
+                  })
+                  toast.success(`${'Submitted successfully'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                  await this.setState({ isLoading: false })
+                  resetForm()
+                  console.log('DATA', data)
+                } catch (error) {
+                  toast.error(`${'Error!!!'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                  this.setState({ isLoading: false })
+                  console.log('ERROR', error)
+                }
+              }}
               render={formikBag => (
                 <Form>
                   <CloseWrap>
                     <PaperTitle>Owner Details</PaperTitle>
                     <Close onClick={() => this.setState({ openModal: !openModal })} />
                   </CloseWrap>
-                  <FieldGroupWithTitle margin justify={'flex-start'}>
+                  <FormDetailsContainer>
                     <Field
                       name="salutation"
                       render={({ field }) => (
@@ -542,13 +495,14 @@ class Home extends Component {
                           placeholder="Salutation"
                           defaultValue={{ label: 'Mr.', value: 'Mr.' }}
                           isSearchable={false}
+                          label="Salutaion"
                         />
                       )}
                     />
                     <Field
                       name="firstName"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -562,7 +516,7 @@ class Home extends Component {
                     <Field
                       name="middleName"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -576,7 +530,7 @@ class Home extends Component {
                     <Field
                       name="lastName"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -590,7 +544,7 @@ class Home extends Component {
                     <Field
                       name="aliasName"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -604,7 +558,7 @@ class Home extends Component {
                     <Field
                       name="identificationMark1"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -618,7 +572,7 @@ class Home extends Component {
                     <Field
                       name="identificationMark2"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -632,7 +586,7 @@ class Home extends Component {
                     <Field
                       name="dateOfBirth"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -646,21 +600,21 @@ class Home extends Component {
                     <Field
                       name="age"
                       render={({ field }) => (
-                        <Input {...field} required width={'100%'} height={'64px'} label="Age" placeholder={'Age'} />
+                        <TextInput {...field} required width={'100%'} height={'64px'} label="Age" placeholder={'Age'} />
                       )}
                     />
 
                     <Field
                       name="uid"
                       render={({ field }) => (
-                        <Input {...field} required width={'100%'} height={'64px'} label="UID" placeholder={'UID'} />
+                        <TextInput {...field} required width={'100%'} height={'64px'} label="UID" placeholder={'UID'} />
                       )}
                     />
 
                     <Field
                       name="identificationTypeID"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -674,7 +628,7 @@ class Home extends Component {
                     <Field
                       name="identificationDescription"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -688,7 +642,7 @@ class Home extends Component {
                     <Field
                       name="panForm60"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -702,7 +656,7 @@ class Home extends Component {
                     <Field
                       name="occupation"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -722,6 +676,7 @@ class Home extends Component {
                           placeholder="Gender"
                           defaultValue={{ label: 'Male', value: 'Male' }}
                           isSearchable={false}
+                          label="Gender"
                         />
                       )}
                     />
@@ -729,7 +684,7 @@ class Home extends Component {
                     <Field
                       name="email"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -743,7 +698,7 @@ class Home extends Component {
                     <Field
                       name="mobileNo"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -757,7 +712,7 @@ class Home extends Component {
                     <Field
                       name="perAddress"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -768,10 +723,10 @@ class Home extends Component {
                       )}
                     />
 
-                    <Field
+                    {/* <Field
                       name="addressSame"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -780,11 +735,11 @@ class Home extends Component {
                           placeholder={'Address Same As Above'}
                         />
                       )}
-                    />
+                    /> */}
                     <Field
                       name="tempAddress"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -798,7 +753,7 @@ class Home extends Component {
                     <Field
                       name="district"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -812,7 +767,7 @@ class Home extends Component {
                     <Field
                       name="taluka"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -826,7 +781,7 @@ class Home extends Component {
                     <Field
                       name="village"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           required
                           width={'100%'}
@@ -846,7 +801,7 @@ class Home extends Component {
                       type={'submit'}
                       margin={'20px 0 0'}
                     />
-                  </FieldGroupWithTitle>
+                  </FormDetailsContainer>
                 </Form>
               )}
             />
@@ -861,7 +816,33 @@ class Home extends Component {
                 city: '',
                 branch: ''
               }}
-              onSubmit={formData => this.submitBank(formData)}
+              onSubmit={async (values, { resetForm }) => {
+                this.setState({ isLoading: true })
+                try {
+                  const { data } = await axios.post(`${API_URL}/signup/`, {
+                    userDetails: {
+                      email: this.state.signUpData.email,
+                      password: this.state.signUpData.password,
+                      role: this.state.signUpData.registerAs,
+                      name: values.name,
+                      city: values.city,
+                      branch: values.branch
+                    }
+                  })
+                  console.log('DATA', data)
+                  this.setState({ isLoading: false, openModal: false })
+                  resetForm()
+                  toast.success(`${'Submitted successfully'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                } catch (error) {
+                  console.log('ERROR', error)
+                  this.setState({ isLoading: false })
+                  toast.error(`${'Error!!!'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                }
+              }}
               render={formikBag => (
                 <Form>
                   <CloseWrap>
@@ -872,12 +853,13 @@ class Home extends Component {
                     <Field
                       name="name"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           width={'100%'}
                           height={'64px'}
                           type="text"
                           placeholder="Name"
+                          label="Name"
                           autoFocus
                           required
                         />
@@ -886,13 +868,29 @@ class Home extends Component {
                     <Field
                       name="city"
                       render={({ field }) => (
-                        <Input {...field} width={'100%'} height={'64px'} type="text" placeholder="City" required />
+                        <TextInput
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          type="text"
+                          placeholder="City"
+                          label="City"
+                          required
+                        />
                       )}
                     />
                     <Field
                       name="branch"
                       render={({ field }) => (
-                        <Input {...field} width={'100%'} height={'64px'} type="text" placeholder="Branch" required />
+                        <TextInput
+                          {...field}
+                          width={'100%'}
+                          height={'64px'}
+                          type="text"
+                          placeholder="Branch"
+                          label="Branch"
+                          required
+                        />
                       )}
                     />
                     <Button
@@ -919,7 +917,33 @@ class Home extends Component {
                 department: 'Housing and Urban Development',
                 govType: 'igr'
               }}
-              onSubmit={formData => this.submitGovernment(formData)}
+              onSubmit={async (values, { resetForm }) => {
+                this.setState({ isLoading: true })
+                try {
+                  const { data } = await axios.post(`${API_URL}/signup/`, {
+                    userDetails: {
+                      email: this.state.signUpData.email,
+                      password: this.state.signUpData.password,
+                      role: values.govType,
+                      name: values.name,
+                      state: values.state,
+                      dept: values.department
+                    }
+                  })
+                  console.log('DATA', data)
+                  this.setState({ isLoading: false, openModal: false }, () => this.props.history.push('/'))
+                  resetForm()
+                  toast.success(`${'Submitted successfully'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                } catch (error) {
+                  console.log('ERROR', error)
+                  this.setState({ isLoading: false })
+                  toast.error(`${'Error!!!'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                }
+              }}
               render={formikBag => (
                 <Form>
                   <CloseWrap>
@@ -946,12 +970,13 @@ class Home extends Component {
                     <Field
                       name="name"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           width={'100%'}
                           height={'64px'}
                           type="text"
                           placeholder="Name"
+                          label="Name"
                           autoFocus
                           required
                         />
@@ -964,6 +989,7 @@ class Home extends Component {
                           onChange={state => formikBag.setFieldValue('state', state.value)}
                           options={statesOptions}
                           placeholder="City"
+                          label="City"
                           defaultValue={{ label: 'Maharashtra', value: 'Maharashtra' }}
                         />
                       )}
@@ -971,12 +997,13 @@ class Home extends Component {
                     <Field
                       name="department"
                       render={({ field }) => (
-                        <Input
+                        <TextInput
                           {...field}
                           width={'100%'}
                           height={'64px'}
                           type="text"
                           placeholder="department"
+                          label="Department"
                           required
                           disabled
                         />

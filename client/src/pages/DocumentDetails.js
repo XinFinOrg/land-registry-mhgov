@@ -24,14 +24,23 @@ import {
   ButtonGroup,
   IconCircle,
   FlexWrapper,
-  MediumText
+  MediumText,
+  FieldsTuple
 } from '../components'
 import { commonUploadDoc, DocumentDutyTotal } from '../constants'
-import { PropertyDetailsForm, OwnerDetailsForm, SellerDetailsForm, StampDutyForm, Registeration } from '../forms'
+import {
+  PropertyDetailsForm,
+  OwnerDetailsForm,
+  BuyerDetailsForm,
+  StampDutyForm,
+  Registeration,
+  PaymentForm
+} from '../forms'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import get from 'lodash/get'
+import moment from 'moment'
 
 const PageTitleWrapper = styled.div`
   display: flex;
@@ -59,21 +68,47 @@ const SubmissionWrap = styled.div`
 class DocumentDetails extends Component {
   state = {
     activeTab: this.props.match.url,
-    dashboardData: []
+    dashboardData: [],
+    historyData: {}
   }
-  /* componentDidMount = () => {
-    this.setState({activeTab: "/dashboard/property-details"})
-  } */
   async componentDidMount() {
-    const propertyId = this.props.match.url.split('/')[3]
-    console.log('propertyId', propertyId)
+    this.fetchHistory()
+    const type = this.props.match.params.tab2
+    const id = this.props.match.params.tab3
+    if (type === 'propertyId') {
+      try {
+        const { data } = await axios.get(`${API_URL}/getPropertyData?propertyId=${id}`)
+        // console.log('DATA', data.data)
+        this.setState({ dashboardData: data.data })
+      } catch (error) {
+        console.log('ERROR', error)
+      }
+    } else {
+      try {
+        const { data } = await axios.get(`${API_URL}/getPropertyData?registryId=${id}`)
+        // console.log('DATA', data.data)
+        this.setState({ dashboardData: data.data })
+      } catch (error) {
+        console.log('ERROR', error)
+      }
+    }
+  }
+
+  fetchHistory = async () => {
     try {
-      const { data } = await axios.get(`${API_URL}/getPropertyDetails?propertyId=${propertyId}`)
+      const { data } = await axios.post(`${API_URL}/getExplorer`, {
+        registryId: Cookies.get('registryId'),
+        propertyId: Cookies.get('propertyId')
+      })
       console.log('DATA', data.data)
-      this.setState({ dashboardData: data.data })
+      this.setState({ historyData: data.data })
     } catch (error) {
       console.log('ERROR', error)
     }
+  }
+
+  changeActiveTab = activeTab => {
+    this.setState({ activeTab })
   }
 
   render() {
@@ -112,23 +147,72 @@ class DocumentDetails extends Component {
     ]
     const DocumentDutyColumns = [
       {
-        Header: <StyledHead>Transaction Info</StyledHead>,
-        accessor: 'txInfo',
-        minWidth: 100
+        Header: <StyledHead>Property Id</StyledHead>,
+        accessor: 'propertyId',
+        minWidth: 40
       },
       {
-        Header: <StyledHead>Date</StyledHead>,
-        accessor: 'date',
-        minWidth: 100
+        Header: <StyledHead>Land Type</StyledHead>,
+        accessor: 'landType',
+        maxWidth: 80
       },
       {
-        Header: <StyledHead>Amount</StyledHead>,
-        accessor: 'amount',
+        Header: <StyledHead>Owner</StyledHead>,
+        accessor: 'owner',
+        minwidth: 120
+      },
+      {
+        Header: <StyledHead>Survey Number</StyledHead>,
+        accessor: 'surveyNumber',
+        minwidth: 50
+      },
+      {
+        Header: <StyledHead>Open Parking</StyledHead>,
+        accessor: 'openParking',
+        maxwidth: 50
+      },
+      {
+        Header: <StyledHead>Floor Number</StyledHead>,
+        accessor: 'floorNumber',
+        maxwidth: 30
+      },
+      {
+        Header: <StyledHead>Covered Parking</StyledHead>,
+        accessor: 'coveredParking',
+        maxwidth: 20
+      },
+      {
+        Header: <StyledHead>Area</StyledHead>,
+        accessor: 'area',
+        maxwidth: 20
+      }
+    ]
+    const RegistryHistoryColumns = [
+      {
+        Header: <StyledHead>Property Id</StyledHead>,
+        accessor: 'propertyId',
+        minWidth: 40
+      },
+      {
+        Header: <StyledHead>Registry Id</StyledHead>,
+        accessor: 'registryId',
+        minWidth: 80
+      },
+      {
+        Header: <StyledHead>Buyer</StyledHead>,
+        accessor: 'buyer',
         minwidth: 120
       }
     ]
-    const { activeTab, dashboardData } = this.state
-    console.log('PROPS=====>', this.state.dashboardData)
+    const { activeTab, dashboardData, historyData } = this.state
+    console.log('historyData', historyData.propertyData)
+    const {
+      match: { params }
+    } = this.props
+
+    console.log('DocumentDutyTotal', DocumentDutyTotal)
+
+    console.log('this.props', this.props)
     return (
       <React.Fragment>
         <Header />
@@ -151,41 +235,33 @@ class DocumentDetails extends Component {
           <InsideTitle>Pre Reg. No.: 20170000092</InsideTitle>
           <Tabber>
             <Tab
-              onClick={() =>
-                this.setState({ activeTab: `/dashboard/property-details/${this.props.match.url.split('/')[3]}` })
-              }
-              to={`/dashboard/property-details/${this.props.match.url.split('/')[3]}`}
-              selected={activeTab === `/dashboard/property-details/${this.props.match.url.split('/')[3]}`}>
+              onClick={() => this.changeActiveTab(`/dashboard/property-details/${params.tab2}/${params.tab3}`)}
+              to={`/dashboard/property-details/${params.tab2}/${params.tab3}`}
+              selected={activeTab === `/dashboard/property-details/${params.tab2}/${params.tab3}`}>
               Property Details
             </Tab>
             <Tab
-              onClick={() =>
-                this.setState({ activeTab: `/dashboard/owner-details/${this.props.match.url.split('/')[3]}` })
-              }
-              to={`/dashboard/owner-details/${this.props.match.url.split('/')[3]}`}
-              selected={activeTab === `/dashboard/owner-details/${this.props.match.url.split('/')[3]}`}>
+              onClick={() => this.changeActiveTab(`/dashboard/owner-details/${params.tab2}/${params.tab3}`)}
+              to={`/dashboard/owner-details/${params.tab2}/${params.tab3}`}
+              selected={activeTab === `/dashboard/owner-details/${params.tab2}/${params.tab3}`}>
               Owner Details
             </Tab>
             <Tab
-              onClick={() =>
-                this.setState({ activeTab: `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}` })
-              }
-              to={`/dashboard/buyer-details/${this.props.match.url.split('/')[3]}`}
-              selected={activeTab === `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}`}>
+              onClick={() => this.changeActiveTab(`/dashboard/buyer-details/${params.tab2}/${params.tab3}`)}
+              to={`/dashboard/buyer-details/${params.tab2}/${params.tab3}`}
+              selected={activeTab === `/dashboard/buyer-details/${params.tab2}/${params.tab3}`}>
               Buyer Details
             </Tab>
             <Tab
-              onClick={() => this.setState({ activeTab: `/dashboard/payment/${this.props.match.url.split('/')[3]}` })}
-              to={`/dashboard/payment/${this.props.match.url.split('/')[3]}`}
-              selected={activeTab === `/dashboard/payment/${this.props.match.url.split('/')[3]}`}>
+              onClick={() => this.changeActiveTab(`/dashboard/payment/${params.tab2}/${params.tab3}`)}
+              to={`/dashboard/payment/${params.tab2}/${params.tab3}`}
+              selected={activeTab === `/dashboard/payment/${params.tab2}/${params.tab3}`}>
               Payment
             </Tab>
             <Tab
-              onClick={() =>
-                this.setState({ activeTab: `/dashboard/stamp-duty/${this.props.match.url.split('/')[3]}` })
-              }
-              to={`/dashboard/stamp-duty/${this.props.match.url.split('/')[3]}`}
-              selected={activeTab === `/dashboard/stamp-duty/${this.props.match.url.split('/')[3]}`}>
+              onClick={() => this.changeActiveTab(`/dashboard/stamp-duty/${params.tab2}`)}
+              to={`/dashboard/stamp-duty/${params.tab2}`}
+              selected={activeTab === `/dashboard/stamp-duty/${params.tab2}`}>
               Stamp Duty
             </Tab>
             {/*  <Tab
@@ -195,52 +271,43 @@ class DocumentDetails extends Component {
               Registeration
             </Tab>
             <Tab
-              onClick={() =>
-                this.setState({ activeTab: `/dashboard/upload-document/${this.props.match.url.split('/')[3]}` })
-              }
-              to={`/dashboard/upload-document/${this.props.match.url.split('/')[3]}`}
-              selected={activeTab === `/dashboard/upload-document/${this.props.match.url.split('/')[3]}`}>
+              onClick={() => this.changeActiveTab(`/dashboard/upload-document/${params.tab2}`)}
+              to={`/dashboard/upload-document/${params.tab2}`}
+              selected={activeTab === `/dashboard/upload-document/${params.tab2}`}>
               Upload Document
             </Tab> */}
           </Tabber>
         </Paper>
-        {activeTab === `/dashboard/property-details/${this.props.match.url.split('/')[3]}` && (
+
+        {activeTab === `/dashboard/property-details/${params.tab2}/${params.tab3}` && (
           <PropertyDetailsWrapper>
-            <PropertyDetailsForm data={get(dashboardData, 'property', [])} />
+            <PropertyDetailsForm
+              data={get(dashboardData, 'propertyDetails', [])}
+              changeActiveTab={this.changeActiveTab}
+            />
           </PropertyDetailsWrapper>
         )}
-        {activeTab === `/dashboard/owner-details/${this.props.match.url.split('/')[3]}` && (
-          <OwnerDetailsForm data={get(dashboardData, 'owner', [])} />
+        {activeTab === `/dashboard/owner-details/${params.tab2}/${params.tab3}` && (
+          <OwnerDetailsForm data={get(dashboardData, 'owner', [])} changeActiveTab={this.changeActiveTab} />
         )}
 
-        {activeTab === `/dashboard/buyer-details/${this.props.match.url.split('/')[3]}` && <SellerDetailsForm />}
-
-        {activeTab === `/dashboard/registeration/${this.props.match.url.split('/')[3]}` && <Registeration />}
-
-        {activeTab === `/dashboard/payment/${this.props.match.url.split('/')[3]}` && (
-          <Paper
-            padding={'0 31px 20px'}
-            radius={'0 0 6px 6px'}
-            shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-            margin={'0 95px'}>
-            <PaymentWrapper>
-              <PaymentTuple>
-                <PaymentText>Total Amount</PaymentText>
-                <PaymentText>Rs. 1,00,000</PaymentText>
-              </PaymentTuple>
-              <PaymentTuple>
-                <PaymentText>Total Amount</PaymentText>
-                <PaymentText>Rs. 1,00,000</PaymentText>
-              </PaymentTuple>
-              <PaymentTuple>
-                <PaymentText>Total Amount</PaymentText>
-                <PaymentText>Rs. 1,00,000</PaymentText>
-              </PaymentTuple>
-            </PaymentWrapper>
-          </Paper>
+        {activeTab === `/dashboard/buyer-details/${params.tab2}/${params.tab3}` && (
+          <BuyerDetailsForm
+            data={get(dashboardData, 'buyer', {})}
+            status={get(dashboardData, 'status', '')}
+            changeActiveTab={this.changeActiveTab}
+          />
         )}
-        {activeTab === `/dashboard/stamp-duty/${this.props.match.url.split('/')[3]}` && <StampDutyForm />}
-        {activeTab === `/dashboard/upload-document/${this.props.match.url.split('/')[3]}` && (
+
+        {activeTab === `/dashboard/registeration/${params.tab2}/${params.tab3}` && (
+          <Registeration changeActiveTab={this.changeActiveTab} />
+        )}
+
+        {activeTab === `/dashboard/payment/${params.tab2}/${params.tab3}` && (
+          <PaymentForm data={dashboardData} changeActiveTab={this.changeActiveTab} />
+        )}
+        {activeTab === `/dashboard/stamp-duty/${params.tab2}` && <StampDutyForm />}
+        {activeTab === `/dashboard/upload-document/${params.tab2}` && (
           <React.Fragment>
             <Paper
               padding={'26px 31px 20px'}
@@ -445,7 +512,7 @@ class DocumentDetails extends Component {
             defaultPageSize={10}
             minRows={0}
           />
-        </Paper>
+        </Paper> */}
         <Footer position={'fixed'} />
       </React.Fragment>
     )
