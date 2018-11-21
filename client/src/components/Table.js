@@ -159,7 +159,7 @@ class Table extends Component {
       <TableWrapper>
         <StyledTable data={data} columns={columns} resizable={resizable} sortable={sortable} {...props} />
         {/*********** Pagination ****************/}
-        <Pager>
+        {/* <Pager>
           <PagerGroup>
             <Page
               disabled={activePage === 1}
@@ -187,7 +187,7 @@ class Table extends Component {
               <Label>Next</Label>
             </Page>
           </PagerGroup>
-        </Pager>
+        </Pager> */}
       </TableWrapper>
     )
   }

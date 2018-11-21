@@ -18,6 +18,20 @@ import { data } from '../constants'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import { API_URL } from '../constants'
+import styled from 'styled-components'
+
+const Status = styled.div`
+  border-radius: 4px;
+  background: #fff;
+  color: #6faa13;
+  border: 1px solid #6faa13;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  max-width: 150px;
+  word-break: break-all;
+`
 
 class Dashboard extends Component {
   state = {
@@ -133,20 +147,10 @@ class Dashboard extends Component {
           </StyledHeader>
         ),
         accessor: 'status',
-        maxWidth: 150,
+        minWidth: 100,
+        maxWidth: 250,
         Cell: props => {
-          return (
-            <Button
-              size="action"
-              title={props.original.status}
-              background={'#fff'}
-              shadow={'none'}
-              fontSize={16}
-              color={'#333333'}
-              radius={'4px'}
-              border={props.original.status === 'new' ? 'solid 1px #ffae01' : 'solid 1px #6faa13'}
-            />
-          )
+          return <Status>{props.original.status}</Status>
         }
       },
       {
@@ -200,8 +204,7 @@ class Dashboard extends Component {
             data={tableData}
             columns={columns}
             resizable={false}
-            defaultPageSize={10}
-            pageSize={10}
+            pageSize={10000}
             minRows={0}
             showPagination={false}
             totalNumberOfResults={222}
