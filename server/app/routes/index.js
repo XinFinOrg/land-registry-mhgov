@@ -7,7 +7,7 @@ var db = require('./../config/db');
 var config = require('./../config/config');
 var constants = require('../constants/constants');
 
-var web3Conf = false;
+var web3Conf = true;
 
 if (web3Conf) {
 	var init = require('../web3Helpers/init.js');
@@ -42,15 +42,15 @@ router.post('/getDashboard', async function(req, res) {
     try {
     	let records = [];
     	if (role != "bank") {
-			var collection = db.getCollection('properties');   		
+			var collection = db.getCollection('properties');
 			query = {"$and" : [{isNewProperty : true}]};
 			if (role == "individual") {
-				query["$and"].push({"owner" : email});
+				query["$and"].push({"owner.email" : email});
 			} else {
 				query["$and"].push({"status" : {"$ne" : "property_rejected"}});
 			}
 			console.log("query", query);
-	        let p = await collection.find(query).toArray();
+	        let p = await collection.find(query).sort({'created' : -1}).toArray();
 	        console.log(p);
 	        records = records.concat(p);
     	}
@@ -69,7 +69,7 @@ router.post('/getDashboard', async function(req, res) {
 			]};
 		}
 		console.log("query", query);
-        let q = await collection.find(query).toArray();
+        let q = await collection.find(query).sort({_id : -1}).toArray();
         console.log(q)
         records = records.concat(q);
 		return res.send({status : true, data : records});
@@ -238,7 +238,7 @@ router.get('/getPropertyData', async function(req, res) {
     let propertyDetails = await collection.findOne({propertyId : propertyId});
     let userList = [];
     if (!allData) {
-		userList.push(propertyDetails.owner);
+		userList.push(propertyDetails.owner.email);
     } else {
     	if (allData.owner && allData.owner.email) {
 			console.log(userList);
@@ -257,9 +257,10 @@ router.get('/getPropertyData', async function(req, res) {
     		userList.push(allData.buyerFinancer.email);
     	}
     }
-    console.log(userList);
+
 	var collection = db.getCollection('users');
     let userDetails = await collection.find({email : {$in : userList}}).toArray();
+    console.log('userDetails', userDetails)
     userDetails = helper.arrayToObject(userDetails, "email");
 
     let responseData = {};
@@ -318,23 +319,23 @@ router.post('/addProperty', async function(req, res) {
 	if (web3Conf) {
 	    try {
 	        var m;
-	        m = await landRegistry.addProperty(
-	            web3StringToBytes32(propertyDetails.propertyId),
-	            web3StringToBytes32(propertyDetails.surveyNo),
-	            web3StringToBytes32(propertyDetails.landType),
+	        m = await landRecords.addProperty(
+	            helper.web3StringToBytes32(propertyDetails.propertyId),
+	            helper.web3StringToBytes32(propertyDetails.surveyNo),
+	            helper.web3StringToBytes32(propertyDetails.landType),
 	            parseInt(propertyDetails.constructedArea),
 	            parseInt(propertyDetails.openParking),
 	            parseInt(propertyDetails.coveredParking),
 	            parseInt(propertyDetails.shopFloor),
 	            propertyDetails.owner.address,
-	            web3StringToBytes32(propertyDetails.status)
+	            helper.web3StringToBytes32(propertyDetails.status)
 	        );
 	        console.log("addProperty", m);
 	    } catch(err) {
 	        console.log(err);
 	    }
 	}
-
+	console.log('property', propertyDetails);
 	helper.insertCollection('properties', propertyDetails, function(err, data) {
 	    if (err) {
 			console.log('error:', err, 'data:',data);
@@ -356,9 +357,10 @@ router.post('/confirmProperty', async function(req, res) {
 	if (web3Conf) {
 	    try {
 	        var m;
+	        console.log('propertyId', propertyId);
 	        m = await landRecords.setStatus(
-	            web3StringToBytes32(propertyId),
-	            web3StringToBytes32(status)
+	            helper.web3StringToBytes32(propertyId),
+	            helper.web3StringToBytes32(status)
 	        );
 	        console.log("setStatus", m);
 	    } catch(err) {
@@ -414,8 +416,8 @@ router.post('/sellProperty', async function(req, res) {
 	    if (web3Conf) {
 		    try {
 		        var m = await landRegistry.addRegistryRecord(
-		            web3StringToBytes32(registryId),
-		            web3StringToBytes32(propertyId),
+		            helper.web3StringToBytes32(registryId),
+		            helper.web3StringToBytes32(propertyId),
 		            registry.owner.address,
 		            parseInt(sellPrice),
 		            parseInt(tokenAmt)
@@ -470,9 +472,9 @@ router.post('/addOwner', async function(req, res) {
 	if (web3Conf) {
 		try {
 	        m = await landRegistry.setStatus(
-	            web3StringToBytes32(registryId),
-	            web3StringToBytes32(propertyId),
-	            web3StringToBytes32("registry_owner")
+	            helper.web3StringToBytes32(registryId),
+	            helper.web3StringToBytes32(propertyId),
+	            helper.web3StringToBytes32("registry_owner")
 	        );
 		} catch(e) {
 			console.log(e);
@@ -504,8 +506,8 @@ router.post('/addOwnerFinancer', async function(req, res) {
 	if (web3Conf && status == 'registry_owner_financer') {
 		try {
 	        var m = await landRegistry.addOwnerFinancer(
-	            web3StringToBytes32(registryId),
-	            web3StringToBytes32(propertyId),
+	            helper.web3StringToBytes32(registryId),
+	            helper.web3StringToBytes32(propertyId),
 	            ownerFinancer.address,
 	            parseInt(ownerFinancer.loanAmount),
 	            parseInt(ownerFinancer.outstandingLoan)
@@ -556,9 +558,9 @@ router.post('/confirmFinancer', async function(req, res) {
 	if (web3Conf) {
 		try {
 	       m = await landRegistry.setStatus(
-	            web3StringToBytes32(registryId),
-	            web3StringToBytes32(propertyId),
-	            web3StringToBytes32(status)
+	            helper.web3StringToBytes32(registryId),
+	            helper.web3StringToBytes32(propertyId),
+	            helper.web3StringToBytes32(status)
 	        );
 	       console.log("setStatus", setStatus);
 		}catch(e) {
@@ -600,8 +602,8 @@ router.post('/addBuyer', async function(req, res) {
     if (web3Conf) {
 		try {
 		    m = await landRegistry.addBuyer(
-		        web3StringToBytes32(registryId),
-		        web3StringToBytes32(propertyId),
+		        helper.web3StringToBytes32(registryId),
+		        helper.web3StringToBytes32(propertyId),
 		        buyerDetails.address
 		    );
 		    console.log('addBuyer', m)
@@ -635,9 +637,9 @@ router.post('/confirmBuyer', async function(req, res) {
     if (web3Conf) {
 		try {
 	        m = await landRegistry.setStatus(
-	            web3StringToBytes32(registryId),
-	            web3StringToBytes32(propertyId),
-	            web3StringToBytes32(status)
+	            helper.web3StringToBytes32(registryId),
+	            helper.web3StringToBytes32(propertyId),
+	            helper.web3StringToBytes32(status)
 	        );
 		    console.log('addBuyer', m);
 		} catch(e) {
@@ -669,8 +671,8 @@ router.post('/addBuyerFinancer', async function(req, res) {
     if (web3Conf && status == 'registry_buyer_financer') {
 		try {
 	        m = await landRegistry.addBuyerFinancer(
-	            web3StringToBytes32(registryId),
-	            web3StringToBytes32(propertyId),
+	            helper.web3StringToBytes32(registryId),
+	            helper.web3StringToBytes32(propertyId),
 	            buyerFinancer.address,
 	            parseInt(buyerFinancer.financeAmount)
 	        );
