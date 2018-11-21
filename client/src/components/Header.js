@@ -82,7 +82,6 @@ class Header extends Component {
       location: { pathname }
     } = this.props
     const { balance, showModal, isLoading } = this.state
-    console.log('DATA', balance)
     return (
       <HeaderOuter>
         <HeaderWrapper>
