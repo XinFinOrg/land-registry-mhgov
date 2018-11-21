@@ -361,16 +361,15 @@ class PropertyDetailsForm extends Component {
               </Paper>
               <ButtonGroup>
                 {/* <Button size={'medium'} width={'150px'} disabled title="Save" type="button" /> */}
-                {get(data, 'status', '') === 'property_verified' &&
-                Cookies.get('role') === 'corporation' ? null : Cookies.get('role') === 'corporation' ? (
+                {Cookies.get('role') === 'corporation' && get(data, 'status', {}) === 'property_new' ? (
                   <React.Fragment>
                     <Button
                       size={'medium'}
                       width={'150px'}
                       isLoading={isLoadingReject}
+                      disabled={isLoadingReject}
                       title="reject"
                       type="button"
-                      disabled={isLoadingReject}
                       onClick={() => this.rejectProperty()}
                     />
                     <Button
@@ -383,8 +382,8 @@ class PropertyDetailsForm extends Component {
                     />
                   </React.Fragment>
                 ) : Cookies.get('role') === 'individual' &&
-                get(this.props.data, 'owner', {}) === Cookies.get('email') &&
-                get(this.props.data, 'status', {}) === 'property_verified' ? (
+                get(data, 'owner', {}) === Cookies.get('email') &&
+                get(data, 'status', {}) === 'property_verified' ? (
                   <Button
                     size={'medium'}
                     width={'150px'}
