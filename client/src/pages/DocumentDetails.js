@@ -24,7 +24,8 @@ import {
   ButtonGroup,
   IconCircle,
   FlexWrapper,
-  MediumText
+  MediumText,
+  FieldsTuple
 } from '../components'
 import { commonUploadDoc, DocumentDutyTotal } from '../constants'
 import {
@@ -39,6 +40,7 @@ import Cookies from 'js-cookie'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import get from 'lodash/get'
+import moment from 'moment'
 
 const PageTitleWrapper = styled.div`
   display: flex;
@@ -66,9 +68,11 @@ const SubmissionWrap = styled.div`
 class DocumentDetails extends Component {
   state = {
     activeTab: this.props.match.url,
-    dashboardData: []
+    dashboardData: [],
+    historyData: {}
   }
   async componentDidMount() {
+    this.fetchHistory()
     const type = this.props.match.params.tab2
     const id = this.props.match.params.tab3
     if (type === 'propertyId') {
@@ -90,14 +94,24 @@ class DocumentDetails extends Component {
     }
   }
 
+  fetchHistory = async () => {
+    try {
+      const { data } = await axios.post(`${API_URL}/getExplorer`, {
+        registryId: Cookies.get('registryId'),
+        propertyId: Cookies.get('propertyId')
+      })
+      console.log('DATA', data.data)
+      this.setState({ historyData: data.data })
+    } catch (error) {
+      console.log('ERROR', error)
+    }
+  }
+
   changeActiveTab = activeTab => {
     this.setState({ activeTab })
   }
 
   render() {
-    // console.log('this.state.dashboardData', this.state.dashboardData)
-
-    // console.log('PROPS==>', this.props)
     const columns = [
       {
         Header: <StyledHead>Document Details</StyledHead>,
@@ -133,26 +147,70 @@ class DocumentDetails extends Component {
     ]
     const DocumentDutyColumns = [
       {
-        Header: <StyledHead>Transaction Info</StyledHead>,
-        accessor: 'txInfo',
-        minWidth: 100
+        Header: <StyledHead>Property Id</StyledHead>,
+        accessor: 'propertyId',
+        minWidth: 40
       },
       {
-        Header: <StyledHead>Date</StyledHead>,
-        accessor: 'date',
-        minWidth: 100
+        Header: <StyledHead>Land Type</StyledHead>,
+        accessor: 'landType',
+        maxWidth: 80
       },
       {
-        Header: <StyledHead>Amount</StyledHead>,
-        accessor: 'amount',
+        Header: <StyledHead>Owner</StyledHead>,
+        accessor: 'owner',
+        minwidth: 120
+      },
+      {
+        Header: <StyledHead>Survey Number</StyledHead>,
+        accessor: 'surveyNumber',
+        minwidth: 50
+      },
+      {
+        Header: <StyledHead>Open Parking</StyledHead>,
+        accessor: 'openParking',
+        maxwidth: 50
+      },
+      {
+        Header: <StyledHead>Floor Number</StyledHead>,
+        accessor: 'floorNumber',
+        maxwidth: 30
+      },
+      {
+        Header: <StyledHead>Covered Parking</StyledHead>,
+        accessor: 'coveredParking',
+        maxwidth: 20
+      },
+      {
+        Header: <StyledHead>Area</StyledHead>,
+        accessor: 'area',
+        maxwidth: 20
+      }
+    ]
+    const RegistryHistoryColumns = [
+      {
+        Header: <StyledHead>Property Id</StyledHead>,
+        accessor: 'propertyId',
+        minWidth: 40
+      },
+      {
+        Header: <StyledHead>Registry Id</StyledHead>,
+        accessor: 'registryId',
+        minWidth: 80
+      },
+      {
+        Header: <StyledHead>Buyer</StyledHead>,
+        accessor: 'buyer',
         minwidth: 120
       }
     ]
-    const { activeTab, dashboardData } = this.state
-    // console.log('dashboardData=====>', this.props)
+    const { activeTab, dashboardData, historyData } = this.state
+    console.log('historyData', historyData.propertyData)
     const {
       match: { params }
     } = this.props
+
+    console.log('DocumentDutyTotal', DocumentDutyTotal)
 
     console.log('this.props', this.props)
     return (
@@ -282,68 +340,160 @@ class DocumentDetails extends Component {
             </ButtonGroup>
           </React.Fragment>
         )}
-        <Paper
-          padding={'26px 31px 20px'}
-          radius={'0 0 6px 6px'}
-          shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-          margin={'40px 95px 100px'}>
-          <InformTitle paddingTop={'0'} paddingBottom={'0'}>
-            Property History - Add Property(Event name)
-          </InformTitle>
-          <FlexWrapper flexDirection="row" justifyContent="flex-start" padding={'10px 0'} borderWidth={'0 0 1px 0'}>
-            <IconCircle width={'50px'} height={'50px'} bgColor="transparent" borderColor="#ddd">
-              <Icon icon="notification" fill="#1f89f5" width={15} height={19} />
-            </IconCircle>
-            <FlexWrapper flexDirection="column" justifyContent="flex-start" padding={'0 0 0 10px'}>
-              <MediumText paddingTop={'0'} paddingBottom={'0'}>
-                #0ada0da0eggq0wgegw89s89f8g9g8yv67c5ty: Block hash
-              </MediumText>
-              <MediumText paddingTop={'0'} paddingBottom={'0'}>
-                27 Jul 2018, 01:11(Time StampDutyForm)
-              </MediumText>
-            </FlexWrapper>
-          </FlexWrapper>
-          <Formik
-            enableReinitialize={true}
-            initialValues={{
-              address: '',
-              blockNumber: '',
-              id: '',
-              timestamp: '',
-              remark: ''
-            }}
-            onSubmit={formValues => console.log(formValues)}
-            render={formikBag => (
-              <Form>
-                <FormDetailsContainer flexBasis={'100%'}>
-                  <Field
-                    name="address"
-                    render={({ field }) => <TextInput {...field} label="Block Address" placeholder={'Block Address'} />}
-                  />
-                </FormDetailsContainer>
-                <FormDetailsContainer>
-                  <Field
-                    name="blockNumber"
-                    render={({ field }) => <TextInput {...field} label="Block Number" placeholder={'Block Number'} />}
-                  />
-
-                  {/* <Field name="id" render={({ field }) => <TextInput {...field} label="Id" placeholder={'Id'} />} /> */}
-
-                  {/*  <Field
-                    name="timestamp"
-                    render={({ field }) => <TextInput {...field} label="Timestamp" placeholder={'Timestamp'} />}
-                  /> */}
-                </FormDetailsContainer>
-                {/* <FormDetailsContainer>
-                  <Field
-                    name="remark"
-                    render={({ field }) => <TextInput {...field} label="Remark" placeholder={'Remark'} />}
-                  />
-                </FormDetailsContainer> */}
-              </Form>
-            )}
-          />
-        </Paper>
+        {get(historyData, 'propertyData', []).map(item => {
+          const DocumentDutyTotal = [
+            {
+              propertyId: item.args.propertyId || 'None',
+              landType: item.args.landType || 'None',
+              owner: item.args.owner || 'None',
+              surveyNumber: item.args.surveyNo || 'None',
+              openParking: item.args.openParking || 'None',
+              floorNumber: item.args.floorNo || 'None',
+              coveredParking: item.args.coveredParking || 'None',
+              area: item.args.area || 'None'
+            }
+          ]
+          console.log('DocumentDutyTotal=>', DocumentDutyTotal)
+          return (
+            <Paper
+              padding={'26px 31px 20px'}
+              radius={'0 0 6px 6px'}
+              shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+              margin={'40px 95px 100px'}
+              key={item.blockHash}>
+              <InformTitle paddingTop={'0'} paddingBottom={'0'}>
+                Property History - {item.event}
+              </InformTitle>
+              <FlexWrapper flexDirection="row" justifyContent="flex-start" padding={'10px 0'} borderWidth={'0 0 1px 0'}>
+                <IconCircle width={'50px'} height={'50px'} bgColor="transparent" borderColor="#ddd">
+                  <h1>P</h1>
+                </IconCircle>
+                <FlexWrapper flexDirection="column" justifyContent="flex-start" padding={'0 0 0 10px'}>
+                  <MediumText paddingTop={'0'} paddingBottom={'0'}>
+                    {item.blockHash}
+                  </MediumText>
+                  <MediumText paddingTop={'0'} paddingBottom={'0'}>
+                    {moment.unix(item.args.created).format('MM/DD/YYYY hh:mm:ss a')}
+                  </MediumText>
+                </FlexWrapper>
+              </FlexWrapper>
+              <Formik
+                enableReinitialize={true}
+                initialValues={{
+                  address: item.address,
+                  blockNumber: item.blockNumber,
+                  id: '',
+                  timestamp: '',
+                  remark: ''
+                }}
+                onSubmit={formValues => console.log(formValues)}
+                render={formikBag => (
+                  <Form>
+                    <FieldsTuple flexBasis={'calc(50% - 10px)'}>
+                      <Field
+                        name="address"
+                        render={({ field }) => (
+                          <TextInput {...field} label="Block Address" placeholder={'Block Address'} disabled />
+                        )}
+                      />
+                      <Field
+                        name="blockNumber"
+                        render={({ field }) => (
+                          <TextInput {...field} label="Block Number" placeholder={'Block Number'} disabled />
+                        )}
+                      />
+                    </FieldsTuple>
+                  </Form>
+                )}
+              />
+              <CustomTable
+                marginTop
+                data={DocumentDutyTotal}
+                columns={DocumentDutyColumns}
+                resizable={false}
+                sortable={false}
+                showPagination={false}
+                pageSize={10}
+                defaultPageSize={10}
+                minRows={0}
+              />
+            </Paper>
+          )
+        })}
+        {get(historyData, 'registryData', []).map(item => {
+          const DocumentDutyTotal = [
+            {
+              propertyId: item.args.propertyId || 'None',
+              registryId: item.args.registryId || 'None',
+              buyer: item.args.buyer || 'None'
+            }
+          ]
+          return (
+            <Paper
+              padding={'26px 31px 20px'}
+              radius={'0 0 6px 6px'}
+              shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+              margin={'40px 95px 100px'}
+              key={item.blockHash}>
+              <InformTitle paddingTop={'0'} paddingBottom={'0'}>
+                Registry History - {item.event}
+              </InformTitle>
+              <FlexWrapper flexDirection="row" justifyContent="flex-start" padding={'10px 0'} borderWidth={'0 0 1px 0'}>
+                <IconCircle width={'50px'} height={'50px'} bgColor="transparent" borderColor="#ddd">
+                  <h1>R</h1>
+                </IconCircle>
+                <FlexWrapper flexDirection="column" justifyContent="flex-start" padding={'0 0 0 10px'}>
+                  <MediumText paddingTop={'0'} paddingBottom={'0'}>
+                    {item.blockHash}
+                  </MediumText>
+                  <MediumText paddingTop={'0'} paddingBottom={'0'}>
+                    {moment.unix(item.args.created).format('MM/DD/YYYY hh:mm:ss a')}
+                  </MediumText>
+                </FlexWrapper>
+              </FlexWrapper>
+              <Formik
+                enableReinitialize={true}
+                initialValues={{
+                  address: item.address,
+                  blockNumber: item.blockNumber,
+                  id: '',
+                  timestamp: '',
+                  remark: ''
+                }}
+                onSubmit={formValues => console.log(formValues)}
+                render={formikBag => (
+                  <Form>
+                    <FieldsTuple flexBasis={'calc(50% - 10px)'}>
+                      <Field
+                        name="address"
+                        render={({ field }) => (
+                          <TextInput {...field} label="Block Address" placeholder={'Block Address'} disabled />
+                        )}
+                      />
+                      <Field
+                        name="blockNumber"
+                        render={({ field }) => (
+                          <TextInput {...field} label="Block Number" placeholder={'Block Number'} disabled />
+                        )}
+                      />
+                    </FieldsTuple>
+                  </Form>
+                )}
+              />
+              <CustomTable
+                marginTop
+                data={DocumentDutyTotal}
+                columns={RegistryHistoryColumns}
+                resizable={false}
+                sortable={false}
+                showPagination={false}
+                pageSize={10}
+                defaultPageSize={10}
+                minRows={0}
+              />
+            </Paper>
+          )
+        })}
         {/*  <Paper
           padding={'26px 31px 20px'}
           radius={'0 0 6px 6px'}

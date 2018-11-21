@@ -101,9 +101,9 @@ const FieldsTuple = styled.div`
   align-items: center;
   justify-content: space-between;
   & > div {
-    flex-basis: calc(33.33% - 10px);
+    flex-basis: ${props => (props.flexBasis ? props.flexBasis : 'calc(33.33% - 10px)')};
     & > div {
-      flex-basis: calc(33.33% - 10px);
+      flex-basis: ${props => (props.flexBasis ? props.flexBasis : 'calc(33.33% - 10px)')};
     }
   }
 `
