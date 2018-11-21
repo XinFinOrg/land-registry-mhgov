@@ -342,7 +342,7 @@ class Home extends Component {
                     } catch (error) {
                       console.log('ERROR', error)
                       await this.setState({ isLoading: false })
-                      toast.error("User doesn't exist", {
+                      toast.error('User doesn\'t exist', {
                         position: toast.POSITION.TOP_CENTER
                       })
                     }
@@ -379,7 +379,7 @@ class Home extends Component {
                             />
                           )}
                         />
-                        <ForgotPassword>Forgot Password ?</ForgotPassword>
+                        {/* <ForgotPassword>Forgot Password ?</ForgotPassword> */}
                         <Button
                           fontSize={20}
                           width={'100%'}

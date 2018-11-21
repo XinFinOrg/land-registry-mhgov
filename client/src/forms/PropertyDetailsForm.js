@@ -31,6 +31,7 @@ class PropertyDetailsForm extends Component {
     isLoadingReject: false,
     openModal: false
   }
+
   rejectProperty = async values => {
     const {
       match: {
@@ -63,11 +64,10 @@ class PropertyDetailsForm extends Component {
   render() {
     const { isLoading, isLoadingReject, openModal } = this.state
     const {
-      match: {
-        params: { tab }
-      }
+      match: { params },
+      data
     } = this.props
-    // console.log('DATA PROPERTY', owner, status)
+    console.log('PROPS data==>', data)
     return (
       <React.Fragment>
         <Formik
@@ -100,7 +100,7 @@ class PropertyDetailsForm extends Component {
               try {
                 this.setState({ isLoading: true })
                 const { data } = await axios.post(`${API_URL}/confirmProperty`, {
-                  propertyId: tab,
+                  propertyId: params.tab3,
                   status: 'property_verified',
                   email: Cookies.get('email'),
                   role: Cookies.get('role')
@@ -363,7 +363,9 @@ class PropertyDetailsForm extends Component {
               </Paper>
               <ButtonGroup>
                 {/* <Button size={'medium'} width={'150px'} disabled title="Save" type="button" /> */}
-                {Cookies.get('role') === 'corporation' ? (
+                {data.status === 'property_verified' && Cookies.get('role') === 'corporation' ? null : Cookies.get(
+                  'role'
+                ) === 'corporation' ? (
                   <React.Fragment>
                     <Button
                       size={'medium'}
@@ -409,6 +411,7 @@ class PropertyDetailsForm extends Component {
             </FormikForm>
           )}
         />
+        {console.log("data.status === 'property_verified'", data.status === 'property_verified')}
         <Modal show={openModal}>
           <Formik
             enableReinitialize={true}
@@ -420,7 +423,7 @@ class PropertyDetailsForm extends Component {
               this.setState({ isLoading: true })
               try {
                 const { data } = await axios.post(`${API_URL}/sellProperty`, {
-                  propertyId: tab,
+                  propertyId: params.tab3,
                   owner: {
                     email: Cookies.get('email'),
                     address: Cookies.get('address')
