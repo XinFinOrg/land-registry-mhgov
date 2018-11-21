@@ -154,7 +154,7 @@ const Promisify = (inner) =>
         })
     );
 
-var getAllEvents = async function() {
+var getAllEvents = async function(registryId) {
     let eventInstance, events;
     let allEvents = []; 
     //let f0 = {policyNo : helper.web3StringToBytes32(policyNo)};
@@ -190,7 +190,7 @@ var getAllEvents = async function() {
     eventInstance = contractInstance.SetStatus(f1,  f2);
     events = await (Promisify(cb => eventInstance.get(cb)));
     allEvents = allEvents.concat(events);
-    //allEvents = allEvents.filter(tx => tx.args && helper.bytesToStr(tx.args.policyNo) == policyNo);
+    allEvents = allEvents.filter(tx => tx.args && helper.bytesToStr(tx.args.registryId) == registryId);
     //handle bignumbers
     allEvents = helper.processEventBigNumbers(allEvents);
     //sort events by timeline

@@ -71,7 +71,7 @@ const Promisify = (inner) =>
         })
     );
 
-var getAllEvents = async function() {
+var getAllEvents = async function(propertyId) {
     let eventInstance, events;
     let allEvents = []; 
     //let f0 = {policyNo : helper.web3StringToBytes32(policyNo)};
@@ -92,7 +92,7 @@ var getAllEvents = async function() {
     events = await (Promisify(cb => eventInstance.get(cb)));
     allEvents = allEvents.concat(events);
 
-    //allEvents = allEvents.filter(tx => tx.args && helper.bytesToStr(tx.args.policyNo) == policyNo);
+    allEvents = allEvents.filter(tx => tx.args && helper.bytesToStr(tx.args.propertyId) == propertyId);
     //handle bignumbers
     allEvents = helper.processEventBigNumbers(allEvents);
     //sort events by timeline
