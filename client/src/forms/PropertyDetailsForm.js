@@ -382,7 +382,7 @@ class PropertyDetailsForm extends Component {
                     />
                   </React.Fragment>
                 ) : Cookies.get('role') === 'individual' &&
-                get(data, 'owner', {}) === Cookies.get('email') &&
+                get(data, 'owner.email', {}) === Cookies.get('email') &&
                 get(data, 'status', {}) === 'property_verified' ? (
                   <Button
                     size={'medium'}
@@ -407,6 +407,7 @@ class PropertyDetailsForm extends Component {
             </FormikForm>
           )}
         />
+
         <Modal show={openModal}>
           <Formik
             enableReinitialize={true}

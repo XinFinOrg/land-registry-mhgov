@@ -70,9 +70,9 @@ class Dashboard extends Component {
       srNo: index + 1,
       propertyId: item.propertyId,
       registryId: item.registryId || '',
-      propertyType: item.landType,
-      propertyLocation: item.address,
-      city: item.city,
+      propertyType: item.landType || item.propertyDetails.propertyType,
+      propertyLocation: item.address || item.propertyDetails.propertyLocation,
+      city: item.city || item.propertyDetails.city,
       status: item.status
     }))
     const columns = [
