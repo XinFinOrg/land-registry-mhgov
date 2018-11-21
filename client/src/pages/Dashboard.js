@@ -70,8 +70,8 @@ class Dashboard extends Component {
       srNo: index + 1,
       propertyId: item.propertyId,
       registryId: item.registryId || '',
-      propertyType: item.landType || item.propertyDetails.propertyType,
-      propertyLocation: item.address || item.propertyDetails.propertyLocation,
+      propertyType: item.landType || item.propertyDetails.landType,
+      propertyLocation: item.address || item.propertyDetails.address,
       city: item.city || item.propertyDetails.city,
       status: item.status
     }))
