@@ -16,6 +16,12 @@ import {
   StyledHead
 } from '../components'
 import { partyDetails, dutyDetails, DocumentDutyTotal } from '../constants'
+import axios from 'axios'
+import { API_URL } from '../constants'
+import Cookies from 'js-cookie'
+import { toast } from 'react-toastify'
+import get from 'lodash/get'
+import withRouter from 'react-router/withRouter'
 
 const ConsiderationWrap = styled.div`
   margin-top: 20px;
@@ -56,7 +62,9 @@ const RadioWrap = styled.div`
 `
 
 class StampDutyForm extends Component {
-  state = {}
+  state = {
+    isLoading: false
+  }
   render() {
     const partyDetailscolumns = [
       {
@@ -127,11 +135,17 @@ class StampDutyForm extends Component {
         minwidth: 120
       }
     ]
+    const { isLoading } = this.state
+    const {
+      data,
+      match: { params }
+    } = this.props
+    console.log('STAMO', this.props)
     return (
       <Formik
         enableReinitialize={true}
         initialValues={{
-          selectPartyType: '',
+          stampDutyPayment: data.stampDuty || 0,
           selectPartyCategory: '',
           isExecuter: '',
           salutation: '',
@@ -166,7 +180,25 @@ class StampDutyForm extends Component {
           totalSaveAmount: '',
           tokenAmount: ''
         }}
-        onSubmit={formData => console.log(formData)}
+        onSubmit={async (values, { resetForm }) => {
+          try {
+            this.setState({ isLoading: true })
+            const { data } = await axios.post(`${API_URL}/payStampDuty`, {
+              registryId: params.tab3
+            })
+            await this.setState({ isLoading: false })
+            await toast.success(`${'Stamp duty paid!'}`, {
+              position: toast.POSITION.TOP_CENTER
+            })
+            this.props.history.push('/dashboard')
+          } catch (error) {
+            await this.setState({ isLoading: false })
+            toast.error(`${'Some error occurred!'}`, {
+              position: toast.POSITION.TOP_CENTER
+            })
+            console.log('ERROR', error)
+          }
+        }}
         render={formikBag => (
           <FormikForm>
             <Paper
@@ -174,14 +206,14 @@ class StampDutyForm extends Component {
               radius={'0 0 6px 6px'}
               shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
               margin={'0 95px'}>
-              <InformTitle paddingTop="20">Stamp Duty Calculation</InformTitle>
+              <InformTitle paddingTop="20">Stamp Duty Payment</InformTitle>
               <FormDetailsContainer paddingTop={'10'} flexBasis={'calc(50% - 10px)'}>
                 <Field
-                  name="selectPartyType"
-                  render={({ field }) => <TextInput {...field} label="Fee Rule" placeholder={'Will'} />}
+                  name="stampDutyPayment"
+                  render={({ field }) => <TextInput {...field} label="Amount" placeholder={'Will'} required />}
                 />
               </FormDetailsContainer>
-              <FormDetailsContainer paddingTop={'0'} display="block">
+              {/* <FormDetailsContainer paddingTop={'0'} display="block">
                 <CustomTable
                   data={partyDetails}
                   columns={partyDetailscolumns}
@@ -192,8 +224,8 @@ class StampDutyForm extends Component {
                   defaultPageSize={10}
                   minRows={0}
                 />
-              </FormDetailsContainer>
-              <ConsiderationWrap>
+              </FormDetailsContainer> */}
+              {/* <ConsiderationWrap>
                 <ConsiAmtBox>
                   <Field
                     name="selectPartyType"
@@ -206,9 +238,9 @@ class StampDutyForm extends Component {
                 <ConButtonWrap>
                   <Button width={'180px'} height={'45px'} shadow={'none'} title="Calculate & Save" radius={'4px'} />
                 </ConButtonWrap>
-              </ConsiderationWrap>
+              </ConsiderationWrap> */}
 
-              <HandellingChargesWrap>
+              {/* <HandellingChargesWrap>
                 <InformTitle>Stamp Duty Details</InformTitle>
                 <p>Fee Rule Scanning and handelling charges</p>
                 <CustomTable
@@ -221,9 +253,9 @@ class StampDutyForm extends Component {
                   defaultPageSize={10}
                   minRows={0}
                 />
-              </HandellingChargesWrap>
+              </HandellingChargesWrap> */}
 
-              <FormDetailsContainer paddingTop={'0'}>
+              {/* <FormDetailsContainer paddingTop={'0'}>
                 <NormalFieldsTuple shrink>
                   <Field
                     name="OnlinePay"
@@ -238,9 +270,9 @@ class StampDutyForm extends Component {
                     render={({ field }) => <TextInput {...field} label="Total Amount" placeholder={'700'} />}
                   />
                 </NormalFieldsTuple>
-              </FormDetailsContainer>
+              </FormDetailsContainer> */}
 
-              <FormDetailsContainer paddingTop={'0'}>
+              {/* <FormDetailsContainer paddingTop={'0'}>
                 <InformTitle>Stamp Duty Adjustment Details</InformTitle>
                 <NormalFieldsTuple shrink paddingTop={'0'}>
                   <Field
@@ -287,9 +319,9 @@ class StampDutyForm extends Component {
                     )}
                   />
                 </NormalFieldsTuple>
-              </FormDetailsContainer>
+              </FormDetailsContainer> */}
 
-              <CustomTable
+              {/* <CustomTable
                 data={DocumentDutyTotal}
                 columns={DocumentDutyColumns}
                 resizable={false}
@@ -298,14 +330,23 @@ class StampDutyForm extends Component {
                 pageSize={10}
                 defaultPageSize={10}
                 minRows={0}
-              />
+              /> */}
 
-              <TotalPaymentText>Total Payment: $ 1810</TotalPaymentText>
+              {/* <TotalPaymentText>Total Payment: $ 1810</TotalPaymentText> */}
             </Paper>
 
             <ButtonGroup>
-              <Button size={'medium'} width={'150px'} title="Previous" type="submit" disabled={true} />
-              <Button size={'medium'} width={'150px'} title="Submit" type="submit" />
+              {/* <Button size={'medium'} width={'150px'} title="Previous" type="submit" disabled={true} /> */}
+              {Cookies.get('email') === get(data, 'owner.email', '') && (
+                <Button
+                  size={'medium'}
+                  width={'150px'}
+                  disabled={isLoading}
+                  isLoading={isLoading}
+                  title="Submit"
+                  type="submit"
+                />
+              )}
             </ButtonGroup>
           </FormikForm>
         )}
@@ -314,4 +355,4 @@ class StampDutyForm extends Component {
   }
 }
 
-export default StampDutyForm
+export default withRouter(StampDutyForm)

@@ -306,7 +306,9 @@ class DocumentDetails extends Component {
         {activeTab === `/dashboard/payment/${params.tab2}/${params.tab3}` && (
           <PaymentForm data={dashboardData} changeActiveTab={this.changeActiveTab} />
         )}
-        {activeTab === `/dashboard/stamp-duty/${params.tab2}/${params.tab3}` && <StampDutyForm />}
+        {activeTab === `/dashboard/stamp-duty/${params.tab2}/${params.tab3}` && (
+          <StampDutyForm data={get(this.state, 'dashboardData', [])} />
+        )}
         {activeTab === `/dashboard/upload-document/${params.tab2}` && (
           <React.Fragment>
             <Paper
