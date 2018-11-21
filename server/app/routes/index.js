@@ -233,6 +233,7 @@ router.get('/getPropertyData', async function(req, res) {
 		var collection = db.getCollection('registry');
 	    allData = await collection.findOne({registryId : registryId});
 		propertyId = allData.propertyId;
+		console.log('propertyId', propertyId);
 	}
 	var collection = db.getCollection('properties');
     let propertyDetails = await collection.findOne({propertyId : propertyId});
@@ -295,8 +296,12 @@ router.post('/getExplorer', async function(req, res) {
 	if (web3Conf) {
 	    try {
 			data1 = await landRecords.getAllEvents(propertyId);
-			data2 = await landRegistry.getAllEvents(registryId);
-			data = {propertyData : data2, registryData : data1};
+			if (!registryId) {
+				data2 = [];
+			} else {
+				data2 = await landRegistry.getAllEvents(registryId);
+			}
+			data = {propertyData : data1, registryData : data2};
 	    } catch(err) {
 			console.log('error', err);
 			return res.send({status : false, error : err});
@@ -418,7 +423,7 @@ router.post('/sellProperty', async function(req, res) {
 		        var m = await landRegistry.addRegistryRecord(
 		            helper.web3StringToBytes32(registryId),
 		            helper.web3StringToBytes32(propertyId),
-		            registry.owner.address,
+		            owner.address,
 		            parseInt(sellPrice),
 		            parseInt(tokenAmt)
 		        );
