@@ -101,7 +101,7 @@ class Header extends Component {
               <IconWrapper>
                 <IconMenu icon={'user'} iconColor="#fff" iconActiveColor="#fff" component={<UserImage />}>
                   <p onClick={() => this.setState({ showModal: true })}>Buy Token</p>
-                  <p onClick={() => this.logout()}>Logout</p>
+                  {/* <p onClick={() => this.logout()}>Logout</p> */}
                 </IconMenu>
 
                 <p>
