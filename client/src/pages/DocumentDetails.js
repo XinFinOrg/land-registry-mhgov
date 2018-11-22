@@ -115,7 +115,6 @@ class DocumentDetails extends Component {
         registryId: Cookies.get('registryId'),
         propertyId: Cookies.get('propertyId')
       })
-      console.log('DATA', data.data)
       this.setState({ historyData: data.data })
     } catch (error) {
       console.log('ERROR', error)
@@ -223,7 +222,6 @@ class DocumentDetails extends Component {
     const {
       match: { params }
     } = this.props
-
     return (
       <React.Fragment>
         <Header />
@@ -366,6 +364,8 @@ class DocumentDetails extends Component {
               area: item.args.area || 'None'
             }
           ]
+          const { created, ...rest } = item.args
+
           return (
             <Paper
               padding={'26px 31px 20px'}
@@ -420,14 +420,14 @@ class DocumentDetails extends Component {
               />
               <TupleContainer>
                 <TupleWrapper>
-                  {keys(item.args).map(item => (
+                  {keys(rest).map(item => (
                     <Tuple fontWeight="bold">
                       <p>{item}</p>
                     </Tuple>
                   ))}
                 </TupleWrapper>
                 <TupleWrapper>
-                  {values(item.args).map(item => (
+                  {values(rest).map(item => (
                     <Tuple>
                       <p>{item}</p>
                     </Tuple>
@@ -456,6 +456,7 @@ class DocumentDetails extends Component {
               buyer: item.args.buyer || 'None'
             }
           ]
+          const { created, ...rest } = item.args
           return (
             <Paper
               padding={'26px 31px 20px'}
@@ -510,14 +511,14 @@ class DocumentDetails extends Component {
               />
               <TupleContainer>
                 <TupleWrapper>
-                  {keys(item.args).map(item => (
+                  {keys(rest).map(item => (
                     <Tuple fontWeight="bold">
                       <p>{item}</p>
                     </Tuple>
                   ))}
                 </TupleWrapper>
                 <TupleWrapper>
-                  {values(item.args).map(item => (
+                  {values(rest).map(item => (
                     <Tuple>
                       <p>{item}</p>
                     </Tuple>
