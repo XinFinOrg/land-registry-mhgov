@@ -116,9 +116,7 @@ class Header extends Component {
                   {/* <p onClick={() => this.logout()}>Logout</p> */}
                 </IconMenu>
 
-                <p>
-                  {Cookies.get('firstName')} {Cookies.get('lastName')}
-                </p>
+                <p>{Cookies.get('name')}</p>
               </IconWrapper>
             </DashboardWrapper>
           )}
