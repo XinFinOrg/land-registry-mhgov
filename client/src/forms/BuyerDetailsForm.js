@@ -692,14 +692,14 @@ class BuyerDetailsForm extends Component {
             <Formik
               enableReinitialize
               initialValues={{
-                email: '', //
-                city: 'Pune', //
-                branch: 'Pune', //
-                totalValueOfProperty: '1000000', //
-                totalFinanceAmount: '10000', //
-                financeAmountDueNow: '1000000', //
-                loanAmount: '1000000', //
-                outstandingLoan: '100000', //
+                email: '',
+                city: 'Pune',
+                branch: 'Pune',
+                totalValueOfProperty: '1000000',
+                totalFinanceAmount: '10000',
+                financeAmountDueNow: '1000000',
+                loanAmount: '1000000',
+                outstandingLoan: '100000',
                 financeAmount: '1000000'
               }}
               onSubmit={async values => {
@@ -709,12 +709,11 @@ class BuyerDetailsForm extends Component {
 
                 try {
                   this.setState({ isLoading: true })
-
                   const { data } = await axios.post(`${API_URL}/addBuyerFinancer`, {
                     registryId: params.tab3,
                     propertyId: Cookies.get('propertyId'),
                     buyerFinancer: {
-                      email: Cookies.get('email'),
+                      email: values.email,
                       financeAmount: values.financeAmount
                     },
                     status: 'registry_buyer_financer'

@@ -43,8 +43,10 @@ const Tab = styled(Link)`
   font-size: 20px;
   letter-spacing: -0.1px;
   padding-bottom: 22px;
-  color: ${props => (props.selected ? '#1f89f5' : props.disabled ? 'rgba(121, 121, 121, 0.3)' : '#797979')};
-  border-bottom: 3px solid ${props => (props.selected ? '#1f89f5' : '#fff')};
+  color: ${props =>
+    props.selected ? '#1f89f5' : props.disabled ? 'rgba(121, 121, 121, 0.3)' : props.completed ? '#2bad06' : '#797979'};
+  border-bottom: 3px solid
+    ${props => (props.selected ? '#1f89f5' : props.disabled ? '#fff' : props.completed ? '#2bad06' : '#fff')};
 `
 const FormDetailsContainer = styled.div`
   padding-top: ${props => (props.paddingTop ? props.paddingTop : 26)}px;

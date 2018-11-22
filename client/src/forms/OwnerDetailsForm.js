@@ -153,31 +153,60 @@ class OwnerDetailsForm extends Component {
             const {
               match: { params }
             } = this.props
-            try {
-              this.setState({ isLoading: true })
-              await axios.post(`${API_URL}/addOwner`, {
-                registryId: params.tab3,
-                propertyId: Cookies.get('propertyId'),
-                owner: {
-                  email: Cookies.get('email'),
-                  address: Cookies.get('address'),
-                  partyType: formData.selectPartyType,
-                  partyCategory: formData.selectPartyCategory,
-                  isExecuter: formData.isExecuter === 'Yes' ? true : false
-                }
-              })
-              await this.setState({ addOwnerStatus: true, isLoading: false })
-              Cookies.set('isOwner', 'yes')
-              await toast.success(`${'Owner Added!'}`, {
-                position: toast.POSITION.TOP_CENTER
-              })
-              // this.props.history.push('/dashboard')
-            } catch (error) {
-              await this.setState({ isLoading: false })
-              toast.error(`${'Some error occurred!'}`, {
-                position: toast.POSITION.TOP_CENTER
-              })
-              console.log('ERROR', error)
+            if (addOwnerStatus || get(data, 'status', {}) === 'registry_owner') {
+              try {
+                this.setState({ isLoading: true })
+                await axios.post(`${API_URL}/addOwner`, {
+                  registryId: params.tab3,
+                  propertyId: Cookies.get('propertyId'),
+                  owner: {
+                    email: Cookies.get('email'),
+                    address: Cookies.get('address'),
+                    partyType: formData.selectPartyType,
+                    partyCategory: formData.selectPartyCategory,
+                    isExecuter: formData.isExecuter === 'Yes' ? true : false
+                  }
+                })
+                await this.setState({ addOwnerStatus: true, isLoading: false })
+                Cookies.set('isOwner', 'yes')
+                await toast.success(`${'Owner Added!'}`, {
+                  position: toast.POSITION.TOP_CENTER
+                })
+                // this.props.history.push('/dashboard')
+              } catch (error) {
+                await this.setState({ isLoading: false })
+                toast.error(`${'Some error occurred!'}`, {
+                  position: toast.POSITION.TOP_CENTER
+                })
+                console.log('ERROR', error)
+              }
+            } else {
+              try {
+                this.setState({ isLoading: true })
+                await axios.post(`${API_URL}/addOwner`, {
+                  registryId: params.tab3,
+                  propertyId: Cookies.get('propertyId'),
+                  owner: {
+                    email: Cookies.get('email'),
+                    address: Cookies.get('address'),
+                    partyType: formData.selectPartyType,
+                    partyCategory: formData.selectPartyCategory,
+                    isExecuter: formData.isExecuter === 'Yes' ? true : false
+                  }
+                })
+                await this.setState({ addOwnerStatus: true, isLoading: false })
+                Cookies.set('isOwner', 'yes')
+                await toast.success(`${'Owner Added!'}`, {
+                  position: toast.POSITION.TOP_CENTER
+                })
+                // this.props.history.push('/dashboard')
+              } catch (error) {
+                await this.setState({ isLoading: false })
+                toast.error(`${'Some error occurred!'}`, {
+                  position: toast.POSITION.TOP_CENTER
+                })
+                console.log('ERROR', error)
+              }
             }
           }}
           render={formikBag => (
@@ -497,8 +526,7 @@ class OwnerDetailsForm extends Component {
 
                 try {
                   this.setState({ isLoading: true })
-
-                  const { data } = await axios.post(`${API_URL}/addOwner`, {
+                  const { data } = await axios.post(`${API_URL}/addOwnerFinancer`, {
                     registryId: params.tab3,
                     propertyId: Cookies.get('propertyId'),
                     ownerFinancer: {

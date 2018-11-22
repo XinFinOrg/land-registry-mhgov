@@ -248,7 +248,6 @@ class DocumentDetails extends Component {
             <Tab
               onClick={() => this.changeActiveTab(`/dashboard/property-details/${params.tab2}/${params.tab3}`)}
               to={`/dashboard/property-details/${params.tab2}/${params.tab3}`}
-              disabled
               selected={activeTab === `/dashboard/property-details/${params.tab2}/${params.tab3}`}>
               Property Details
             </Tab>
