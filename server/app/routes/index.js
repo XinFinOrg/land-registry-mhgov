@@ -271,7 +271,7 @@ router.get('/getPropertyData', async function(req, res) {
     if (!allData) {
     	responseData.propertyId = propertyId;
     	responseData.propertyDetails = propertyDetails;
-    	responseData.owner = {};
+    	responseData.owner = propertyDetails.owner;
     	responseData.owner.userDetails = userDetails[propertyDetails.owner];
     	responseData.status = propertyDetails.status;
     } else {
