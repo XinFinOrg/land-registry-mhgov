@@ -22,7 +22,6 @@ import styled from 'styled-components'
 import get from 'lodash/get'
 
 const Status = styled.div`
-  ${props => props.type && console.log(props.type)};
   border-radius: 4px;
   color: #fff;
   background: ${props => {
@@ -66,13 +65,13 @@ class Dashboard extends Component {
     }
   }
 
-  handleRedirect = (registryId, propertyId) => {
+  handleRedirect = (registryId, propertyId, nextTab) => {
     Cookies.set('propertyId', propertyId)
     Cookies.set('registryId', registryId)
     if (registryId === '') {
-      this.props.history.push(`/dashboard/property-details/propertyId/${propertyId}`)
+      this.props.history.push(`/dashboard/${nextTab}/propertyId/${propertyId}`)
     } else {
-      this.props.history.push(`/dashboard/property-details/registryId/${registryId}`)
+      this.props.history.push(`/dashboard/${nextTab}/registryId/${registryId}`)
     }
   }
   render() {
@@ -85,7 +84,8 @@ class Dashboard extends Component {
       propertyType: item.landType || get(item, 'propertyDetails.landType', ''),
       propertyLocation: item.address || get(item, 'propertyDetails.address', ''),
       city: item.city || get(item, 'propertyDetails.city', ''),
-      status: item.status
+      status: item.status,
+      nextTab: nextTab[item.status]
     }))
     const columns = [
       {
@@ -170,7 +170,7 @@ class Dashboard extends Component {
               type={
                 statusColor[status] === 'yellow' ? 'financer' : statusColor[status] === 'red' ? 'rejected' : 'verified'
               }>
-              {props.original.status}
+              {status}
             </Status>
           )
         }
@@ -180,13 +180,18 @@ class Dashboard extends Component {
         accessor: 'view',
         maxWidth: 150,
         Cell: props => {
+          // console.log('VIEW', props)
+          const {
+            original,
+            original: { nextTab }
+          } = props
           return (
             <Button
               size="action"
               shadow={'none'}
               title="View"
               radius={'4px'}
-              onClick={() => this.handleRedirect(props.original.registryId, props.original.propertyId)}
+              onClick={() => this.handleRedirect(original.registryId, original.propertyId, nextTab)}
             />
           )
         }
