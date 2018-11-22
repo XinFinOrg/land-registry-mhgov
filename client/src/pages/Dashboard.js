@@ -180,7 +180,6 @@ class Dashboard extends Component {
         accessor: 'view',
         maxWidth: 150,
         Cell: props => {
-          // console.log('VIEW', props)
           const {
             original,
             original: { nextTab }

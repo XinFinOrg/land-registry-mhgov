@@ -359,20 +359,20 @@ class PropertyDetailsForm extends Component {
                 {Cookies.get('role') === 'corporation' && get(data, 'status', {}) === 'property_new' ? (
                   <React.Fragment>
                     <Button
-                      size={'medium'}
+                      size={'large'}
                       width={'150px'}
                       isLoading={isLoadingReject}
                       disabled={isLoadingReject}
-                      title="reject"
+                      title="reject property"
                       type="button"
                       onClick={() => this.rejectProperty()}
                     />
                     <Button
-                      size={'medium'}
+                      size={'large'}
                       width={'150px'}
                       isLoading={isLoading}
                       disabled={isLoading}
-                      title="Confirm"
+                      title="Confirm property"
                       type="submit"
                     />
                   </React.Fragment>
@@ -384,17 +384,17 @@ class PropertyDetailsForm extends Component {
                     width={'150px'}
                     isLoading={isLoading}
                     disabled={isLoading}
-                    title="Sell"
+                    title="Sell Property"
                     type="button"
                     onClick={() => this.setState({ openModal: true })}
                   />
                 ) : params.tab2 === 'add-property' ? (
                   <Button
-                    size={'medium'}
-                    width={'150px'}
+                    size={'large'}
+                    width={'250px'}
                     isLoading={isLoading}
                     disabled={isLoading}
-                    title="submit"
+                    title="submit property"
                     type="submit"
                   />
                 ) : null}

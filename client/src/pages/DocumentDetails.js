@@ -74,6 +74,7 @@ const TupleWrapper = styled.div``
 const Tuple = styled.div`
   border-bottom: 1px solid #ddd;
   margin-bottom: 14px;
+  padding: 8px 0;
   padding-right: 14px;
   & > p {
     text-transform: capitalize;
