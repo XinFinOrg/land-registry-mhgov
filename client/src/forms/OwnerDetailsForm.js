@@ -461,7 +461,7 @@ class OwnerDetailsForm extends Component {
                       onClick={() => this.skipFinancier()}
                     />
                   </React.Fragment>
-                ) : get(data, 'status', {}) === 'registry_new' ? (
+                ) : get(data, 'status', {}) === 'registry_new' && Cookies.get('isOwner') === 'yes' ? (
                   <Button
                     size={'medium'}
                     isLoading={isLoading}
