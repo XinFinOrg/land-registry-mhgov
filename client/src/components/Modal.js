@@ -44,12 +44,12 @@ const ModalWrapper = styled.div`
 class Modal extends Component {
   state = {}
   render() {
-    const { show, ...props } = this.props
+    const { show, maxWidth, ...props } = this.props
     return (
       <React.Fragment>
         {show && (
           <Overlay>
-            <ModalWrapper show={show} {...props}>
+            <ModalWrapper maxWidth={maxWidth} show={show} {...props}>
               {this.props.children}
             </ModalWrapper>
           </Overlay>

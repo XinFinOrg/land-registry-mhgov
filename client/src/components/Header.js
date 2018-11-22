@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import Link from 'react-router-dom/Link'
 import withRouter from 'react-router/withRouter'
-import { IconMenu, Modal, Button, ButtonGroup, PaperTitle, FlexWrapper } from '../components'
+import { IconMenu, Modal, Button, ButtonGroup, PaperTitle, Close, CloseWrap } from '../components'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import Cookies from 'js-cookie'
@@ -110,10 +110,11 @@ class Header extends Component {
             </DashboardWrapper>
           )}
         </HeaderWrapper>
-        <Modal maxWidth={'1024px'} show={showModal}>
-          <FlexWrapper justifyContent="center">
+        <Modal maxWidth={'450px'} show={showModal}>
+          <CloseWrap>
             <PaperTitle>Buy Token</PaperTitle>
-          </FlexWrapper>
+            <Close onClick={() => this.setState({ showModal: !showModal })} />
+          </CloseWrap>
           <Formik
             enableReinitialize={true}
             initialValues={{ amount: '' }}
@@ -146,13 +147,6 @@ class Header extends Component {
                   )}
                 />
                 <ButtonGroup justifyContent="center">
-                  <Button
-                    size={'medium'}
-                    width={'150px'}
-                    title="Close"
-                    type="button"
-                    onClick={() => this.setState({ showModal: false })}
-                  />
                   <Button
                     size={'medium'}
                     width={'150px'}

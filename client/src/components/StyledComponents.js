@@ -243,6 +243,33 @@ const FlexWrapper = styled.div`
 const MediumText = styled.p`
   font-size: 16px;
 `
+const Close = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  &:after {
+    position: absolute;
+    content: ' ';
+    height: 33px;
+    width: 2px;
+    background-color: #333;
+    transform: rotate(-45deg);
+  }
+  &:before {
+    position: absolute;
+    content: ' ';
+    height: 33px;
+    width: 2px;
+    background-color: #333;
+    transform: rotate(45deg);
+  }
+`
+const CloseWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
 export {
   PaperTitle,
   PaperSubTitle,
@@ -272,5 +299,7 @@ export {
   StyledHead,
   IconCircle,
   FlexWrapper,
-  MediumText
+  MediumText,
+  Close,
+  CloseWrap
 }

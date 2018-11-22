@@ -23,9 +23,8 @@ import get from 'lodash/get'
 
 const Status = styled.div`
   border-radius: 4px;
-  background: #fff;
-  color: #6faa13;
-  border: 1px solid #6faa13;
+  color: #fff;
+  background: #6faa13;
   text-transform: capitalize;
   display: flex;
   align-items: center;

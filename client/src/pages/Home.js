@@ -12,6 +12,8 @@ import {
   Checkbox,
   Modal,
   SelectBox,
+  Close,
+  CloseWrap,
   // FieldGroupWithTitle,
   FormDetailsContainer
 } from '../components'
@@ -130,33 +132,6 @@ const CheckboxWrap = styled.div`
     font-size: 14px;
     padding-left: 4px;
   }
-`
-const Close = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 24px;
-  &:after {
-    position: absolute;
-    content: ' ';
-    height: 33px;
-    width: 2px;
-    background-color: #333;
-    transform: rotate(-45deg);
-  }
-  &:before {
-    position: absolute;
-    content: ' ';
-    height: 33px;
-    width: 2px;
-    background-color: #333;
-    transform: rotate(45deg);
-  }
-`
-const CloseWrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 `
 
 /* const ButtonWrap = styled.section`
@@ -342,7 +317,7 @@ class Home extends Component {
                     } catch (error) {
                       console.log('ERROR', error)
                       await this.setState({ isLoading: false })
-                      toast.error("User doesn't exist", {
+                      toast.error('User does not exist', {
                         position: toast.POSITION.TOP_CENTER
                       })
                     }
