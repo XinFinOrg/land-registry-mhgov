@@ -1,3 +1,27 @@
+const statusToTabMap = {
+  property_new : 'property',
+  property_verified : 'property',
+  property_rejected : 'property',
+  registry_new : 'owner',
+  registry_owner : 'owner',
+  registry_owner_financer : 'owner',
+  registry_skip_owner_financer : 'buyer',
+  registry_owner_financer_verified : 'buyer',
+  registry_owner_financer_rejected : 'buyer',
+  registry_buyer : 'buyer',
+  registry_buyer_confirmed : 'buyer',
+  registry_buyer_rejected : 'buyer',
+  registry_buyer_financer : 'buyer',
+  registry_skip_buyer_financer : 'payment',
+  registry_buyer_financer_confirmed : 'payment',
+  registry_buyer_financer_rejected : 'payment',
+  registry_token_amount : 'payment',
+  registry_bank_pay : 'payment',
+  registry_buyer_pay : 'stampDuty',
+  registry_stamp_duty : 'stampDuty'
+};
+
+
 let dummyExplorerData = {
   propertyData : [
    { logIndex: 0,
@@ -175,5 +199,6 @@ let dummyExplorerData = {
 };
 
 module.exports = {
-  dummyExplorerData : dummyExplorerData
+  dummyExplorerData : dummyExplorerData,
+  statusToTabMap : statusToTabMap
 };
