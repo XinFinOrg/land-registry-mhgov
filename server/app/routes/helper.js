@@ -259,6 +259,12 @@ let processEventBigNumbers = (allEvents) => {
     return allEvents;
 };
 
+let getName = (firstName, lastName) => {
+    return (firstName && lastName) ? (firstName + ' ' + lastName) :
+            (!firstName) ? lastName :
+            (!lastName) ? firstName : 'Guest';
+};
+
 // let addPolicyMiddlewares = [requestAuth, validatePolicyDetails, isPolicyExist, debitRequest, issuePolicy];
 // let debitStatusMiddlewares = [requestAuth, debitStatusHelper, issuePolicy];
 // let issuePolicyMiddlewares = [requestAuth, issuePolicyHelper, issuePolicy];
@@ -298,5 +304,6 @@ module.exports = {
     getRecord : getRecord,
     getRecords : getRecords,
     propertyStatusMap : propertyStatusMap,
-    arrayToObject : arrayToObject
+    arrayToObject : arrayToObject,
+    getName : getName
 };

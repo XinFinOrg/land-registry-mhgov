@@ -7,7 +7,7 @@ var db = require('./../config/db');
 var config = require('./../config/config');
 var constants = require('../constants/constants');
 
-var web3Conf = false;
+var web3Conf = true;
 
 if (web3Conf) {
 	var init = require('../web3Helpers/init.js');
@@ -121,6 +121,9 @@ router.post('/login', function(req, res) {
 			console.log('login: error:', err);
 			let error = helper.getErrorResponse('IncorrectEmailOrPassword');
 			return res.status(error.statusCode).send(error.error);
+	    }
+	    if (!data.name) {
+	    	data.name = helper.getName(data.firstName, data.lastName);
 	    }
 	    return res.send({status : true, data : data});
 	});
@@ -471,6 +474,10 @@ router.post('/addOwner', async function(req, res) {
 	let registryId = req.body.registryId;
 	let propertyId = req.body.propertyId;
 	let ownerDetails = req.body.owner;
+	if (!ownerDetails.email || !ownerDetails.address) {
+		console.log('improper data : incorrect ownerDetails');
+		return res.send({status : false});
+	}
 	let query = {registryId : registryId};
 	let updateQuery = {
 		$set : {
@@ -479,6 +486,7 @@ router.post('/addOwner', async function(req, res) {
 			modified : Date.now()
 		}
 	};
+	console.log(registryId, propertyId);
 	if (web3Conf) {
 		try {
 	        m = await landRegistry.setStatus(
@@ -509,10 +517,15 @@ router.post('/addOwnerFinancer', async function(req, res) {
 	let registryId = req.body.registryId;
 	let propertyId = req.body.propertyId;
 	let ownerFinancer  = req.body.ownerFinancer || false;
+	if (ownerFinancer && !ownerFinancer.email) {
+		console.log('ownerFinancer : improper data');
+		res.send({status : false, error : 'improper data'});
+	}
 	let status = req.body.status || (
 		!ownerFinancer ?
 		"registry_skip_owner_financer" : "registry_owner_financer"
 	);
+	console.log(ownerFinancer);
 	if (web3Conf && status == 'registry_owner_financer') {
 		try {
 	        var m = await landRegistry.addOwnerFinancer(
@@ -572,7 +585,7 @@ router.post('/confirmFinancer', async function(req, res) {
 	            helper.web3StringToBytes32(propertyId),
 	            helper.web3StringToBytes32(status)
 	        );
-	       console.log("setStatus", setStatus);
+	       console.log("setStatus", m);
 		}catch(e) {
 			console.log(e);
 			return res.send({status : false, error : e});			
