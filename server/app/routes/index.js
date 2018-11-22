@@ -273,6 +273,7 @@ router.get('/getPropertyData', async function(req, res) {
     	responseData.propertyDetails = propertyDetails;
     	responseData.owner = {};
     	responseData.owner.userDetails = userDetails[propertyDetails.owner];
+    	responseData.status = propertyDetails.status;
     } else {
  	  	allData.propertyDetails = propertyDetails;
     	if (allData.owner && allData.owner.email) {
@@ -289,6 +290,8 @@ router.get('/getPropertyData', async function(req, res) {
     	}
     	responseData = allData;
     }
+    responseData.currentTab = constants.statusToTabMap[responseData.status];
+
     return res.send({status : true, data : responseData});
 });
 
