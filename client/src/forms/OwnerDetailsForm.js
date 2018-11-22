@@ -442,7 +442,7 @@ class OwnerDetailsForm extends Component {
               </FormDetailsContainer> */}
               </Paper>
               <ButtonGroup>
-                {addOwnerStatus || Cookies.get('isOwner') === 'yes' ? (
+                {addOwnerStatus || get(data, 'status', {}) === 'registry_owner' ? (
                   <React.Fragment>
                     <Button
                       size={'medium'}
@@ -461,7 +461,8 @@ class OwnerDetailsForm extends Component {
                       onClick={() => this.skipFinancier()}
                     />
                   </React.Fragment>
-                ) : get(data, 'status', {}) === 'registry_new' && Cookies.get('isOwner') === 'yes' ? (
+                ) : get(data, 'status', {}) === 'registry_new' &&
+                get(data, 'owner.email', {}) === Cookies.get('email') ? (
                   <Button
                     size={'medium'}
                     isLoading={isLoading}

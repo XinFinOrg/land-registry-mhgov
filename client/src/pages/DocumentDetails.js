@@ -248,6 +248,7 @@ class DocumentDetails extends Component {
             <Tab
               onClick={() => this.changeActiveTab(`/dashboard/property-details/${params.tab2}/${params.tab3}`)}
               to={`/dashboard/property-details/${params.tab2}/${params.tab3}`}
+              disabled
               selected={activeTab === `/dashboard/property-details/${params.tab2}/${params.tab3}`}>
               Property Details
             </Tab>
@@ -278,13 +279,13 @@ class DocumentDetails extends Component {
             {/*  <Tab
               onClick={() => this.changeActiveTab(`/dashboard/registeration/${params.tab2}`)}
               to={`/dashboard/registeration/${params.tab2}`}
-              selected={activeTab === `/dashboard/registeration/${params.tab2}`}>
+              type={activeTab === `/dashboard/registeration/${params.tab2}`==="selected"}>
               Registeration
             </Tab>
             <Tab
               onClick={() => this.changeActiveTab(`/dashboard/upload-document/${params.tab2}`)}
               to={`/dashboard/upload-document/${params.tab2}`}
-              selected={activeTab === `/dashboard/upload-document/${params.tab2}`}>
+              type={activeTab === `/dashboard/upload-document/${params.tab2}`==="selected"}>
               Upload Document
             </Tab> */}
           </Tabber>

@@ -109,14 +109,14 @@ class Header extends Component {
                   iconActiveColor="#fff"
                   component={
                     <UserImage>
-                      <h1>{firstLetter}</h1>
+                      <h1>{firstLetter || 'J'}</h1>
                     </UserImage>
                   }>
                   <p onClick={() => this.setState({ showModal: true })}>Buy Token</p>
                   {/* <p onClick={() => this.logout()}>Logout</p> */}
                 </IconMenu>
 
-                <p>{Cookies.get('name')}</p>
+                <p>{Cookies.get('name') || 'John Doe'}</p>
               </IconWrapper>
             </DashboardWrapper>
           )}
