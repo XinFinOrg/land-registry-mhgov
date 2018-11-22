@@ -52,7 +52,7 @@ const Image = styled.div`
   left: 10px;
   top: 10px;
 `
-const InputFileLabel = styled.div`
+/* const InputFileLabel = styled.div`
   width: 150px;
   padding: 4px;
   border: 1px solid #1f89f5;
@@ -69,14 +69,14 @@ const InputFileLabel = styled.div`
     left: 0px;
     top: 0px;
   }
-`
-const FieldWrap = styled.div`
+` */
+/* const FieldWrap = styled.div`
   display: flex;
   align-items: center;
   & > p {
     padding-left: 8px;
   }
-`
+` */
 class Input extends Component {
   state = {
     password: false

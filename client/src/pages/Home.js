@@ -12,7 +12,7 @@ import {
   Checkbox,
   Modal,
   SelectBox,
-  FieldGroupWithTitle,
+  // FieldGroupWithTitle,
   FormDetailsContainer
 } from '../components'
 import house from '../static/images/house.jpeg'
@@ -67,12 +67,12 @@ const Wrapper = styled.div`
     }
   }
 `
-const ForgotPassword = styled.p`
+/* const ForgotPassword = styled.p`
   font-size: 15.5px;
   color: #333333;
   padding: 17px 0 25px 0;
   cursor: pointer;
-`
+` */
 const FormWrapper = styled.div`
   & input:first-child {
     border-radius: 0px 0px 6px 6px;
@@ -342,7 +342,7 @@ class Home extends Component {
                     } catch (error) {
                       console.log('ERROR', error)
                       await this.setState({ isLoading: false })
-                      toast.error('User doesn\'t exist', {
+                      toast.error("User doesn't exist", {
                         position: toast.POSITION.TOP_CENTER
                       })
                     }

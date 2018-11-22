@@ -17,9 +17,9 @@ import {
   TextInput,
   InformTitle,
   Button,
-  PaymentTuple,
-  PaymentText,
-  PaymentWrapper,
+  // PaymentTuple,
+  // PaymentText,
+  // PaymentWrapper,
   CustomTable,
   ButtonGroup,
   IconCircle,
@@ -27,7 +27,7 @@ import {
   MediumText,
   FieldsTuple
 } from '../components'
-import { commonUploadDoc, DocumentDutyTotal } from '../constants'
+import { commonUploadDoc } from '../constants'
 import {
   PropertyDetailsForm,
   OwnerDetailsForm,
@@ -59,9 +59,9 @@ const StyledHead = styled.div`
   color: #333333;
 `
 const PropertyDetailsWrapper = styled.div``
-const FormikForm = styled(Form)`
+/* const FormikForm = styled(Form)`
   margin-bottom: 100px;
-`
+` */
 
 const SubmissionWrap = styled.div`
   width: 360px;
@@ -159,7 +159,7 @@ class DocumentDetails extends Component {
         )
       }
     ]
-    const DocumentDutyColumns = [
+    /*     const DocumentDutyColumns = [
       {
         Header: <StyledHead>Property Id</StyledHead>,
         accessor: 'propertyId',
@@ -217,7 +217,7 @@ class DocumentDetails extends Component {
         accessor: 'buyer',
         minwidth: 120
       }
-    ]
+    ] */
     const { activeTab, dashboardData, historyData } = this.state
     const {
       match: { params }
@@ -352,7 +352,7 @@ class DocumentDetails extends Component {
           </React.Fragment>
         )}
         {get(historyData, 'propertyData', []).map(item => {
-          const DocumentDutyTotal = [
+          /*           const DocumentDutyTotal = [
             {
               propertyId: item.args.propertyId || 'None',
               landType: item.args.landType || 'None',
@@ -363,7 +363,7 @@ class DocumentDetails extends Component {
               coveredParking: item.args.coveredParking || 'None',
               area: item.args.area || 'None'
             }
-          ]
+          ] */
           const { created, ...rest } = item.args
 
           return (
@@ -420,15 +420,15 @@ class DocumentDetails extends Component {
               />
               <TupleContainer>
                 <TupleWrapper>
-                  {keys(rest).map(item => (
-                    <Tuple fontWeight="bold">
+                  {keys(rest).map((item, index) => (
+                    <Tuple fontWeight="bold" key={index}>
                       <p>{item}</p>
                     </Tuple>
                   ))}
                 </TupleWrapper>
                 <TupleWrapper>
-                  {values(rest).map(item => (
-                    <Tuple>
+                  {values(rest).map((item, index) => (
+                    <Tuple key={index}>
                       <p>{item}</p>
                     </Tuple>
                   ))}
@@ -449,13 +449,13 @@ class DocumentDetails extends Component {
           )
         })}
         {get(historyData, 'registryData', []).map(item => {
-          const DocumentDutyTotal = [
+          /*           const DocumentDutyTotal = [
             {
               propertyId: item.args.propertyId || 'None',
               registryId: item.args.registryId || 'None',
               buyer: item.args.buyer || 'None'
             }
-          ]
+          ] */
           const { created, ...rest } = item.args
           return (
             <Paper
@@ -511,15 +511,15 @@ class DocumentDetails extends Component {
               />
               <TupleContainer>
                 <TupleWrapper>
-                  {keys(rest).map(item => (
-                    <Tuple fontWeight="bold">
+                  {keys(rest).map((item, index) => (
+                    <Tuple key={index} fontWeight="bold">
                       <p>{item}</p>
                     </Tuple>
                   ))}
                 </TupleWrapper>
                 <TupleWrapper>
-                  {values(rest).map(item => (
-                    <Tuple>
+                  {values(rest).map((item, index) => (
+                    <Tuple key={index}>
                       <p>{item}</p>
                     </Tuple>
                   ))}

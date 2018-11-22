@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
-import slice from 'lodash/slice'
+// import slice from 'lodash/slice'
 // import { ReactTableDefaults } from 'react-table'
 /* const Pagination = styled.div`
   width: 10px;
@@ -62,7 +62,7 @@ const StyledTable = styled(ReactTable)`
   // min-height: 600px;
   max-height: 600px;
 `
-const Pager = styled.div`
+/* const Pager = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -73,8 +73,8 @@ const PagerGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-`
-const Page = styled.div`
+` */
+/* const Page = styled.div`
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -91,16 +91,16 @@ const Page = styled.div`
     opacity: 0.5;
     pointer-events:none;
     `};
-`
-const Label = styled.p`
+` */
+/* const Label = styled.p`
   font-size: 16px;
   color: #333333;
   cursor: pointer;
-`
+` */
 class Table extends Component {
   state = { activePage: 1 }
   render() {
-    const pagesize = 10
+    // const pagesize = 10
 
     const {
       resizable,
@@ -108,12 +108,12 @@ class Table extends Component {
       data,
       columns,
       onPageChange,
-      defaultPageSize = pagesize,
+      // defaultPageSize = pagesize,
       totalNumberOfResults,
       ...props
     } = this.props
 
-    const { activePage } = this.state
+    /*  const { activePage } = this.state
 
     const pageNumbers = []
 
@@ -138,8 +138,8 @@ class Table extends Component {
       end = start + 10
     } else {
       end = array.length
-    }
-
+    } */
+    /* 
     const renderPageNumbers = slice(array, start, end).map(number => {
       return (
         <Page
@@ -153,7 +153,7 @@ class Table extends Component {
           {number}
         </Page>
       )
-    })
+    }) */
 
     return (
       <TableWrapper>

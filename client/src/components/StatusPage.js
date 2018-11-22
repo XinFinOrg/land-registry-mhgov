@@ -85,7 +85,7 @@ class StatusPage extends Component {
   state = {}
 
   render() {
-    const { paid, ...props } = this.props
+    const { paid } = this.props
     return (
       <Div>
         {paid && (

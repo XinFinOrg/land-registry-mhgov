@@ -8,7 +8,7 @@ import {
   StaticFieldWrapper,
   StaticField,
   InformTitle,
-  InformSubTitle,
+  // InformSubTitle,
   Font14,
   FieldsTuple,
   Input,
@@ -38,7 +38,7 @@ class PropertyDetailsForm extends Component {
     } = this.props
     try {
       this.setState({ isLoadingReject: true })
-      const { data } = await axios.post(`${API_URL}/confirmProperty`, {
+      await axios.post(`${API_URL}/confirmProperty`, {
         propertyId: params.tab3,
         status: 'property_rejected',
         email: Cookies.get('email'),
@@ -64,7 +64,7 @@ class PropertyDetailsForm extends Component {
       match: { params },
       data
     } = this.props
-    console.log('PROPS', this.props)
+    // console.log('PROPS', this.props)
     return (
       <React.Fragment>
         <Formik
@@ -96,7 +96,7 @@ class PropertyDetailsForm extends Component {
             if (Cookies.get('role') === 'corporation') {
               try {
                 this.setState({ isLoading: true })
-                const { data } = await axios.post(`${API_URL}/confirmProperty`, {
+                await axios.post(`${API_URL}/confirmProperty`, {
                   propertyId: params.tab3,
                   status: 'property_verified',
                   email: Cookies.get('email'),
@@ -116,7 +116,7 @@ class PropertyDetailsForm extends Component {
               }
             } else {
               try {
-                const { data } = await axios.post(`${API_URL}/addProperty`, {
+                await axios.post(`${API_URL}/addProperty`, {
                   propertyDetails: {
                     district: values.district,
                     landType: values.landType,
@@ -413,7 +413,7 @@ class PropertyDetailsForm extends Component {
             onSubmit={async values => {
               this.setState({ isLoading: true })
               try {
-                const { data } = await axios.post(`${API_URL}/sellProperty`, {
+                await axios.post(`${API_URL}/sellProperty`, {
                   propertyId: params.tab3,
                   owner: {
                     email: Cookies.get('email'),

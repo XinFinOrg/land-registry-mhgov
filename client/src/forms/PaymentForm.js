@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
+// import styled from 'styled-components'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import { API_URL } from '../constants'

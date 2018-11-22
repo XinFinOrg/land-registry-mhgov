@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import Router from 'react-router-dom/BrowserRouter'
 import Switch from 'react-router-dom/Switch'
 import Route from 'react-router-dom/Route'
-import { withRouter, Redirect } from 'react-router-dom'
-import axios from 'axios'
+import { withRouter } from 'react-router-dom'
+// import axios from 'axios'
 import { Home, Dashboard, DocumentDetails } from './pages'
-import { SignUp, Toastify } from './components'
+import { Toastify } from './components'
 
 const PrivateOnlyRoute = ({ component: Component, ...rest }) => (
   <Route

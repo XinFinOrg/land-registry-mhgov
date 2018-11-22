@@ -10,8 +10,8 @@ import {
   Button,
   ButtonGroup,
   FieldGroupWithTitle,
-  CustomTable,
-  StyledHead,
+  // CustomTable,
+  // StyledHead,
   SelectBox
 } from '../components'
 // import { customData, partyDetails } from '../constants'
@@ -37,7 +37,7 @@ class OwnerDetailsForm extends Component {
 
     try {
       this.setState({ isLoadingSkip: true })
-      const { data } = await axios.post(`${API_URL}/addOwnerFinancer`, {
+      await axios.post(`${API_URL}/addOwnerFinancer`, {
         registryId: params.tab3,
         propertyId: Cookies.get('propertyId'),
         ownerFinancer: false,
@@ -63,7 +63,7 @@ class OwnerDetailsForm extends Component {
       data: { userDetails }
     } = this.props
     const { isLoading, addOwnerStatus, addFinancier, isLoadingSkip } = this.state
-    const columns = [
+    /*     const columns = [
       {
         Header: <StyledHead>Sr. No.</StyledHead>,
         accessor: 'srNo',
@@ -114,7 +114,7 @@ class OwnerDetailsForm extends Component {
         maxWidth: 150,
         Cell: props => <Button size="action" shadow={'none'} title="View" radius={'4px'} />
       }
-    ]
+    ] */
     return (
       <React.Fragment>
         <Formik
@@ -153,7 +153,7 @@ class OwnerDetailsForm extends Component {
             } = this.props
             try {
               this.setState({ isLoading: true })
-              const { data } = await axios.post(`${API_URL}/addOwner`, {
+              await axios.post(`${API_URL}/addOwner`, {
                 registryId: params.tab3,
                 propertyId: Cookies.get('propertyId'),
                 owner: {

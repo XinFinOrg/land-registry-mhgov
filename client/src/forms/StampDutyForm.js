@@ -1,21 +1,21 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
+// import styled from 'styled-components'
 import { Formik, Field } from 'formik'
 import {
   Paper,
-  Radio,
-  PaperSubTitle,
+  // Radio,
+  // PaperSubTitle,
   FormikForm,
   FormDetailsContainer,
   TextInput,
   InformTitle,
-  NormalFieldsTuple,
+  // NormalFieldsTuple,
   Button,
-  ButtonGroup,
-  CustomTable,
-  StyledHead
+  ButtonGroup
+  // CustomTable,
+  // StyledHead
 } from '../components'
-import { partyDetails, dutyDetails, DocumentDutyTotal } from '../constants'
+// import { partyDetails, dutyDetails, DocumentDutyTotal } from '../constants'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import Cookies from 'js-cookie'
@@ -23,7 +23,7 @@ import { toast } from 'react-toastify'
 import get from 'lodash/get'
 import withRouter from 'react-router/withRouter'
 
-const ConsiderationWrap = styled.div`
+/* const ConsiderationWrap = styled.div`
   margin-top: 20px;
   display: flex;
 `
@@ -59,14 +59,14 @@ const RadioWrap = styled.div`
   & > p {
     padding: 10px 0px;
   }
-`
+` */
 
 class StampDutyForm extends Component {
   state = {
     isLoading: false
   }
   render() {
-    const partyDetailscolumns = [
+    /*     const partyDetailscolumns = [
       {
         Header: <StyledHead>Proprty ID</StyledHead>,
         accessor: 'srNo',
@@ -134,7 +134,7 @@ class StampDutyForm extends Component {
         accessor: 'Total',
         minwidth: 120
       }
-    ]
+    ] */
     const { isLoading } = this.state
     const {
       data,
@@ -183,7 +183,7 @@ class StampDutyForm extends Component {
         onSubmit={async (values, { resetForm }) => {
           try {
             this.setState({ isLoading: true })
-            const { data } = await axios.post(`${API_URL}/payStampDuty`, {
+            await axios.post(`${API_URL}/payStampDuty`, {
               registryId: params.tab3
             })
             await this.setState({ isLoading: false })

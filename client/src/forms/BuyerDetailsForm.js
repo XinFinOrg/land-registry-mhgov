@@ -10,8 +10,8 @@ import {
   Button,
   ButtonGroup,
   FieldGroupWithTitle,
-  CustomTable,
-  StyledHead,
+  // CustomTable,
+  // StyledHead,
   SelectBox
 } from '../components'
 // import { customData, partyDetails } from '../constants'
@@ -19,7 +19,7 @@ import withRouter from 'react-router/withRouter'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
+// import isEmpty from 'lodash/isEmpty'
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
 
@@ -41,7 +41,7 @@ class BuyerDetailsForm extends Component {
     } = this.props
     try {
       this.setState({ isLoadingReject: true })
-      const { data } = await axios.post(`${API_URL}/confirmBuyer`, {
+      await axios.post(`${API_URL}/confirmBuyer`, {
         registryId: params.tab3,
         propertyId: Cookies.get('propertyId'),
         status: '_rejected'
@@ -51,7 +51,7 @@ class BuyerDetailsForm extends Component {
         position: toast.POSITION.TOP_CENTER
       })
       this.props.history.push('/dashboard')
-      console.log('DATA', data)
+      // console.log('DATA', data)
     } catch (error) {
       await this.setState({ isLoadingReject: false })
       toast.error(`${'Some error occurred!'}`, {
@@ -66,7 +66,7 @@ class BuyerDetailsForm extends Component {
     } = this.props
     try {
       this.setState({ isLoading: true })
-      const { data } = await axios.post(`${API_URL}/confirmFinancer`, {
+      await axios.post(`${API_URL}/confirmFinancer`, {
         registryId: params.tab3,
         propertyId: Cookies.get('propertyId'),
         currentStatus: 'registry_buyer_financer',
@@ -77,7 +77,7 @@ class BuyerDetailsForm extends Component {
         position: toast.POSITION.TOP_CENTER
       })
       this.props.history.push('/dashboard')
-      console.log('DATA', data)
+      // console.log('DATA', data)
     } catch (error) {
       await this.setState({ isLoading: false })
       toast.error(`${'Some error occurred!'}`, {
@@ -94,7 +94,7 @@ class BuyerDetailsForm extends Component {
 
     try {
       this.setState({ isLoadingSkip: true })
-      const { data } = await axios.post(`${API_URL}/addBuyerFinancer`, {
+      await axios.post(`${API_URL}/addBuyerFinancer`, {
         registryId: params.tab3,
         buyerFinancer: false,
         propertyId: Cookies.get('propertyId'),
@@ -115,9 +115,9 @@ class BuyerDetailsForm extends Component {
   render() {
     const { userDetails } = this.props.data
     const { isLoading, isLoadingReject, isLoadingSkip, addFinancier } = this.state
-    console.log('this.props', this.props)
+    // console.log('this.props', this.props)
 
-    const columns = [
+    /* const columns = [
       {
         Header: <StyledHead>Sr. No.</StyledHead>,
         accessor: 'srNo',
@@ -168,7 +168,7 @@ class BuyerDetailsForm extends Component {
         maxWidth: 150,
         Cell: props => <Button size="action" shadow={'none'} title="View" radius={'4px'} />
       }
-    ]
+    ] */
     return (
       <React.Fragment>
         <Formik
@@ -224,7 +224,7 @@ class BuyerDetailsForm extends Component {
             ) {
               try {
                 this.setState({ isLoading: true })
-                const { data } = await axios.post(`${API_URL}/confirmBuyer`, {
+                await axios.post(`${API_URL}/confirmBuyer`, {
                   registryId: params.tab3,
                   propertyId: Cookies.get('propertyId'),
                   status: 'registry_buyer_confirmed'
@@ -234,7 +234,7 @@ class BuyerDetailsForm extends Component {
                   position: toast.POSITION.TOP_CENTER
                 })
                 this.props.history.push('/dashboard')
-                console.log('DATA', data)
+                // console.log('DATA', data)
               } catch (error) {
                 await this.setState({ isLoading: false })
                 toast.error(`${'Some error occurred!'}`, {
@@ -248,7 +248,7 @@ class BuyerDetailsForm extends Component {
             ) {
               try {
                 this.setState({ isLoading: true })
-                const { data } = await axios.post(`${API_URL}/confirmFinancer`, {
+                await axios.post(`${API_URL}/confirmFinancer`, {
                   registryId: params.tab3,
                   propertyId: Cookies.get('propertyId'),
                   currentStatus: 'registry_buyer_financer',
@@ -259,7 +259,7 @@ class BuyerDetailsForm extends Component {
                   position: toast.POSITION.TOP_CENTER
                 })
                 this.props.history.push('/dashboard')
-                console.log('DATA', data)
+                // console.log('DATA', data)
               } catch (error) {
                 await this.setState({ isLoading: false })
                 toast.error(`${'Some error occurred!'}`, {

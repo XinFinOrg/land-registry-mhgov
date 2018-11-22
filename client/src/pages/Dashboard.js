@@ -6,7 +6,7 @@ import {
   MainWrapper,
   PageTitle,
   TopWrapper,
-  Input,
+  // Input,
   Button,
   Icon,
   StyledHeader,
@@ -14,7 +14,7 @@ import {
   FlexWrapper
 } from '../components'
 import { Table } from '../components/Table'
-import { data } from '../constants'
+// import { data } from '../constants'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import { API_URL } from '../constants'
