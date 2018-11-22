@@ -2,7 +2,7 @@ export const API_URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API
 
 export const statusColor = {
   property_new: 'yellow',
-  property_verifiedL: 'green',
+  property_verified: 'green',
   property_rejected: 'red',
   registry_new: 'yellow',
   registry_owner: 'yellow',

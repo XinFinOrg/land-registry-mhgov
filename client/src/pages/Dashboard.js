@@ -22,22 +22,25 @@ import styled from 'styled-components'
 import get from 'lodash/get'
 
 const Status = styled.div`
+  ${props => props.type && console.log(props.type)};
   border-radius: 4px;
   color: #fff;
   background: ${props => {
     switch (props.type) {
       case 'rejected':
         return '#C62828'
-      case 'finacer':
+      case 'financer':
         return '#CDDC39'
-      default:
+      case 'verified':
         return '#2E7D32'
+      default:
+        return '#fff'
     }
   }};
   text-transform: capitalize;
   display: flex;
   align-items: center;
-  padding: 0 4px;
+  padding: 4px;
   max-width: 150px;
   word-break: break-all;
 `
@@ -162,7 +165,14 @@ class Dashboard extends Component {
           const {
             original: { status }
           } = props
-          return <Status>{props.original.status}</Status>
+          return (
+            <Status
+              type={
+                statusColor[status] === 'yellow' ? 'financer' : statusColor[status] === 'red' ? 'rejected' : 'verified'
+              }>
+              {props.original.status}
+            </Status>
+          )
         }
       },
       {
