@@ -126,6 +126,7 @@ class DocumentDetails extends Component {
   }
 
   render() {
+    // console.log('DOCUMNET DETAILS==>', this.state.dashboardData)
     const columns = [
       {
         Header: <StyledHead>Document Details</StyledHead>,
@@ -290,14 +291,11 @@ class DocumentDetails extends Component {
 
         {activeTab === `/dashboard/property-details/${params.tab2}/${params.tab3}` && (
           <PropertyDetailsWrapper>
-            <PropertyDetailsForm
-              data={get(dashboardData, 'propertyDetails', [])}
-              changeActiveTab={this.changeActiveTab}
-            />
+            <PropertyDetailsForm data={dashboardData} changeActiveTab={this.changeActiveTab} />
           </PropertyDetailsWrapper>
         )}
         {activeTab === `/dashboard/owner-details/${params.tab2}/${params.tab3}` && (
-          <OwnerDetailsForm data={get(dashboardData, 'owner', [])} changeActiveTab={this.changeActiveTab} />
+          <OwnerDetailsForm data={dashboardData} changeActiveTab={this.changeActiveTab} />
         )}
 
         {activeTab === `/dashboard/buyer-details/${params.tab2}/${params.tab3}` && (

@@ -60,8 +60,10 @@ class OwnerDetailsForm extends Component {
   render() {
     console.log('OwnerDetailsForm', this.props)
     const {
+      data,
       data: { userDetails }
     } = this.props
+    console.log('OWNER', data)
     const { isLoading, addOwnerStatus, addFinancier, isLoadingSkip } = this.state
     /*     const columns = [
       {
@@ -166,7 +168,6 @@ class OwnerDetailsForm extends Component {
               })
               await this.setState({ addOwnerStatus: true, isLoading: false })
               Cookies.set('isOwner', 'yes')
-              console.log('addOwnerStatus==>', addOwnerStatus)
               await toast.success(`${'Owner Added!'}`, {
                 position: toast.POSITION.TOP_CENTER
               })
@@ -460,16 +461,16 @@ class OwnerDetailsForm extends Component {
                       onClick={() => this.skipFinancier()}
                     />
                   </React.Fragment>
-                ) : (
+                ) : get(data, 'status', {}) === 'registry_new' ? (
                   <Button
                     size={'medium'}
                     isLoading={isLoading}
                     disabled={isLoading}
                     width={'150px'}
-                    title="Submit"
+                    title="Add owner"
                     type="submit"
                   />
-                )}
+                ) : null}
               </ButtonGroup>
             </FormikForm>
           )}

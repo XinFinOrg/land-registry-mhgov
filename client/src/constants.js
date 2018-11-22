@@ -1,5 +1,50 @@
 export const API_URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : 'http://217.23.12.125:8001'
 
+export const statusColor = {
+  property_new: 'yellow',
+  property_verifiedL: 'green',
+  property_rejected: 'red',
+  registry_new: 'yellow',
+  registry_owner: 'yellow',
+  registry_owner_financer: 'yellow',
+  registry_skip_owner_financer: 'yellow',
+  registry_owner_financer_verified: 'green',
+  registry_owner_financer_rejected: 'red',
+  registry_buyer: 'yellow',
+  registry_buyer_confirmed: 'green',
+  registry_buyer_rejected: 'red',
+  registry_buyer_financer: 'yellow',
+  registry_skip_buyer_financer: 'yellow',
+  registry_buyer_financer_confirmed: 'green',
+  registry_buyer_financer_rejected: 'red',
+  registry_token_amount: 'green',
+  registry_bank_pay: 'green',
+  registry_buyer_pay: 'green',
+  registry_stamp_duty: 'green'
+}
+
+export const nextTab = {
+  property_new: 'property-details',
+  property_verified: 'property-details',
+  property_rejected: 'property-details',
+  registry_new: 'owner-details',
+  registry_owner: 'owner-details',
+  registry_owner_financer: 'owner-details',
+  registry_skip_owner_financer: 'buyer-details',
+  registry_owner_financer_verified: 'buyer-details',
+  registry_owner_financer_rejected: 'buyer-details',
+  registry_buyer: 'buyer-details',
+  registry_buyer_confirmed: 'buyer-details',
+  registry_buyer_rejected: 'buyer-details',
+  registry_buyer_financer: 'buyer-details',
+  registry_skip_buyer_financer: 'payment',
+  registry_buyer_financer_confirmed: 'payment',
+  registry_buyer_financer_rejected: 'payment',
+  registry_token_amount: 'payment',
+  registry_bank_pay: 'payment',
+  registry_buyer_pay: 'stamp-duty',
+  registry_stamp_duty: 'stamp-duty'
+}
 export const data = [
   {
     srNo: 1,

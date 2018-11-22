@@ -64,7 +64,7 @@ class PropertyDetailsForm extends Component {
       match: { params },
       data
     } = this.props
-    // console.log('PROPS', this.props)
+    console.log('PROPS', this.props)
     return (
       <React.Fragment>
         <Formik

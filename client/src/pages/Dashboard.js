@@ -17,14 +17,23 @@ import { Table } from '../components/Table'
 // import { data } from '../constants'
 import Cookies from 'js-cookie'
 import axios from 'axios'
-import { API_URL } from '../constants'
+import { API_URL, statusColor, nextTab } from '../constants'
 import styled from 'styled-components'
 import get from 'lodash/get'
 
 const Status = styled.div`
   border-radius: 4px;
   color: #fff;
-  background: #6faa13;
+  background: ${props => {
+    switch (props.type) {
+      case 'rejected':
+        return '#C62828'
+      case 'finacer':
+        return '#CDDC39'
+      default:
+        return '#2E7D32'
+    }
+  }};
   text-transform: capitalize;
   display: flex;
   align-items: center;
@@ -150,6 +159,9 @@ class Dashboard extends Component {
         minWidth: 100,
         maxWidth: 250,
         Cell: props => {
+          const {
+            original: { status }
+          } = props
           return <Status>{props.original.status}</Status>
         }
       },
