@@ -55,9 +55,13 @@ const IconWrapper = styled.div`
 `
 const UserImage = styled.div`
   border: 1px solid #fff;
-  width: 31px;
-  height: 31px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
 `
 
 class Header extends Component {
@@ -82,6 +86,8 @@ class Header extends Component {
       location: { pathname }
     } = this.props
     const { balance, showModal, isLoading } = this.state
+    const [firstLetter, ...rest] = [...Cookies.get('firstName')]
+    console.log('nameInitial', firstLetter)
     return (
       <HeaderOuter>
         <HeaderWrapper>
@@ -98,7 +104,15 @@ class Header extends Component {
                 <p>Balance: ${balance || 0}</p>
               </IconWrapper>
               <IconWrapper>
-                <IconMenu icon={'user'} iconColor="#fff" iconActiveColor="#fff" component={<UserImage />}>
+                <IconMenu
+                  icon={'user'}
+                  iconColor="#fff"
+                  iconActiveColor="#fff"
+                  component={
+                    <UserImage>
+                      <h1>{firstLetter}</h1>
+                    </UserImage>
+                  }>
                   <p onClick={() => this.setState({ showModal: true })}>Buy Token</p>
                   {/* <p onClick={() => this.logout()}>Logout</p> */}
                 </IconMenu>
