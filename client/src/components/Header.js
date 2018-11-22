@@ -86,8 +86,7 @@ class Header extends Component {
       location: { pathname }
     } = this.props
     const { balance, showModal, isLoading } = this.state
-    const [firstLetter, ...rest] = [...Cookies.get('firstName')]
-    console.log('nameInitial', firstLetter)
+    const [firstLetter] = [...(Cookies.get('firstName') || '')]
     return (
       <HeaderOuter>
         <HeaderWrapper>
