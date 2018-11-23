@@ -27,6 +27,7 @@ class OwnerDetailsForm extends Component {
   state = {
     isLoading: false,
     isLoadingSkip: false,
+    isLoadingReject: false,
     addOwnerStatus: false,
     addFinancier: false
   }
@@ -57,6 +58,32 @@ class OwnerDetailsForm extends Component {
       console.log('ERROR', error)
     }
   }
+  rejectBuyerFinancer = async values => {
+    const {
+      match: { params }
+    } = this.props
+    try {
+      this.setState({ isLoading: true })
+      await axios.post(`${API_URL}/confirmFinancer`, {
+        registryId: params.tab3,
+        propertyId: Cookies.get('propertyId'),
+        currentStatus: 'registry_owner_financer',
+        approved: false
+      })
+      await this.setState({ isLoading: false })
+      await toast.success(`${'Financier Rejected!'}`, {
+        position: toast.POSITION.TOP_CENTER
+      })
+      this.props.history.push('/dashboard')
+      // console.log('DATA', data)
+    } catch (error) {
+      await this.setState({ isLoading: false })
+      toast.error(`${'Some error occurred!'}`, {
+        position: toast.POSITION.TOP_CENTER
+      })
+      console.log('ERROR', error)
+    }
+  }
   render() {
     console.log('OwnerDetailsForm', this.props)
     const {
@@ -64,7 +91,7 @@ class OwnerDetailsForm extends Component {
       data: { userDetails }
     } = this.props
     console.log('OWNER', data)
-    const { isLoading, addOwnerStatus, addFinancier, isLoadingSkip } = this.state
+    const { isLoading, addOwnerStatus, addFinancier, isLoadingSkip, isLoadingReject } = this.state
     /*     const columns = [
       {
         Header: <StyledHead>Sr. No.</StyledHead>,
@@ -173,6 +200,31 @@ class OwnerDetailsForm extends Component {
                   position: toast.POSITION.TOP_CENTER
                 })
                 // this.props.history.push('/dashboard')
+              } catch (error) {
+                await this.setState({ isLoading: false })
+                toast.error(`${'Some error occurred!'}`, {
+                  position: toast.POSITION.TOP_CENTER
+                })
+                console.log('ERROR', error)
+              }
+            } else if (
+              Cookies.get('email') === get(data, 'ownerFinancer.email', Cookies.get('email')) &&
+              get(data, 'status', {}) === 'registry_owner_financer'
+            ) {
+              try {
+                this.setState({ isLoading: true })
+                await axios.post(`${API_URL}/confirmFinancer`, {
+                  registryId: params.tab3,
+                  propertyId: Cookies.get('propertyId'),
+                  currentStatus: 'registry_buyer_financer',
+                  approved: true
+                })
+                await this.setState({ isLoading: false })
+                await toast.success(`${'Financier confirmed!'}`, {
+                  position: toast.POSITION.TOP_CENTER
+                })
+                this.props.history.push('/dashboard')
+                // console.log('DATA', data)
               } catch (error) {
                 await this.setState({ isLoading: false })
                 toast.error(`${'Some error occurred!'}`, {
@@ -520,6 +572,28 @@ class OwnerDetailsForm extends Component {
                       isLoading={isLoadingSkip}
                       disabled={isLoadingSkip}
                       onClick={() => this.skipFinancier()}
+                    />
+                  </React.Fragment>
+                ) : Cookies.get('email') === get(data, 'ownerFinancer.email', '') &&
+                data.status === 'registry_owner_financer' &&
+                Cookies.get('role') === 'bank' ? (
+                  <React.Fragment>
+                    <Button
+                      size={'large'}
+                      width={'150px'}
+                      isLoading={isLoadingReject}
+                      title="reject financer"
+                      type="button"
+                      disabled={isLoadingReject}
+                      onClick={() => this.rejectBuyerFinancer()}
+                    />
+                    <Button
+                      size={'large'}
+                      width={'150px'}
+                      isLoading={isLoading}
+                      disabled={isLoading}
+                      title="Confirm financer"
+                      type="submit"
                     />
                   </React.Fragment>
                 ) : get(data, 'status', {}) === 'registry_new' &&

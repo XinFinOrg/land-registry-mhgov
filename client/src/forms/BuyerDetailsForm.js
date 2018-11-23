@@ -623,7 +623,6 @@ class BuyerDetailsForm extends Component {
                 </FieldGroupWithTitle>
               </FormDetailsContainer> */}
               </Paper>
-              {console.log('GET', get(data.owner, 'email', ''))}
               <ButtonGroup>
                 {data.status === 'registry_buyer_confirmed' ? (
                   <React.Fragment>
