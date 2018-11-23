@@ -409,8 +409,7 @@ class Home extends Component {
                 village: 'Mumbai'
               }}
               onSubmit={async (values, { resetForm }) => {
-                console.log('SIGNUP VALUES', values)
-                /* this.setState({ isLoading: true })
+                this.setState({ isLoading: true })
                 try {
                   const { data } = await axios.post(`${API_URL}/signup/`, {
                     userDetails: {
@@ -452,7 +451,7 @@ class Home extends Component {
                   })
                   this.setState({ isLoading: false })
                   console.log('ERROR', error)
-                } */
+                }
               }}
               render={formikBag => (
                 <Form>
