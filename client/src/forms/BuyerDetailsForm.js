@@ -113,7 +113,11 @@ class BuyerDetailsForm extends Component {
     }
   }
   render() {
-    const { userDetails } = this.props.data
+    const {
+      data,
+      data: { buyer }
+    } = this.props
+    console.log('userDetails==>', get(this.props.data.buyer, 'userDetails', []))
     const { isLoading, isLoadingReject, isLoadingSkip, addFinancier } = this.state
     // console.log('this.props', this.props)
 
@@ -177,41 +181,41 @@ class BuyerDetailsForm extends Component {
             selectPartyType: 'Admin',
             selectPartyCategory: 'Admin',
             isExecuter: 'Yes',
-            email: get(userDetails, 'email', ''),
-            salutation: get(userDetails, 'salutaion', 'Mr.'),
-            partyFirstName: get(userDetails, 'firstName', ''),
-            partyMiddleName: get(userDetails, 'middleName', ''),
-            partyLastName: get(userDetails, 'lastName', ''),
-            aliasName: get(userDetails, 'aliasName', ''),
-            identificationMark1: get(userDetails, 'identityMark1', ''),
-            identificationMark2: get(userDetails, 'identityMark2', ''),
-            dateOfBirth: get(userDetails, 'dob', ''),
-            age: get(userDetails, 'age', ''),
-            uid: get(userDetails, 'uid', ''),
-            identificationTypeID: get(userDetails, 'identityTypeID', ''),
-            identificationDescription: get(userDetails, 'identityDesc', ''),
-            panForm60: get(userDetails, 'pan', ''),
-            occupation: get(userDetails, 'occupation', ''),
-            gender: get(userDetails, 'gender', 'Male'),
-            mobileNo: get(userDetails, 'mobileNo', ''),
-            presentationExemption: get(userDetails, 'salutaion', ''),
-            pinCode: get(userDetails, 'salutaion', ''),
+            email: get(buyer, 'userDetails.email', ''),
+            salutation: get(buyer, 'userDetails.salutaion', 'Mr.'),
+            partyFirstName: get(buyer, 'userDetails.firstName', ''),
+            partyMiddleName: get(buyer, 'userDetails.middleName', ''),
+            partyLastName: get(buyer, 'userDetails.lastName', ''),
+            aliasName: get(buyer, 'userDetails.aliasName', ''),
+            identificationMark1: get(buyer, 'userDetails.identityMark1', ''),
+            identificationMark2: get(buyer, 'userDetails.identityMark2', ''),
+            dateOfBirth: get(buyer, 'userDetails.dob', ''),
+            age: get(buyer, 'userDetails.age', ''),
+            uid: get(buyer, 'userDetails.uid', ''),
+            identificationTypeID: get(buyer, 'userDetails.identityTypeID', ''),
+            identificationDescription: get(buyer, 'userDetails.identityDesc', ''),
+            panForm60: get(buyer, 'userDetails.pan', ''),
+            occupation: get(buyer, 'userDetails.occupation', ''),
+            gender: get(buyer, 'userDetails.gender', 'Male'),
+            mobileNo: get(buyer, 'userDetails.mobileNo', ''),
+            presentationExemption: get(buyer, 'userDetails.salutaion', ''),
+            pinCode: get(buyer, 'userDetails.salutaion', ''),
             addressSame: 'Yes',
-            district: get(userDetails, 'district', ''),
-            taluka: get(userDetails, 'taluka', ''),
-            village: get(userDetails, 'village', ''),
-            financierName: get(userDetails, 'salutaion', ''),
-            city: get(userDetails, 'salutaion', ''),
-            branch: get(userDetails, 'salutaion', ''),
-            totalValueOfProperty: get(userDetails, 'salutaion', ''),
-            totalFinanceAmount: get(userDetails, 'salutaion', ''),
-            financeAmountDueNow: get(userDetails, 'salutaion', ''),
-            totalSaveAmount: get(userDetails, 'salutaion', ''),
-            tokenAmount: get(userDetails, 'salutaion', ''),
-            buyerFinancierName: get(userDetails, 'salutaion', ''),
-            buyerCity: get(userDetails, 'salutaion', ''),
-            buyerBranch: get(userDetails, 'salutaion', ''),
-            buyerFinanceAmount: get(userDetails, 'salutaion', '')
+            district: get(buyer, 'userDetails.district', ''),
+            taluka: get(buyer, 'userDetails.taluka', ''),
+            village: get(buyer, 'userDetails.village', ''),
+            financierName: get(buyer, 'userDetails.salutaion', ''),
+            city: get(buyer, 'userDetails.salutaion', ''),
+            branch: get(buyer, 'userDetails.salutaion', ''),
+            totalValueOfProperty: get(buyer, 'userDetails.salutaion', ''),
+            totalFinanceAmount: get(buyer, 'userDetails.salutaion', ''),
+            financeAmountDueNow: get(buyer, 'userDetails.salutaion', ''),
+            totalSaveAmount: get(buyer, 'userDetails.salutaion', ''),
+            tokenAmount: get(buyer, 'userDetails.salutaion', ''),
+            buyerFinancierName: get(buyer, 'userDetails.salutaion', ''),
+            buyerCity: get(buyer, 'userDetails.salutaion', ''),
+            buyerBranch: get(buyer, 'userDetails.salutaion', ''),
+            buyerFinanceAmount: get(buyer, 'userDetails.salutaion', '')
           }}
           onSubmit={async (values, { resetFrom }) => {
             const {
@@ -219,8 +223,8 @@ class BuyerDetailsForm extends Component {
             } = this.props
 
             if (
-              Cookies.get('email') === get(userDetails, 'email', Cookies.get('email')) &&
-              this.props.status === 'registry_buyer'
+              Cookies.get('email') === get(buyer, 'userDetails.email', Cookies.get('email')) &&
+              data.status === 'registry_buyer'
             ) {
               try {
                 this.setState({ isLoading: true })
@@ -243,8 +247,8 @@ class BuyerDetailsForm extends Component {
                 console.log('ERROR', error)
               }
             } else if (
-              Cookies.get('email') === get(userDetails, 'buyerFinancer.email', Cookies.get('email')) &&
-              this.props.status === 'registry_buyer_financer'
+              Cookies.get('email') === get(buyer, 'userDetails.buyerFinancer.email', Cookies.get('email')) &&
+              data.status === 'registry_buyer_financer'
             ) {
               try {
                 this.setState({ isLoading: true })
@@ -372,7 +376,9 @@ class BuyerDetailsForm extends Component {
                     )}
                   />
                 </FormDetailsContainer>
-                {Cookies.get('email') === get(userDetails, 'email', Cookies.get('email')) && (
+                {console.log('BUYER DETAILS', this.props.data)}
+
+                {Cookies.get('email') === get(buyer, 'userDetails.email', Cookies.get('email')) && (
                   <FormDetailsContainer>
                     <InformTitle>Parties Details</InformTitle>
                     <FieldGroupWithTitle>
@@ -617,8 +623,9 @@ class BuyerDetailsForm extends Component {
                 </FieldGroupWithTitle>
               </FormDetailsContainer> */}
               </Paper>
+              {console.log('GET', get(data.owner, 'email', ''))}
               <ButtonGroup>
-                {this.props.status === 'registry_buyer_confirmed' ? (
+                {data.status === 'registry_buyer_confirmed' ? (
                   <React.Fragment>
                     <Button
                       size={'medium'}
@@ -637,8 +644,8 @@ class BuyerDetailsForm extends Component {
                       onClick={() => this.skipFinancier()}
                     />
                   </React.Fragment>
-                ) : Cookies.get('email') === get(userDetails, 'email', Cookies.get('email')) &&
-                this.props.status === 'registry_buyer' ? (
+                ) : Cookies.get('email') === get(buyer, 'userDetails.email', Cookies.get('email')) &&
+                data.status === 'registry_buyer' ? (
                   <React.Fragment>
                     <Button
                       size={'medium'}
@@ -658,8 +665,9 @@ class BuyerDetailsForm extends Component {
                       type="submit"
                     />
                   </React.Fragment>
-                ) : Cookies.get('email') === get(userDetails, 'buyerFinancer.email', Cookies.get('email')) &&
-                this.props.status === 'registry_buyer_financer' ? (
+                ) : Cookies.get('email') === get(buyer, 'userDetails.buyerFinancer.email', Cookies.get('email')) &&
+                data.status === 'registry_buyer_financer' &&
+                Cookies.get('role') === 'bank' ? (
                   <React.Fragment>
                     <Button
                       size={'large'}
@@ -679,10 +687,17 @@ class BuyerDetailsForm extends Component {
                       type="submit"
                     />
                   </React.Fragment>
-                ) : (
-                  <Button size={'medium'} width={'150px'} title="Add" isLoading={isLoading} disabled={isLoading} />
-                )}
-                {}
+                ) : (Cookies.get('email') === get(data.owner, 'email', '') &&
+                  data.status === 'registry_skip_owner_financer') ||
+                data.status === 'registry_owner_financer_verified' ? (
+                  <Button
+                    size={'medium'}
+                    width={'150px'}
+                    title="Add Buyer"
+                    isLoading={isLoading}
+                    disabled={isLoading}
+                  />
+                ) : null}
               </ButtonGroup>
             </FormikForm>
           )}

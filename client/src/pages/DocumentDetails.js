@@ -248,12 +248,15 @@ class DocumentDetails extends Component {
             <Tab
               onClick={() => this.changeActiveTab(`/dashboard/property-details/${params.tab2}/${params.tab3}`)}
               to={`/dashboard/property-details/${params.tab2}/${params.tab3}`}
+              completed={dashboardData.status === 'registry_new' || 'registry_buyer_confirmed'}
+              // tabIndex={dashboardData.status === 'registry_new' ? -1 : 0}
               selected={activeTab === `/dashboard/property-details/${params.tab2}/${params.tab3}`}>
               Property Details
             </Tab>
             <Tab
               onClick={() => this.changeActiveTab(`/dashboard/owner-details/${params.tab2}/${params.tab3}`)}
               to={`/dashboard/owner-details/${params.tab2}/${params.tab3}`}
+              completed={dashboardData.status === 'registry_buyer_confirmed'}
               selected={activeTab === `/dashboard/owner-details/${params.tab2}/${params.tab3}`}>
               Owner Details
             </Tab>
@@ -300,11 +303,7 @@ class DocumentDetails extends Component {
         )}
 
         {activeTab === `/dashboard/buyer-details/${params.tab2}/${params.tab3}` && (
-          <BuyerDetailsForm
-            data={get(dashboardData, 'buyer', {})}
-            status={get(dashboardData, 'status', '')}
-            changeActiveTab={this.changeActiveTab}
-          />
+          <BuyerDetailsForm data={dashboardData} changeActiveTab={this.changeActiveTab} />
         )}
 
         {activeTab === `/dashboard/registeration/${params.tab2}/${params.tab3}` && (

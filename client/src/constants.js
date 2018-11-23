@@ -41,6 +41,7 @@ export const nextTab = {
   registry_buyer_financer_confirmed: 'payment',
   registry_buyer_financer_rejected: 'payment',
   registry_token_amount: 'payment',
+  registry_buyer_financer_verified: 'payment',
   registry_bank_pay: 'payment',
   registry_buyer_pay: 'stamp-duty',
   registry_stamp_duty: 'stamp-duty'

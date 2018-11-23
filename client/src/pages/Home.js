@@ -199,7 +199,6 @@ class Home extends Component {
                   }}
                   render={formikBag => (
                     <Form>
-                      {console.log('signUpData', signUpData)}
                       <SignupFormWrapper>
                         <Field
                           name="firstName"

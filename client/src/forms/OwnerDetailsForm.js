@@ -279,35 +279,53 @@ class OwnerDetailsForm extends Component {
                     <Field
                       name="salutation"
                       render={({ field }) => (
-                        <TextInput {...field} disabled label="Salutation" placeholder={'Salutation'} />
+                        <TextInput {...field} disabled label="Salutation" placeholder={'Salutation'} required />
                       )}
                     />
 
                     <Field
                       name="partyFirstName"
                       render={({ field }) => (
-                        <TextInput {...field} disabled label="Party First Name" placeholder={'Party First Name'} />
+                        <TextInput
+                          {...field}
+                          disabled
+                          label="Party First Name"
+                          placeholder={'Party First Name'}
+                          required
+                        />
                       )}
                     />
 
                     <Field
                       name="partyMiddleName"
                       render={({ field }) => (
-                        <TextInput {...field} disabled label="Party Middle Name" placeholder={'Party Middle Name'} />
+                        <TextInput
+                          {...field}
+                          disabled
+                          label="Party Middle Name"
+                          placeholder={'Party Middle Name'}
+                          required
+                        />
                       )}
                     />
 
                     <Field
                       name="partyLastName"
                       render={({ field }) => (
-                        <TextInput {...field} disabled label="Party Last Name" placeholder={'Party Last Name'} />
+                        <TextInput
+                          {...field}
+                          disabled
+                          label="Party Last Name"
+                          placeholder={'Party Last Name'}
+                          required
+                        />
                       )}
                     />
 
                     <Field
                       name="aliasName"
                       render={({ field }) => (
-                        <TextInput {...field} disabled label="Alias Name" placeholder={'Alias Name'} />
+                        <TextInput {...field} disabled label="Alias Name" placeholder={'Alias Name'} required />
                       )}
                     />
 
@@ -319,6 +337,7 @@ class OwnerDetailsForm extends Component {
                           disabled
                           label="Identification Mark 1"
                           placeholder={'Identification Mark 1'}
+                          required
                         />
                       )}
                     />
@@ -331,6 +350,7 @@ class OwnerDetailsForm extends Component {
                           disabled
                           label="Identification Mark 2"
                           placeholder={'Identification Mark 2'}
+                          required
                         />
                       )}
                     />
@@ -338,18 +358,18 @@ class OwnerDetailsForm extends Component {
                     <Field
                       name="dateOfBirth"
                       render={({ field }) => (
-                        <TextInput {...field} disabled label="Date of Birth" placeholder={'Date of Birth'} />
+                        <TextInput {...field} disabled label="Date of Birth" placeholder={'Date of Birth'} required />
                       )}
                     />
 
                     <Field
                       name="age"
-                      render={({ field }) => <TextInput {...field} disabled label="Age" placeholder={'Age'} />}
+                      render={({ field }) => <TextInput {...field} disabled label="Age" placeholder={'Age'} required />}
                     />
 
                     <Field
                       name="uid"
-                      render={({ field }) => <TextInput {...field} disabled label="UID" placeholder={'UID'} />}
+                      render={({ field }) => <TextInput {...field} disabled label="UID" placeholder={'UID'} required />}
                     />
 
                     <Field
@@ -360,6 +380,7 @@ class OwnerDetailsForm extends Component {
                           disabled
                           label="Identification Type ID"
                           placeholder={'Identification Type ID'}
+                          required
                         />
                       )}
                     />
@@ -372,6 +393,7 @@ class OwnerDetailsForm extends Component {
                           disabled
                           label="Identification Description"
                           placeholder={'Identification Description'}
+                          required
                         />
                       )}
                     />
@@ -379,31 +401,35 @@ class OwnerDetailsForm extends Component {
                     <Field
                       name="panForm60"
                       render={({ field }) => (
-                        <TextInput {...field} disabled label="PAN/Form 60/61" placeholder={'PAN/Form 60/61'} />
+                        <TextInput {...field} disabled label="PAN/Form 60/61" placeholder={'PAN/Form 60/61'} required />
                       )}
                     />
 
                     <Field
                       name="occupation"
                       render={({ field }) => (
-                        <TextInput {...field} disabled label="Occupation" placeholder={'Occupation'} />
+                        <TextInput {...field} disabled label="Occupation" placeholder={'Occupation'} required />
                       )}
                     />
 
                     <Field
                       name="gender"
-                      render={({ field }) => <TextInput {...field} disabled label="Gender" placeholder={'Gender'} />}
+                      render={({ field }) => (
+                        <TextInput {...field} disabled label="Gender" placeholder={'Gender'} required />
+                      )}
                     />
 
                     <Field
                       name="email"
-                      render={({ field }) => <TextInput {...field} disabled label="E-mail" placeholder={'E-mail'} />}
+                      render={({ field }) => (
+                        <TextInput {...field} disabled label="E-mail" placeholder={'E-mail'} required />
+                      )}
                     />
 
                     <Field
                       name="mobileNo"
                       render={({ field }) => (
-                        <TextInput {...field} disabled label="Mobile No." placeholder={'Mobile No.'} />
+                        <TextInput {...field} disabled label="Mobile No." placeholder={'Mobile No.'} required />
                       )}
                     />
 
@@ -415,6 +441,7 @@ class OwnerDetailsForm extends Component {
                           disabled
                           label="Presentation Exemption"
                           placeholder={'Presentation Exemption'}
+                          required
                         />
                       )}
                     />
@@ -422,7 +449,7 @@ class OwnerDetailsForm extends Component {
                     <Field
                       name="pinCode"
                       render={({ field }) => (
-                        <TextInput {...field} disabled label="PIN Code" placeholder={'PIN Code'} />
+                        <TextInput {...field} disabled label="PIN Code" placeholder={'PIN Code'} required />
                       )}
                     />
 
@@ -434,6 +461,7 @@ class OwnerDetailsForm extends Component {
                           disabled
                           label="Address Same As Above"
                           placeholder={'Address Same As Above'}
+                          required
                         />
                       )}
                     />
@@ -441,18 +469,22 @@ class OwnerDetailsForm extends Component {
                     <Field
                       name="district"
                       render={({ field }) => (
-                        <TextInput {...field} disabled label="District" placeholder={'District'} />
+                        <TextInput {...field} disabled label="District" placeholder={'District'} required />
                       )}
                     />
 
                     <Field
                       name="taluka"
-                      render={({ field }) => <TextInput {...field} disabled label="Taluka" placeholder={'Taluka'} />}
+                      render={({ field }) => (
+                        <TextInput {...field} disabled label="Taluka" placeholder={'Taluka'} required />
+                      )}
                     />
 
                     <Field
                       name="village"
-                      render={({ field }) => <TextInput {...field} disabled label="Village" placeholder={'Village'} />}
+                      render={({ field }) => (
+                        <TextInput {...field} disabled label="Village" placeholder={'Village'} required />
+                      )}
                     />
                   </FieldGroupWithTitle>
                 </FormDetailsContainer>
@@ -607,7 +639,7 @@ class OwnerDetailsForm extends Component {
                           <Field
                             name="loanAmount"
                             render={({ field }) => (
-                              <TextInput {...field} label="Loan amount" placeholder={'Loan amount'} />
+                              <TextInput {...field} label="Loan amount" placeholder={'Loan amount'} required />
                             )}
                           />
 
@@ -618,6 +650,7 @@ class OwnerDetailsForm extends Component {
                                 {...field}
                                 label="Outstanding Loan amount"
                                 placeholder={'Outstanding Loan amount'}
+                                required
                               />
                             )}
                           />

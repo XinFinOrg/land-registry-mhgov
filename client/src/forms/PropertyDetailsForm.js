@@ -167,34 +167,38 @@ class PropertyDetailsForm extends Component {
                 <FormDetailsContainer>
                   <Field
                     name="district"
-                    render={({ field }) => <TextInput {...field} label="District" placeholder={'District'} />}
+                    render={({ field }) => <TextInput {...field} label="District" placeholder={'District'} required />}
                   />
 
                   <Field
                     name="landType"
-                    render={({ field }) => <TextInput {...field} label="Land Type" placeholder={'Land Type'} />}
+                    render={({ field }) => (
+                      <TextInput {...field} label="Land Type" placeholder={'Land Type'} required />
+                    )}
                   />
                   <Field
                     name="taluka"
-                    render={({ field }) => <TextInput {...field} label="Taluka" placeholder={'Taluka'} />}
+                    render={({ field }) => <TextInput {...field} label="Taluka" placeholder={'Taluka'} required />}
                   />
                   <Field
                     name="localGoverning"
                     render={({ field }) => (
-                      <TextInput {...field} label="Local Governing No." placeholder={'Local Governing No.'} />
+                      <TextInput {...field} label="Local Governing No." placeholder={'Local Governing No.'} required />
                     )}
                   />
                   <Field
                     name="cityVillage"
-                    render={({ field }) => <TextInput {...field} label="City" placeholder={'City'} />}
+                    render={({ field }) => <TextInput {...field} label="City" placeholder={'City'} required />}
                   />
                   <Field
                     name="location"
-                    render={({ field }) => <TextInput {...field} label="Location" placeholder={'Location'} />}
+                    render={({ field }) => <TextInput {...field} label="Location" placeholder={'Location'} required />}
                   />
                   <Field
                     name="surveyNumber"
-                    render={({ field }) => <TextInput {...field} label="Survey Number" placeholder={'Survey Number'} />}
+                    render={({ field }) => (
+                      <TextInput {...field} label="Survey Number" placeholder={'Survey Number'} required />
+                    )}
                   />
                 </FormDetailsContainer>
                 <StaticFieldWrapper>
@@ -248,19 +252,20 @@ class PropertyDetailsForm extends Component {
                             border={'none'}
                             shadow={'none'}
                             type="text"
+                            required
                           />
                         )}
                       />
                       <Field
                         name="areaOfConstructurePropertySquareMeter"
                         render={({ field }) => (
-                          <TextInput {...field} label="Sqaure Meter" placeholder={'Sqaure Meter'} />
+                          <TextInput {...field} label="Sqaure Meter" placeholder={'Sqaure Meter'} required />
                         )}
                       />
                       <Field
                         name="areaOfConstructurePropertyBuildUpArea"
                         render={({ field }) => (
-                          <TextInput {...field} label="Build Up Area" placeholder={'Build Up Area'} />
+                          <TextInput {...field} label="Build Up Area" placeholder={'Build Up Area'} required />
                         )}
                       />
                     </FieldsTuple>
@@ -282,13 +287,14 @@ class PropertyDetailsForm extends Component {
                             border={'none'}
                             shadow={'none'}
                             type="text"
+                            required
                           />
                         )}
                       />
                       <Field
                         name="openParkingSquareMeter"
                         render={({ field }) => (
-                          <TextInput {...field} label="Sqaure Meter" placeholder={'Sqaure Meter'} />
+                          <TextInput {...field} label="Sqaure Meter" placeholder={'Sqaure Meter'} required />
                         )}
                       />
                     </NormalFieldsTuple>
@@ -310,19 +316,20 @@ class PropertyDetailsForm extends Component {
                             border={'none'}
                             shadow={'none'}
                             type="text"
+                            required
                           />
                         )}
                       />
                       <Field
                         name="coveredParkingSquareMeter"
                         render={({ field }) => (
-                          <TextInput {...field} label="Sqaure Meter" placeholder={'Sqaure Meter'} />
+                          <TextInput {...field} label="Sqaure Meter" placeholder={'Sqaure Meter'} required />
                         )}
                       />
                       <Field
                         name="coveredParkingBulidArea"
                         render={({ field }) => (
-                          <TextInput {...field} label="Build Up Area" placeholder={'Build Up Area'} />
+                          <TextInput {...field} label="Build Up Area" placeholder={'Build Up Area'} required />
                         )}
                       />
                     </FieldsTuple>
@@ -332,7 +339,9 @@ class PropertyDetailsForm extends Component {
                     <FieldsTuple>
                       <Field
                         name="shopFloorBasement"
-                        render={({ field }) => <TextInput {...field} label="Basement" placeholder={'Basement'} />}
+                        render={({ field }) => (
+                          <TextInput {...field} label="Basement" placeholder={'Basement'} required />
+                        )}
                       />
                     </FieldsTuple>
                   </StaticField>
@@ -343,13 +352,18 @@ class PropertyDetailsForm extends Component {
                     <Field
                       name="propertyAddress"
                       render={({ field }) => (
-                        <TextInput {...field} label="Property Address" placeholder={'Property Address'} />
+                        <TextInput {...field} label="Property Address" placeholder={'Property Address'} required />
                       )}
                     />
                     <Field
                       name="propertyDescription"
                       render={({ field }) => (
-                        <TextInput {...field} label="Property Description" placeholder={'Property Description'} />
+                        <TextInput
+                          {...field}
+                          label="Property Description"
+                          placeholder={'Property Description'}
+                          required
+                        />
                       )}
                     />
                   </NormalFieldsTuple>

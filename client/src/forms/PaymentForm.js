@@ -72,19 +72,57 @@ class PaymentForm extends Component {
               ? `Finance amount to be paid: ${get(data, 'buyerFinancer.financeAmount')}`
               : `Token amount to be paid: ${data.tokenAmt}`}
           </PaymentText>
-          {data.status === ('registry_token_amount' || 'registry_buyer_pay') || amtPaid ? (
+          {/* PayTokenAmout */}
+          {(get(data, 'buyer.email', '') === Cookies.get('email') && data.status === 'registry_token_amount') ||
+          amtPaid ? (
             <StatusPage paid />
-          ) : (
+          ) : get(data, 'buyer.email', '') === Cookies.get('email') &&
+          (data.status === 'registry_buyer_financer_confirmed' ||
+            (data.status === 'registry_skip_buyer_financer' && !data.buyerFinancer)) ? (
             <Button
-              size={'medium'}
+              size={'large'}
               width={'150px'}
-              title="Pay"
+              title="Pay Token Amount"
               disabled={isLoading}
               isLoading={isLoading}
               type="button"
               onClick={() => this.handlePay()}
             />
-          )}
+          ) : null}
+
+          {/* Pay Finance amount */}
+          {(get(data, 'buyerFinancer.email', '') === Cookies.get('email') && data.status === 'registry_bank_pay') ||
+          amtPaid ? (
+            <StatusPage paid />
+          ) : get(data, 'buyerFinacer.email', '') === Cookies.get('email') &&
+          data.status === 'registry_token_amount' ? (
+            <Button
+              size={'large'}
+              width={'150px'}
+              title="Pay Financer Amount"
+              disabled={isLoading}
+              isLoading={isLoading}
+              type="button"
+              onClick={() => this.handlePay()}
+            />
+          ) : null}
+
+          {/* Pay Buyer */}
+          {(get(data, 'buyer.email', '') === Cookies.get('email') && data.status === 'registry_buyer_pay') ||
+          amtPaid ? (
+            <StatusPage paid />
+          ) : get(data, 'buyer.email', '') === Cookies.get('email') &&
+          (data.status === 'registry_bank_pay' || (data.status === 'registry_token_amount' && !data.buyerFinancer)) ? (
+            <Button
+              size={'large'}
+              width={'150px'}
+              title="Pay Buyer Amount"
+              disabled={isLoading}
+              isLoading={isLoading}
+              type="button"
+              onClick={() => this.handlePay()}
+            />
+          ) : null}
         </PaymentTuple>
       </Paper>
     )
