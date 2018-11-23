@@ -216,7 +216,7 @@ class OwnerDetailsForm extends Component {
                 await axios.post(`${API_URL}/confirmFinancer`, {
                   registryId: params.tab3,
                   propertyId: Cookies.get('propertyId'),
-                  currentStatus: 'registry_buyer_financer',
+                  currentStatus: 'registry_owner_financer',
                   approved: true
                 })
                 await this.setState({ isLoading: false })
