@@ -566,14 +566,17 @@ router.post('/confirmFinancer', async function(req, res) {
 	let currentStatus= req.body.currentStatus;
 	let approved = req.body.approved;
 	let status = false;
+	console.log('req.body', req.body);
 	switch(currentStatus) {
 		case 'registry_owner_financer' :
 			status = (approved ? "registry_owner_financer_verified" :
 			"registry_owner_financer_rejected");
+			break;
 		case 'registry_buyer_financer' :
 			status = (approved ? "registry_buyer_financer_verified" :
 			"registry_buyer_financer_rejected");
 	}
+	console.log('status', status);
 	if (!status) {
 		return {status : false, error : 'Invalid request'};
 	}
