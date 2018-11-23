@@ -796,7 +796,7 @@ router.post('/financerPayment', async function(req, res) {
 	let updateQuery = {$set : {
 		paymentRemaining : paymentRemaining,
 		"ownerFinancer.outstandingLoan" : outstandingLoan,
-		status : "registry_buyer_pay",
+		status : "registry_bank_pay",
 		modified : Date.now()
 	}};
 	helper.updateCollection('registry', query, updateQuery,
