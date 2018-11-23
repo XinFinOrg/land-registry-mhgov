@@ -24,9 +24,11 @@ class PaymentForm extends Component {
           propertyId: Cookies.get('propertyId')
         })
         await this.setState({ isLoading: false, financerAmtPaid: true })
+        await Cookies.set('amount_paid', 'financerAmtPaid')
         await toast.success(`${'Financer amount paid!'}`, {
           position: toast.POSITION.TOP_CENTER
         })
+        this.props.history.push('/dashboard')
         console.log('DATA', data)
       } catch (error) {
         await this.setState({ isLoading: false })
@@ -46,9 +48,11 @@ class PaymentForm extends Component {
           registryId: params.tab3
         })
         await this.setState({ isLoading: false, buyerAmtPaid: true })
+        await Cookies.set('amount_paid', 'buyerAmtPaid')
         await toast.success(`${'Buyer amount paid!'}`, {
           position: toast.POSITION.TOP_CENTER
         })
+        this.props.history.push('/dashboard')
         console.log('DATA', data)
       } catch (error) {
         await this.setState({ isLoading: false })
@@ -65,9 +69,11 @@ class PaymentForm extends Component {
           registryId: params.tab3
         })
         await this.setState({ isLoading: false, tokenAmountpaid: true })
+        await Cookies.set('amount_paid', 'tokenAmountpaid')
         await toast.success(`${'Token amount paid!'}`, {
           position: toast.POSITION.TOP_CENTER
         })
+        this.props.history.push('/dashboard')
         console.log('DATA', data)
       } catch (error) {
         await this.setState({ isLoading: false })
@@ -106,7 +112,7 @@ class PaymentForm extends Component {
               type="button"
               onClick={() => this.handlePay()}
             />
-          ) : tokenAmountpaid ||
+          ) : Cookies.get('amount_paid') === 'tokenAmountpaid' &&
           (data.status === 'registry_token_amount' && get(data, 'buyer.email', '') === Cookies.get('email')) ? (
             <StatusPage paid />
           ) : null}
@@ -122,8 +128,9 @@ class PaymentForm extends Component {
               type="button"
               onClick={() => this.handlePay()}
             />
-          ) : financerAmtPaid ||
-          (data.status === 'registry_bank_pay' && get(data, 'buyerFinancer.email', '') === Cookies.get('email')) ? (
+          ) : Cookies.get('amount_paid') === 'financerAmtPaid' &&
+          data.status === 'registry_bank_pay' &&
+          get(data, 'buyerFinancer.email', '') === Cookies.get('email') ? (
             <StatusPage paid />
           ) : null}
 
@@ -139,7 +146,7 @@ class PaymentForm extends Component {
               type="button"
               onClick={() => this.handlePay()}
             />
-          ) : buyerAmtPaid ||
+          ) : Cookies.get('amount_paid') === 'buyerAmtPaid' &&
           (data.status === 'registry_buyer_pay' && get(data, 'buyer.email', '') === Cookies.get('email')) ? (
             <StatusPage paid />
           ) : null}
