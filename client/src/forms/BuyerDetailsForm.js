@@ -622,6 +622,7 @@ class BuyerDetailsForm extends Component {
                   />
                 </FieldGroupWithTitle>
               </FormDetailsContainer> */}
+                {console.log(" get(data.owner, 'email', '') ", get(data.owner, 'email', ''), Cookies.get('email'))}
               </Paper>
               <ButtonGroup>
                 {data.status === 'registry_buyer_confirmed' ? (
@@ -686,9 +687,9 @@ class BuyerDetailsForm extends Component {
                       type="submit"
                     />
                   </React.Fragment>
-                ) : (Cookies.get('email') === get(data.owner, 'email', '') &&
-                  data.status === 'registry_skip_owner_financer') ||
-                data.status === 'registry_owner_financer_verified' ? (
+                ) : Cookies.get('email') === get(data.owner, 'email', '') &&
+                (data.status === 'registry_skip_owner_financer' ||
+                  data.status === 'registry_owner_financer_verified') ? (
                   <Button
                     size={'medium'}
                     width={'150px'}
