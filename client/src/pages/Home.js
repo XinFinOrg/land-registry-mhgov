@@ -384,7 +384,7 @@ class Home extends Component {
             <Formik
               enableReinitialize={true}
               initialValues={{
-                salutation: '',
+                salutation: 'Mr.',
                 firstName: signUpData.firstName || 'Viral',
                 middleName: 'Mahendra',
                 lastName: signUpData.lastName || 'Pasad',
@@ -398,7 +398,7 @@ class Home extends Component {
                 identificationDescription: 'Aadhar card',
                 panForm60: 'BCPPT9089H',
                 occupation: 'Salaried Employee',
-                gender: '',
+                gender: 'Male',
                 email: signUpData.email || '',
                 mobileNo: '9664818286',
                 perAddress: 'Pali Hill, Bandra',
@@ -409,7 +409,8 @@ class Home extends Component {
                 village: 'Mumbai'
               }}
               onSubmit={async (values, { resetForm }) => {
-                this.setState({ isLoading: true })
+                console.log('SIGNUP VALUES', values)
+                /* this.setState({ isLoading: true })
                 try {
                   const { data } = await axios.post(`${API_URL}/signup/`, {
                     userDetails: {
@@ -451,7 +452,7 @@ class Home extends Component {
                   })
                   this.setState({ isLoading: false })
                   console.log('ERROR', error)
-                }
+                } */
               }}
               render={formikBag => (
                 <Form>
@@ -770,6 +771,7 @@ class Home extends Component {
                       width={'100%'}
                       // onClick={() => this.handleSignUp()}
                       isLoading={isLoading}
+                      disabled={isLoading}
                       height={'50px'}
                       title={'Submit'}
                       type={'submit'}
@@ -874,6 +876,7 @@ class Home extends Component {
                       title={'Submit'}
                       type={'submit'}
                       isLoading={isLoading}
+                      disabled={isLoading}
                     />
                   </BankFormWrapper>
                 </Form>
@@ -987,6 +990,7 @@ class Home extends Component {
                       fontSize={20}
                       width={'100%'}
                       isLoading={isLoading}
+                      disabled={isLoading}
                       height={'50px'}
                       title={'Submit'}
                       type={'submit'}
