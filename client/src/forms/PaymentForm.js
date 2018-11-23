@@ -59,7 +59,6 @@ class PaymentForm extends Component {
   render() {
     const { isLoading, amtPaid } = this.state
     const { data } = this.props
-    console.log('data==>', data)
     return (
       <Paper
         padding={'0 31px 20px'}
@@ -73,11 +72,13 @@ class PaymentForm extends Component {
               : `Token amount to be paid: ${data.tokenAmt}`}
           </PaymentText>
           {/* PayTokenAmout */}
-          {(get(data, 'buyer.email', '') === Cookies.get('email') && data.status === 'registry_token_amount') ||
+          {data.status === 'registry_token_amount' ||
+          data.status === 'registry_bank_pay' ||
+          data.status === 'registry_buyer_pay' ||
           amtPaid ? (
             <StatusPage paid />
           ) : get(data, 'buyer.email', '') === Cookies.get('email') &&
-          (data.status === 'registry_buyer_financer_confirmed' ||
+          (data.status === 'registry_buyer_financer_verified' ||
             (data.status === 'registry_skip_buyer_financer' && !data.buyerFinancer)) ? (
             <Button
               size={'large'}
@@ -88,13 +89,7 @@ class PaymentForm extends Component {
               type="button"
               onClick={() => this.handlePay()}
             />
-          ) : null}
-
-          {/* Pay Finance amount */}
-          {(get(data, 'buyerFinancer.email', '') === Cookies.get('email') && data.status === 'registry_bank_pay') ||
-          amtPaid ? (
-            <StatusPage paid />
-          ) : get(data, 'buyerFinacer.email', '') === Cookies.get('email') &&
+          ) : get(data, 'buyerFinancer.email', '') === Cookies.get('email') &&
           data.status === 'registry_token_amount' ? (
             <Button
               size={'large'}
@@ -105,12 +100,6 @@ class PaymentForm extends Component {
               type="button"
               onClick={() => this.handlePay()}
             />
-          ) : null}
-
-          {/* Pay Buyer */}
-          {(get(data, 'buyer.email', '') === Cookies.get('email') && data.status === 'registry_buyer_pay') ||
-          amtPaid ? (
-            <StatusPage paid />
           ) : get(data, 'buyer.email', '') === Cookies.get('email') &&
           (data.status === 'registry_bank_pay' || (data.status === 'registry_token_amount' && !data.buyerFinancer)) ? (
             <Button

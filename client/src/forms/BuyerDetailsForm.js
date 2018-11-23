@@ -622,7 +622,6 @@ class BuyerDetailsForm extends Component {
                   />
                 </FieldGroupWithTitle>
               </FormDetailsContainer> */}
-                {console.log(" get(data.owner, 'email', '') ", get(data.owner, 'email', ''), Cookies.get('email'))}
               </Paper>
               <ButtonGroup>
                 {data.status === 'registry_buyer_confirmed' ? (
@@ -644,8 +643,7 @@ class BuyerDetailsForm extends Component {
                       onClick={() => this.skipFinancier()}
                     />
                   </React.Fragment>
-                ) : Cookies.get('email') === get(buyer, 'userDetails.email', Cookies.get('email')) &&
-                data.status === 'registry_buyer' ? (
+                ) : Cookies.get('email') === get(buyer, 'email', '') && data.status === 'registry_buyer' ? (
                   <React.Fragment>
                     <Button
                       size={'medium'}
