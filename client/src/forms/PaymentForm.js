@@ -9,7 +9,7 @@ import withRouter from 'react-router/withRouter'
 import { toast } from 'react-toastify'
 
 class PaymentForm extends Component {
-  state = { amtPaid: false }
+  state = { financerAmtPaid: false, tokenAmountpaid: false, buyerAmtPaid: false }
 
   handlePay = async () => {
     const {
@@ -23,8 +23,30 @@ class PaymentForm extends Component {
           registryId: params.tab3,
           propertyId: Cookies.get('propertyId')
         })
-        await this.setState({ isLoading: false, amtPaid: true })
+        await this.setState({ isLoading: false, financerAmtPaid: true })
         await toast.success(`${'Financer amount paid!'}`, {
+          position: toast.POSITION.TOP_CENTER
+        })
+        console.log('DATA', data)
+      } catch (error) {
+        await this.setState({ isLoading: false })
+        toast.error(`${'Error!!!'}`, {
+          position: toast.POSITION.TOP_CENTER
+        })
+        console.log('ERROR', error)
+      }
+    } else if (
+      get(data, 'buyer.email', '') === Cookies.get('email') &&
+      (data.status === 'registry_bank_pay' || (data.status === 'registry_token_amount' && !data.buyerFinancer))
+    ) {
+      try {
+        this.setState({ isLoading: true })
+        const { data } = await axios.post(`${API_URL}/buyerPayment`, {
+          propertyId: Cookies.get('propertyId'),
+          registryId: params.tab3
+        })
+        await this.setState({ isLoading: false, buyerAmtPaid: true })
+        await toast.success(`${'Buyer amount paid!'}`, {
           position: toast.POSITION.TOP_CENTER
         })
         console.log('DATA', data)
@@ -42,7 +64,7 @@ class PaymentForm extends Component {
           propertyId: Cookies.get('propertyId'),
           registryId: params.tab3
         })
-        await this.setState({ isLoading: false, amtPaid: true })
+        await this.setState({ isLoading: false, tokenAmountpaid: true })
         await toast.success(`${'Token amount paid!'}`, {
           position: toast.POSITION.TOP_CENTER
         })
@@ -57,7 +79,7 @@ class PaymentForm extends Component {
     }
   }
   render() {
-    const { isLoading, amtPaid } = this.state
+    const { isLoading, financerAmtPaid, tokenAmountpaid, buyerAmtPaid } = this.state
     const { data } = this.props
     return (
       <Paper
@@ -72,7 +94,56 @@ class PaymentForm extends Component {
               : `Token amount to be paid: ${data.tokenAmt}`}
           </PaymentText>
           {/* PayTokenAmout */}
-          {data.status === 'registry_token_amount' ||
+          {get(data, 'buyer.email', '') === Cookies.get('email') &&
+          (data.status === 'registry_buyer_financer_verified' ||
+            (data.status === 'registry_skip_buyer_financer' && !data.buyerFinancer)) ? (
+            <Button
+              size={'large'}
+              width={'150px'}
+              title="Pay Token Amount"
+              disabled={isLoading}
+              isLoading={isLoading}
+              type="button"
+              onClick={() => this.handlePay()}
+            />
+          ) : tokenAmountpaid ||
+          (data.status === 'registry_token_amount' && get(data, 'buyer.email', '') === Cookies.get('email')) ? (
+            <StatusPage paid />
+          ) : null}
+
+          {/* pay financer amount */}
+          {get(data, 'buyerFinancer.email', '') === Cookies.get('email') && data.status === 'registry_token_amount' ? (
+            <Button
+              size={'large'}
+              width={'150px'}
+              title="Pay Financer Amount"
+              disabled={isLoading}
+              isLoading={isLoading}
+              type="button"
+              onClick={() => this.handlePay()}
+            />
+          ) : financerAmtPaid ||
+          (data.status === 'registry_bank_pay' && get(data, 'buyerFinancer.email', '') === Cookies.get('email')) ? (
+            <StatusPage paid />
+          ) : null}
+
+          {/* Pay Buyer Amount */}
+          {get(data, 'buyer.email', '') === Cookies.get('email') &&
+          (data.status === 'registry_bank_pay' || (data.status === 'registry_token_amount' && !data.buyerFinancer)) ? (
+            <Button
+              size={'large'}
+              width={'150px'}
+              title="Pay Buyer Amount"
+              disabled={isLoading}
+              isLoading={isLoading}
+              type="button"
+              onClick={() => this.handlePay()}
+            />
+          ) : buyerAmtPaid ||
+          (data.status === 'registry_buyer_pay' && get(data, 'buyer.email', '') === Cookies.get('email')) ? (
+            <StatusPage paid />
+          ) : null}
+          {/* {data.status === 'registry_token_amount' ||
           data.status === 'registry_bank_pay' ||
           data.status === 'registry_buyer_pay' ||
           amtPaid ? (
@@ -111,7 +182,7 @@ class PaymentForm extends Component {
               type="button"
               onClick={() => this.handlePay()}
             />
-          ) : null}
+          ) : null} */}
         </PaymentTuple>
       </Paper>
     )
