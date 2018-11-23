@@ -530,7 +530,7 @@ class OwnerDetailsForm extends Component {
                     registryId: params.tab3,
                     propertyId: Cookies.get('propertyId'),
                     ownerFinancer: {
-                      email: Cookies.get('email'),
+                      email: values.email,
                       address: Cookies.get('address'),
                       loanAmount: values.loanAmount,
                       outstandingLoan: values.outstandingLoan
