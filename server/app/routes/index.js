@@ -7,7 +7,7 @@ var db = require('./../config/db');
 var config = require('./../config/config');
 var constants = require('../constants/constants');
 
-var web3Conf = false;
+var web3Conf = true;
 
 if (web3Conf) {
 	var init = require('../web3Helpers/init.js');
@@ -51,7 +51,6 @@ router.post('/getDashboard', async function(req, res) {
 			}
 			console.log("query", query);
 	        let p = await collection.find(query).sort({'created' : -1}).toArray();
-	        console.log(p);
 	        records = records.concat(p);
     	}
 
@@ -70,7 +69,6 @@ router.post('/getDashboard', async function(req, res) {
 		}
 		console.log("query", query);
         let q = await collection.find(query).sort({_id : -1}).toArray();
-        console.log(q)
         records = records.concat(q);
 	    records.sort(function(x, y){
 	        return y.created - x.created;
@@ -248,26 +246,21 @@ router.get('/getPropertyData', async function(req, res) {
 		userList.push(propertyDetails.owner.email);
     } else {
     	if (allData.owner && allData.owner.email) {
-			console.log(userList);
     		userList.push(allData.owner.email);
     	}
     	if (allData.ownerFinancer && allData.ownerFinancer.email) {
-			console.log(userList);
     		userList.push(allData.ownerFinancer.email);
     	}
     	if (allData.buyer && allData.buyer.email) {
-			console.log(userList);
     		userList.push(allData.buyer.email);
     	}
     	if (allData.buyerFinancer && allData.buyerFinancer.email) {
-			console.log(userList);
     		userList.push(allData.buyerFinancer.email);
     	}
     }
 
 	var collection = db.getCollection('users');
     let userDetails = await collection.find({email : {$in : userList}}).toArray();
-    console.log('userDetails', userDetails)
     userDetails = helper.arrayToObject(userDetails, "email");
 
     let responseData = {};
@@ -352,7 +345,6 @@ router.post('/addProperty', async function(req, res) {
 	console.log('property', propertyDetails);
 	helper.insertCollection('properties', propertyDetails, function(err, data) {
 	    if (err) {
-			console.log('error:', err, 'data:',data);
 			let error = helper.getErrorResponse('DbError');
 			return res.status(error.statusCode).send(error.error);
 	    }
@@ -456,7 +448,6 @@ router.post('/sellProperty', async function(req, res) {
 			created : Date.now(),
 			modified : Date.now()
 		};
-		console.log(query);
 		helper.insertCollection('registry', query,
 			function(err, data) {
 		    if (err) {
@@ -525,7 +516,6 @@ router.post('/addOwnerFinancer', async function(req, res) {
 		!ownerFinancer ?
 		"registry_skip_owner_financer" : "registry_owner_financer"
 	);
-	console.log(ownerFinancer);
 	if (web3Conf && status == 'registry_owner_financer') {
 		try {
 	        var m = await landRegistry.addOwnerFinancer(
@@ -551,7 +541,6 @@ router.post('/addOwnerFinancer', async function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-			console.log('error:', err, 'data:',data);
 			let error = helper.getErrorResponse('DbError');
 			return res.status(error.statusCode).send(error.error);
 	    }
@@ -566,7 +555,6 @@ router.post('/confirmFinancer', async function(req, res) {
 	let currentStatus= req.body.currentStatus;
 	let approved = req.body.approved;
 	let status = false;
-	console.log('req.body', req.body);
 	switch(currentStatus) {
 		case 'registry_owner_financer' :
 			status = (approved ? "registry_owner_financer_verified" :
@@ -603,7 +591,6 @@ router.post('/confirmFinancer', async function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        console.log('error:', err, 'data:',data);
 			let error = helper.getErrorResponse('DbError');
 			return res.status(error.statusCode).send(error.error);
 	    }
@@ -630,7 +617,7 @@ router.post('/addBuyer', async function(req, res) {
 		    m = await landRegistry.addBuyer(
 		        helper.web3StringToBytes32(registryId),
 		        helper.web3StringToBytes32(propertyId),
-		        buyerDetails.address
+		        buyerDetails.address || '0xaca94ef8bd5ffee41947b4585a84bda5a3d3da6e'
 		    );
 		    console.log('addBuyer', m)
 		} catch(e) {
@@ -642,7 +629,6 @@ router.post('/addBuyer', async function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        console.log('error:', err, 'data:',data);
 			let error = helper.getErrorResponse('DbError');
 			return res.status(error.statusCode).send(error.error);
 	    }
@@ -677,7 +663,6 @@ router.post('/confirmBuyer', async function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        console.log('error:', err, 'data:',data);
 			let error = helper.getErrorResponse('DbError');
 			return res.status(error.statusCode).send(error.error);
 	    }
@@ -688,6 +673,8 @@ router.post('/confirmBuyer', async function(req, res) {
 router.post('/addBuyerFinancer', async function(req, res) {
 	console.log('addBuyerFinancer : start');
 	let registryId = req.body.registryId;
+	let propertyId = req.body.propertyId;
+
 	let buyerFinancer  = req.body.buyerFinancer || false;
 	let status = req.body.status || (
 		!buyerFinancer ?
@@ -699,7 +686,7 @@ router.post('/addBuyerFinancer', async function(req, res) {
 	        m = await landRegistry.addBuyerFinancer(
 	            helper.web3StringToBytes32(registryId),
 	            helper.web3StringToBytes32(propertyId),
-	            buyerFinancer.address,
+	            buyerFinancer.address || '0x95ced938f7991cd0dfcb48f0a06a40fa1af46ebc',
 	            parseInt(buyerFinancer.financeAmount)
 	        );
 		    console.log('addBuyerFinancer', m);
@@ -718,7 +705,6 @@ router.post('/addBuyerFinancer', async function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        console.log('error:', err, 'data:',data);
 			let error = helper.getErrorResponse('DbError');
 			return res.status(error.statusCode).send(error.error);
 	    }
@@ -738,7 +724,6 @@ router.post('/payTokenAmount', async function(req, res) {
 	} catch(e) {
 		console.log(e)
 	}
-	console.log('registryData', registryData)
 	let tokenAmt = registryData.tokenAmt || 0;
 	//transfer amount from buyer to owner
 	let paymentRemaining = registryData.paymentRemaining || 0;
@@ -752,7 +737,6 @@ router.post('/payTokenAmount', async function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        console.log('error:', err, 'data:',data);
 			let error = helper.getErrorResponse('DbError');
 			return res.status(error.statusCode).send(error.error);
 	    }
@@ -842,7 +826,6 @@ router.post('/buyerPayment', async function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        console.log('error:', err, 'data:',data);
 			let error = helper.getErrorResponse('DbError');
 			return res.status(error.statusCode).send(error.error);
 	    }
@@ -863,7 +846,6 @@ router.post('/payStampDuty', async function(req, res) {
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
-	        console.log('error:', err, 'data:',data);
 			let error = helper.getErrorResponse('DbError');
 			return res.status(error.statusCode).send(error.error);
 	    }
