@@ -239,12 +239,12 @@ export const dutyDetails = [
 
 export const DocumentDutyTotal = [
   {
-    txInfo: 'First payment financier to supplier',
+    txInfo: 'First payment financer to supplier',
     date: '27 july, 2018',
     amount: '$8000'
   },
   {
-    txInfo: 'First payment financier to supplier',
+    txInfo: 'First payment financer to supplier',
     date: '27 july, 2018',
     amount: '$8000'
   }

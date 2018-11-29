@@ -94,13 +94,16 @@ class Header extends Component {
           {pathname === '/' || pathname === '/signup' ? (
             <MenuItemsWrapper>
               <MenuItems to="/">Home</MenuItems>
-              <MenuItems to="/support">Support</MenuItems>
+              <MenuItems to="/">Support</MenuItems>
               <MenuItems to="/signup">SignUp</MenuItems>
             </MenuItemsWrapper>
           ) : (
             <DashboardWrapper>
               <IconWrapper>
-                <p>Balance: ${balance || 0}</p>
+                <p>
+                  Balance: &#8377;
+                  {balance || 0}
+                </p>
               </IconWrapper>
               <IconWrapper>
                 <IconMenu
@@ -112,8 +115,8 @@ class Header extends Component {
                       <h1>{firstLetter || 'J'}</h1>
                     </UserImage>
                   }>
-                  <p onClick={() => this.setState({ showModal: true })}>Buy Token</p>
-                  {/* <p onClick={() => this.logout()}>Logout</p> */}
+                  <p onClick={() => this.setState({ showModal: true })}>Deposit funds</p>
+                  {/*<p onClick={() => this.logout()}>Logout</p>*/}
                 </IconMenu>
 
                 <p>{Cookies.get('name') || 'John Doe'}</p>
@@ -123,7 +126,7 @@ class Header extends Component {
         </HeaderWrapper>
         <Modal maxWidth={'450px'} show={showModal}>
           <CloseWrap>
-            <PaperTitle>Buy Token</PaperTitle>
+            <PaperTitle color="#fff">Deposit funds</PaperTitle>
             <Close onClick={() => this.setState({ showModal: !showModal })} />
           </CloseWrap>
           <Formik
@@ -153,9 +156,7 @@ class Header extends Component {
               <Form>
                 <Field
                   name="amount"
-                  render={({ field }) => (
-                    <TextInput {...field} label="Token Amount" placeholder={'Token Amount'} required />
-                  )}
+                  render={({ field }) => <TextInput {...field} label="Amount" placeholder={'Amount'} required />}
                 />
                 <ButtonGroup justifyContent="center">
                   <Button

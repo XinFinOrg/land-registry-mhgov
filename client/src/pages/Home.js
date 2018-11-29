@@ -15,7 +15,8 @@ import {
   Close,
   CloseWrap,
   // FieldGroupWithTitle,
-  FormDetailsContainer
+  FormDetailsContainer,
+  ModalScrollWrapper
 } from '../components'
 import house from '../static/images/house.jpeg'
 import { Formik, Form, Field } from 'formik'
@@ -51,6 +52,12 @@ const BigText = styled.h1`
   font-weight: 300;
   letter-spacing: 0.4px;
   color: #ffffff;
+`
+const MidText = styled.h1`
+  font-size: 32px;
+  text-shadow: 1px 2px 2px #194984;
+  color: #ffffff;
+  margin-top: ${props => props.marginTop && props.marginTop};
 `
 const Wrapper = styled.div`
   & > p {
@@ -169,19 +176,16 @@ class Home extends Component {
         <BackgroundWrapper>
           <Wrapper>
             <BigText>Welcome To Land Registry</BigText>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer non placerat nisi. Nullam faucibus
-              malesuada cursus.
-            </p>
+            <MidText marginTop="20px;">Government of Maharashtra</MidText>
           </Wrapper>
           <Wrapper>
             <Paper padding={'30px 35px'}>
               <PaperTitle>{pathname === '/signup' ? 'Sign Up' : 'Login'}</PaperTitle>
-              <PaperSubTitle>
+              {/* <PaperSubTitle>
                 {pathname === '/signup'
                   ? 'We connect Global Buyers, Suppliers & Financiers'
                   : 'Lorem ipsum dolor sit amet, consectetur nteger non placerat nisi. Nullam faucibus cursus.'}
-              </PaperSubTitle>
+              </PaperSubTitle> */}
               {pathname === '/signup' ? (
                 <Formik
                   enableReinitialize={true}
@@ -291,7 +295,7 @@ class Home extends Component {
                   )}
                 />
               ) : (
-                <Formik
+              <Formik
                   enableReinitialize={true}
                   initialValues={{
                     email: '',
@@ -455,248 +459,263 @@ class Home extends Component {
               render={formikBag => (
                 <Form>
                   <CloseWrap>
-                    <PaperTitle>Owner Details</PaperTitle>
+                    <PaperTitle color="#fff">Owner Details</PaperTitle>
                     <Close onClick={() => this.setState({ openModal: !openModal })} />
                   </CloseWrap>
-                  <FormDetailsContainer>
-                    <Field
-                      name="salutation"
-                      render={({ field }) => (
-                        <SelectBox
-                          onChange={salutation => formikBag.setFieldValue('salutation', salutation.value)}
-                          options={[{ label: 'Mr.', value: 'Mr.' }, { label: 'Mrs.', value: 'Mrs.' }]}
-                          placeholder="Salutation"
-                          defaultValue={{ label: 'Mr.', value: 'Mr.' }}
-                          isSearchable={false}
-                          label="Salutaion"
-                        />
-                      )}
-                    />
-                    <Field
-                      name="firstName"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="First Name"
-                          placeholder={'First Name'}
-                        />
-                      )}
-                    />
+                  <ModalScrollWrapper>
+                    <FormDetailsContainer>
+                      <Field
+                        name="salutation"
+                        render={({ field }) => (
+                          <SelectBox
+                            onChange={salutation => formikBag.setFieldValue('salutation', salutation.value)}
+                            options={[{ label: 'Mr.', value: 'Mr.' }, { label: 'Mrs.', value: 'Mrs.' }]}
+                            placeholder="Salutation"
+                            defaultValue={{ label: 'Mr.', value: 'Mr.' }}
+                            isSearchable={false}
+                            label="Salutaion"
+                          />
+                        )}
+                      />
+                      <Field
+                        name="firstName"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="First Name"
+                            placeholder={'First Name'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="middleName"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Middle Name"
-                          placeholder={'Middle Name'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="middleName"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Middle Name"
+                            placeholder={'Middle Name'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="lastName"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Last Name"
-                          placeholder={'Last Name'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="lastName"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Last Name"
+                            placeholder={'Last Name'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="aliasName"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Alias Name"
-                          placeholder={'Alias Name'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="aliasName"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Alias Name"
+                            placeholder={'Alias Name'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="identificationMark1"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Identification Mark 1"
-                          placeholder={'Identification Mark 1'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="identificationMark1"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Identification Mark 1"
+                            placeholder={'Identification Mark 1'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="identificationMark2"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Identification Mark 2"
-                          placeholder={'Identification Mark 2'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="identificationMark2"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Identification Mark 2"
+                            placeholder={'Identification Mark 2'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="dateOfBirth"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Date of Birth"
-                          placeholder={'Date of Birth'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="dateOfBirth"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Date of Birth"
+                            placeholder={'Date of Birth'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="age"
-                      render={({ field }) => (
-                        <TextInput {...field} required width={'100%'} height={'64px'} label="Age" placeholder={'Age'} />
-                      )}
-                    />
+                      <Field
+                        name="age"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Age"
+                            placeholder={'Age'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="uid"
-                      render={({ field }) => (
-                        <TextInput {...field} required width={'100%'} height={'64px'} label="UID" placeholder={'UID'} />
-                      )}
-                    />
+                      <Field
+                        name="uid"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="UID"
+                            placeholder={'UID'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="identificationTypeID"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Identification Type ID"
-                          placeholder={'Identification Type ID'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="identificationTypeID"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Identification Type ID"
+                            placeholder={'Identification Type ID'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="identificationDescription"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Identification Description"
-                          placeholder={'Identification Description'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="identificationDescription"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Identification Description"
+                            placeholder={'Identification Description'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="panForm60"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="PAN/Form 60/61"
-                          placeholder={'PAN/Form 60/61'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="panForm60"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="PAN/Form 60/61"
+                            placeholder={'PAN/Form 60/61'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="occupation"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Occupation"
-                          placeholder={'Occupation'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="occupation"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Occupation"
+                            placeholder={'Occupation'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="gender"
-                      render={({ field }) => (
-                        <SelectBox
-                          onChange={gender => formikBag.setFieldValue('gender', gender.value)}
-                          options={[{ label: 'Male', value: 'Male' }, { label: 'Female', value: 'Female' }]}
-                          placeholder="Gender"
-                          defaultValue={{ label: 'Male', value: 'Male' }}
-                          isSearchable={false}
-                          label="Gender"
-                        />
-                      )}
-                    />
+                      <Field
+                        name="gender"
+                        render={({ field }) => (
+                          <SelectBox
+                            onChange={gender => formikBag.setFieldValue('gender', gender.value)}
+                            options={[{ label: 'Male', value: 'Male' }, { label: 'Female', value: 'Female' }]}
+                            placeholder="Gender"
+                            defaultValue={{ label: 'Male', value: 'Male' }}
+                            isSearchable={false}
+                            label="Gender"
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="email"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="E-mail"
-                          placeholder={'E-mail'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="email"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="E-mail"
+                            placeholder={'E-mail'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="mobileNo"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Mobile No."
-                          placeholder={'Mobile No.'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="mobileNo"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Mobile No."
+                            placeholder={'Mobile No.'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="perAddress"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Permanent Address"
-                          placeholder={'Permanent Address'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="perAddress"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Permanent Address"
+                            placeholder={'Permanent Address'}
+                          />
+                        )}
+                      />
 
-                    {/* <Field
+                      {/* <Field
                       name="addressSame"
                       render={({ field }) => (
                         <TextInput
@@ -709,73 +728,74 @@ class Home extends Component {
                         />
                       )}
                     /> */}
-                    <Field
-                      name="tempAddress"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Temporary Address"
-                          placeholder={'Temporary Address'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="tempAddress"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Temporary Address"
+                            placeholder={'Temporary Address'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="district"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="District"
-                          placeholder={'District'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="district"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="District"
+                            placeholder={'District'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="taluka"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Taluka"
-                          placeholder={'Taluka'}
-                        />
-                      )}
-                    />
+                      <Field
+                        name="taluka"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Taluka"
+                            placeholder={'Taluka'}
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="village"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          required
-                          width={'100%'}
-                          height={'64px'}
-                          label="Village"
-                          placeholder={'Village'}
-                        />
-                      )}
-                    />
-                    <Button
-                      fontSize={20}
-                      width={'100%'}
-                      // onClick={() => this.handleSignUp()}
-                      isLoading={isLoading}
-                      disabled={isLoading}
-                      height={'50px'}
-                      title={'Submit'}
-                      type={'submit'}
-                      margin={'20px 0 0'}
-                    />
-                  </FormDetailsContainer>
+                      <Field
+                        name="village"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Village"
+                            placeholder={'Village'}
+                          />
+                        )}
+                      />
+                      <Button
+                        fontSize={20}
+                        width={'100%'}
+                        // onClick={() => this.handleSignUp()}
+                        isLoading={isLoading}
+                        disabled={isLoading}
+                        height={'50px'}
+                        title={'Submit'}
+                        type={'submit'}
+                        margin={'20px 0 0'}
+                      />
+                    </FormDetailsContainer>
+                  </ModalScrollWrapper>
                 </Form>
               )}
             />

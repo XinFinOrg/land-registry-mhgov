@@ -32,8 +32,7 @@ const zoomIn = keyframes`
 const ModalWrapper = styled.div`
   animation: ${zoomIn} 0.2s linear;
   width: 100%;
-  padding: 24px;
-  padding: 20px;
+  padding: 0 0 20 0;
   max-width: ${props => (props.maxWidth ? props.maxWidth : '650px')};
   border-radius: 2px;
   background-color: #ffffff;
