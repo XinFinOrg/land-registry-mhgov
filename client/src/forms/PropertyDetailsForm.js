@@ -29,7 +29,8 @@ class PropertyDetailsForm extends Component {
   state = {
     isLoading: false,
     isLoadingReject: false,
-    openModal: false
+    openModal: false,
+    isActive: false
   }
 
   rejectProperty = async values => {
@@ -64,7 +65,8 @@ class PropertyDetailsForm extends Component {
       match: { params },
       data
     } = this.props
-    console.log('PROPS', this.props)
+    const isActive = this.props.data.status === 'property_new' ? true : false
+    console.log('00000', this.state.isActive)
     return (
       <React.Fragment>
         <Formik
@@ -167,37 +169,57 @@ class PropertyDetailsForm extends Component {
                 <FormDetailsContainer>
                   <Field
                     name="district"
-                    render={({ field }) => <TextInput {...field} label="District" placeholder={'District'} required />}
+                    render={({ field }) => (
+                      <TextInput {...field} label="District" placeholder={'District'} required disabled={isActive} />
+                    )}
                   />
 
                   <Field
                     name="landType"
                     render={({ field }) => (
-                      <TextInput {...field} label="Land Type" placeholder={'Land Type'} required />
+                      <TextInput {...field} label="Land Type" placeholder={'Land Type'} required disabled={isActive} />
                     )}
                   />
                   <Field
                     name="taluka"
-                    render={({ field }) => <TextInput {...field} label="Taluka" placeholder={'Taluka'} required />}
+                    render={({ field }) => (
+                      <TextInput {...field} label="Taluka" placeholder={'Taluka'} required disabled={isActive} />
+                    )}
                   />
                   <Field
                     name="localGoverning"
                     render={({ field }) => (
-                      <TextInput {...field} label="Local Governing No." placeholder={'Local Governing No.'} required />
+                      <TextInput
+                        {...field}
+                        label="Local Governing No."
+                        placeholder={'Local Governing No.'}
+                        required
+                        disabled={isActive}
+                      />
                     )}
                   />
                   <Field
                     name="cityVillage"
-                    render={({ field }) => <TextInput {...field} label="City" placeholder={'City'} required />}
+                    render={({ field }) => (
+                      <TextInput {...field} label="City" placeholder={'City'} required disabled={isActive} />
+                    )}
                   />
                   <Field
                     name="location"
-                    render={({ field }) => <TextInput {...field} label="Location" placeholder={'Location'} required />}
+                    render={({ field }) => (
+                      <TextInput {...field} label="Location" placeholder={'Location'} required disabled={isActive} />
+                    )}
                   />
                   <Field
                     name="surveyNumber"
                     render={({ field }) => (
-                      <TextInput {...field} label="Survey Number" placeholder={'Survey Number'} required />
+                      <TextInput
+                        {...field}
+                        label="Survey Number"
+                        placeholder={'Survey Number'}
+                        required
+                        disabled={isActive}
+                      />
                     )}
                   />
                 </FormDetailsContainer>
@@ -213,6 +235,7 @@ class PropertyDetailsForm extends Component {
                           placeholder="Property Usage"
                           defaultValue={{ label: 'Shop', value: 'Shop' }}
                           isSearchable={false}
+                          disabled={isActive}
                         />
                       )}
                     />
@@ -228,6 +251,7 @@ class PropertyDetailsForm extends Component {
                           placeholder="Usage Main Category"
                           value={{ label: 'Non-Agriculture', value: 'Non-Agriculture' }}
                           isSearchable={false}
+                          disabled={isActive}
                         />
                       )}
                     />
@@ -253,19 +277,32 @@ class PropertyDetailsForm extends Component {
                             shadow={'none'}
                             type="text"
                             required
+                            disabled={isActive}
                           />
                         )}
                       />
                       <Field
                         name="areaOfConstructurePropertySquareMeter"
                         render={({ field }) => (
-                          <TextInput {...field} label="Sqaure Meter" placeholder={'Sqaure Meter'} required />
+                          <TextInput
+                            {...field}
+                            label="Sqaure Meter"
+                            placeholder={'Sqaure Meter'}
+                            required
+                            disabled={isActive}
+                          />
                         )}
                       />
                       <Field
                         name="areaOfConstructurePropertyBuildUpArea"
                         render={({ field }) => (
-                          <TextInput {...field} label="Build Up Area" placeholder={'Build Up Area'} required />
+                          <TextInput
+                            {...field}
+                            label="Build Up Area"
+                            placeholder={'Build Up Area'}
+                            required
+                            disabled={isActive}
+                          />
                         )}
                       />
                     </FieldsTuple>
@@ -288,13 +325,20 @@ class PropertyDetailsForm extends Component {
                             shadow={'none'}
                             type="text"
                             required
+                            disabled={isActive}
                           />
                         )}
                       />
                       <Field
                         name="openParkingSquareMeter"
                         render={({ field }) => (
-                          <TextInput {...field} label="Sqaure Meter" placeholder={'Sqaure Meter'} required />
+                          <TextInput
+                            {...field}
+                            label="Sqaure Meter"
+                            placeholder={'Sqaure Meter'}
+                            required
+                            disabled={isActive}
+                          />
                         )}
                       />
                     </NormalFieldsTuple>
@@ -317,19 +361,32 @@ class PropertyDetailsForm extends Component {
                             shadow={'none'}
                             type="text"
                             required
+                            disabled={isActive}
                           />
                         )}
                       />
                       <Field
                         name="coveredParkingSquareMeter"
                         render={({ field }) => (
-                          <TextInput {...field} label="Sqaure Meter" placeholder={'Sqaure Meter'} required />
+                          <TextInput
+                            {...field}
+                            label="Sqaure Meter"
+                            placeholder={'Sqaure Meter'}
+                            required
+                            disabled={isActive}
+                          />
                         )}
                       />
                       <Field
                         name="coveredParkingBulidArea"
                         render={({ field }) => (
-                          <TextInput {...field} label="Build Up Area" placeholder={'Build Up Area'} required />
+                          <TextInput
+                            {...field}
+                            label="Build Up Area"
+                            placeholder={'Build Up Area'}
+                            required
+                            disabled={isActive}
+                          />
                         )}
                       />
                     </FieldsTuple>
@@ -340,7 +397,13 @@ class PropertyDetailsForm extends Component {
                       <Field
                         name="shopFloorBasement"
                         render={({ field }) => (
-                          <TextInput {...field} label="Basement" placeholder={'Basement'} required />
+                          <TextInput
+                            {...field}
+                            label="Basement"
+                            placeholder={'Basement'}
+                            required
+                            disabled={isActive}
+                          />
                         )}
                       />
                     </FieldsTuple>
@@ -352,7 +415,13 @@ class PropertyDetailsForm extends Component {
                     <Field
                       name="propertyAddress"
                       render={({ field }) => (
-                        <TextInput {...field} label="Property Address" placeholder={'Property Address'} required />
+                        <TextInput
+                          {...field}
+                          label="Property Address"
+                          placeholder={'Property Address'}
+                          required
+                          disabled={isActive}
+                        />
                       )}
                     />
                     <Field
@@ -363,6 +432,7 @@ class PropertyDetailsForm extends Component {
                           label="Property Description"
                           placeholder={'Property Description'}
                           required
+                          disabled={isActive}
                         />
                       )}
                     />
