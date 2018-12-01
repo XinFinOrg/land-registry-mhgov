@@ -82,6 +82,21 @@ const Tuple = styled.div`
     font-weight: ${props => (props.fontWeight ? props.fontWeight : 'normal')};
   }
 `
+const TableDataWrapper = styled.div`
+  div {
+    display: inline-block;
+    background: #f6f6f6;
+    padding: 10px 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    h3 {
+      display: inline-block;
+      margin-right: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+`
 class DocumentDetails extends Component {
   state = {
     activeTab: this.props.match.url,
@@ -290,7 +305,7 @@ class DocumentDetails extends Component {
               selected={activeTab === `/dashboard/stamp-duty/${params.tab2}/${params.tab3}`}>
               Stamp Duty
             </Tab>
-            {/*  <Tab
+            {/*<Tab
               onClick={() => this.changeActiveTab(`/dashboard/registeration/${params.tab2}`)}
               to={`/dashboard/registeration/${params.tab2}`}
               type={activeTab === `/dashboard/registeration/${params.tab2}`==="selected"}>
@@ -301,7 +316,7 @@ class DocumentDetails extends Component {
               to={`/dashboard/upload-document/${params.tab2}`}
               type={activeTab === `/dashboard/upload-document/${params.tab2}`==="selected"}>
               Upload Document
-            </Tab> */}
+            </Tab>*/}
           </Tabber>
         </Paper>
 
@@ -361,8 +376,9 @@ class DocumentDetails extends Component {
             </ButtonGroup>
           </React.Fragment>
         )}
+        {console.log({ historyData })}
         {get(historyData, 'propertyData', []).map(item => {
-          console.log('itemssssssssssss>>>>>>>>>>>', item)
+          // console.log('itemssssssssssss>>>>>>>>>>>', item)
           /*           const DocumentDutyTotal = [
             {
               propertyId: item.args.propertyId || 'None',
@@ -547,7 +563,19 @@ class DocumentDetails extends Component {
                   )}
                 />
 
-                <TupleContainer>
+                <TableDataWrapper>
+                  {keys(rest).map((item, index) => (
+                    <div key={index}>
+                      {console.log('item', item)}
+                      <div>
+                        <h3>{item}</h3>
+                        <span>{rest[item]}</span>
+                      </div>
+                    </div>
+                  ))}
+                </TableDataWrapper>
+
+                {/* <TupleContainer>
                   <TupleWrapper>
                     {keys(rest).map((item, index) => (
                       <Tuple key={index} fontWeight="bold">
@@ -562,7 +590,7 @@ class DocumentDetails extends Component {
                       </Tuple>
                     ))}
                   </TupleWrapper>
-                </TupleContainer>
+                </TupleContainer> */}
               </Collapse>
               {/* <CustomTable
                 marginTop

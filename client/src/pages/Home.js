@@ -92,7 +92,7 @@ const FormWrapper = styled.div`
   }
 `
 const BankFormWrapper = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
   & > div:first-child > input {
     border-radius: 6px 6px 0px 0px;
   }
@@ -295,7 +295,7 @@ class Home extends Component {
                   )}
                 />
               ) : (
-              <Formik
+                <Formik
                   enableReinitialize={true}
                   initialValues={{
                     email: '',
@@ -313,6 +313,7 @@ class Home extends Component {
                       await Cookies.set('email', data.data.email)
                       await Cookies.set('address', data.data.address)
                       await Cookies.set('name', data.data.name)
+                      await Cookies.set('gender', data.data.gender)
                       this.props.history.push('/dashboard')
                       await this.setState({ isLoading: false })
                       resetForm()
@@ -840,63 +841,65 @@ class Home extends Component {
               render={formikBag => (
                 <Form>
                   <CloseWrap>
-                    <PaperTitle>Financer Details</PaperTitle>
+                    <PaperTitle color>Financer Details</PaperTitle>
                     <Close onClick={() => this.setState({ openModal: !openModal })} />
                   </CloseWrap>
-                  <BankFormWrapper>
-                    <Field
-                      name="name"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          width={'100%'}
-                          height={'64px'}
-                          type="text"
-                          placeholder="Name"
-                          label="Name"
-                          autoFocus
-                          required
-                        />
-                      )}
-                    />
-                    <Field
-                      name="city"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          width={'100%'}
-                          height={'64px'}
-                          type="text"
-                          placeholder="City"
-                          label="City"
-                          required
-                        />
-                      )}
-                    />
-                    <Field
-                      name="branch"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          width={'100%'}
-                          height={'64px'}
-                          type="text"
-                          placeholder="Branch"
-                          label="Branch"
-                          required
-                        />
-                      )}
-                    />
-                    <Button
-                      fontSize={20}
-                      width={'100%'}
-                      height={'50px'}
-                      title={'Submit'}
-                      type={'submit'}
-                      isLoading={isLoading}
-                      disabled={isLoading}
-                    />
-                  </BankFormWrapper>
+                  <ModalScrollWrapper>
+                    <BankFormWrapper>
+                      <Field
+                        name="name"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            width={'100%'}
+                            height={'64px'}
+                            type="text"
+                            placeholder="Name"
+                            label="Name"
+                            autoFocus
+                            required
+                          />
+                        )}
+                      />
+                      <Field
+                        name="city"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            width={'100%'}
+                            height={'64px'}
+                            type="text"
+                            placeholder="City"
+                            label="City"
+                            required
+                          />
+                        )}
+                      />
+                      <Field
+                        name="branch"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            width={'100%'}
+                            height={'64px'}
+                            type="text"
+                            placeholder="Branch"
+                            label="Branch"
+                            required
+                          />
+                        )}
+                      />
+                      <Button
+                        fontSize={20}
+                        width={'100%'}
+                        height={'50px'}
+                        title={'Submit'}
+                        type={'submit'}
+                        isLoading={isLoading}
+                        disabled={isLoading}
+                      />
+                    </BankFormWrapper>
+                  </ModalScrollWrapper>
                 </Form>
               )}
             />
@@ -942,78 +945,81 @@ class Home extends Component {
               render={formikBag => (
                 <Form>
                   <CloseWrap>
-                    <PaperTitle>Government Details</PaperTitle>
+                    <PaperTitle color>Government Details</PaperTitle>
                     <Close onClick={() => this.setState({ openModal: !openModal })} />
                   </CloseWrap>
-                  <BankFormWrapper>
-                    <RadioGroup padding={'20px 0'}>
-                      <Radio
-                        label="IGR"
-                        value="igr"
-                        name="govType"
-                        checked={formikBag.values.govType === 'igr'}
-                        onChange={e => formikBag.setFieldValue('govType', e.target.value)}
+
+                  <ModalScrollWrapper>
+                    <BankFormWrapper>
+                      <RadioGroup padding={'20px 0'}>
+                        <Radio
+                          label="IGR"
+                          value="igr"
+                          name="govType"
+                          checked={formikBag.values.govType === 'igr'}
+                          onChange={e => formikBag.setFieldValue('govType', e.target.value)}
+                        />
+                        <Radio
+                          label="Municipal Corporation"
+                          value="corporation"
+                          name="govType"
+                          checked={formikBag.values.govType === 'corporation'}
+                          onChange={e => formikBag.setFieldValue('govType', e.target.value)}
+                        />
+                      </RadioGroup>
+                      <Field
+                        name="name"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            width={'100%'}
+                            height={'64px'}
+                            type="text"
+                            placeholder="Name"
+                            label="Name"
+                            autoFocus
+                            required
+                          />
+                        )}
                       />
-                      <Radio
-                        label="Municipal Corporation"
-                        value="corporation"
-                        name="govType"
-                        checked={formikBag.values.govType === 'corporation'}
-                        onChange={e => formikBag.setFieldValue('govType', e.target.value)}
+                      <Field
+                        name="state"
+                        render={({ field }) => (
+                          <SelectBox
+                            onChange={state => formikBag.setFieldValue('state', state.value)}
+                            options={statesOptions}
+                            placeholder="City"
+                            label="City"
+                            defaultValue={{ label: 'Maharashtra', value: 'Maharashtra' }}
+                          />
+                        )}
                       />
-                    </RadioGroup>
-                    <Field
-                      name="name"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          width={'100%'}
-                          height={'64px'}
-                          type="text"
-                          placeholder="Name"
-                          label="Name"
-                          autoFocus
-                          required
-                        />
-                      )}
-                    />
-                    <Field
-                      name="state"
-                      render={({ field }) => (
-                        <SelectBox
-                          onChange={state => formikBag.setFieldValue('state', state.value)}
-                          options={statesOptions}
-                          placeholder="City"
-                          label="City"
-                          defaultValue={{ label: 'Maharashtra', value: 'Maharashtra' }}
-                        />
-                      )}
-                    />
-                    <Field
-                      name="department"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          width={'100%'}
-                          height={'64px'}
-                          type="text"
-                          placeholder="department"
-                          label="Department"
-                          required
-                          disabled
-                        />
-                      )}
-                    />
-                    <Button
-                      fontSize={20}
-                      width={'100%'}
-                      isLoading={isLoading}
-                      disabled={isLoading}
-                      height={'50px'}
-                      title={'Submit'}
-                      type={'submit'}
-                    />
-                  </BankFormWrapper>
+                      <Field
+                        name="department"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            width={'100%'}
+                            height={'64px'}
+                            type="text"
+                            placeholder="department"
+                            label="Department"
+                            required
+                            disabled
+                          />
+                        )}
+                      />
+                      <Button
+                        fontSize={20}
+                        width={'100%'}
+                        isLoading={isLoading}
+                        disabled={isLoading}
+                        height={'50px'}
+                        title={'Submit'}
+                        type={'submit'}
+                      />
+                    </BankFormWrapper>
+                  </ModalScrollWrapper>
                 </Form>
               )}
             />

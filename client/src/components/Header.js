@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import Link from 'react-router-dom/Link'
 import withRouter from 'react-router/withRouter'
-import { IconMenu, Modal, Button, ButtonGroup, PaperTitle, Close, CloseWrap } from '../components'
+import { IconMenu, Modal, Button, ButtonGroup, PaperTitle, Close, CloseWrap, Icon } from '../components'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import Cookies from 'js-cookie'
@@ -112,11 +112,15 @@ class Header extends Component {
                   iconActiveColor="#fff"
                   component={
                     <UserImage>
-                      <h1>{firstLetter || 'J'}</h1>
+                      <h1>{Cookies.get('gender') === 'Male' && <Icon icon="male" />}</h1>
+                      <h1>{Cookies.get('gender') === 'Female' && <Icon icon="female" />}</h1>
+
+                      <h1>{Cookies.get('role') === 'Bank' && <Icon icon="bank" />}</h1>
+
+                      {console.log(Cookies.get('role'))}
                     </UserImage>
                   }>
                   <p onClick={() => this.setState({ showModal: true })}>Deposit funds</p>
-                  {/*<p onClick={() => this.logout()}>Logout</p>*/}
                 </IconMenu>
 
                 <p>{Cookies.get('name') || 'John Doe'}</p>

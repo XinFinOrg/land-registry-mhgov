@@ -128,6 +128,7 @@ const Font14 = styled.p`
   text-transform: uppercase;
 `
 const FieldsTuple = styled.div`
+  margin-top: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -277,7 +278,7 @@ const MediumText = styled.p`
 
 const ArrowImg = styled.img`
   cursor: pointer;
-  transform: ${props => (props.transform ? 'rotate(0deg)' : 'rotate(180deg)')};
+  transform: ${props => (props.transform ? 'rotate(180deg)' : 'rotate(0deg)')};
   transition: all 0.3s;
   height: 24px;
 `
