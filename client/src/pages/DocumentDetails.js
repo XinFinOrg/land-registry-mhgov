@@ -459,7 +459,18 @@ class DocumentDetails extends Component {
                     </Form>
                   )}
                 />
-                <TupleContainer>
+                <TableDataWrapper>
+                  {keys(rest).map((item, index) => (
+                    <div key={index}>
+                      {console.log('item', item)}
+                      <div>
+                        <h3>{item}</h3>
+                        <span>{rest[item]}</span>
+                      </div>
+                    </div>
+                  ))}
+                </TableDataWrapper>
+                {/* <TupleContainer>
                   <TupleWrapper>
                     {keys(rest).map((item, index) => (
                       <Tuple fontWeight="bold" key={index}>
@@ -474,7 +485,7 @@ class DocumentDetails extends Component {
                       </Tuple>
                     ))}
                   </TupleWrapper>
-                </TupleContainer>
+                </TupleContainer> */}
               </Collapse>
 
               {/* <CustomTable
