@@ -7,7 +7,10 @@ import blue from '@material-ui/core/colors/blue'
 const TextInputWrapper = styled.div`
   background-color: rgba(235, 235, 235, 0.2);
   margin-top: ${props => props.marginTop && props.marginTop};
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  border: 1px solid #eaeaea;
+  box-shadow: 0px 0px 3px 0px #dedede;
+  border-radius: 4px;
   & > div {
     margin: 8px 16px;
     width: 90%;

@@ -212,131 +212,20 @@ class StampDutyForm extends Component {
                   name="stampDutyPayment"
                   render={({ field }) => <TextInput {...field} label="Amount" placeholder={'Will'} required />}
                 />
+                {Cookies.get('email') === get(data, 'owner.email', '') && (
+                  <Button
+                    size={'medium'}
+                    width={'150px'}
+                    disabled={isLoading}
+                    isLoading={isLoading}
+                    title="Submit"
+                    type="submit"
+                  />
+                )}
               </FormDetailsContainer>
-              {/* <FormDetailsContainer paddingTop={'0'} display="block">
-                <CustomTable
-                  data={partyDetails}
-                  columns={partyDetailscolumns}
-                  resizable={false}
-                  sortable={false}
-                  showPagination={false}
-                  pageSize={10}
-                  defaultPageSize={10}
-                  minRows={0}
-                />
-              </FormDetailsContainer> */}
-              {/* <ConsiderationWrap>
-                <ConsiAmtBox>
-                  <Field
-                    name="selectPartyType"
-                    render={({ field }) => (
-                      <TextInput {...field} label="Consideration Amount" placeholder={'Consideration Amount'} />
-                    )}
-                  />
-                </ConsiAmtBox>
-
-                <ConButtonWrap>
-                  <Button width={'180px'} height={'45px'} shadow={'none'} title="Calculate & Save" radius={'4px'} />
-                </ConButtonWrap>
-              </ConsiderationWrap> */}
-
-              {/* <HandellingChargesWrap>
-                <InformTitle>Stamp Duty Details</InformTitle>
-                <p>Fee Rule Scanning and handelling charges</p>
-                <CustomTable
-                  data={dutyDetails}
-                  columns={dutyColumns}
-                  resizable={false}
-                  sortable={false}
-                  showPagination={false}
-                  pageSize={10}
-                  defaultPageSize={10}
-                  minRows={0}
-                />
-              </HandellingChargesWrap> */}
-
-              {/* <FormDetailsContainer paddingTop={'0'}>
-                <NormalFieldsTuple shrink>
-                  <Field
-                    name="OnlinePay"
-                    render={({ field }) => <TextInput {...field} label="Online Pay" placeholder={'1'} />}
-                  />
-                  <Field
-                    name="CounterPay"
-                    render={({ field }) => <TextInput {...field} label="Counter Pay" placeholder={'700'} />}
-                  />
-                  <Field
-                    name="TotalAmount"
-                    render={({ field }) => <TextInput {...field} label="Total Amount" placeholder={'700'} />}
-                  />
-                </NormalFieldsTuple>
-              </FormDetailsContainer> */}
-
-              {/* <FormDetailsContainer paddingTop={'0'}>
-                <InformTitle>Stamp Duty Adjustment Details</InformTitle>
-                <NormalFieldsTuple shrink paddingTop={'0'}>
-                  <Field
-                    name="OldDocumentNo"
-                    render={({ field }) => (
-                      <TextInput {...field} label="Old Document No." placeholder={'Old Document No.'} />
-                    )}
-                  />
-                  <Field
-                    name="OldDocumentDate"
-                    render={({ field }) => (
-                      <TextInput {...field} label="Old Document Date" placeholder={'Old Document Date'} />
-                    )}
-                  />
-                  <Field
-                    name="OfficeName"
-                    render={({ field }) => <TextInput {...field} label="Office Name" placeholder={'Office Name'} />}
-                  />
-                </NormalFieldsTuple>
-                <NormalFieldsTuple shrink paddingTop={'0'}>
-                  <RadioWrap>
-                    <PaperSubTitle>Adjustment From Old Data?</PaperSubTitle>
-                    <RadioGroup>
-                      <Radio
-                        label="Yes"
-                        value="Yes"
-                        name="registerAs"
-                        defaultChecked
-                        onChange={e => formikBag.setFieldValue('registerAs', e.target.value)}
-                      />
-                      <Radio
-                        label="No"
-                        value="No"
-                        name="registerAs"
-                        onChange={e => formikBag.setFieldValue('registerAs', e.target.value)}
-                      />
-                    </RadioGroup>
-                  </RadioWrap>
-
-                  <Field
-                    name="AdjustmentAmount"
-                    render={({ field }) => (
-                      <TextInput {...field} label="Adjustment Amount" placeholder={'Adjustment Amount'} />
-                    )}
-                  />
-                </NormalFieldsTuple>
-              </FormDetailsContainer> */}
-
-              {/* <CustomTable
-                data={DocumentDutyTotal}
-                columns={DocumentDutyColumns}
-                resizable={false}
-                sortable={false}
-                showPagination={false}
-                pageSize={10}
-                defaultPageSize={10}
-                minRows={0}
-              /> */}
-
-              {/* <TotalPaymentText>Total Payment: $ 1810</TotalPaymentText> */}
             </Paper>
 
-            <ButtonGroup>
-              {/* <Button size={'medium'} width={'150px'} title="Previous" type="submit" disabled={true} /> */}
+            {/* <ButtonGroup>
               {Cookies.get('email') === get(data, 'owner.email', '') && (
                 <Button
                   size={'medium'}
@@ -347,7 +236,7 @@ class StampDutyForm extends Component {
                   type="submit"
                 />
               )}
-            </ButtonGroup>
+            </ButtonGroup> */}
           </FormikForm>
         )}
       />

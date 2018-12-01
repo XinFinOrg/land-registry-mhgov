@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Icon } from './'
+import Link from 'react-router-dom/Link'
+
 import styled from 'styled-components'
 import onClickOutside from 'react-onclickoutside'
 const Wrapper = styled.div`
@@ -136,6 +138,12 @@ class IconMenu extends Component {
         {show || controlByHover ? (
           <DropdownMenu controlByHover={controlByHover}>
             <DropdownItems>{children}</DropdownItems>
+            <DropdownItems>
+              <p>
+                {' '}
+                <Link to="/"> LogOut</Link>
+              </p>
+            </DropdownItems>
           </DropdownMenu>
         ) : null}
       </Wrapper>

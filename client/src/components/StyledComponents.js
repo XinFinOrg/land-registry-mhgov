@@ -3,7 +3,8 @@ import Link from 'react-router-dom/Link'
 import { Form } from 'formik'
 const PaperTitle = styled.h3`
   font-size: 25px;
-  color: #333333;
+  color: ${props => (props.color ? props.color : '#333333')};
+  margin-bottom: 10px;
 `
 const PaperSubTitle = styled.p`
   font-size: 15.5px;
@@ -25,7 +26,7 @@ const MainWrapper = styled.div`
 const TopWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   padding-bottom: 32px;
 `
 const InsideTitle = styled.h3`
@@ -53,11 +54,34 @@ const Tab = styled(Link)`
     pointer-events: none;
   `};
 `
+
+const ModalScrollWrapper = styled.div`
+  height: 400px;
+  overflow-y: scroll;
+  padding: 5px 15px;
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #1f89f57d;
+    border-radius: 10px;
+  }
+`
+
 const FormDetailsContainer = styled.div`
   padding-top: ${props => (props.paddingTop ? props.paddingTop : 26)}px;
   display: ${props => (props.display ? props.display : 'flex')};
   justify-content: space-between;
   flex-wrap: wrap;
+
   & > div {
     flex-basis: ${props => (props.flexBasis ? props.flexBasis : 'calc(33.33% - 10px)')};
     & > div {
@@ -104,6 +128,7 @@ const Font14 = styled.p`
   text-transform: uppercase;
 `
 const FieldsTuple = styled.div`
+  margin-top: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -250,25 +275,34 @@ const FlexWrapper = styled.div`
 const MediumText = styled.p`
   font-size: 16px;
 `
+
+const ArrowImg = styled.img`
+  cursor: pointer;
+  transform: ${props => (props.transform ? 'rotate(180deg)' : 'rotate(0deg)')};
+  transition: all 0.3s;
+  height: 24px;
+`
 const Close = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 24px;
+  padding: 16px;
+  border: 1px solid #fff;
+  border-radius: 50%;
   &:after {
     position: absolute;
     content: ' ';
-    height: 33px;
+    height: 24px;
     width: 2px;
-    background-color: #333;
+    background-color: #fff;
     transform: rotate(-45deg);
   }
   &:before {
     position: absolute;
     content: ' ';
-    height: 33px;
+    height: 24px;
     width: 2px;
-    background-color: #333;
+    background-color: #fff;
     transform: rotate(45deg);
   }
 `
@@ -276,6 +310,12 @@ const CloseWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: #1f89f5;
+  color: #fff;
+  padding: 5px 15px;
+  + form {
+    padding: 15px !important;
+  }
 `
 export {
   PaperTitle,
@@ -298,6 +338,7 @@ export {
   PaymentText,
   PaymentTuple,
   PaymentWrapper,
+  ArrowImg,
   FieldGroupWithTitle,
   StyledHeader,
   IconWrapper,
@@ -305,6 +346,7 @@ export {
   ButtonGroup,
   StyledHead,
   IconCircle,
+  ModalScrollWrapper,
   FlexWrapper,
   MediumText,
   Close,

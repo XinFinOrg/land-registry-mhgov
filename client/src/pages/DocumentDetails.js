@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Formik, Form, Field } from 'formik'
+import { Collapse } from 'react-collapse'
+
 import {
   Header,
   TopWrapper,
@@ -8,6 +10,7 @@ import {
   MainWrapper,
   Icon,
   Footer,
+  ArrowImg,
   Paper,
   InsideTitle,
   Tabber,
@@ -51,7 +54,6 @@ const PageTitleWrapper = styled.div`
     margin: 0 10px;
   }
 `
-
 const StyledHead = styled.div`
   font-size: 16px;
   text-align: left;
@@ -59,10 +61,9 @@ const StyledHead = styled.div`
   color: #333333;
 `
 const PropertyDetailsWrapper = styled.div``
-/* const FormikForm = styled(Form)`
+/*const FormikForm = styled(Form)`
   margin-bottom: 100px;
-` */
-
+`*/
 const SubmissionWrap = styled.div`
   width: 360px;
 `
@@ -81,11 +82,27 @@ const Tuple = styled.div`
     font-weight: ${props => (props.fontWeight ? props.fontWeight : 'normal')};
   }
 `
+const TableDataWrapper = styled.div`
+  div {
+    display: inline-block;
+    background: #f6f6f6;
+    padding: 10px 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    h3 {
+      display: inline-block;
+      margin-right: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+`
 class DocumentDetails extends Component {
   state = {
     activeTab: this.props.match.url,
     dashboardData: [],
-    historyData: {}
+    historyData: {},
+    isOpened: ''
   }
   async componentDidMount() {
     this.fetchHistory()
@@ -105,7 +122,7 @@ class DocumentDetails extends Component {
         // console.log('DATA', data.data)
         this.setState({ dashboardData: data.data })
       } catch (error) {
-        console.log('ERROR', error)
+        //console.log('ERROR', error)
       }
     }
   }
@@ -118,7 +135,7 @@ class DocumentDetails extends Component {
       })
       this.setState({ historyData: data.data })
     } catch (error) {
-      console.log('ERROR', error)
+      //console.log('ERROR', error)
     }
   }
 
@@ -126,8 +143,13 @@ class DocumentDetails extends Component {
     this.setState({ activeTab })
   }
 
+  collapsHandle = index => {
+    this.setState({ isOpened: index === this.state.isOpened ? '' : index })
+  }
+
   render() {
-    // console.log('DOCUMNET DETAILS==>', this.state.dashboardData)
+    //console.log('DOCUMNET DETAILS==>', this.state.dashboardData)
+
     const columns = [
       {
         Header: <StyledHead>Document Details</StyledHead>,
@@ -219,8 +241,8 @@ class DocumentDetails extends Component {
         accessor: 'buyer',
         minwidth: 120
       }
-    ] */
-    const { activeTab, dashboardData, historyData } = this.state
+    ]*/
+    const { activeTab, dashboardData, historyData, isOpened } = this.state
     const {
       match: { params }
     } = this.props
@@ -243,7 +265,12 @@ class DocumentDetails extends Component {
           radius={'6px 6px 0 0'}
           shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
           margin={'0 95px'}>
-          <InsideTitle>Pre Reg. No.: 20170000092</InsideTitle>
+          <FlexWrapper justifyContent="space-between">
+            <InsideTitle>
+              Pre Reg. No: {Cookies.get('propertyId')} / {Cookies.get('registryId')} / {dashboardData.status}
+              {/*  {dashboardData.propertyId} / {dashboardData.registryId} / {dashboardData.status} */}
+            </InsideTitle>
+          </FlexWrapper>
           <Tabber>
             <Tab
               onClick={() => this.changeActiveTab(`/dashboard/property-details/${params.tab2}/${params.tab3}`)}
@@ -278,7 +305,7 @@ class DocumentDetails extends Component {
               selected={activeTab === `/dashboard/stamp-duty/${params.tab2}/${params.tab3}`}>
               Stamp Duty
             </Tab>
-            {/*  <Tab
+            {/*<Tab
               onClick={() => this.changeActiveTab(`/dashboard/registeration/${params.tab2}`)}
               to={`/dashboard/registeration/${params.tab2}`}
               type={activeTab === `/dashboard/registeration/${params.tab2}`==="selected"}>
@@ -289,7 +316,7 @@ class DocumentDetails extends Component {
               to={`/dashboard/upload-document/${params.tab2}`}
               type={activeTab === `/dashboard/upload-document/${params.tab2}`==="selected"}>
               Upload Document
-            </Tab> */}
+            </Tab>*/}
           </Tabber>
         </Paper>
 
@@ -349,7 +376,9 @@ class DocumentDetails extends Component {
             </ButtonGroup>
           </React.Fragment>
         )}
+        {console.log({ historyData })}
         {get(historyData, 'propertyData', []).map(item => {
+          // console.log('itemssssssssssss>>>>>>>>>>>', item)
           /*           const DocumentDutyTotal = [
             {
               propertyId: item.args.propertyId || 'None',
@@ -371,10 +400,23 @@ class DocumentDetails extends Component {
               shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
               margin={'40px 95px 100px'}
               key={item.blockHash}>
-              <InformTitle paddingTop={'0'} paddingBottom={'0'}>
-                Property History - {item.event}
-              </InformTitle>
-              <FlexWrapper flexDirection="row" justifyContent="flex-start" padding={'10px 0'} borderWidth={'0 0 1px 0'}>
+              <FlexWrapper justifyContent={'space-between'}>
+                <InformTitle paddingTop={'0'} paddingBottom={'0'}>
+                  Property History - {item.event}
+                </InformTitle>
+                <ArrowImg
+                  src={require('../static/images/down-arrow.png')}
+                  alt="arrow image"
+                  onClick={() => this.collapsHandle(item.blockHash)}
+                  transform={isOpened === item.blockHash}
+                />
+              </FlexWrapper>
+              <FlexWrapper
+                margin="20px 0"
+                flexDirection="row"
+                justifyContent="flex-start"
+                padding={'10px 0'}
+                borderWidth={'0 0 1px 0'}>
                 <IconCircle width={'50px'} height={'50px'} bgColor="transparent" borderColor="#ddd">
                   <h1>P</h1>
                 </IconCircle>
@@ -387,51 +429,54 @@ class DocumentDetails extends Component {
                   </MediumText>
                 </FlexWrapper>
               </FlexWrapper>
-              <Formik
-                enableReinitialize={true}
-                initialValues={{
-                  address: item.address,
-                  blockNumber: item.blockNumber,
-                  id: '',
-                  timestamp: '',
-                  remark: ''
-                }}
-                onSubmit={formValues => console.log(formValues)}
-                render={formikBag => (
-                  <Form>
-                    <FieldsTuple flexBasis={'calc(50% - 10px)'}>
-                      <Field
-                        name="address"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Block Address" placeholder={'Block Address'} disabled />
-                        )}
-                      />
-                      <Field
-                        name="blockNumber"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Block Number" placeholder={'Block Number'} disabled />
-                        )}
-                      />
-                    </FieldsTuple>
-                  </Form>
-                )}
-              />
-              <TupleContainer>
-                <TupleWrapper>
-                  {keys(rest).map((item, index) => (
-                    <Tuple fontWeight="bold" key={index}>
-                      <p>{item}</p>
-                    </Tuple>
-                  ))}
-                </TupleWrapper>
-                <TupleWrapper>
-                  {values(rest).map((item, index) => (
-                    <Tuple key={index}>
-                      <p>{item}</p>
-                    </Tuple>
-                  ))}
-                </TupleWrapper>
-              </TupleContainer>
+              <Collapse isOpened={isOpened === item.blockHash}>
+                <Formik
+                  enableReinitialize={true}
+                  initialValues={{
+                    address: item.address,
+                    blockNumber: item.blockNumber,
+                    id: '',
+                    timestamp: '',
+                    remark: ''
+                  }}
+                  onSubmit={formValues => console.log(formValues)}
+                  render={formikBag => (
+                    <Form>
+                      <FieldsTuple flexBasis={'calc(50% - 10px)'}>
+                        <Field
+                          name="address"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Block Address" placeholder={'Block Address'} disabled />
+                          )}
+                        />
+                        <Field
+                          name="blockNumber"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Block Number" placeholder={'Block Number'} disabled />
+                          )}
+                        />
+                      </FieldsTuple>
+                    </Form>
+                  )}
+                />
+                <TupleContainer>
+                  <TupleWrapper>
+                    {keys(rest).map((item, index) => (
+                      <Tuple fontWeight="bold" key={index}>
+                        <p>{item}</p>
+                      </Tuple>
+                    ))}
+                  </TupleWrapper>
+                  <TupleWrapper>
+                    {values(rest).map((item, index) => (
+                      <Tuple key={index}>
+                        <p>{item}</p>
+                      </Tuple>
+                    ))}
+                  </TupleWrapper>
+                </TupleContainer>
+              </Collapse>
+
               {/* <CustomTable
                 marginTop
                 data={DocumentDutyTotal}
@@ -462,9 +507,18 @@ class DocumentDetails extends Component {
               shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
               margin={'40px 95px 100px'}
               key={item.blockHash}>
-              <InformTitle paddingTop={'0'} paddingBottom={'0'}>
-                Registry History - {item.event}
-              </InformTitle>
+              <FlexWrapper justifyContent={'space-between'}>
+                <InformTitle paddingTop={'0'} paddingBottom={'0'}>
+                  Registry History - {item.event}
+                </InformTitle>
+                <ArrowImg
+                  src={require('../static/images/down-arrow.png')}
+                  alt="arrow image"
+                  onClick={() => this.collapsHandle(item.blockHash)}
+                  transform={isOpened === item.blockHash}
+                />
+              </FlexWrapper>
+
               <FlexWrapper flexDirection="row" justifyContent="flex-start" padding={'10px 0'} borderWidth={'0 0 1px 0'}>
                 <IconCircle width={'50px'} height={'50px'} bgColor="transparent" borderColor="#ddd">
                   <h1>R</h1>
@@ -478,51 +532,66 @@ class DocumentDetails extends Component {
                   </MediumText>
                 </FlexWrapper>
               </FlexWrapper>
-              <Formik
-                enableReinitialize={true}
-                initialValues={{
-                  address: item.address,
-                  blockNumber: item.blockNumber,
-                  id: '',
-                  timestamp: '',
-                  remark: ''
-                }}
-                onSubmit={formValues => console.log(formValues)}
-                render={formikBag => (
-                  <Form>
-                    <FieldsTuple flexBasis={'calc(50% - 10px)'}>
-                      <Field
-                        name="address"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Block Address" placeholder={'Block Address'} disabled />
-                        )}
-                      />
-                      <Field
-                        name="blockNumber"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Block Number" placeholder={'Block Number'} disabled />
-                        )}
-                      />
-                    </FieldsTuple>
-                  </Form>
-                )}
-              />
-              <TupleContainer>
-                <TupleWrapper>
+              <Collapse isOpened={isOpened === item.blockHash}>
+                <Formik
+                  enableReinitialize={true}
+                  initialValues={{
+                    address: item.address,
+                    blockNumber: item.blockNumber,
+                    id: '',
+                    timestamp: '',
+                    remark: ''
+                  }}
+                  onSubmit={formValues => console.log(formValues)}
+                  render={formikBag => (
+                    <Form>
+                      <FieldsTuple flexBasis={'calc(50% - 10px)'}>
+                        <Field
+                          name="address"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Block Address" placeholder={'Block Address'} disabled />
+                          )}
+                        />
+                        <Field
+                          name="blockNumber"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Block Number" placeholder={'Block Number'} disabled />
+                          )}
+                        />
+                      </FieldsTuple>
+                    </Form>
+                  )}
+                />
+
+                <TableDataWrapper>
                   {keys(rest).map((item, index) => (
-                    <Tuple key={index} fontWeight="bold">
-                      <p>{item}</p>
-                    </Tuple>
+                    <div key={index}>
+                      {console.log('item', item)}
+                      <div>
+                        <h3>{item}</h3>
+                        <span>{rest[item]}</span>
+                      </div>
+                    </div>
                   ))}
-                </TupleWrapper>
-                <TupleWrapper>
-                  {values(rest).map((item, index) => (
-                    <Tuple key={index}>
-                      <p>{item}</p>
-                    </Tuple>
-                  ))}
-                </TupleWrapper>
-              </TupleContainer>
+                </TableDataWrapper>
+
+                {/* <TupleContainer>
+                  <TupleWrapper>
+                    {keys(rest).map((item, index) => (
+                      <Tuple key={index} fontWeight="bold">
+                        <p>{item}</p>
+                      </Tuple>
+                    ))}
+                  </TupleWrapper>
+                  <TupleWrapper>
+                    {values(rest).map((item, index) => (
+                      <Tuple key={index}>
+                        <p>{item}</p>
+                      </Tuple>
+                    ))}
+                  </TupleWrapper>
+                </TupleContainer> */}
+              </Collapse>
               {/* <CustomTable
                 marginTop
                 data={DocumentDutyTotal}
