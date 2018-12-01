@@ -29,8 +29,7 @@ class PropertyDetailsForm extends Component {
   state = {
     isLoading: false,
     isLoadingReject: false,
-    openModal: false,
-    isActive: false
+    openModal: false
   }
 
   rejectProperty = async values => {
@@ -65,8 +64,8 @@ class PropertyDetailsForm extends Component {
       match: { params },
       data
     } = this.props
-    const isActive = this.props.data.status === 'property_new' ? true : false
-    console.log('00000', this.state.isActive)
+    const isActive = params.tab2 === 'propertyId' || params.tab2 === 'registryId' ? true : false
+    console.log('00000', params.tab2)
     return (
       <React.Fragment>
         <Formik
