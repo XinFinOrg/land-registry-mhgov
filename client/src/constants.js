@@ -1,5 +1,7 @@
 export const API_URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : 'http://217.23.12.125:8001'
 
+export const CURRENCY = '₹'
+
 export const statusColor = {
   property_new: 'yellow',
   property_verified: 'green',

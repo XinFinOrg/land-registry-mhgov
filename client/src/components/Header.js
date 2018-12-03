@@ -4,7 +4,7 @@ import Link from 'react-router-dom/Link'
 import withRouter from 'react-router/withRouter'
 import { IconMenu, Modal, Button, ButtonGroup, PaperTitle, Close, CloseWrap, Icon } from '../components'
 import axios from 'axios'
-import { API_URL } from '../constants'
+import { API_URL, CURRENCY } from '../constants'
 import Cookies from 'js-cookie'
 import { Formik, Form, Field } from 'formik'
 import { TextInput } from './TextInput'
@@ -101,7 +101,7 @@ class Header extends Component {
             <DashboardWrapper>
               <IconWrapper>
                 <p>
-                  Balance: &#8377;
+                  Balance: {CURRENCY}
                   {balance || 0}
                 </p>
               </IconWrapper>

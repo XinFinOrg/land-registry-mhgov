@@ -12,7 +12,8 @@ import {
   FieldGroupWithTitle,
   // CustomTable,
   // StyledHead,
-  SelectBox
+  SelectBox,
+  Modal
 } from '../components'
 // import { customData, partyDetails } from '../constants'
 import withRouter from 'react-router/withRouter'
@@ -29,7 +30,8 @@ class OwnerDetailsForm extends Component {
     isLoadingSkip: false,
     isLoadingReject: false,
     addOwnerStatus: false,
-    addFinancier: false
+    addFinancier: false,
+    openModal: false
   }
   skipFinancier = async () => {
     const {
@@ -91,7 +93,8 @@ class OwnerDetailsForm extends Component {
       data: { userDetails }
     } = this.props
     console.log('OWNER', data)
-    const { isLoading, addOwnerStatus, addFinancier, isLoadingSkip, isLoadingReject } = this.state
+    const userData = get(data, 'owner.userDetails', '')
+    const { isLoading, addOwnerStatus, addFinancier, isLoadingSkip, isLoadingReject, openModal } = this.state
     /*     const columns = [
       {
         Header: <StyledHead>Sr. No.</StyledHead>,
@@ -152,29 +155,29 @@ class OwnerDetailsForm extends Component {
             selectPartyType: 'Admin',
             selectPartyCategory: 'Admin',
             isExecuter: 'Yes',
-            salutation: get(userDetails, 'salutation', 'Mr'),
-            partyFirstName: get(userDetails, 'firstName', 'Saurav'),
-            partyMiddleName: get(userDetails, 'middleName', ''),
-            partyLastName: get(userDetails, 'lastName', 'Gupta'),
-            aliasName: get(userDetails, 'aliasName', 'saurav'),
-            identificationMark1: get(userDetails, 'identityMark1', 'Mole'),
-            identificationMark2: get(userDetails, 'identityMark2', 'Mole'),
-            dateOfBirth: get(userDetails, 'dob', '22/12/1994'),
-            age: get(userDetails, 'age', '24'),
-            uid: get(userDetails, 'uid', 'safffa'),
-            identificationTypeID: get(userDetails, 'identityTypeID', 'aasas'),
-            identificationDescription: get(userDetails, 'identityDesc', 'assa'),
-            panForm60: get(userDetails, 'pan', 'BHXHBH99'),
-            occupation: get(userDetails, 'occupation', 'Employee'),
-            gender: get(userDetails, 'gender', 'Male'),
-            email: get(userDetails, 'email', 's@s.com'),
-            mobileNo: get(userDetails, 'mobileNo', '999999999999'),
+            salutation: get(userData, 'salutation', 'Mr'),
+            partyFirstName: get(userData, 'firstName', 'Saurav'),
+            partyMiddleName: get(userData, 'middleName', ''),
+            partyLastName: get(userData, 'lastName', 'Gupta'),
+            aliasName: get(userData, 'aliasName', 'saurav'),
+            identificationMark1: get(userData, 'identityMark1', 'Mole'),
+            identificationMark2: get(userData, 'identityMark2', 'Mole'),
+            dateOfBirth: get(userData, 'dob', '22/12/1994'),
+            age: get(userData, 'age', '24'),
+            uid: get(userData, 'uid', 'safffa'),
+            identificationTypeID: get(userData, 'identityTypeID', 'aasas'),
+            identificationDescription: get(userData, 'identityDesc', 'assa'),
+            panForm60: get(userData, 'pan', 'BHXHBH99'),
+            occupation: get(userData, 'occupation', 'Employee'),
+            gender: get(userData, 'gender', 'Male'),
+            email: get(userData, 'email', 's@s.com'),
+            mobileNo: get(userData, 'mobileNo', '999999999999'),
             presentationExemption: 'Yes', //
             pinCode: '110019', //
-            addressSame: get(userDetails, 'permAddress', 'Delhi'),
-            district: get(userDetails, 'district', 'Delhi'),
-            taluka: get(userDetails, 'taluka', 'Delhi'),
-            village: get(userDetails, 'village', 'Delhi')
+            addressSame: get(userData, 'permAddress', 'Delhi'),
+            district: get(userData, 'district', 'Delhi'),
+            taluka: get(userData, 'taluka', 'Delhi'),
+            village: get(userData, 'village', 'Delhi')
           }}
           onSubmit={async (formData, { resetForm }) => {
             const {
@@ -562,7 +565,7 @@ class OwnerDetailsForm extends Component {
                       width={'150px'}
                       title="Add Financier"
                       type="button"
-                      onClick={() => this.setState({ addFinancier: true })}
+                      onClick={() => this.setState({ addFinancier: true, openModal: true })}
                     />
                     <Button
                       size={'medium'}
@@ -613,69 +616,66 @@ class OwnerDetailsForm extends Component {
         />
         {addFinancier && (
           <React.Fragment>
-            <Formik
-              enableReinitialize
-              initialValues={{
-                email: '', //
-                city: 'Pune', //
-                branch: 'Pune', //
-                totalValueOfProperty: '1000000', //
-                totalFinanceAmount: '10000', //
-                financeAmountDueNow: '1000000', //
-                loanAmount: '1000000', //
-                outstandingLoan: '100000' //
-              }}
-              onSubmit={async values => {
-                const {
-                  match: { params }
-                } = this.props
+            <Modal show={openModal}>
+              <Formik
+                enableReinitialize
+                initialValues={{
+                  email: '', //
+                  city: 'Pune', //
+                  branch: 'Pune', //
+                  totalValueOfProperty: '1000000', //
+                  totalFinanceAmount: '10000', //
+                  financeAmountDueNow: '1000000', //
+                  loanAmount: '1000000', //
+                  outstandingLoan: '100000' //
+                }}
+                onSubmit={async values => {
+                  const {
+                    match: { params }
+                  } = this.props
 
-                try {
-                  this.setState({ isLoading: true })
-                  const { data } = await axios.post(`${API_URL}/addOwnerFinancer`, {
-                    registryId: params.tab3,
-                    propertyId: Cookies.get('propertyId'),
-                    ownerFinancer: {
-                      email: values.email,
-                      address: Cookies.get('address'),
-                      loanAmount: values.loanAmount,
-                      outstandingLoan: values.outstandingLoan
-                    },
-                    status: 'registry_owner_financer'
-                  })
-                  console.log('Add financier', data)
-                  await toast.success(`${'Owner financier added!'}`, {
-                    position: toast.POSITION.TOP_CENTER
-                  })
-                  await this.setState({ isLoading: false })
-                  this.props.history.push('/dashboard')
-                } catch (error) {
-                  await this.setState({ isLoading: false })
-                  toast.error(`${'Some error occurred!'}`, {
-                    position: toast.POSITION.TOP_CENTER
-                  })
-                  console.log('ERROR', error)
-                }
-              }}
-              render={formikBag => (
-                <React.Fragment>
-                  <FormikForm>
-                    <Paper
-                      padding={'0 31px 20px'}
-                      radius={'0 0 6px 6px'}
-                      shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-                      margin={'0 95px'}>
-                      <FormDetailsContainer>
-                        <InformTitle>Financier Details</InformTitle>
-                        <FieldGroupWithTitle>
-                          <Field
-                            name="email"
-                            render={({ field }) => (
-                              <TextInput {...field} label="Email Address" placeholder={'Email Address'} required />
-                            )}
-                          />
+                  try {
+                    this.setState({ isLoading: true })
+                    const { data } = await axios.post(`${API_URL}/getUserDetails`, {
+                      registryId: params.tab3,
+                      propertyId: Cookies.get('propertyId'),
+                      ownerFinancer: {
+                        email: values.email,
+                        address: Cookies.get('address'),
+                        loanAmount: values.loanAmount,
+                        outstandingLoan: values.outstandingLoan
+                      },
+                      status: 'registry_owner_financer'
+                    })
+                    console.log('Add financier', data)
+                    await toast.success(`${'Owner financier added!'}`, {
+                      position: toast.POSITION.TOP_CENTER
+                    })
+                    await this.setState({ isLoading: false })
+                    this.props.history.push('/dashboard')
+                  } catch (error) {
+                    await this.setState({ isLoading: false })
+                    toast.error(`${'Some error occurred!'}`, {
+                      position: toast.POSITION.TOP_CENTER
+                    })
+                    console.log('ERROR', error)
+                  }
+                }}
+                render={formikBag => (
+                  <React.Fragment>
+                    <FormikForm>
+                      <Paper margin={'0 40px'}>
+                        <FormDetailsContainer>
+                          <InformTitle>Financier Details</InformTitle>
+                          <FieldGroupWithTitle>
+                            <Field
+                              name="email"
+                              render={({ field }) => (
+                                <TextInput {...field} label="Email Address" placeholder={'Email Address'} required />
+                              )}
+                            />
 
-                          {/* <Field
+                            {/* <Field
                         name="city"
                         render={({ field }) => <TextInput {...field} label="City" placeholder={'City'} />}
                       />
@@ -705,46 +705,54 @@ class OwnerDetailsForm extends Component {
                           <TextInput {...field} label="Finance amount due now" placeholder={'Finance amount due now'} />
                         )}
                       /> */}
-                        </FieldGroupWithTitle>
-                      </FormDetailsContainer>
-                      <FormDetailsContainer>
-                        <InformTitle>Outstanding Loan Amount</InformTitle>
-                        <NormalFieldsTuple shrink>
-                          <Field
-                            name="loanAmount"
-                            render={({ field }) => (
-                              <TextInput {...field} label="Loan amount" placeholder={'Loan amount'} required />
-                            )}
-                          />
+                          </FieldGroupWithTitle>
+                        </FormDetailsContainer>
+                        {/* <FormDetailsContainer>
+                          <InformTitle>Outstanding Loan Amount</InformTitle>
+                          <NormalFieldsTuple shrink>
+                            <Field
+                              name="loanAmount"
+                              render={({ field }) => (
+                                <TextInput {...field} label="Loan amount" placeholder={'Loan amount'} required />
+                              )}
+                            />
 
-                          <Field
-                            name="outstandingLoan"
-                            render={({ field }) => (
-                              <TextInput
-                                {...field}
-                                label="Outstanding Loan amount"
-                                placeholder={'Outstanding Loan amount'}
-                                required
-                              />
-                            )}
-                          />
-                        </NormalFieldsTuple>
-                      </FormDetailsContainer>
-                    </Paper>
-                    <ButtonGroup>
-                      <Button
-                        size={'medium'}
-                        isLoading={isLoading}
-                        disabled={isLoading}
-                        width={'150px'}
-                        title="Submit"
-                        type="submit"
-                      />
-                    </ButtonGroup>
-                  </FormikForm>
-                </React.Fragment>
-              )}
-            />
+                            <Field
+                              name="outstandingLoan"
+                              render={({ field }) => (
+                                <TextInput
+                                  {...field}
+                                  label="Outstanding Loan amount"
+                                  placeholder={'Outstanding Loan amount'}
+                                  required
+                                />
+                              )}
+                            />
+                          </NormalFieldsTuple>
+                        </FormDetailsContainer> */}
+                      </Paper>
+                      <ButtonGroup>
+                        <Button
+                          size={'medium'}
+                          width={'150px'}
+                          title="Cancel"
+                          type="button"
+                          onClick={() => this.setState({ openModal: false })}
+                        />
+                        <Button
+                          size={'medium'}
+                          isLoading={isLoading}
+                          disabled={isLoading}
+                          width={'150px'}
+                          title="Submit"
+                          type="submit"
+                        />
+                      </ButtonGroup>
+                    </FormikForm>
+                  </React.Fragment>
+                )}
+              />
+            </Modal>
           </React.Fragment>
         )}
       </React.Fragment>
