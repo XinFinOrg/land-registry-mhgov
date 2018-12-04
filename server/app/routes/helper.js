@@ -1,5 +1,5 @@
 const db = require('./../config/db');
-const errorCodes = require('../constants/errorCodes');
+const errorCodes = require('./../validation/errorCodes');
 var ethers = require('ethers');
 
 let arrayToObject = (arr, key) => {
@@ -16,6 +16,7 @@ arrayToObject(a, 'name');*/
 let getErrorResponse = function(errorKey) {
     console.log('getErrorResponse: ',errorKey);
     var errorXX = errorCodes.getErrorCodes(errorKey);
+    console.log('errorXX', errorXX)
     var statusCode = errorXX.statusCode;
     delete errorXX.statusCode;
     errorXX.status = false;
@@ -54,6 +55,7 @@ let getRecord = function(coll, query, cb) {
         return cb(false, data[0]);
     });
 };
+
 
 let getUserDetails = function(query, cb) {
     console.log('getUserDetails: query: ', query)
@@ -114,6 +116,28 @@ let addUser = function(input, cb) {
     });
 };
 
+let isUserExist = async function(req, res, next) {
+    let userDetails = req.body.userDetails;
+    var collection = db.getCollection('users');
+    if (!userDetails || !userDetails.email) {
+        let error = helper.getErrorResponse('EmptyResource');
+        error.field = 'Email';
+        return res.status(error.statusCode).send(error);
+    }
+    let email = userDetails.email.toLowerCase();
+    try {
+            let userCount = await collection.count({email : email});
+            if (userCount) {
+                console.log('userCount', userCount)
+                var errObj = getErrorResponse('UserAlreadyExists');
+                return res.status(errObj.statusCode).send(errObj.error);
+        }
+        return next();
+    } catch(err) {
+        return res.send({status : false, error : err});
+    }
+};
+
 // let validatePolicyDetails = function(req, res, next) {
 //     console.log("start : validatePolicyDetails");
 //     var policy = req.body.policyDetails;
@@ -131,20 +155,6 @@ let addUser = function(input, cb) {
 //     }
 //     req.body.policyState = 'DEBIT_SUCCESS';
 //     return next();
-// };
-
-// let isPolicyExist = async function(req, res, next) {
-//     var policyNo = req.body.policyNo;
-//     var collection = db.getCollection('policys');
-//     try {
-//         let policyCount = await collection.count({policyNo : policyNo});
-//         if (policyCount) {
-//             return res.send({status : false, error : "policy already exist"});
-//         }
-//         return next();
-//     } catch(err) {
-//         return res.send({status : false, error : err});
-//     }
 // };
 
 // let issuePolicy = function(req, res, next) {
@@ -305,5 +315,6 @@ module.exports = {
     getRecords : getRecords,
     propertyStatusMap : propertyStatusMap,
     arrayToObject : arrayToObject,
-    getName : getName
+    getName : getName,
+    isUserExist : isUserExist
 };
