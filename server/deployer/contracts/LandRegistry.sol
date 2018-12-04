@@ -91,8 +91,8 @@ contract LandRegistry is LandRecordContract, StandardToken {
 
     constructor() public {
         admin = msg.sender;
-        totalSupply_ = 10000000;
-        balances[msg.sender] = 10000000;
+        totalSupply_ = 1000000000000;
+        balances[msg.sender] = 1000000000000;
     }
 
     function getBalance(address _address) public view returns(uint) {
