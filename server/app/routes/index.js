@@ -11,6 +11,7 @@ var web3Conf = true;
 
 if (web3Conf) {
 	var init = require('../web3Helpers/init.js');
+	var web3 = init.web3;
 	var landRecords = require('../web3Helpers/landRecords.js');
 	var landRegistry = require('../web3Helpers/landRegistry.js');
 }
@@ -81,10 +82,16 @@ router.post('/getDashboard', async function(req, res) {
     }
 });
 
-router.post('/signup', function(req, res) {
-	//check user exists
+router.post('/signup', helper.isUserExist, function(req, res) {
 	console.log('signup : start')
 	let userDetails = req.body.userDetails;
+	if (!userDetails || !userDetails.email) {
+   	 	let error = helper.getErrorResponse('EmptyResource');
+   	 	error.field = 'Email';
+		return res.status(error.statusCode).send(error);
+	} else {
+		userDetails.email = userDetails.email.toLowerCase();
+	}
 	if (web3Conf) {
 		//create a new address => personal.newAccount()
 		userDetails.address = init.createAccount('123');
@@ -110,10 +117,10 @@ router.post('/login', function(req, res) {
 	let email = req.body.email;
 	let password = req.body.password;
 	if (!email || !password) {
-		// return res.send({status : false, error : "Invalid Email/Password"});
 		let error = helper.getErrorResponse('MissingParameter');
 		return res.status(error.statusCode).send(error.error);
 	}
+	email = email.toLowerCase();
 	helper.getUserDetails({email : email, password : password}, function(err, data) {
 	    if (err) {
 			console.log('login: error:', err);
@@ -604,6 +611,9 @@ router.post('/addBuyer', async function(req, res) {
 	let propertyId = req.body.propertyId;
 	let buyerDetails = req.body.buyer;
 	let query = {registryId : registryId};
+	if (!buyerDetails.address) {
+		buyerDetails.address = "0xaca94ef8bd5ffee41947b4585a84bda5a3d3da6e";
+	}
 	let updateQuery = {
 		$set : {
 			buyer : buyerDetails,
@@ -676,6 +686,9 @@ router.post('/addBuyerFinancer', async function(req, res) {
 	let propertyId = req.body.propertyId;
 
 	let buyerFinancer  = req.body.buyerFinancer || false;
+	if (!buyerFinancer.address) {
+		buyerFinancer.address = "0x95ced938f7991cd0dfcb48f0a06a40fa1af46ebc";
+	}
 	let status = req.body.status || (
 		!buyerFinancer ?
 		"registry_skip_buyer_financer" : "registry_buyer_financer"
@@ -724,16 +737,36 @@ router.post('/payTokenAmount', async function(req, res) {
 	} catch(e) {
 		console.log(e)
 	}
+	console.log('registryData', registryData);
 	let tokenAmt = registryData.tokenAmt || 0;
 	//transfer amount from buyer to owner
 	let paymentRemaining = registryData.paymentRemaining || 0;
 	paymentRemaining -= tokenAmt;
+
+    if (web3Conf) {
+		let owner = registryData.owner ? registryData.owner.address : null;
+		let buyer = registryData.buyer ? registryData.buyer.address : null;
+
+		console.log('buyer', buyer)
+        let balance = await landRegistry.getBalance(buyer);
+        console.log('balance', balance.toNumber());
+        if (balance.toNumber() < tokenAmt) {
+        	return res.send({status : false, msg : "No Enough Balance"});
+        }
+
+		console.log('payTokenAmount', buyer, owner, parseInt(tokenAmt));
+	    if (owner && buyer) {
+			let m = await landRegistry.sendTokens(buyer, owner, 500);
+			console.log('payTokenAmount', m);
+	    }
+    }
 
 	let updateQuery = {$set : {
 		paymentRemaining : paymentRemaining,
 		status : "registry_token_amount",
 		modified : Date.now()
 	}};
+
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
@@ -764,18 +797,42 @@ router.post('/financerPayment', async function(req, res) {
 		registryData.ownerFinancer.outstandingLoan;
 	let paymentRemaining = registryData.paymentRemaining || 0;
 	//if (buyerFinancer.balance < financeAmount) => return("insufficient balance");
+
+    let fAmt, oAmt;
 	if (financeAmount > outstandingLoan) {
 		//transfer(buyerFinancer, ownerFinancer, outstandingLoan)
+		fAmt = outstandingLoan;
 		paymentRemaining -= outstandingLoan;
-		let fAmt = financeAmount - outstandingLoan;
+		oAmt = financeAmount - outstandingLoan;
 		outstandingLoan = 0;
 		//transfer(buyerFinancer, owner, fAmt)
-		paymentRemaining -= fAmt;
+		paymentRemaining -= oAmt;
 	} else {
 		//transfer(buyerFinancer, ownerFinancer, financeAmount)
+		fAmt = financeAmount;
+		oAmt = 0;
 		paymentRemaining -= financeAmount;
-		outstandingLoan -= financeAmount;
+		outstandingLoan -= financeAmount;		
 	}
+
+    if (web3Conf) {
+    	let ownerFinancer = registryData.ownerFinancer.address;
+    	let buyerFinancer = registryData.buyerFinancer.address;
+    	let owner = registryData.owner.address;
+
+        let balance = await landRegistry.getBalance(buyerFinancer);
+        if (balance.toNumber() < financeAmount) {
+        	return res.send({status : false, msg : "No Enough Balance"});
+        }
+
+	    console.log(ownerFinancer, buyerFinancer, owner);
+		if (fAmt > 0) {
+			let m = await landRegistry.sendTokens(buyerFinancer, ownerFinancer, 100); //fAmt
+		}
+		if (oAmt > 0) {
+			let m = await landRegistry.sendTokens(buyerFinancer, owner, 100); //oAmt
+		}
+    }
 
 	let updateQuery = {$set : {
 		paymentRemaining : paymentRemaining,
@@ -808,14 +865,38 @@ router.post('/buyerPayment', async function(req, res) {
 		registryData.ownerFinancer.outstandingLoan;
 	let paymentRemaining = registryData.paymentRemaining || 0;
 
+	let fAmt, oAmt;
+	let tAmt  = paymentRemaining;
 	//if (buyer.getBalance() < paymentRemaining) => return("insufficientBalance");
 	if (outstandingLoan > 0) {
 		//transfer(buyer, ownerFinancer, outstandingLoan)
+		fAmt = outstandingLoan;
 		paymentRemaining -= outstandingLoan;
 		outstandingLoan = 0;
 	}
+
 	//transfer(buyer, owner, paymentRemaining)
+	oAmt = paymentRemaining;
 	paymentRemaining = 0;
+
+    if (web3Conf) {
+    	let ownerFinancer = registryData.ownerFinancer.address;
+    	let buyer = registryData.buyer.address;
+    	let owner = registryData.owner.address;
+
+        let balance = await landRegistry.getBalance(buyer);
+        if (balance.toNumber() < tAmt) {
+        	return res.send({status : false, msg : "No Enough Balance"});
+        }
+
+	    console.log(owner, buyer, ownerFinancer);
+		if (fAmt > 0) {
+			let m = await landRegistry.sendTokens(buyer, ownerFinancer, 100); //fAmt
+		}
+		if (oAmt > 0) {
+			let m = await landRegistry.sendTokens(buyer, owner, 100); //oAmt
+		}
+    }
 
 	let updateQuery = {$set : {
 		paymentRemaining : paymentRemaining,
@@ -843,11 +924,25 @@ router.post('/payStampDuty', async function(req, res) {
 		status : "registry_stamp_duty",
 		modified : Date.now()
 	}};
+
 	helper.updateCollection('registry', query, updateQuery,
-		function(err, data) {
+		async function(err, data) {
 	    if (err) {
 			let error = helper.getErrorResponse('DbError');
 			return res.status(error.statusCode).send(error.error);
+	    }
+	    if (web3Conf) {
+			var collection = db.getCollection('registry');
+		    let allData = await collection.findOne({registryId : registryId});
+		    console.log('sendTokens', allData.owner.address,  web3.eth.coinbase, allData.stampDuty);
+		    if (allData.owner && allData.buyer) {
+		        let balance = await landRegistry.getBalance(allData.owner.address);
+		        if (balance.toNumber() < allData.stampDuty) {
+		        	return res.send({status : false, msg : "No Enough Balance"});
+		        }
+				let m = await landRegistry.sendTokens(allData.owner.address, web3.eth.coinbase, 100);
+				console.log('payStampDuty', m);
+		    }
 	    }
 	    return res.send({status : true});
 	});
