@@ -370,6 +370,85 @@ class Icon extends Component {
           </svg>
         )
       },
+      corporate: () => {
+        return (
+          <svg
+            data-name="Layer 1"
+            id="Layer_1"
+            width={width ? width : '20'}
+            height={height ? height : '20'}
+            viewBox="0 0 150 150">
+            <title />
+            <circle class="cls-1" fill="#13818d" cx="75" cy="75" r="65" />
+            <g class="cls-2">
+              <rect class="cls-3" fill="#44c2c7" height="73.21" width="47.06" x="6.41" y="61.38" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="12.71" y="67.18" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="12.71" y="80.17" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="12.71" y="93.15" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="12.71" y="106.14" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="12.71" y="119.12" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="26.89" y="67.18" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="26.89" y="80.17" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="26.89" y="93.15" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="26.89" y="106.14" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="26.89" y="119.12" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="41.06" y="67.18" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="41.06" y="80.17" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="41.06" y="93.15" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="41.06" y="106.14" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="41.06" y="119.12" />
+              <rect class="cls-4" fill="#30a7ad" height="73.21" width="47.06" x="96.53" y="61.38" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="102.84" y="67.18" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="102.84" y="80.17" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="102.84" y="93.15" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="102.84" y="106.14" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="102.84" y="119.12" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="117.01" y="67.18" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="117.01" y="80.17" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="117.01" y="93.15" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="117.01" y="106.14" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="117.01" y="119.12" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="131.19" y="67.18" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="131.19" y="80.17" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="131.19" y="93.15" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="131.19" y="106.14" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="131.19" y="119.12" />
+              <rect class="cls-5" fill="#fff" height="40.38" rx="0.87" ry="0.87" width="71.47" x="40.63" y="100.5" />
+              <rect
+                class="cls-1"
+                fill="#13818d"
+                height="36.82"
+                rx="0.87"
+                ry="0.87"
+                width="60.14"
+                x="46.07"
+                y="105.29"
+              />
+              <path
+                class="cls-5"
+                fill="#fff"
+                d="M99.46,33.39H76.79V27.11a2.29,2.29,0,1,0-1.79,0v6.29H52.4a0.87,0.87,0,0,0-.87.87V143.85a0.87,0.87,0,0,0,.87.87h5.26a0.87,0.87,0,0,0,.87-0.87V118.36h34.8v25.49a0.87,0.87,0,0,0,.87.87h5.27a0.87,0.87,0,0,0,.87-0.87V34.26A0.87,0.87,0,0,0,99.46,33.39Zm-6.14,78.7H58.53v-3.75h34.8v3.75Z"
+              />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="58.7" y="40.05" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="58.7" y="53.04" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="58.7" y="66.03" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="58.7" y="79.01" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="58.7" y="92" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="72.88" y="40.05" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="72.88" y="53.04" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="72.88" y="66.03" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="72.88" y="79.01" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="72.88" y="92" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="87.05" y="40.05" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="87.05" y="53.04" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="87.05" y="66.03" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="87.05" y="79.01" />
+              <rect class="cls-1" fill="#13818d" height="8.28" width="6.1" x="87.05" y="92" />
+              <rect class="cls-5" fill="#fff" height="18.74" rx="0.75" ry="0.75" width="12" x="70.28" y="124.46" />
+            </g>
+          </svg>
+        )
+      },
       default: () => {
         return (
           <svg

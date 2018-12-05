@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import Link from 'react-router-dom/Link'
 import withRouter from 'react-router/withRouter'
-import { IconMenu, Modal, Button, ButtonGroup, PaperTitle, Close, CloseWrap, Icon } from '../components'
+import { IconMenu, Modal, Button, ButtonGroup, PaperTitle, Close, CloseWrap, Icon, FlexWrapper } from '../components'
 import axios from 'axios'
 import { API_URL, CURRENCY } from '../constants'
 import Cookies from 'js-cookie'
@@ -63,6 +63,7 @@ const UserImage = styled.div`
   justify-content: center;
   color: #fff;
 `
+const StyledImage = styled.img``
 
 class Header extends Component {
   state = {
@@ -90,7 +91,10 @@ class Header extends Component {
     return (
       <HeaderOuter>
         <HeaderWrapper>
-          <LogoLink to="/">Home Registry</LogoLink>
+          <FlexWrapper flexDirection="row-reverse" alignItems="center">
+            <LogoLink to="/">Land Registry</LogoLink>
+            <StyledImage src={require('../static/images/logo.png')} />
+          </FlexWrapper>
           {pathname === '/' || pathname === '/signup' ? (
             <MenuItemsWrapper>
               <MenuItems to="/">Home</MenuItems>
@@ -114,8 +118,8 @@ class Header extends Component {
                     <UserImage>
                       <h1>{Cookies.get('gender') === 'Male' && <Icon icon="male" />}</h1>
                       <h1>{Cookies.get('gender') === 'Female' && <Icon icon="female" />}</h1>
-
                       <h1>{Cookies.get('role') === 'Bank' && <Icon icon="bank" />}</h1>
+                      <h1>{Cookies.get('role') === 'corporation' && <Icon icon="corporate" />}</h1>
 
                       {console.log(Cookies.get('role'))}
                     </UserImage>

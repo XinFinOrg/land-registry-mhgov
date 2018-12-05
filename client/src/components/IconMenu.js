@@ -141,7 +141,7 @@ class IconMenu extends Component {
             <DropdownItems>
               <p>
                 {' '}
-                <Link to="/"> LogOut</Link>
+                <Link to="/">Logout</Link>
               </p>
             </DropdownItems>
           </DropdownMenu>

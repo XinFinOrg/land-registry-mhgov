@@ -26,7 +26,7 @@ const FooterWrapper = styled.footer`
 `
 const Footer = props => (
   <FooterWrapper {...props}>
-    <p>Copyright © @xinping 2018 Home Registry All rights reserved.</p>
+    <p>Copyright ©XinFin 2018. All rights reserved.</p>
   </FooterWrapper>
 )
 

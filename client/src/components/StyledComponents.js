@@ -265,7 +265,7 @@ const FlexWrapper = styled.div`
   display: flex;
   flex-direction: ${props => (props.flexDirection ? props.flexDirection : 'row')};
   justify-content: ${props => (props.justifyContent ? props.justifyContent : 'flex-start')};
-  align-items: ${props => (props.justifyContent ? props.justifyContent : 'flex-start')};
+  align-items: ${props => (props.alignItems ? props.alignItems : 'flex-start')};
   padding: ${props => (props.padding ? props.padding : '0px')};
   margin: ${props => (props.margin ? props.margin : '0px')};
   border-width: ${props => (props.borderWidth ? props.borderWidth : '0 0 0 0')};
