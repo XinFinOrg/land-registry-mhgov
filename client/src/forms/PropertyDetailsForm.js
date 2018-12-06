@@ -16,7 +16,11 @@ import {
   Button,
   ButtonGroup,
   SelectBox,
-  Modal
+  Modal,
+  Close,
+  CloseWrap,
+  PaperTitle,
+  FlexWrapper
 } from '../components'
 import axios from 'axios'
 import { API_URL } from '../constants'
@@ -487,6 +491,10 @@ class PropertyDetailsForm extends Component {
         />
 
         <Modal show={openModal}>
+          <CloseWrap>
+            <PaperTitle color="#fff">Sell property</PaperTitle>
+            <Close onClick={() => this.setState({ show: !openModal })} />
+          </CloseWrap>
           <Formik
             enableReinitialize={true}
             initialValues={{
@@ -532,14 +540,7 @@ class PropertyDetailsForm extends Component {
                     <TextInput {...field} label="Token Amount" placeholder={'Token Amount'} required />
                   )}
                 />
-                <ButtonGroup>
-                  <Button
-                    size={'medium'}
-                    width={'150px'}
-                    title="Cancel"
-                    type="button"
-                    onClick={() => this.setState({ openModal: false })}
-                  />
+                <FlexWrapper justifyContent="center">
                   <Button
                     size={'medium'}
                     width={'150px'}
@@ -548,7 +549,7 @@ class PropertyDetailsForm extends Component {
                     title="Confirm"
                     type="submit"
                   />
-                </ButtonGroup>
+                </FlexWrapper>
               </Form>
             )}
           />

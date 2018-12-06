@@ -17,7 +17,7 @@ import { Table } from '../components/Table'
 // import { data } from '../constants'
 import Cookies from 'js-cookie'
 import axios from 'axios'
-import { API_URL, statusColor, nextTab } from '../constants'
+import { API_URL, statusMap, statusColor, nextTab } from '../constants'
 import styled from 'styled-components'
 import get from 'lodash/get'
 
@@ -77,16 +77,20 @@ class Dashboard extends Component {
   render() {
     const { dashboardData } = this.state
     // console.log('dashboardData=====>', dashboardData)
-    const tableData = dashboardData.map((item, index) => ({
-      srNo: index + 1,
-      propertyId: item.propertyId,
-      registryId: item.registryId || '',
-      propertyType: item.landType || get(item, 'propertyDetails.landType', ''),
-      propertyLocation: item.address || get(item, 'propertyDetails.address', ''),
-      city: item.city || get(item, 'propertyDetails.city', ''),
-      status: item.status,
-      nextTab: nextTab[item.status]
-    }))
+    const tableData = dashboardData.map((item, index) => {
+      console.log('STATUS', get(statusMap[item.status], 'statusName', ''))
+      return {
+        srNo: index + 1,
+        propertyId: item.propertyId,
+        registryId: item.registryId || '',
+        propertyType: item.landType || get(item, 'propertyDetails.landType', ''),
+        propertyLocation: item.address || get(item, 'propertyDetails.address', ''),
+        city: item.city || get(item, 'propertyDetails.city', ''),
+        statusStyle: item.status,
+        status: get(statusMap[item.status], 'statusName', 'N.A'),
+        nextTab: nextTab[item.status]
+      }
+    })
     const columns = [
       {
         Header: (
@@ -163,12 +167,17 @@ class Dashboard extends Component {
         maxWidth: 250,
         Cell: props => {
           const {
-            original: { status }
+            original: { status, statusStyle }
           } = props
+          console.log('props', statusStyle)
           return (
             <Status
               type={
-                statusColor[status] === 'yellow' ? 'financer' : statusColor[status] === 'red' ? 'rejected' : 'verified'
+                statusColor[statusStyle] === 'yellow'
+                  ? 'financer'
+                  : statusColor[statusStyle] === 'red'
+                    ? 'rejected'
+                    : 'verified'
               }>
               {status}
             </Status>

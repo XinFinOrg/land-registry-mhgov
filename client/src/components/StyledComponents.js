@@ -234,7 +234,7 @@ const IconWrapper = styled.div`
   padding-left: 8px;
 `
 const FormikForm = styled(Form)`
-  margin-bottom: 100px;
+  margin-bottom: ${props => (props.marginBottom ? props.marginBottom : '100px')};
 `
 const ButtonGroup = styled.div`
   margin: 30px 95px 0;
@@ -271,6 +271,7 @@ const FlexWrapper = styled.div`
   border-width: ${props => (props.borderWidth ? props.borderWidth : '0 0 0 0')};
   border-style: ${props => (props.borderStyle ? props.borderStyle : 'solid')};
   border-color: ${props => (props.borderColor ? props.borderColor : '#ddd')};
+  flex-wrap: ${props => (props.wrap ? props.wrap : 'nowrap')};
 `
 const MediumText = styled.p`
   font-size: 16px;

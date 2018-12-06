@@ -101,10 +101,6 @@ class BuyerDetailsForm extends Component {
         status: 'registry_skip_buyer_financer'
       })
       await this.setState({ isLoadingSkip: false })
-      /* await toast.success(`${'Owner Added!'}`, {
-        position: toast.POSITION.TOP_CENTER
-      }) */
-      // this.props.history.push('/dashboard')
     } catch (error) {
       toast.error(`${'Some error occurred!'}`, {
         position: toast.POSITION.TOP_CENTER
@@ -282,7 +278,8 @@ class BuyerDetailsForm extends Component {
                     email: values.email,
                     partyType: values.selectPartyType,
                     partyCategory: values.selectPartyCategory,
-                    isExecuter: values.isExecuter === 'Yes' ? true : false
+                    isExecuter: values.isExecuter === 'Yes' ? true : false,
+                    address: Cookies.get('address')
                   }
                 })
                 console.log('Add financier', data)
@@ -727,7 +724,8 @@ class BuyerDetailsForm extends Component {
                     propertyId: Cookies.get('propertyId'),
                     buyerFinancer: {
                       email: values.email,
-                      financeAmount: values.financeAmount
+                      financeAmount: values.financeAmount,
+                      address: Cookies.get('address')
                     },
                     status: 'registry_buyer_financer'
                   })

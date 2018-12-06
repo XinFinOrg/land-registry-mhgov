@@ -184,7 +184,8 @@ class StampDutyForm extends Component {
           try {
             this.setState({ isLoading: true })
             await axios.post(`${API_URL}/payStampDuty`, {
-              registryId: params.tab3
+              registryId: params.tab3,
+              propertyId: Cookies.get('propertyId')
             })
             await this.setState({ isLoading: false })
             await toast.success(`${'Stamp duty paid!'}`, {

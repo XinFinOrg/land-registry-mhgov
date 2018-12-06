@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
 import { Formik, Field } from 'formik'
 import {
   Paper,
@@ -6,24 +7,35 @@ import {
   FormDetailsContainer,
   TextInput,
   InformTitle,
-  NormalFieldsTuple,
+  // NormalFieldsTuple,
   Button,
   ButtonGroup,
   FieldGroupWithTitle,
   // CustomTable,
   // StyledHead,
   SelectBox,
-  Modal
+  Close,
+  CloseWrap,
+  PaperTitle,
+  Modal,
+  FlexWrapper
 } from '../components'
-// import { customData, partyDetails } from '../constants'
 import withRouter from 'react-router/withRouter'
-
 import get from 'lodash/get'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
 
+const StyledFlex = styled(FieldGroupWithTitle)`
+  justify-content: space-between;
+  padding-bottom: 10px;
+  & > div {
+    flex-basis: calc(50% - 10px) !important;
+    justify-content: space-between;
+    margin: 0;
+  }
+`
 class OwnerDetailsForm extends Component {
   state = {
     isLoading: false,
@@ -31,7 +43,9 @@ class OwnerDetailsForm extends Component {
     isLoadingReject: false,
     addOwnerStatus: false,
     addFinancier: false,
-    openModal: false
+    openModal: false,
+    addFinancerData: false,
+    isVerified: false
   }
   skipFinancier = async () => {
     const {
@@ -94,7 +108,16 @@ class OwnerDetailsForm extends Component {
     } = this.props
     console.log('OWNER', data)
     const userData = get(data, 'owner.userDetails', '')
-    const { isLoading, addOwnerStatus, addFinancier, isLoadingSkip, isLoadingReject, openModal } = this.state
+    const {
+      isLoading,
+      addOwnerStatus,
+      addFinancier,
+      isLoadingSkip,
+      isLoadingReject,
+      openModal,
+      isVerified,
+      addFinancerData
+    } = this.state
     /*     const columns = [
       {
         Header: <StyledHead>Sr. No.</StyledHead>,
@@ -617,99 +640,108 @@ class OwnerDetailsForm extends Component {
         {addFinancier && (
           <React.Fragment>
             <Modal show={openModal}>
+              <CloseWrap>
+                <PaperTitle color="#fff">Financer Details</PaperTitle>
+                <Close onClick={() => this.setState({ openModal: !openModal })} />
+              </CloseWrap>
               <Formik
                 enableReinitialize
                 initialValues={{
-                  email: '', //
-                  city: 'Pune', //
-                  branch: 'Pune', //
-                  totalValueOfProperty: '1000000', //
-                  totalFinanceAmount: '10000', //
-                  financeAmountDueNow: '1000000', //
-                  loanAmount: '1000000', //
-                  outstandingLoan: '100000' //
+                  name: get(addFinancerData, 'name', ''),
+                  email: get(addFinancerData, 'email', ''),
+                  city: get(addFinancerData, 'city', ''),
+                  branch: get(addFinancerData, 'branch', ''),
+                  totalValueOfProperty: '1000000',
+                  totalFinanceAmount: '10000',
+                  financeAmountDueNow: '1000000',
+                  loanAmount: '1000000',
+                  outstandingLoan: '100000'
                 }}
                 onSubmit={async values => {
                   const {
                     match: { params }
                   } = this.props
-
-                  try {
-                    this.setState({ isLoading: true })
-                    const { data } = await axios.post(`${API_URL}/getUserDetails`, {
-                      registryId: params.tab3,
-                      propertyId: Cookies.get('propertyId'),
-                      ownerFinancer: {
-                        email: values.email,
-                        address: Cookies.get('address'),
-                        loanAmount: values.loanAmount,
-                        outstandingLoan: values.outstandingLoan
-                      },
-                      status: 'registry_owner_financer'
-                    })
-                    console.log('Add financier', data)
-                    await toast.success(`${'Owner financier added!'}`, {
-                      position: toast.POSITION.TOP_CENTER
-                    })
-                    await this.setState({ isLoading: false })
-                    this.props.history.push('/dashboard')
-                  } catch (error) {
-                    await this.setState({ isLoading: false })
-                    toast.error(`${'Some error occurred!'}`, {
-                      position: toast.POSITION.TOP_CENTER
-                    })
-                    console.log('ERROR', error)
+                  if (isVerified) {
+                    try {
+                      this.setState({ isLoading: true })
+                      const { data } = await axios.post(`${API_URL}/getUserDetails`, {
+                        registryId: params.tab3,
+                        propertyId: Cookies.get('propertyId'),
+                        ownerFinancer: {
+                          email: values.email,
+                          address: Cookies.get('address'),
+                          loanAmount: values.loanAmount,
+                          outstandingLoan: values.outstandingLoan
+                        },
+                        status: 'registry_owner_financer'
+                      })
+                      console.log('Add financier', data)
+                      await toast.success(`${'Owner financier added!'}`, {
+                        position: toast.POSITION.TOP_CENTER
+                      })
+                      await this.setState({ isLoading: false })
+                      this.props.history.push('/dashboard')
+                    } catch (error) {
+                      await this.setState({ isLoading: false })
+                      toast.error(`${'Some error occurred!'}`, {
+                        position: toast.POSITION.TOP_CENTER
+                      })
+                      console.log('ERROR', error)
+                    }
+                  } else {
+                    try {
+                      this.setState({ isLoading: true })
+                      const { data } = await axios.get(`${API_URL}/getUserDetails?email=${values.email}`)
+                      console.log('Add financier', data)
+                      await toast.success(`${'Email is verified!'}`, {
+                        position: toast.POSITION.TOP_CENTER
+                      })
+                      await this.setState({
+                        isLoading: false,
+                        addFinancerData: data.data,
+                        isVerified: get(data.data, 'role', '') === 'bank' ? true : false
+                      })
+                      // this.props.history.push('/dashboard')
+                    } catch (error) {
+                      await this.setState({ isLoading: false })
+                      toast.error(`${'Some error occurred!'}`, {
+                        position: toast.POSITION.TOP_CENTER
+                      })
+                      console.log('ERROR', error)
+                    }
                   }
                 }}
                 render={formikBag => (
                   <React.Fragment>
-                    <FormikForm>
-                      <Paper margin={'0 40px'}>
-                        <FormDetailsContainer>
-                          <InformTitle>Financier Details</InformTitle>
-                          <FieldGroupWithTitle>
+                    <FormikForm marginBottom="10px">
+                      <Field
+                        name="email"
+                        render={({ field }) => (
+                          <TextInput {...field} label="Email Address" placeholder={'Email Address'} required />
+                        )}
+                      />
+                      {isVerified && (
+                        <React.Fragment>
+                          <Field
+                            name="name"
+                            render={({ field }) => <TextInput {...field} label="Name" disabled placeholder={'Name'} />}
+                          />
+                          <StyledFlex justify="flex-start">
                             <Field
-                              name="email"
+                              name="city"
                               render={({ field }) => (
-                                <TextInput {...field} label="Email Address" placeholder={'Email Address'} required />
+                                <TextInput {...field} label="City" disabled placeholder={'City'} />
                               )}
                             />
-
-                            {/* <Field
-                        name="city"
-                        render={({ field }) => <TextInput {...field} label="City" placeholder={'City'} />}
-                      />
-  
-                      <Field
-                        name="branch"
-                        render={({ field }) => <TextInput {...field} label="Branch" placeholder={'Branch'} />}
-                      />
-  
-                      <Field
-                        name="totalValueOfProperty"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Total Value of Property" placeholder={'Total Value of Property'} />
-                        )}
-                      />
-  
-                      <Field
-                        name="totalFinanceAmount"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Total finance amount" placeholder={'Total finance amount'} />
-                        )}
-                      />
-  
-                      <Field
-                        name="financeAmountDueNow"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Finance amount due now" placeholder={'Finance amount due now'} />
-                        )}
-                      /> */}
-                          </FieldGroupWithTitle>
-                        </FormDetailsContainer>
-                        {/* <FormDetailsContainer>
+                            <Field
+                              name="branch"
+                              render={({ field }) => (
+                                <TextInput {...field} label="Branch" disabled placeholder={'Branch'} />
+                              )}
+                            />
+                          </StyledFlex>
                           <InformTitle>Outstanding Loan Amount</InformTitle>
-                          <NormalFieldsTuple shrink>
+                          <StyledFlex>
                             <Field
                               name="loanAmount"
                               render={({ field }) => (
@@ -728,17 +760,40 @@ class OwnerDetailsForm extends Component {
                                 />
                               )}
                             />
-                          </NormalFieldsTuple>
-                        </FormDetailsContainer> */}
-                      </Paper>
-                      <ButtonGroup>
-                        <Button
-                          size={'medium'}
-                          width={'150px'}
-                          title="Cancel"
-                          type="button"
-                          onClick={() => this.setState({ openModal: false })}
+                          </StyledFlex>
+                        </React.Fragment>
+                      )}
+
+                      {/* <Field
+                          name="totalValueOfProperty"
+                          render={({ field }) => (
+                            <TextInput
+                              {...field}
+                              label="Total Value of Property"
+                              placeholder={'Total Value of Property'}
+                            />
+                          )}
                         />
+
+                        <Field
+                          name="totalFinanceAmount"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Total finance amount" placeholder={'Total finance amount'} />
+                          )}
+                        />
+
+                        <Field
+                          name="financeAmountDueNow"
+                          render={({ field }) => (
+                            <TextInput
+                              {...field}
+                              label="Finance amount due now"
+                              placeholder={'Finance amount due now'}
+                            />
+                          )}
+                        /> */}
+
+                      <FlexWrapper justifyContent="center">
                         <Button
                           size={'medium'}
                           isLoading={isLoading}
@@ -747,7 +802,7 @@ class OwnerDetailsForm extends Component {
                           title="Submit"
                           type="submit"
                         />
-                      </ButtonGroup>
+                      </FlexWrapper>
                     </FormikForm>
                   </React.Fragment>
                 )}

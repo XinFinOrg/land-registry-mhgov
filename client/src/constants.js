@@ -2,6 +2,89 @@ export const API_URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API
 
 export const CURRENCY = '₹'
 
+export const statusMap = {
+  property_new: {
+    statusName: 'New',
+    statusDesc: 'Awaiting Confirmation from Corporation'
+  },
+  property_verified: {
+    statusName: 'Property Verified',
+    statusDesc: 'Property Verified'
+  },
+  property_rejected: {
+    statusName: 'Property Rejected',
+    statusDesc: 'Property Rejected by Corporation'
+  },
+  registry_new: {
+    statusName: 'On Sell',
+    statusDesc: 'Awaiting owner to add extra Information'
+  },
+  registry_owner: {
+    statusName: 'Owner Added',
+    statusDesc: 'Awaiting Owner to add financer information'
+  },
+  registry_owner_financer: {
+    statusName: 'Owner Financer Added',
+    statusDesc: 'Owner awaiting Financer Confirmation'
+  },
+  registry_skip_owner_financer: {
+    statusName: 'Owner Added',
+    statusDesc: 'Awaiting owner to add buyer information'
+  },
+  registry_owner_financer_verified: {
+    statusName: 'Owner Financer Verified',
+    statusDesc: 'Awaiting owner to add buyer information'
+  },
+  registry_owner_financer_rejected: {
+    statusName: 'Owner Financer Rejected',
+    statusDesc: 'Owner Financer Rejected'
+  },
+  registry_buyer: {
+    statusName: 'Buyer Added',
+    statusDesc: 'Awaiting buyer confirmation'
+  },
+  registry_buyer_confirmed: {
+    statusName: 'Buyer Verified',
+    statusDesc: 'Awaiting buyer to add financer information'
+  },
+  registry_buyer_rejected: {
+    statusName: 'Buyer Rejected',
+    statusDesc: 'Buyer rejected'
+  },
+  registry_buyer_financer: {
+    statusName: 'Buyer Financer Added',
+    statusDesc: 'Buyer Awaiting Financer Confirmation'
+  },
+  registry_skip_buyer_financer: {
+    statusName: 'Awaiting Token Payment',
+    statusDesc: 'Awaiting Token Payment'
+  },
+  registry_buyer_financer_confirmed: {
+    statusName: 'Buyer Financer Verified',
+    statusDesc: 'Awaiting Token Payment'
+  },
+  registry_buyer_financer_rejected: {
+    statusName: 'Buyer Financer Rejected',
+    statusDesc: 'Buyer Financer rejected'
+  },
+  registry_token_amount: {
+    statusName: 'Token Payment',
+    statusDesc: 'Awaiting Financer Payment'
+  },
+  registry_bank_pay: {
+    statusName: 'Financer Payment',
+    statusDesc: 'Awaiting Buyer Payment'
+  },
+  registry_buyer_pay: {
+    statusName: 'Buyer Payment',
+    statusDesc: 'Awaiting Stamp Duty Payment'
+  },
+  registry_stamp_duty: {
+    statusName: 'Completed',
+    statusDesc: 'Completed'
+  }
+}
+
 export const statusColor = {
   property_new: 'yellow',
   property_verified: 'green',

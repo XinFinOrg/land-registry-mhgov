@@ -41,10 +41,10 @@ import {
 } from '../forms'
 import Cookies from 'js-cookie'
 import axios from 'axios'
-import { API_URL } from '../constants'
+import { API_URL, statusMap } from '../constants'
 import get from 'lodash/get'
 import keys from 'lodash/keys'
-import values from 'lodash/values'
+// import values from 'lodash/values'
 import moment from 'moment'
 
 const PageTitleWrapper = styled.div`
@@ -267,8 +267,9 @@ class DocumentDetails extends Component {
           margin={'0 95px'}>
           <FlexWrapper justifyContent="space-between">
             <InsideTitle>
-              Pre Reg. No: {Cookies.get('propertyId')} / {Cookies.get('registryId')} / {dashboardData.status}
-              {/*  {dashboardData.propertyId} / {dashboardData.registryId} / {dashboardData.status} */}
+              Pre Reg. No: <b>Property ID:</b> {Cookies.get('propertyId')} <b>Registry ID:</b>{' '}
+              {Cookies.get('registryId')} <b>Status: </b>
+              {get(statusMap[dashboardData.status], 'statusDesc', 'N.A')}
             </InsideTitle>
           </FlexWrapper>
           <Tabber>
