@@ -267,8 +267,8 @@ class DocumentDetails extends Component {
           margin={'0 95px'}>
           <FlexWrapper justifyContent="space-between">
             <InsideTitle>
-              Pre Reg. No: <b>Property ID:</b> {Cookies.get('propertyId')} <b>Registry ID:</b>{' '}
-              {Cookies.get('registryId')} <b>Status: </b>
+              <b>Property ID:</b> {Cookies.get('propertyId')} <b>Registry ID:</b> {Cookies.get('registryId')}
+              <b> Status: </b>
               {get(statusMap[dashboardData.status], 'statusDesc', 'N.A')}
             </InsideTitle>
           </FlexWrapper>
@@ -320,7 +320,6 @@ class DocumentDetails extends Component {
             </Tab>*/}
           </Tabber>
         </Paper>
-
         {activeTab === `/dashboard/property-details/${params.tab2}/${params.tab3}` && (
           <PropertyDetailsWrapper>
             <PropertyDetailsForm data={dashboardData} changeActiveTab={this.changeActiveTab} />

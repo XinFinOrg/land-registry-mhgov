@@ -18,6 +18,13 @@ import {
   FormDetailsContainer,
   ModalScrollWrapper
 } from '../components'
+import {
+  loginValidator,
+  signUpValidator,
+  individualValidator,
+  bankValidator,
+  governmentValidator
+} from '../utils/validator'
 import house from '../static/images/house.jpeg'
 import { Formik, Form, Field } from 'formik'
 import axios from 'axios'
@@ -141,6 +148,10 @@ const CheckboxWrap = styled.div`
   }
 `
 
+const PaddingBlank = styled.div`
+  padding: 10px;
+`
+
 /* const ButtonWrap = styled.section`
   margin-top: 20px;
 ` */
@@ -170,6 +181,7 @@ class Home extends Component {
       location: { pathname }
     } = this.props
     const { openModal, signUpData, isLoading } = this.state
+
     return (
       <Background>
         <Header />
@@ -196,6 +208,8 @@ class Home extends Component {
                     password: '',
                     registerAs: 'individual'
                   }}
+                  validate={signUpValidator}
+                  validateOnChange
                   onSubmit={formData => {
                     return (
                       this.setState({ signUpData: { ...formData }, openModal: true }), this.handleSignupForm(formData)
@@ -216,6 +230,8 @@ class Home extends Component {
                               placeholder="First Name"
                               autoFocus
                               required
+                              pattern="[a-zA-Z]"
+                              error={formikBag.errors.firstName}
                             />
                           )}
                         />
@@ -229,7 +245,6 @@ class Home extends Component {
                               height={'64px'}
                               type="text"
                               placeholder="Last Name"
-                              required
                             />
                           )}
                         />
@@ -244,6 +259,7 @@ class Home extends Component {
                               type="email"
                               placeholder="Email id"
                               required
+                              error={formikBag.errors.email}
                             />
                           )}
                         />
@@ -258,6 +274,7 @@ class Home extends Component {
                               type="password"
                               placeholder="Password"
                               required
+                              error={formikBag.errors.password}
                             />
                           )}
                         />
@@ -301,6 +318,8 @@ class Home extends Component {
                     email: '',
                     password: ''
                   }}
+                  validate={loginValidator}
+                  validateOnChange
                   onSubmit={async (values, { resetForm }) => {
                     this.setState({ isLoading: true })
                     try {
@@ -339,7 +358,7 @@ class Home extends Component {
                               type="email"
                               placeholder="Email Id"
                               autoFocus
-                              required
+                              error={formikBag.errors.email}
                             />
                           )}
                         />
@@ -353,7 +372,7 @@ class Home extends Component {
                               height={'64px'}
                               type="password"
                               placeholder="Password"
-                              required
+                              error={formikBag.errors.password}
                             />
                           )}
                         />
@@ -412,6 +431,8 @@ class Home extends Component {
                 taluka: 'Mumbai',
                 village: 'Mumbai'
               }}
+              validate={individualValidator}
+              validateOnChange
               onSubmit={async (values, { resetForm }) => {
                 this.setState({ isLoading: true })
                 try {
@@ -684,6 +705,7 @@ class Home extends Component {
                             height={'64px'}
                             label="E-mail"
                             placeholder={'E-mail'}
+                            error={formikBag.errors.email}
                           />
                         )}
                       />
@@ -811,6 +833,8 @@ class Home extends Component {
                 city: '',
                 branch: ''
               }}
+              validate={bankValidator}
+              validateOnChange
               onSubmit={async (values, { resetForm }) => {
                 this.setState({ isLoading: true })
                 try {
@@ -857,7 +881,7 @@ class Home extends Component {
                             placeholder="Name"
                             label="Name"
                             autoFocus
-                            required
+                            error={formikBag.errors.name}
                           />
                         )}
                       />
@@ -871,7 +895,7 @@ class Home extends Component {
                             type="text"
                             placeholder="City"
                             label="City"
-                            required
+                            error={formikBag.errors.city}
                           />
                         )}
                       />
@@ -885,7 +909,7 @@ class Home extends Component {
                             type="text"
                             placeholder="Branch"
                             label="Branch"
-                            required
+                            error={formikBag.errors.branch}
                           />
                         )}
                       />
@@ -915,6 +939,8 @@ class Home extends Component {
                 department: 'Housing and Urban Development',
                 govType: 'igr'
               }}
+              validate={governmentValidator}
+              validateOnChange
               onSubmit={async (values, { resetForm }) => {
                 this.setState({ isLoading: true })
                 try {
@@ -978,7 +1004,7 @@ class Home extends Component {
                             placeholder="Name"
                             label="Name"
                             autoFocus
-                            required
+                            error={formikBag.errors.name}
                           />
                         )}
                       />
@@ -994,6 +1020,7 @@ class Home extends Component {
                           />
                         )}
                       />
+                      <PaddingBlank />
                       <Field
                         name="department"
                         render={({ field }) => (

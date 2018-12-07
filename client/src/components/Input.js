@@ -52,6 +52,15 @@ const Image = styled.div`
   left: 10px;
   top: 10px;
 `
+
+const Error = styled.p`
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  color: #f44336;
+  font-size: 12px;
+`
+
 /* const InputFileLabel = styled.div`
   width: 150px;
   padding: 4px;
@@ -82,7 +91,20 @@ class Input extends Component {
     password: false
   }
   render() {
-    const { icon, width, height, changeColor, type, background, disabled, fill, accept, name, ...props } = this.props
+    const {
+      icon,
+      width,
+      height,
+      changeColor,
+      type,
+      background,
+      disabled,
+      fill,
+      accept,
+      name,
+      error,
+      ...props
+    } = this.props
     const { password } = this.state
     return (
       <Container width={width}>
@@ -95,6 +117,7 @@ class Input extends Component {
           disabled={disabled}
           {...props}
         />
+        {error && <Error>{error}</Error>}
         {type === 'password' && (
           <Show onClick={() => this.setState({ password: !password })} height={height}>
             {password ? 'Hide' : 'Show'}

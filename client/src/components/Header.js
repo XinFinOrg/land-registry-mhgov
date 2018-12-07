@@ -9,7 +9,7 @@ import Cookies from 'js-cookie'
 import { Formik, Form, Field } from 'formik'
 import { TextInput } from './TextInput'
 import { toast } from 'react-toastify'
-
+import { amountValidation } from '../utils/validator'
 const HeaderOuter = styled.nav`
   width: 100%;
   position: fixed;
@@ -140,6 +140,8 @@ class Header extends Component {
           <Formik
             enableReinitialize={true}
             initialValues={{ amount: '' }}
+            validate={amountValidation}
+            validateOnChange
             onSubmit={async values => {
               this.setState({ isLoading: true })
               try {
@@ -164,7 +166,9 @@ class Header extends Component {
               <Form>
                 <Field
                   name="amount"
-                  render={({ field }) => <TextInput {...field} label="Amount" placeholder={'Amount'} required />}
+                  render={({ field }) => (
+                    <TextInput {...field} label="Amount" placeholder={'Amount'} error={formikBag.errors.amount} />
+                  )}
                 />
                 <ButtonGroup justifyContent="center">
                   <Button

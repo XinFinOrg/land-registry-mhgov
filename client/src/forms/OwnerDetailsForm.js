@@ -26,6 +26,7 @@ import axios from 'axios'
 import { API_URL } from '../constants'
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
+import { addFinancer } from '../utils/validator'
 
 const StyledFlex = styled(FieldGroupWithTitle)`
   justify-content: space-between;
@@ -36,6 +37,11 @@ const StyledFlex = styled(FieldGroupWithTitle)`
     margin: 0;
   }
 `
+
+const SingleForm = styled('div')`
+  margin-top: -30px;
+`
+
 class OwnerDetailsForm extends Component {
   state = {
     isLoading: false,
@@ -340,19 +346,21 @@ class OwnerDetailsForm extends Component {
                 <FormDetailsContainer>
                   <InformTitle>Parties Details</InformTitle>
                   <FieldGroupWithTitle>
-                    <Field
-                      name="isExecuter"
-                      render={({ field }) => (
-                        <SelectBox
-                          label="Is Executer?"
-                          onChange={isExecuter => formikBag.setFieldValue('isExecuter', isExecuter.value)}
-                          options={[{ label: 'Yes', value: 'Yes' }, { label: 'No', value: 'No' }]}
-                          placeholder="Select Party Type"
-                          defaultValue={{ label: 'Yes', value: 'Yes' }}
-                          isSearchable={false}
-                        />
-                      )}
-                    />
+                    <SingleForm>
+                      <Field
+                        name="isExecuter"
+                        render={({ field }) => (
+                          <SelectBox
+                            label="Is Executer?"
+                            onChange={isExecuter => formikBag.setFieldValue('isExecuter', isExecuter.value)}
+                            options={[{ label: 'Yes', value: 'Yes' }, { label: 'No', value: 'No' }]}
+                            placeholder="Select Party Type"
+                            defaultValue={{ label: 'Yes', value: 'Yes' }}
+                            isSearchable={false}
+                          />
+                        )}
+                      />
+                    </SingleForm>
 
                     <Field
                       name="salutation"
@@ -500,7 +508,14 @@ class OwnerDetailsForm extends Component {
                     <Field
                       name="email"
                       render={({ field }) => (
-                        <TextInput {...field} disabled label="E-mail" placeholder={'E-mail'} required />
+                        <TextInput
+                          {...field}
+                          disabled
+                          label="E-mail"
+                          placeholder={'E-mail'}
+                          required
+                          error={formikBag.errors.email}
+                        />
                       )}
                     />
 
@@ -657,6 +672,8 @@ class OwnerDetailsForm extends Component {
                   loanAmount: '1000000',
                   outstandingLoan: '100000'
                 }}
+                validate={addFinancer}
+                validateOnChange
                 onSubmit={async values => {
                   const {
                     match: { params }
@@ -717,7 +734,12 @@ class OwnerDetailsForm extends Component {
                       <Field
                         name="email"
                         render={({ field }) => (
-                          <TextInput {...field} label="Email Address" placeholder={'Email Address'} required />
+                          <TextInput
+                            {...field}
+                            label="Email Address"
+                            placeholder={'Email Address'}
+                            error={formikBag.errors.email}
+                          />
                         )}
                       />
                       {isVerified && (
@@ -745,7 +767,12 @@ class OwnerDetailsForm extends Component {
                             <Field
                               name="loanAmount"
                               render={({ field }) => (
-                                <TextInput {...field} label="Loan amount" placeholder={'Loan amount'} required />
+                                <TextInput
+                                  {...field}
+                                  label="Loan amount"
+                                  placeholder={'Loan amount'}
+                                  error={formikBag.errors.loanAmount}
+                                />
                               )}
                             />
 
@@ -756,7 +783,7 @@ class OwnerDetailsForm extends Component {
                                   {...field}
                                   label="Outstanding Loan amount"
                                   placeholder={'Outstanding Loan amount'}
-                                  required
+                                  error={formikBag.errors.outstandingLoan}
                                 />
                               )}
                             />

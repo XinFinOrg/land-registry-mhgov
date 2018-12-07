@@ -26,10 +26,16 @@ const SelectWrapper = styled.div`
   }
 `
 const TopWrapper = styled.div`
+  position: relative;
   & > p {
     font-size: 14px;
     color: rgba(51, 51, 51, 0.6);
     padding-bottom: 2px;
+    position: absolute;
+    z-index: 1;
+    top: -10px;
+    left: 10px;
+    background: #fff;
   }
 `
 class SelectBox extends Component {

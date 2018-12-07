@@ -28,7 +28,7 @@ import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
 import get from 'lodash/get'
 import withRouter from 'react-router/withRouter'
-
+import { governmentValidator } from '../utils/validator'
 class PropertyDetailsForm extends Component {
   state = {
     isLoading: false,
@@ -81,7 +81,7 @@ class PropertyDetailsForm extends Component {
             localGoverning: get(this.props.data, 'localGovNo', 'MV123'),
             cityVillage: get(this.props.data, 'city', 'Pune'),
             location: get(this.props.data, 'location', 'Maharastra'),
-            surveyNumber: get(this.props.data, 'surveyNo', 'S12345'),
+            surveyNumber: get(this.props.data, 'surveyNo', '12345'),
             propertyUsage: get(this.props.data, 'propertyUsage', 'Shop'),
             usage: get(this.props.data, 'usage', 'Non-Agriculture'),
             areaOfConstructurePropertySquareMeter: get(this.props.data, 'constructedArea', '20'),
@@ -92,10 +92,12 @@ class PropertyDetailsForm extends Component {
             coveredParking: get(this.props.data, 'coveredParking', '10'),
             coveredParkingSquareMeter: '10',
             coveredParkingBulidArea: '10',
-            shopFloorBasement: get(this.props.data, 'shopFloor', 'Yes'),
+            shopFloorBasement: get(this.props.data, 'shopFloor', '13356'),
             propertyAddress: get(this.props.data, 'address', 'Street Address'),
             propertyDescription: get(this.props.data, 'description', 'Ground floor')
           }}
+          validate={governmentValidator}
+          validateOnChange
           onSubmit={async values => {
             this.setState({ isLoading: true })
             if (Cookies.get('role') === 'corporation') {
@@ -142,9 +144,12 @@ class PropertyDetailsForm extends Component {
                       email: Cookies.get('email'),
                       address: Cookies.get('address')
                     }
-                    /* address:values.,
+
+                    /*
+                  address:values.,
                   description:values.,
-                  currentOwner:values., */
+                  currentOwner:values.
+                  */
                   }
                 })
                 await this.setState({ isLoading: false })
@@ -176,11 +181,17 @@ class PropertyDetailsForm extends Component {
                       <TextInput {...field} label="District" placeholder={'District'} required disabled={isActive} />
                     )}
                   />
-
                   <Field
                     name="landType"
                     render={({ field }) => (
-                      <TextInput {...field} label="Land Type" placeholder={'Land Type'} required disabled={isActive} />
+                      <TextInput
+                        {...field}
+                        label="Land Type"
+                        placeholder={'Land Type'}
+                        required
+                        disabled={isActive}
+                        error={formikBag.errors.landType}
+                      />
                     )}
                   />
                   <Field
@@ -222,6 +233,7 @@ class PropertyDetailsForm extends Component {
                         placeholder={'Survey Number'}
                         required
                         disabled={isActive}
+                        error={formikBag.errors.surveyNumber}
                       />
                     )}
                   />
@@ -275,12 +287,12 @@ class PropertyDetailsForm extends Component {
                             marginBottom={30}
                             padding={'18px 16px 23px'}
                             background={'rgba(235,235,235,0.2)'}
-                            radius={'0'}
-                            border={'none'}
+                            radius={'4'}
+                            border={false}
                             shadow={'none'}
                             type="text"
-                            required
                             disabled={isActive}
+                            error={formikBag.errors.areaOfConstructureProperty}
                           />
                         )}
                       />
@@ -293,6 +305,7 @@ class PropertyDetailsForm extends Component {
                             placeholder={'Sqaure Meter'}
                             required
                             disabled={isActive}
+                            error={formikBag.errors.areaOfConstructurePropertySquareMeter}
                           />
                         )}
                       />
@@ -305,6 +318,7 @@ class PropertyDetailsForm extends Component {
                             placeholder={'Build Up Area'}
                             required
                             disabled={isActive}
+                            error={formikBag.errors.areaOfConstructurePropertyBuildUpArea}
                           />
                         )}
                       />
@@ -323,8 +337,8 @@ class PropertyDetailsForm extends Component {
                             marginBottom={30}
                             padding={'18px 16px 23px'}
                             background={'rgba(235,235,235,0.2)'}
-                            radius={'0'}
-                            border={'none'}
+                            radius={'4'}
+                            border={false}
                             shadow={'none'}
                             type="text"
                             required
@@ -341,6 +355,7 @@ class PropertyDetailsForm extends Component {
                             placeholder={'Sqaure Meter'}
                             required
                             disabled={isActive}
+                            error={formikBag.errors.openParkingSquareMeter}
                           />
                         )}
                       />
@@ -359,12 +374,12 @@ class PropertyDetailsForm extends Component {
                             marginBottom={30}
                             padding={'18px 16px 23px'}
                             background={'rgba(235,235,235,0.2)'}
-                            radius={'0'}
-                            border={'none'}
-                            shadow={'none'}
+                            radius={'4'}
+                            border={false}
                             type="text"
                             required
                             disabled={isActive}
+                            error={formikBag.errors.coveredParking}
                           />
                         )}
                       />
@@ -377,6 +392,7 @@ class PropertyDetailsForm extends Component {
                             placeholder={'Sqaure Meter'}
                             required
                             disabled={isActive}
+                            error={formikBag.errors.coveredParkingSquareMeter}
                           />
                         )}
                       />
@@ -389,6 +405,7 @@ class PropertyDetailsForm extends Component {
                             placeholder={'Build Up Area'}
                             required
                             disabled={isActive}
+                            error={formikBag.errors.coveredParkingBulidArea}
                           />
                         )}
                       />
@@ -406,6 +423,7 @@ class PropertyDetailsForm extends Component {
                             placeholder={'Basement'}
                             required
                             disabled={isActive}
+                            error={formikBag.errors.shopFloorBasement}
                           />
                         )}
                       />

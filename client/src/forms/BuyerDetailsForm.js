@@ -22,6 +22,7 @@ import get from 'lodash/get'
 // import isEmpty from 'lodash/isEmpty'
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
+import { buyerDetailValidation } from '../utils/validator'
 
 class BuyerDetailsForm extends Component {
   state = {
@@ -213,11 +214,12 @@ class BuyerDetailsForm extends Component {
             buyerBranch: get(buyer, 'userDetails.salutaion', ''),
             buyerFinanceAmount: get(buyer, 'userDetails.salutaion', '')
           }}
+          validate={buyerDetailValidation}
+          validateOnChange
           onSubmit={async (values, { resetFrom }) => {
             const {
               match: { params }
             } = this.props
-
             if (
               Cookies.get('email') === get(buyer, 'userDetails.email', Cookies.get('email')) &&
               data.status === 'registry_buyer'
@@ -368,7 +370,7 @@ class BuyerDetailsForm extends Component {
                         label="Email address"
                         placeholder={'Email address'}
                         marginTop={'20px'}
-                        required
+                        error={formikBag.errors.email}
                       />
                     )}
                   />
@@ -478,7 +480,9 @@ class BuyerDetailsForm extends Component {
 
                       <Field
                         name="email"
-                        render={({ field }) => <TextInput {...field} label="E-mail" placeholder={'E-mail'} />}
+                        render={({ field }) => (
+                          <TextInput {...field} label="E-mail" placeholder={'E-mail'} error={formikBag.errors.email} />
+                        )}
                       />
 
                       <Field
@@ -806,7 +810,12 @@ class BuyerDetailsForm extends Component {
                           <Field
                             name="financeAmount"
                             render={({ field }) => (
-                              <TextInput {...field} label="Finance Amount" placeholder={'Finance Amount'} />
+                              <TextInput
+                                {...field}
+                                label="Finance Amount"
+                                placeholder={'Finance Amount'}
+                                error={formikBag.errors.amount}
+                              />
                             )}
                           />
                         </NormalFieldsTuple>
