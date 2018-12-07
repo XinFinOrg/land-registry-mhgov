@@ -7,7 +7,7 @@ var db = require('./../config/db');
 var config = require('./../config/config');
 var constants = require('../constants/constants');
 
-var web3Conf = process.env.Web3Conf||false;
+var web3Conf = false;
 
 if (web3Conf) {
 	var init = require('../web3Helpers/init.js');
