@@ -540,6 +540,7 @@ router.post('/addOwnerFinancer', async function(req, res) {
 	let registryId = req.body.registryId;
 	let propertyId = req.body.propertyId;
 	let ownerFinancer  = req.body.ownerFinancer || false;
+	console.log('addOwnerFinancer', ownerFinancer);
 	if (ownerFinancer && !ownerFinancer.email) {
 		console.log('ownerFinancer : improper data');
 		let error = helper.getErrorResponse('ResourceNotFound');
@@ -639,6 +640,7 @@ router.post('/addBuyer', async function(req, res) {
 	let propertyId = req.body.propertyId;
 	let buyerDetails = req.body.buyer;
 	let query = {registryId : registryId};
+	console.log('addBuyer', buyerDetails);
 	if (!buyerDetails.address) {
 		buyerDetails.address = "0xaca94ef8bd5ffee41947b4585a84bda5a3d3da6e";
 	}
@@ -714,6 +716,7 @@ router.post('/addBuyerFinancer', async function(req, res) {
 	let propertyId = req.body.propertyId;
 
 	let buyerFinancer  = req.body.buyerFinancer || false;
+	console.log('addBuyerFinancer', buyerFinancer);
 	if (!buyerFinancer.address) {
 		buyerFinancer.address = "0x95ced938f7991cd0dfcb48f0a06a40fa1af46ebc";
 	}
@@ -765,7 +768,7 @@ router.post('/payTokenAmount', async function(req, res) {
 	} catch(e) {
 		console.log(e)
 	}
-	console.log('registryData', registryData);
+
 	let tokenAmt = registryData.tokenAmt || 0;
 	//transfer amount from buyer to owner
 	let paymentRemaining = registryData.paymentRemaining || 0;
@@ -786,11 +789,12 @@ router.post('/payTokenAmount', async function(req, res) {
 	    if (owner && buyer) {
 			let m = await landRegistry.sendTokens(buyer, owner, 500);
 			console.log('payTokenAmount', m);
+			console.log('payTokenAmount', registryId, registryData.propertyId, buyer, owner, tokenAmt);
 
 	        m = await landRegistry.customTransferEvent(
 	            helper.web3StringToBytes32(registryId),
 	            helper.web3StringToBytes32(registryData.propertyId),
-	            "token_amt",
+	            helper.web3StringToBytes32("token_amt"),
 	            buyer,
 	            owner,
 	            parseInt(tokenAmt),
@@ -968,7 +972,7 @@ router.post('/buyerPayment', async function(req, res) {
 	            helper.web3StringToBytes32("buyer_to_owner"),
 	            buyer,
 	            owner,
-	            parseInt(tokenAmt),
+	            parseInt(oAmt),
 	        );
 	        console.log('customTransferEvent', m);
 		}
