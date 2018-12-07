@@ -398,7 +398,7 @@ class DocumentDetails extends Component {
               padding={'26px 31px 20px'}
               radius={'0 0 6px 6px'}
               shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-              margin={'40px 95px 100px'}
+              margin={'30px 95px 30px'}
               key={item.blockHash}>
               <FlexWrapper justifyContent={'space-between'}>
                 <InformTitle paddingTop={'0'} paddingBottom={'0'}>
@@ -516,7 +516,7 @@ class DocumentDetails extends Component {
               padding={'26px 31px 20px'}
               radius={'0 0 6px 6px'}
               shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-              margin={'40px 95px 100px'}
+              margin={'30px 95px 30px'}
               key={item.blockHash}>
               <FlexWrapper justifyContent={'space-between'}>
                 <InformTitle paddingTop={'0'} paddingBottom={'0'}>
