@@ -89,6 +89,16 @@ contract LandRegistry is LandRecordContract, StandardToken {
         uint created
     );
 
+    event TransferTokens(
+        bytes32 registryId,
+        bytes32 propertyId,
+        bytes32 transactionType,
+        address from,
+        address to,
+        uint amount,
+        uint created
+    );
+
     constructor() public {
         admin = msg.sender;
         totalSupply_ = 1000000000000;
@@ -217,6 +227,26 @@ contract LandRegistry is LandRecordContract, StandardToken {
             _registryId,
             _propertyId,
             _status,
+            _created
+        );
+    }
+
+    function transferTokens(
+        bytes32 _registryId,
+        bytes32 _propertyId,
+        bytes32 _transactionType,
+        address _from,
+        address _to,
+        uint _amount,
+        uint _created
+    ) public isAdmin {
+        emit TransferTokens(
+            _registryId,
+            _propertyId,
+            _transactionType,
+            _from,
+            _to,
+            _amount,
             _created
         );
     }

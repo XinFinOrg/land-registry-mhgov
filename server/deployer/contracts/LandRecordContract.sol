@@ -46,6 +46,12 @@ contract LandRecordContract {
         uint created
     );
 
+    event AddOwner(
+        bytes32 propertyId,
+        address owner,
+        uint created
+    );
+
     event SetStatus(
         bytes32 propertyId,
         bytes32 status,
@@ -88,6 +94,21 @@ contract LandRecordContract {
             _openParking,
             _coveredParking,
             _floorNo,
+            _owner,
+            _created
+        );
+    }
+
+    function addOwner(
+        bytes32 _propertyId,
+        address _owner,
+        uint _created
+    ) public isAdmin isPropertyExists(_propertyId) {
+
+        properties[_propertyId].owners.push(_owner);
+
+        emit AddOwner(
+            _propertyId,
             _owner,
             _created
         );

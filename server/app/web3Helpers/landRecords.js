@@ -56,6 +56,19 @@ var setStatus = async function(
     );
 };
 
+var addOwner = async function(
+    propertyId,
+    owner,
+    created = Date.now()
+) {
+    return await contractInstance.addOwner(
+        propertyId,
+        owner,
+        created,
+        {from: web3.eth.coinbase, gas:1000000}
+    );
+};
+
 var allEvents = function() {
     contractInstance.allEvents({}).get((e, res) => console.log('allEvents', JSON.stringify(res, null, 4)));
 }
@@ -92,6 +105,10 @@ var getAllEvents = async function(propertyId) {
     events = await (Promisify(cb => eventInstance.get(cb)));
     allEvents = allEvents.concat(events);
 
+    eventInstance = contractInstance.AddOwner(f1, f2);
+    events = await (Promisify(cb => eventInstance.get(cb)));
+    allEvents = allEvents.concat(events);
+
     allEvents = allEvents.filter(tx => tx.args && helper.bytesToStr(tx.args.propertyId) == propertyId);
     //handle bignumbers
     allEvents = helper.processEventBigNumbers(allEvents);
@@ -104,6 +121,7 @@ var getAllEvents = async function(propertyId) {
 
 module.exports = {
     addProperty : addProperty,
+    addOwner : addOwner,
     setStatus : setStatus,
     getAllEvents : getAllEvents
 };

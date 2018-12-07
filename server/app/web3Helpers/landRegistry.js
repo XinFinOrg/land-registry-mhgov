@@ -5,6 +5,8 @@ var contractJson = require('../../deployer/build/contracts/LandRegistry.json');
 var init = require('./init.js');
 var helper = require('../routes/helper');
 web3 = init.web3;
+var testrpc = process.env.TESTRPC;
+
 /*var config = require('../../config/config');
 var contractOwner = config.contractOwner;*/
 var getInstance = function(data) {
@@ -114,6 +116,27 @@ var setStatus = async function(
     );
 };
 
+var customTransferEvent = async function(
+    registryId,
+    propertyId,
+    type,
+    from,
+    to,
+    amount,
+    created = Date.now()
+) {
+    return await contractInstance.TransferTokens(
+        registryId,
+        propertyId,
+        type,
+        from,
+        to,
+        amount,
+        created,
+        {from: web3.eth.coinbase, gas:100000}
+    );
+};
+
 //wallet related apis
 var getBalance = async function(address) {
     return await contractInstance.getBalance.call(address);
@@ -135,7 +158,11 @@ var buyTokens = async function(to, tokens) {
     return await contractInstance.transfer(to, tokens, {from: web3.eth.coinbase, gas:1000000});
 };
 
-var sendTokens = async function(_from, _to, tokens) {
+var sendTokens  = async function(_from, _to, tokens) {
+    if (!testrpc) {
+        var unlock = init.unlockSync(_from, "123");        
+        console.log("unlock", unlock);
+    }
     return await contractInstance.transfer(_to, tokens, {from: _from, gas:1000000});
 };
 
@@ -187,6 +214,10 @@ var getAllEvents = async function(registryId) {
     events = await (Promisify(cb => eventInstance.get(cb)));
     allEvents = allEvents.concat(events);
 
+    eventInstance = contractInstance.TransferTokens(f1,  f2);
+    events = await (Promisify(cb => eventInstance.get(cb)));
+    allEvents = allEvents.concat(events);
+
     eventInstance = contractInstance.SetStatus(f1,  f2);
     events = await (Promisify(cb => eventInstance.get(cb)));
     allEvents = allEvents.concat(events);
@@ -213,5 +244,6 @@ module.exports = {
 	addTokenSupply : addTokenSupply,
 	buyTokens : buyTokens,
 	sendTokens : sendTokens,
+    customTransferEvent : customTransferEvent,
 	getAllEvents : getAllEvents
 };
