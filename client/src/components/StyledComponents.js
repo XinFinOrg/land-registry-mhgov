@@ -29,6 +29,11 @@ const TopWrapper = styled.div`
   align-items: center;
   padding-bottom: 32px;
 `
+
+const PaddingBlank = styled.div`
+  padding: 15px;
+`
+
 const InsideTitle = styled.h3`
   font-size: 20px;
   font-weight: 300;
@@ -220,6 +225,15 @@ const FieldGroupWithTitle = styled.div`
     }
   `};
 `
+const StyledFlex = styled(FieldGroupWithTitle)`
+  justify-content: space-between;
+  padding-bottom: 10px;
+  & > div {
+    flex-basis: calc(50% - 10px) !important;
+    justify-content: space-between;
+    margin: 0;
+  }
+`
 const StyledHeader = styled.div`
   font-size: 16px;
   font-weight: 600;
@@ -347,9 +361,11 @@ export {
   ButtonGroup,
   StyledHead,
   IconCircle,
+  PaddingBlank,
   ModalScrollWrapper,
   FlexWrapper,
   MediumText,
   Close,
-  CloseWrap
+  CloseWrap,
+  StyledFlex
 }

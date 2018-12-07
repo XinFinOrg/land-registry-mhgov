@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { Formik, Field } from 'formik'
+import styled from 'styled-components'
+
 import {
   Paper,
   FormikForm,
+  PaddingBlank,
   FormDetailsContainer,
   TextInput,
   InformTitle,
@@ -10,9 +13,13 @@ import {
   Button,
   ButtonGroup,
   FieldGroupWithTitle,
-  // CustomTable,
-  // StyledHead,
-  SelectBox
+  SelectBox,
+  Close,
+  CloseWrap,
+  PaperTitle,
+  Modal,
+  FlexWrapper,
+  StyledFlex
 } from '../components'
 // import { customData, partyDetails } from '../constants'
 import withRouter from 'react-router/withRouter'
@@ -22,14 +29,18 @@ import get from 'lodash/get'
 // import isEmpty from 'lodash/isEmpty'
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
-import { buyerDetailValidation } from '../utils/validator'
+import { buyerDetailValidation, buyerDetail } from '../utils/validator'
 
+const ModalData = styled('div')`
+  padding: 15px;
+`
 class BuyerDetailsForm extends Component {
   state = {
     isLoading: false,
     isLoadingReject: false,
     isLoadingSkip: false,
-    addFinancier: false
+    addFinancier: false,
+    isVerified: false
   }
   componentDidMount() {
     window.scrollTo(0, 0)
@@ -87,7 +98,6 @@ class BuyerDetailsForm extends Component {
       console.log('ERROR', error)
     }
   }
-
   skipFinancier = async () => {
     const {
       match: { params }
@@ -115,9 +125,8 @@ class BuyerDetailsForm extends Component {
       data: { buyer }
     } = this.props
     console.log('userDetails==>', get(this.props.data.buyer, 'userDetails', []))
-    const { isLoading, isLoadingReject, isLoadingSkip, addFinancier } = this.state
+    const { isLoading, isLoadingReject, isLoadingSkip, addFinancier, isVerified } = this.state
     // console.log('this.props', this.props)
-
     /* const columns = [
       {
         Header: <StyledHead>Sr. No.</StyledHead>,
@@ -333,21 +342,24 @@ class BuyerDetailsForm extends Component {
                       />
                     )}
                   />
-                  <Field
-                    name="selectPartyCategory"
-                    render={({ field }) => (
-                      <SelectBox
-                        label="Select Party Category"
-                        onChange={selectPartyCategory =>
-                          formikBag.setFieldValue('selectPartyCategory', selectPartyCategory.value)
-                        }
-                        options={[{ label: 'Admin', value: 'Admin' }, { label: 'User', value: 'User' }]}
-                        placeholder="Select Party Type"
-                        defaultValue={{ label: 'Admin', value: 'Admin' }}
-                        isSearchable={false}
-                      />
-                    )}
-                  />
+                  <PaddingBlank>
+                    <Field
+                      name="selectPartyCategory"
+                      render={({ field }) => (
+                        <SelectBox
+                          label="Select Party Category"
+                          onChange={selectPartyCategory =>
+                            formikBag.setFieldValue('selectPartyCategory', selectPartyCategory.value)
+                          }
+                          options={[{ label: 'Admin', value: 'Admin' }, { label: 'User', value: 'User' }]}
+                          placeholder="Select Party Type"
+                          defaultValue={{ label: 'Admin', value: 'Admin' }}
+                          isSearchable={false}
+                        />
+                      )}
+                    />
+                  </PaddingBlank>
+
                   <Field
                     name="isExecuter"
                     render={({ field }) => (
@@ -375,8 +387,6 @@ class BuyerDetailsForm extends Component {
                     )}
                   />
                 </FormDetailsContainer>
-                {console.log('BUYER DETAILS', this.props.data)}
-
                 {Cookies.get('email') === get(buyer, 'userDetails.email', Cookies.get('email')) && (
                   <FormDetailsContainer>
                     <InformTitle>Parties Details</InformTitle>
@@ -624,6 +634,7 @@ class BuyerDetailsForm extends Component {
                 </FieldGroupWithTitle>
               </FormDetailsContainer> */}
               </Paper>
+
               <ButtonGroup>
                 {data.status === 'registry_buyer_confirmed' ? (
                   <React.Fragment>
@@ -632,7 +643,7 @@ class BuyerDetailsForm extends Component {
                       width={'150px'}
                       title="Add Financier"
                       type="button"
-                      onClick={() => this.setState({ addFinancier: true })}
+                      onClick={() => this.setState({ addFinancier: !addFinancier })}
                     />
                     <Button
                       size={'medium'}
@@ -701,7 +712,7 @@ class BuyerDetailsForm extends Component {
             </FormikForm>
           )}
         />
-        {addFinancier && (
+        {/* {addFinancier && (
           <React.Fragment>
             <Formik
               enableReinitialize
@@ -765,7 +776,7 @@ class BuyerDetailsForm extends Component {
                             )}
                           />
 
-                          {/* <Field
+                         <Field
                     name="city"
                     render={({ field }) => <TextInput {...field} label="City" placeholder={'City'} />}
                   />
@@ -794,18 +805,18 @@ class BuyerDetailsForm extends Component {
                     render={({ field }) => (
                       <TextInput {...field} label="Finance amount due now" placeholder={'Finance amount due now'} />
                     )}
-                  /> */}
+                  /> 
                         </FieldGroupWithTitle>
                       </FormDetailsContainer>
                       <FormDetailsContainer>
                         <InformTitle>Finance Amount</InformTitle>
                         <NormalFieldsTuple shrink>
-                          {/* <Field
+                           <Field
                             name="loanAmount"
                             render={({ field }) => (
                               <TextInput {...field} label="Loan amount" placeholder={'Loan amount'} />
                             )}
-                          /> */}
+                          /> 
 
                           <Field
                             name="financeAmount"
@@ -835,6 +846,114 @@ class BuyerDetailsForm extends Component {
                 </React.Fragment>
               )}
             />
+          </React.Fragment>
+        )} */}
+        {addFinancier && (
+          <React.Fragment>
+            <Modal show={addFinancier}>
+              <CloseWrap>
+                <PaperTitle color="#fff">Financer Details</PaperTitle>
+                <Close onClick={() => this.setState({ addFinancier: !addFinancier })} />
+              </CloseWrap>
+              <ModalData>
+                <Formik
+                  initialValues={{ email: '', financeAmount: '1000000' }}
+                  validate={buyerDetail}
+                  validateOnChange
+                  onSubmit={async values => {
+                    const {
+                      match: { params }
+                    } = this.props
+                    if (isVerified) {
+                      try {
+                        this.setState({ isLoading: true })
+                        const { data } = await axios.post(`${API_URL}/addBuyerFinancer`, {
+                          registryId: params.tab3,
+                          propertyId: Cookies.get('propertyId'),
+                          buyerFinancer: {
+                            email: values.email,
+                            financeAmount: values.financeAmount,
+                            address: Cookies.get('address')
+                          },
+                          status: 'registry_buyer_financer'
+                        })
+                        console.log('Add financier', data)
+                        await toast.success(`${'Buyer financier added!'}`, {
+                          position: toast.POSITION.TOP_CENTER
+                        })
+                        await this.setState({
+                          isLoading: false
+                        })
+                        // this.props.history.push('/dashboard')
+                      } catch (error) {
+                        await this.setState({ isLoading: false })
+                        toast.error(`${'Some error occurred!'}`, {
+                          position: toast.POSITION.TOP_CENTER
+                        })
+                        console.log('ERROR', error)
+                      }
+                    } else {
+                      try {
+                        this.setState({ isLoading: true })
+                        const { data } = await axios.get(`${API_URL}/getUserDetails?email=${values.email}`)
+                        console.log('Add financier', data)
+                        await toast.success(`${'Email is verified!'}`, {
+                          position: toast.POSITION.TOP_CENTER
+                        })
+                        await this.setState({
+                          isLoading: false,
+                          addFinancerData: data.data,
+                          isVerified: get(data.data, 'role', '') === 'bank' ? true : false
+                        })
+                        // this.props.history.push('/dashboard')
+                      } catch (error) {
+                        await this.setState({ isLoading: false })
+                        toast.error(`${'Some error occurred!'}`, {
+                          position: toast.POSITION.TOP_CENTER
+                        })
+                        console.log('ERROR', error)
+                      }
+                    }
+                  }}
+                  render={formikBag => (
+                    <FormikForm>
+                      <Field
+                        name="email"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            label="Email Address"
+                            placeholder={'Email Address'}
+                            error={formikBag.errors.email}
+                          />
+                        )}
+                      />
+                      {isVerified && (
+                        <React.Fragment>
+                          <FlexWrapper flexDirection="column">
+                            <InformTitle>Finance Amount</InformTitle>
+                            <Field
+                              name="financeAmount"
+                              render={({ field }) => (
+                                <TextInput
+                                  {...field}
+                                  label="Finance Amount"
+                                  placeholder={'Finance Amount'}
+                                  error={formikBag.errors.amount}
+                                />
+                              )}
+                            />
+                          </FlexWrapper>
+                        </React.Fragment>
+                      )}
+                      <FlexWrapper justifyContent="center">
+                        <Button size={'medium'} width={'150px'} title="Submit" type="submit" />
+                      </FlexWrapper>
+                    </FormikForm>
+                  )}
+                />
+              </ModalData>
+            </Modal>
           </React.Fragment>
         )}
       </React.Fragment>

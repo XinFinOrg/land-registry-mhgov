@@ -124,10 +124,10 @@ export const buyerDetail = values => {
   } else if (!/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(values.email)) {
     errors.email = 'Enter a valid email '
   }
-  //only number
+  /*  //only number
   if (!values.amount || !values.amount.match(/^\d+$/)) {
     errors.amount = 'Please enter numbers'
-  }
+  } */
   return errors
 }
 

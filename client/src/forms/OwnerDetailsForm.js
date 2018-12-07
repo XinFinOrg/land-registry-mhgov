@@ -18,7 +18,8 @@ import {
   CloseWrap,
   PaperTitle,
   Modal,
-  FlexWrapper
+  FlexWrapper,
+  StyledFlex
 } from '../components'
 import withRouter from 'react-router/withRouter'
 import get from 'lodash/get'
@@ -27,16 +28,6 @@ import { API_URL } from '../constants'
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
 import { addFinancer } from '../utils/validator'
-
-const StyledFlex = styled(FieldGroupWithTitle)`
-  justify-content: space-between;
-  padding-bottom: 10px;
-  & > div {
-    flex-basis: calc(50% - 10px) !important;
-    justify-content: space-between;
-    margin: 0;
-  }
-`
 
 const SingleForm = styled('div')`
   margin-top: -30px;
@@ -681,7 +672,7 @@ class OwnerDetailsForm extends Component {
                   if (isVerified) {
                     try {
                       this.setState({ isLoading: true })
-                      const { data } = await axios.post(`${API_URL}/getUserDetails`, {
+                      const { data } = await axios.post(`${API_URL}/addOwnerFinancer`, {
                         registryId: params.tab3,
                         propertyId: Cookies.get('propertyId'),
                         ownerFinancer: {
@@ -696,7 +687,7 @@ class OwnerDetailsForm extends Component {
                       await toast.success(`${'Owner financier added!'}`, {
                         position: toast.POSITION.TOP_CENTER
                       })
-                      await this.setState({ isLoading: false })
+                      await this.setState({ isLoading: false, addFinancer: false })
                       this.props.history.push('/dashboard')
                     } catch (error) {
                       await this.setState({ isLoading: false })
@@ -718,7 +709,6 @@ class OwnerDetailsForm extends Component {
                         addFinancerData: data.data,
                         isVerified: get(data.data, 'role', '') === 'bank' ? true : false
                       })
-                      // this.props.history.push('/dashboard')
                     } catch (error) {
                       await this.setState({ isLoading: false })
                       toast.error(`${'Some error occurred!'}`, {

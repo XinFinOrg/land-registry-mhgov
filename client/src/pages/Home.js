@@ -9,6 +9,7 @@ import {
   PaperTitle,
   PaperSubTitle,
   Radio,
+  PaddingBlank,
   Checkbox,
   Modal,
   SelectBox,
@@ -146,10 +147,6 @@ const CheckboxWrap = styled.div`
     font-size: 14px;
     padding-left: 4px;
   }
-`
-
-const PaddingBlank = styled.div`
-  padding: 10px;
 `
 
 /* const ButtonWrap = styled.section`
