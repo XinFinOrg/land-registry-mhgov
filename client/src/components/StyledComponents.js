@@ -31,7 +31,7 @@ const TopWrapper = styled.div`
 `
 
 const PaddingBlank = styled.div`
-  padding: 15px;
+  padding: 11px;
 `
 
 const InsideTitle = styled.h3`
@@ -234,6 +234,14 @@ const StyledFlex = styled(FieldGroupWithTitle)`
     margin: 0;
   }
 `
+
+const HalfWraper = styled.div`
+  width: 50%;
+  div {
+    width: 100%;
+  }
+`
+
 const StyledHeader = styled.div`
   font-size: 16px;
   font-weight: 600;
@@ -248,7 +256,8 @@ const IconWrapper = styled.div`
   padding-left: 8px;
 `
 const FormikForm = styled(Form)`
-  margin-bottom: ${props => (props.marginBottom ? props.marginBottom : '100px')};
+  margin-bottom: ${props => (props.marginBottom ? props.marginBottom : '50px')};
+  width: 100%;
 `
 const ButtonGroup = styled.div`
   margin: 30px 95px 0;
@@ -365,6 +374,7 @@ export {
   ModalScrollWrapper,
   FlexWrapper,
   MediumText,
+  HalfWraper,
   Close,
   CloseWrap,
   StyledFlex

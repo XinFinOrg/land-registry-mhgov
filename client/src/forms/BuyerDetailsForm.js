@@ -11,6 +11,7 @@ import {
   InformTitle,
   NormalFieldsTuple,
   Button,
+  HalfWraper,
   ButtonGroup,
   FieldGroupWithTitle,
   SelectBox,
@@ -21,7 +22,7 @@ import {
   FlexWrapper,
   StyledFlex
 } from '../components'
-// import { customData, partyDetails } from '../constants'
+// import{customData, partyDetails } from '../constants'
 import withRouter from 'react-router/withRouter'
 import axios from 'axios'
 import { API_URL } from '../constants'
@@ -34,6 +35,7 @@ import { buyerDetailValidation, buyerDetail } from '../utils/validator'
 const ModalData = styled('div')`
   padding: 15px;
 `
+
 class BuyerDetailsForm extends Component {
   state = {
     isLoading: false,
@@ -120,6 +122,7 @@ class BuyerDetailsForm extends Component {
     }
   }
   render() {
+    console.log('new porpsssssssssss', get(this.props, 'data', {}).hasOwnProperty('buyer'))
     const {
       data,
       data: { buyer }
@@ -179,6 +182,7 @@ class BuyerDetailsForm extends Component {
         Cell: props => <Button size="action" shadow={'none'} title="View" radius={'4px'} />
       }
     ] */
+
     return (
       <React.Fragment>
         <Formik
@@ -281,7 +285,6 @@ class BuyerDetailsForm extends Component {
             } else {
               try {
                 this.setState({ isLoading: true })
-
                 const { data } = await axios.post(`${API_URL}/addBuyer`, {
                   registryId: params.tab3,
                   propertyId: Cookies.get('propertyId'),
@@ -309,13 +312,14 @@ class BuyerDetailsForm extends Component {
             }
           }}
           render={formikBag => (
-            <FormikForm>
-              <Paper
-                padding={'0 31px 20px'}
-                radius={'0 0 6px 6px'}
-                shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-                margin={'0 95px'}>
-                {/* <FormDetailsContainer paddingTop={'0'} display={'block'}>
+            <React.Fragment>
+              <FormikForm>
+                <Paper
+                  padding={'0 31px 20px'}
+                  radius={'0 0 6px 6px'}
+                  shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+                  margin={'0 95px'}>
+                  {/*<FormDetailsContainer paddingTop={'0'} display={'block'}>
                 <InformTitle>List of Properties</InformTitle>
                 <CustomTable
                   data={customData}
@@ -328,217 +332,225 @@ class BuyerDetailsForm extends Component {
                   minRows={0}
                 />
               </FormDetailsContainer> */}
-                <FormDetailsContainer flexBasis={'calc(50% - 10px)'}>
-                  <Field
-                    name="selectPartyType"
-                    render={({ field }) => (
-                      <SelectBox
-                        label="Select Party Type"
-                        onChange={selectPartyType => formikBag.setFieldValue('selectPartyType', selectPartyType.value)}
-                        options={[{ label: 'Admin', value: 'Admin' }, { label: 'User', value: 'User' }]}
-                        placeholder="Select Party Type"
-                        defaultValue={{ label: 'Admin', value: 'Admin' }}
-                        isSearchable={false}
-                      />
-                    )}
-                  />
-                  <PaddingBlank>
-                    <Field
-                      name="selectPartyCategory"
-                      render={({ field }) => (
-                        <SelectBox
-                          label="Select Party Category"
-                          onChange={selectPartyCategory =>
-                            formikBag.setFieldValue('selectPartyCategory', selectPartyCategory.value)
-                          }
-                          options={[{ label: 'Admin', value: 'Admin' }, { label: 'User', value: 'User' }]}
-                          placeholder="Select Party Type"
-                          defaultValue={{ label: 'Admin', value: 'Admin' }}
-                          isSearchable={false}
-                        />
-                      )}
-                    />
-                  </PaddingBlank>
-
-                  <Field
-                    name="isExecuter"
-                    render={({ field }) => (
-                      <SelectBox
-                        label="Is Executer?"
-                        onChange={isExecuter => formikBag.setFieldValue('isExecuter', isExecuter.value)}
-                        options={[{ label: 'Yes', value: 'Yes' }, { label: 'No', value: 'No' }]}
-                        placeholder="Select Party Type"
-                        defaultValue={{ label: 'Yes', value: 'Yes' }}
-                        isSearchable={false}
-                      />
-                    )}
-                  />
-
-                  <Field
-                    name="email"
-                    render={({ field }) => (
-                      <TextInput
-                        {...field}
-                        label="Email address"
-                        placeholder={'Email address'}
-                        marginTop={'20px'}
-                        error={formikBag.errors.email}
-                      />
-                    )}
-                  />
-                </FormDetailsContainer>
-                {Cookies.get('email') === get(buyer, 'userDetails.email', Cookies.get('email')) && (
-                  <FormDetailsContainer>
-                    <InformTitle>Parties Details</InformTitle>
-                    <FieldGroupWithTitle>
+                  <FormDetailsContainer flexBasis={'calc(50% - 10px)'}>
+                    <div>
                       <Field
-                        name="salutation"
-                        render={({ field }) => <TextInput {...field} label="Salutation" placeholder={'Salutation'} />}
-                      />
-
-                      <Field
-                        name="partyFirstName"
+                        name="selectPartyType"
                         render={({ field }) => (
-                          <TextInput {...field} label="Party First Name" placeholder={'Party First Name'} />
-                        )}
-                      />
-
-                      <Field
-                        name="partyMiddleName"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Party Middle Name" placeholder={'Party Middle Name'} />
-                        )}
-                      />
-
-                      <Field
-                        name="partyLastName"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Party Last Name" placeholder={'Party Last Name'} />
-                        )}
-                      />
-
-                      <Field
-                        name="aliasName"
-                        render={({ field }) => <TextInput {...field} label="Alias Name" placeholder={'Alias Name'} />}
-                      />
-
-                      <Field
-                        name="identificationMark1"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Identification Mark 1" placeholder={'Identification Mark 1'} />
-                        )}
-                      />
-
-                      <Field
-                        name="identificationMark2"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Identification Mark 2" placeholder={'Identification Mark 2'} />
-                        )}
-                      />
-
-                      <Field
-                        name="dateOfBirth"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Date of Birth" placeholder={'Date of Birth'} />
-                        )}
-                      />
-
-                      <Field
-                        name="age"
-                        render={({ field }) => <TextInput {...field} label="Age" placeholder={'Age'} />}
-                      />
-
-                      <Field
-                        name="uid"
-                        render={({ field }) => <TextInput {...field} label="UID" placeholder={'UID'} />}
-                      />
-
-                      <Field
-                        name="identificationTypeID"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Identification Type ID" placeholder={'Identification Type ID'} />
-                        )}
-                      />
-
-                      <Field
-                        name="identificationDescription"
-                        render={({ field }) => (
-                          <TextInput
-                            {...field}
-                            label="Identification Description"
-                            placeholder={'Identification Description'}
+                          <SelectBox
+                            label="Select Party Type"
+                            onChange={selectPartyType =>
+                              formikBag.setFieldValue('selectPartyType', selectPartyType.value)
+                            }
+                            options={[{ label: 'Admin', value: 'Admin' }, { label: 'User', value: 'User' }]}
+                            placeholder="Select Party Type"
+                            defaultValue={{ label: 'Admin', value: 'Admin' }}
+                            isSearchable={false}
                           />
                         )}
                       />
-
+                      <PaddingBlank />
                       <Field
-                        name="panForm60"
+                        name="selectPartyCategory"
                         render={({ field }) => (
-                          <TextInput {...field} label="PAN/Form 60/61" placeholder={'PAN/Form 60/61'} />
+                          <SelectBox
+                            label="Select Party Category"
+                            onChange={selectPartyCategory =>
+                              formikBag.setFieldValue('selectPartyCategory', selectPartyCategory.value)
+                            }
+                            options={[{ label: 'Admin', value: 'Admin' }, { label: 'User', value: 'User' }]}
+                            placeholder="Select Party Type"
+                            defaultValue={{ label: 'Admin', value: 'Admin' }}
+                            isSearchable={false}
+                          />
                         )}
                       />
-
+                    </div>
+                    <div>
                       <Field
-                        name="occupation"
-                        render={({ field }) => <TextInput {...field} label="Occupation" placeholder={'Occupation'} />}
+                        name="isExecuter"
+                        render={({ field }) => (
+                          <SelectBox
+                            label="Is Executer?"
+                            onChange={isExecuter => formikBag.setFieldValue('isExecuter', isExecuter.value)}
+                            options={[{ label: 'Yes', value: 'Yes' }, { label: 'No', value: 'No' }]}
+                            placeholder="Select Party Type"
+                            defaultValue={{ label: 'Yes', value: 'Yes' }}
+                            isSearchable={false}
+                          />
+                        )}
                       />
-
-                      <Field
-                        name="gender"
-                        render={({ field }) => <TextInput {...field} label="Gender" placeholder={'Gender'} />}
-                      />
-
                       <Field
                         name="email"
                         render={({ field }) => (
-                          <TextInput {...field} label="E-mail" placeholder={'E-mail'} error={formikBag.errors.email} />
+                          <TextInput
+                            {...field}
+                            label="Email address"
+                            placeholder={'Email address'}
+                            marginTop={'20px'}
+                            error={formikBag.errors.email}
+                          />
                         )}
                       />
-
-                      <Field
-                        name="mobileNo"
-                        render={({ field }) => <TextInput {...field} label="Mobile No." placeholder={'Mobile No.'} />}
-                      />
-
-                      <Field
-                        name="presentationExemption"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Presentation Exemption" placeholder={'Presentation Exemption'} />
-                        )}
-                      />
-
-                      <Field
-                        name="pinCode"
-                        render={({ field }) => <TextInput {...field} label="PIN Code" placeholder={'PIN Code'} />}
-                      />
-
-                      <Field
-                        name="addressSame"
-                        render={({ field }) => (
-                          <TextInput {...field} label="Address Same As Above" placeholder={'Address Same As Above'} />
-                        )}
-                      />
-
-                      <Field
-                        name="district"
-                        render={({ field }) => <TextInput {...field} label="District" placeholder={'District'} />}
-                      />
-
-                      <Field
-                        name="taluka"
-                        render={({ field }) => <TextInput {...field} label="Taluka" placeholder={'Taluka'} />}
-                      />
-
-                      <Field
-                        name="village"
-                        render={({ field }) => <TextInput {...field} label="Village" placeholder={'Village'} />}
-                      />
-                    </FieldGroupWithTitle>
+                    </div>
                   </FormDetailsContainer>
-                )}
-                {/* <FormDetailsContainer display="block">
-                <InformTitle>Details Of Parties</InformTitle>
-                <CustomTable
+
+                  {get(this.props, 'data', {}).hasOwnProperty('buyer') && (
+                    <FormDetailsContainer>
+                      <InformTitle>Parties Details</InformTitle>
+                      <FieldGroupWithTitle>
+                        <Field
+                          name="salutation"
+                          render={({ field }) => <TextInput {...field} label="Salutation" placeholder={'Salutation'} />}
+                        />
+                        <Field
+                          name="partyFirstName"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Party First Name" placeholder={'Party First Name'} />
+                          )}
+                        />
+                        <Field
+                          name="partyMiddleName"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Party Middle Name" placeholder={'Party Middle Name'} />
+                          )}
+                        />
+                        <Field
+                          name="partyLastName"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Party Last Name" placeholder={'Party Last Name'} />
+                          )}
+                        />
+                        <Field
+                          name="aliasName"
+                          render={({ field }) => <TextInput {...field} label="Alias Name" placeholder={'Alias Name'} />}
+                        />
+                        <Field
+                          name="identificationMark1"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Identification Mark 1" placeholder={'Identification Mark 1'} />
+                          )}
+                        />
+                        <Field
+                          name="identificationMark2"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Identification Mark 2" placeholder={'Identification Mark 2'} />
+                          )}
+                        />
+                        <Field
+                          name="dateOfBirth"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Date of Birth" placeholder={'Date of Birth'} />
+                          )}
+                        />
+                        <Field
+                          name="age"
+                          render={({ field }) => <TextInput {...field} label="Age" placeholder={'Age'} />}
+                        />
+                        <Field
+                          name="uid"
+                          render={({ field }) => <TextInput {...field} label="UID" placeholder={'UID'} />}
+                        />
+                        <Field
+                          name="identificationTypeID"
+                          render={({ field }) => (
+                            <TextInput
+                              {...field}
+                              label="Identification Type ID"
+                              placeholder={'Identification Type ID'}
+                            />
+                          )}
+                        />
+                        <Field
+                          name="identificationDescription"
+                          render={({ field }) => (
+                            <TextInput
+                              {...field}
+                              label="Identification Description"
+                              placeholder={'Identification Description'}
+                            />
+                          )}
+                        />
+
+                        <Field
+                          name="panForm60"
+                          render={({ field }) => (
+                            <TextInput {...field} label="PAN/Form 60/61" placeholder={'PAN/Form 60/61'} />
+                          )}
+                        />
+
+                        <Field
+                          name="occupation"
+                          render={({ field }) => <TextInput {...field} label="Occupation" placeholder={'Occupation'} />}
+                        />
+
+                        <Field
+                          name="gender"
+                          render={({ field }) => <TextInput {...field} label="Gender" placeholder={'Gender'} />}
+                        />
+
+                        <Field
+                          name="email"
+                          render={({ field }) => (
+                            <TextInput
+                              {...field}
+                              label="E-mail"
+                              placeholder={'E-mail'}
+                              error={formikBag.errors.email}
+                            />
+                          )}
+                        />
+
+                        <Field
+                          name="mobileNo"
+                          render={({ field }) => <TextInput {...field} label="Mobile No." placeholder={'Mobile No.'} />}
+                        />
+
+                        <Field
+                          name="presentationExemption"
+                          render={({ field }) => (
+                            <TextInput
+                              {...field}
+                              label="Presentation Exemption"
+                              placeholder={'Presentation Exemption'}
+                            />
+                          )}
+                        />
+
+                        <Field
+                          name="pinCode"
+                          render={({ field }) => <TextInput {...field} label="PIN Code" placeholder={'PIN Code'} />}
+                        />
+
+                        <Field
+                          name="addressSame"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Address Same As Above" placeholder={'Address Same As Above'} />
+                          )}
+                        />
+
+                        <Field
+                          name="district"
+                          render={({ field }) => <TextInput {...field} label="District" placeholder={'District'} />}
+                        />
+
+                        <Field
+                          name="taluka"
+                          render={({ field }) => <TextInput {...field} label="Taluka" placeholder={'Taluka'} />}
+                        />
+
+                        <Field
+                          name="village"
+                          render={({ field }) => <TextInput {...field} label="Village" placeholder={'Village'} />}
+                        />
+                      </FieldGroupWithTitle>
+                    </FormDetailsContainer>
+                  )}
+
+                  {/*
+                <FormDetailsContainer display="block">
+                 <InformTitle>Details Of Parties</InformTitle>
+                  <CustomTable
                   data={partyDetails}
                   columns={partyDetailscolumns}
                   resizable={false}
@@ -549,7 +561,7 @@ class BuyerDetailsForm extends Component {
                   minRows={0}
                 />
               </FormDetailsContainer> */}
-                {/*  <FormDetailsContainer>
+                  {/*  <FormDetailsContainer>
                 <InformTitle>Financier Details</InformTitle>
                 <FieldGroupWithTitle>
                   <Field
@@ -591,7 +603,7 @@ class BuyerDetailsForm extends Component {
                   />
                 </FieldGroupWithTitle>
               </FormDetailsContainer> */}
-                {/* <FormDetailsContainer>
+                  {/* <FormDetailsContainer>
                 <InformTitle>Outstanding Loan Amount</InformTitle>
                 <NormalFieldsTuple shrink>
                   <Field
@@ -633,83 +645,111 @@ class BuyerDetailsForm extends Component {
                   />
                 </FieldGroupWithTitle>
               </FormDetailsContainer> */}
-              </Paper>
+                </Paper>
 
-              <ButtonGroup>
-                {data.status === 'registry_buyer_confirmed' ? (
-                  <React.Fragment>
+                <ButtonGroup>
+                  {data.status === 'registry_buyer_confirmed' ? (
+                    <React.Fragment>
+                      <Button
+                        size={'medium'}
+                        width={'150px'}
+                        title="Add Financier"
+                        type="button"
+                        onClick={() => this.setState({ addFinancier: !addFinancier })}
+                      />
+                      <Button
+                        size={'medium'}
+                        width={'150px'}
+                        title="Skip Financier"
+                        type="button"
+                        isLoading={isLoadingSkip}
+                        disabled={isLoadingSkip}
+                        onClick={() => this.skipFinancier()}
+                      />
+                    </React.Fragment>
+                  ) : Cookies.get('email') === get(buyer, 'email', '') && data.status === 'registry_buyer' ? (
+                    <React.Fragment>
+                      <Button
+                        size={'medium'}
+                        width={'150px'}
+                        isLoading={isLoadingReject}
+                        title="reject"
+                        type="button"
+                        disabled={isLoadingReject}
+                        onClick={() => this.rejectBuyer()}
+                      />
+                      <Button
+                        size={'medium'}
+                        width={'150px'}
+                        isLoading={isLoading}
+                        disabled={isLoading}
+                        title="Confirm"
+                        type="submit"
+                      />
+                    </React.Fragment>
+                  ) : Cookies.get('email') === get(buyer, 'userDetails.buyerFinancer.email', Cookies.get('email')) &&
+                  data.status === 'registry_buyer_financer' &&
+                  Cookies.get('role') === 'bank' ? (
+                    <React.Fragment>
+                      <Button
+                        size={'large'}
+                        width={'150px'}
+                        isLoading={isLoadingReject}
+                        title="reject financer"
+                        type="button"
+                        disabled={isLoadingReject}
+                        onClick={() => this.rejectBuyerFinancer()}
+                      />
+                      <Button
+                        size={'large'}
+                        width={'150px'}
+                        isLoading={isLoading}
+                        disabled={isLoading}
+                        title="Confirm financer"
+                        type="submit"
+                      />
+                    </React.Fragment>
+                  ) : Cookies.get('email') === get(data.owner, 'email', '') &&
+                  (data.status === 'registry_skip_owner_financer' ||
+                    data.status === 'registry_owner_financer_verified') ? (
                     <Button
                       size={'medium'}
                       width={'150px'}
-                      title="Add Financier"
-                      type="button"
-                      onClick={() => this.setState({ addFinancier: !addFinancier })}
-                    />
-                    <Button
-                      size={'medium'}
-                      width={'150px'}
-                      title="Skip Financier"
-                      type="button"
-                      isLoading={isLoadingSkip}
-                      disabled={isLoadingSkip}
-                      onClick={() => this.skipFinancier()}
-                    />
-                  </React.Fragment>
-                ) : Cookies.get('email') === get(buyer, 'email', '') && data.status === 'registry_buyer' ? (
-                  <React.Fragment>
-                    <Button
-                      size={'medium'}
-                      width={'150px'}
-                      isLoading={isLoadingReject}
-                      title="reject"
-                      type="button"
-                      disabled={isLoadingReject}
-                      onClick={() => this.rejectBuyer()}
-                    />
-                    <Button
-                      size={'medium'}
-                      width={'150px'}
+                      title="Add Buyer"
                       isLoading={isLoading}
                       disabled={isLoading}
-                      title="Confirm"
-                      type="submit"
                     />
-                  </React.Fragment>
-                ) : Cookies.get('email') === get(buyer, 'userDetails.buyerFinancer.email', Cookies.get('email')) &&
-                data.status === 'registry_buyer_financer' &&
-                Cookies.get('role') === 'bank' ? (
-                  <React.Fragment>
-                    <Button
-                      size={'large'}
-                      width={'150px'}
-                      isLoading={isLoadingReject}
-                      title="reject financer"
-                      type="button"
-                      disabled={isLoadingReject}
-                      onClick={() => this.rejectBuyerFinancer()}
-                    />
-                    <Button
-                      size={'large'}
-                      width={'150px'}
-                      isLoading={isLoading}
-                      disabled={isLoading}
-                      title="Confirm financer"
-                      type="submit"
-                    />
-                  </React.Fragment>
-                ) : Cookies.get('email') === get(data.owner, 'email', '') &&
-                (data.status === 'registry_skip_owner_financer' ||
-                  data.status === 'registry_owner_financer_verified') ? (
-                  <Button
-                    size={'medium'}
-                    width={'150px'}
-                    title="Add Buyer"
-                    isLoading={isLoading}
-                    disabled={isLoading}
-                  />
-                ) : null}
-              </ButtonGroup>
-            </FormikForm>
+                  ) : null}
+                </ButtonGroup>
+              </FormikForm>
+              {get(this.props, 'data', {}).hasOwnProperty('buyerFinancer') && (
+                <Paper
+                  padding={'26px 31px 20px'}
+                  radius={'0 0 6px 6px'}
+                  shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+                  margin={'0px 95px 0px'}>
+                  <HalfWraper>
+                    <FlexWrapper flexDirection="column">
+                      <InformTitle>Buyer Finance detail</InformTitle>
+                      <Formik
+                        enableReinitialize
+                        initialValues={{ financeAmount: '' }}
+                        render={formikBag => (
+                          <FormikForm marginBottom="0px">
+                            <Field
+                              name="financeAmount"
+                              render={({ field }) => (
+                                <TextInput {...field} label="Finance Amount" placeholder={'Finance Amount'} />
+                              )}
+                            />
+                          </FormikForm>
+                        )}
+                      />
+                    </FlexWrapper>
+                  </HalfWraper>
+                </Paper>
+              )}
+            </React.Fragment>
           )}
         />
         {/* {addFinancier && (
@@ -817,7 +857,6 @@ class BuyerDetailsForm extends Component {
                               <TextInput {...field} label="Loan amount" placeholder={'Loan amount'} />
                             )}
                           /> 
-
                           <Field
                             name="financeAmount"
                             render={({ field }) => (
@@ -847,7 +886,8 @@ class BuyerDetailsForm extends Component {
               )}
             />
           </React.Fragment>
-        )} */}
+        )}
+      */}
         {addFinancier && (
           <React.Fragment>
             <Modal show={addFinancier}>
@@ -916,7 +956,7 @@ class BuyerDetailsForm extends Component {
                     }
                   }}
                   render={formikBag => (
-                    <FormikForm>
+                    <FormikForm marginBottom="0px">
                       <Field
                         name="email"
                         render={({ field }) => (

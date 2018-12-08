@@ -6,13 +6,11 @@ import {
   FormikForm,
   FormDetailsContainer,
   TextInput,
+  HalfWraper,
   InformTitle,
-  // NormalFieldsTuple,
   Button,
   ButtonGroup,
   FieldGroupWithTitle,
-  // CustomTable,
-  // StyledHead,
   SelectBox,
   Close,
   CloseWrap,
@@ -31,6 +29,13 @@ import { addFinancer } from '../utils/validator'
 
 const SingleForm = styled('div')`
   margin-top: -30px;
+`
+const DesignForm = styled.div`
+  display: flex;
+
+  div {
+    margin-right: 10px;
+  }
 `
 
 class OwnerDetailsForm extends Component {
@@ -474,28 +479,24 @@ class OwnerDetailsForm extends Component {
                         />
                       )}
                     />
-
                     <Field
                       name="panForm60"
                       render={({ field }) => (
                         <TextInput {...field} disabled label="PAN/Form 60/61" placeholder={'PAN/Form 60/61'} required />
                       )}
                     />
-
                     <Field
                       name="occupation"
                       render={({ field }) => (
                         <TextInput {...field} disabled label="Occupation" placeholder={'Occupation'} required />
                       )}
                     />
-
                     <Field
                       name="gender"
                       render={({ field }) => (
                         <TextInput {...field} disabled label="Gender" placeholder={'Gender'} required />
                       )}
                     />
-
                     <Field
                       name="email"
                       render={({ field }) => (
@@ -509,7 +510,6 @@ class OwnerDetailsForm extends Component {
                         />
                       )}
                     />
-
                     <Field
                       name="mobileNo"
                       render={({ field }) => (
@@ -572,19 +572,6 @@ class OwnerDetailsForm extends Component {
                     />
                   </FieldGroupWithTitle>
                 </FormDetailsContainer>
-                {/* <FormDetailsContainer display="block">
-                <InformTitle>Details Of Parties</InformTitle>
-                <CustomTable
-                  data={partyDetails}
-                  columns={partyDetailscolumns}
-                  resizable={false}
-                  sortable={false}
-                  showPagination={false}
-                  pageSize={10}
-                  defaultPageSize={10}
-                  minRows={0}
-                />
-              </FormDetailsContainer> */}
               </Paper>
               <ButtonGroup>
                 {addOwnerStatus || get(data, 'status', {}) === 'registry_owner' ? (
@@ -780,36 +767,6 @@ class OwnerDetailsForm extends Component {
                           </StyledFlex>
                         </React.Fragment>
                       )}
-
-                      {/* <Field
-                          name="totalValueOfProperty"
-                          render={({ field }) => (
-                            <TextInput
-                              {...field}
-                              label="Total Value of Property"
-                              placeholder={'Total Value of Property'}
-                            />
-                          )}
-                        />
-
-                        <Field
-                          name="totalFinanceAmount"
-                          render={({ field }) => (
-                            <TextInput {...field} label="Total finance amount" placeholder={'Total finance amount'} />
-                          )}
-                        />
-
-                        <Field
-                          name="financeAmountDueNow"
-                          render={({ field }) => (
-                            <TextInput
-                              {...field}
-                              label="Finance amount due now"
-                              placeholder={'Finance amount due now'}
-                            />
-                          )}
-                        /> */}
-
                       <FlexWrapper justifyContent="center">
                         <Button
                           size={'medium'}
@@ -826,6 +783,80 @@ class OwnerDetailsForm extends Component {
               />
             </Modal>
           </React.Fragment>
+        )}
+        {get(this.props, 'data', {}).hasOwnProperty('ownerFinancer') && (
+          <Paper
+            padding={'26px 31px 20px'}
+            radius={'0 0 6px 6px'}
+            shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+            margin={'0px 95px 0px'}>
+            <FlexWrapper flexDirection="column">
+              <InformTitle>Owner Finance Details</InformTitle>
+              <Formik
+                enableReinitialize
+                initialValues={{
+                  email: get(data.ownerFinancer, 'email', 'N.A'),
+                  name: get(data.ownerFinancer.userDetails, 'name', 'N.A'),
+                  city: get(data.ownerFinancer.userDetails, 'city', 'N.A'),
+                  branch: get(data.ownerFinancer.userDetails, 'branch', 'N.A'),
+                  loanAmount: get(data.ownerFinancer, 'loanAmount', 'N.A'),
+                  outstandingLoan: get(data.ownerFinancer, 'outstandingLoan', 'N.A')
+                }}
+                render={formikBag => (
+                  <React.Fragment>
+                    <FieldGroupWithTitle>
+                      <Field
+                        name="name"
+                        render={({ field }) => <TextInput {...field} label="Name" disabled placeholder={'Name'} />}
+                      />
+
+                      <Field
+                        name="email"
+                        render={({ field }) => (
+                          <TextInput {...field} disabled label="E-mail" placeholder={'E-mail'} required />
+                        )}
+                      />
+
+                      <Field
+                        name="city"
+                        render={({ field }) => <TextInput {...field} label="City" disabled placeholder={'City'} />}
+                      />
+                      <Field
+                        name="branch"
+                        render={({ field }) => <TextInput {...field} label="Branch" disabled placeholder={'Branch'} />}
+                      />
+                    </FieldGroupWithTitle>
+
+                    <InformTitle>Outstanding Loan Amount</InformTitle>
+                    <DesignForm>
+                      <Field
+                        name="loanAmount"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            label="Loan amount"
+                            placeholder={'Loan amount'}
+                            error={formikBag.errors.loanAmount}
+                          />
+                        )}
+                      />
+                      <Field
+                        name="outstandingLoan"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            label="Outstanding Loan amount"
+                            placeholder={'Outstanding Loan amount'}
+                            error={formikBag.errors.outstandingLoan}
+                          />
+                        )}
+                      />
+                    </DesignForm>
+                  </React.Fragment>
+                )}
+              />
+            </FlexWrapper>
+          </Paper>
         )}
       </React.Fragment>
     )

@@ -28,7 +28,8 @@ import {
   IconCircle,
   FlexWrapper,
   MediumText,
-  FieldsTuple
+  FieldsTuple,
+  FormikForm
 } from '../components'
 import { commonUploadDoc } from '../constants'
 import {
@@ -47,6 +48,12 @@ import keys from 'lodash/keys'
 // import values from 'lodash/values'
 import moment from 'moment'
 
+const HalfWraper = styled.div`
+  width: 50%;
+  div {
+    width: 100%;
+  }
+`
 const PageTitleWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -148,8 +155,8 @@ class DocumentDetails extends Component {
   }
 
   render() {
-    //console.log('DOCUMNET DETAILS==>', this.state.dashboardData)
-
+    console.log('document details page porps==>', this.state.dashboardData)
+    // console.log('document details page porps', this.props)
     const columns = [
       {
         Header: <StyledHead>Document Details</StyledHead>,
@@ -394,83 +401,111 @@ class DocumentDetails extends Component {
           const { created, ...rest } = item.args
 
           return (
-            <Paper
+            <React.Fragment>
+              {/* <Paper
               padding={'26px 31px 20px'}
               radius={'0 0 6px 6px'}
               shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-              margin={'30px 95px 30px'}
+              margin={'0px 95px 0px'}
               key={item.blockHash}>
-              <FlexWrapper justifyContent={'space-between'}>
-                <InformTitle paddingTop={'0'} paddingBottom={'0'}>
-                  Property History - {item.event}
-                </InformTitle>
-                <ArrowImg
-                  src={require('../static/images/down-arrow.png')}
-                  alt="arrow image"
-                  onClick={() => this.collapsHandle(item.blockHash)}
-                  transform={isOpened === item.blockHash}
-                />
-              </FlexWrapper>
-              <FlexWrapper
-                margin="20px 0"
-                flexDirection="row"
-                justifyContent="flex-start"
-                padding={'10px 0'}
-                borderWidth={'0 0 1px 0'}>
-                <IconCircle width={'50px'} height={'50px'} bgColor="transparent" borderColor="#ddd">
-                  <h1>P</h1>
-                </IconCircle>
-                <FlexWrapper flexDirection="column" justifyContent="flex-start" padding={'0 0 0 10px'}>
-                  <MediumText paddingTop={'0'} paddingBottom={'0'}>
-                    {item.blockHash}
-                  </MediumText>
-                  <MediumText paddingTop={'0'} paddingBottom={'0'}>
-                    {moment.unix(item.args.created).format('MM/DD/YYYY hh:mm:ss a')}
-                  </MediumText>
+              <HalfWraper>
+                <FlexWrapper flexDirection="column">
+                  <InformTitle>Finance Amount</InformTitle>
+                  <Formik
+                    enableReinitialize
+                    initialValues={{ financeAmount: '' }}
+                    render={formikBag => (
+                      <FormikForm marginBottom="0px">
+                        <Field
+                          name="financeAmount"
+                          render={({ field }) => (
+                            <TextInput {...field} label="Finance Amount" placeholder={'Finance Amount'} />
+                          )}
+                        />
+                      </FormikForm>
+                    )}
+                  />
                 </FlexWrapper>
-              </FlexWrapper>
-              <Collapse isOpened={isOpened === item.blockHash}>
-                <Formik
-                  enableReinitialize={true}
-                  initialValues={{
-                    address: item.address,
-                    blockNumber: item.blockNumber,
-                    id: '',
-                    timestamp: '',
-                    remark: ''
-                  }}
-                  onSubmit={formValues => console.log(formValues)}
-                  render={formikBag => (
-                    <Form>
-                      <FieldsTuple flexBasis={'calc(50% - 10px)'}>
-                        <Field
-                          name="address"
-                          render={({ field }) => (
-                            <TextInput {...field} label="Block Address" placeholder={'Block Address'} disabled />
-                          )}
-                        />
-                        <Field
-                          name="blockNumber"
-                          render={({ field }) => (
-                            <TextInput {...field} label="Block Number" placeholder={'Block Number'} disabled />
-                          )}
-                        />
-                      </FieldsTuple>
-                    </Form>
-                  )}
-                />
-                <TableDataWrapper>
-                  {keys(rest).map((item, index) => (
-                    <div key={index}>
-                      {console.log('item', item)}
-                      <div>
-                        <h3>{item}</h3>
-                        <span>{rest[item]}</span>
+              </HalfWraper>
+            </Paper> */}
+
+              <Paper
+                padding={'26px 31px 20px'}
+                radius={'0 0 6px 6px'}
+                shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+                margin={'30px 95px 30px'}
+                key={item.blockHash}>
+                <FlexWrapper justifyContent={'space-between'}>
+                  <InformTitle paddingTop={'0'} paddingBottom={'0'}>
+                    Property History - {item.event}
+                  </InformTitle>
+                  <ArrowImg
+                    src={require('../static/images/down-arrow.png')}
+                    alt="arrow image"
+                    onClick={() => this.collapsHandle(item.blockHash)}
+                    transform={isOpened === item.blockHash}
+                  />
+                </FlexWrapper>
+                <FlexWrapper
+                  margin="20px 0"
+                  flexDirection="row"
+                  justifyContent="flex-start"
+                  padding={'10px 0'}
+                  borderWidth={'0 0 1px 0'}>
+                  <IconCircle width={'50px'} height={'50px'} bgColor="transparent" borderColor="#ddd">
+                    <h1>P</h1>
+                  </IconCircle>
+                  <FlexWrapper flexDirection="column" justifyContent="flex-start" padding={'0 0 0 10px'}>
+                    <MediumText paddingTop={'0'} paddingBottom={'0'}>
+                      {item.blockHash}
+                    </MediumText>
+                    <MediumText paddingTop={'0'} paddingBottom={'0'}>
+                      {moment.unix(item.args.created).format('MM/DD/YYYY hh:mm:ss a')}
+                    </MediumText>
+                  </FlexWrapper>
+                </FlexWrapper>
+                <Collapse isOpened={isOpened === item.blockHash}>
+                  <Formik
+                    enableReinitialize={true}
+                    initialValues={{
+                      address: item.address,
+                      blockNumber: item.blockNumber,
+                      id: '',
+                      timestamp: '',
+                      remark: ''
+                    }}
+                    onSubmit={formValues => console.log(formValues)}
+                    render={formikBag => (
+                      <Form>
+                        <FieldsTuple flexBasis={'calc(50% - 10px)'}>
+                          <Field
+                            name="address"
+                            render={({ field }) => (
+                              <TextInput {...field} label="Block Address" placeholder={'Block Address'} disabled />
+                            )}
+                          />
+                          <Field
+                            name="blockNumber"
+                            render={({ field }) => (
+                              <TextInput {...field} label="Block Number" placeholder={'Block Number'} disabled />
+                            )}
+                          />
+                        </FieldsTuple>
+                      </Form>
+                    )}
+                  />
+                  <TableDataWrapper>
+                    {keys(rest).map((item, index) => (
+                      <div key={index}>
+                        {console.log('item', item)}
+                        <div>
+                          <h3>{item}</h3>
+                          <span>{rest[item]}</span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </TableDataWrapper>
-                {/* <TupleContainer>
+                    ))}
+                  </TableDataWrapper>
+                  {/* <TupleContainer>
                   <TupleWrapper>
                     {keys(rest).map((item, index) => (
                       <Tuple fontWeight="bold" key={index}>
@@ -486,9 +521,9 @@ class DocumentDetails extends Component {
                     ))}
                   </TupleWrapper>
                 </TupleContainer> */}
-              </Collapse>
+                </Collapse>
 
-              {/* <CustomTable
+                {/* <CustomTable
                 marginTop
                 data={DocumentDutyTotal}
                 columns={DocumentDutyColumns}
@@ -499,7 +534,8 @@ class DocumentDetails extends Component {
                 defaultPageSize={10}
                 minRows={0}
               /> */}
-            </Paper>
+              </Paper>
+            </React.Fragment>
           )
         })}
         {get(historyData, 'registryData', []).map(item => {

@@ -532,7 +532,7 @@ class PropertyDetailsForm extends Component {
                   tokenAmt: values.tokenAmt
                 })
                 await this.setState({ isLoading: false })
-                await toast.success(`${'Property sold!'}`, {
+                await toast.success(`${'Property on sale!'}`, {
                   position: toast.POSITION.TOP_CENTER
                 })
                 this.props.history.push('/dashboard')

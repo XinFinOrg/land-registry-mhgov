@@ -118,7 +118,7 @@ class Header extends Component {
                     <UserImage>
                       <h1>{Cookies.get('gender') === 'Male' && <Icon icon="male" />}</h1>
                       <h1>{Cookies.get('gender') === 'Female' && <Icon icon="female" />}</h1>
-                      <h1>{Cookies.get('role') === 'Bank' && <Icon icon="bank" />}</h1>
+                      <h1>{Cookies.get('role') === 'bank' && <Icon icon="bank" color="#fff" />}</h1>
                       <h1>{Cookies.get('role') === 'corporation' && <Icon icon="corporate" />}</h1>
 
                       {console.log(Cookies.get('role'))}
