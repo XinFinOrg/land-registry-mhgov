@@ -85,8 +85,9 @@ class PaymentForm extends Component {
     }
   }
   render() {
-    const { isLoading, financerAmtPaid, tokenAmountpaid, buyerAmtPaid } = this.state
+    const { isLoading } = this.state
     const { data } = this.props
+    console.log('object', data)
     return (
       <Paper
         padding={'0 31px 20px'}
@@ -94,12 +95,9 @@ class PaymentForm extends Component {
         shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
         margin={'0 95px'}>
         <PaymentTuple>
-          <PaymentText>
-            {get(data, 'buyerFinancer.email', '') === Cookies.get('email')
-              ? `Finance amount to be paid: ${get(data, 'buyerFinancer.financeAmount')}`
-              : `Token amount to be paid: ${data.tokenAmt}`}
-          </PaymentText>
+          <PaymentText>Token amount to be paid: {data.tokenAmt}</PaymentText>
           {/* PayTokenAmout */}
+
           {get(data, 'buyer.email', '') === Cookies.get('email') &&
           (data.status === 'registry_buyer_financer_verified' ||
             (data.status === 'registry_skip_buyer_financer' && !data.buyerFinancer)) ? (
@@ -113,26 +111,43 @@ class PaymentForm extends Component {
               onClick={() => this.handlePay()}
             />
           ) : Cookies.get('amount_paid') === 'tokenAmountpaid' &&
-          (data.status === 'registry_token_amount' && get(data, 'buyer.email', '') === Cookies.get('email')) ? (
+          (data.status === 'registry_token_amount' ||
+            data.status === 'registry_bank_pay' ||
+            data.status === 'registry_buyer_pay' ||
+            (data.status === 'registry_stamp_duty' && get(data, 'buyer.email', '') === Cookies.get('email'))) ? (
             <StatusPage paid />
           ) : null}
+        </PaymentTuple>
 
-          {/* pay financer amount */}
-          {get(data, 'buyerFinancer.email', '') === Cookies.get('email') && data.status === 'registry_token_amount' ? (
-            <Button
-              size={'large'}
-              width={'150px'}
-              title="Pay Financer Amount"
-              disabled={isLoading}
-              isLoading={isLoading}
-              type="button"
-              onClick={() => this.handlePay()}
-            />
-          ) : Cookies.get('amount_paid') === 'financerAmtPaid' &&
-          data.status === 'registry_bank_pay' &&
-          get(data, 'buyerFinancer.email', '') === Cookies.get('email') ? (
-            <StatusPage paid />
-          ) : null}
+        {/* Financer Amount */}
+        {get(this.props, 'data', {}).hasOwnProperty('buyerFinancer') && (
+          <PaymentTuple>
+            <PaymentText>Finance amount to be paid: {get(data, 'buyerFinancer.financeAmount')}</PaymentText>
+            {/* pay financer amount */}
+            {get(data, 'buyerFinancer.email', '') === Cookies.get('email') &&
+            data.status === 'registry_token_amount' ? (
+              <Button
+                size={'large'}
+                width={'150px'}
+                title="Pay Financer Amount"
+                disabled={isLoading}
+                isLoading={isLoading}
+                type="button"
+                onClick={() => this.handlePay()}
+              />
+            ) : (Cookies.get('amount_paid') === 'financerAmtPaid' && data.status === 'registry_bank_pay') ||
+            data.status === 'registry_buyer_pay' ||
+            (data.status === 'registry_stamp_duty' && get(data, 'buyerFinancer.email', '') === Cookies.get('email')) ? (
+              <StatusPage paid />
+            ) : null}
+          </PaymentTuple>
+        )}
+
+        {/* Buyer Amount */}
+        <PaymentTuple>
+          <PaymentText>
+            Buyer's amount to be paid: {get(data, 'sellPrice', 0) - get(data.buyerFinancer, 'financeAmount', 0)}
+          </PaymentText>
 
           {/* Pay Buyer Amount */}
           {get(data, 'buyer.email', '') === Cookies.get('email') &&
@@ -147,49 +162,10 @@ class PaymentForm extends Component {
               onClick={() => this.handlePay()}
             />
           ) : Cookies.get('amount_paid') === 'buyerAmtPaid' &&
-          (data.status === 'registry_buyer_pay' && get(data, 'buyer.email', '') === Cookies.get('email')) ? (
+          (data.status === 'registry_buyer_pay' ||
+            (data.status === 'registry_stamp_duty' && get(data, 'buyer.email', '') === Cookies.get('email'))) ? (
             <StatusPage paid />
           ) : null}
-          {/* {data.status === 'registry_token_amount' ||
-          data.status === 'registry_bank_pay' ||
-          data.status === 'registry_buyer_pay' ||
-          amtPaid ? (
-            <StatusPage paid />
-          ) : get(data, 'buyer.email', '') === Cookies.get('email') &&
-          (data.status === 'registry_buyer_financer_verified' ||
-            (data.status === 'registry_skip_buyer_financer' && !data.buyerFinancer)) ? (
-            <Button
-              size={'large'}
-              width={'150px'}
-              title="Pay Token Amount"
-              disabled={isLoading}
-              isLoading={isLoading}
-              type="button"
-              onClick={() => this.handlePay()}
-            />
-          ) : get(data, 'buyerFinancer.email', '') === Cookies.get('email') &&
-          data.status === 'registry_token_amount' ? (
-            <Button
-              size={'large'}
-              width={'150px'}
-              title="Pay Financer Amount"
-              disabled={isLoading}
-              isLoading={isLoading}
-              type="button"
-              onClick={() => this.handlePay()}
-            />
-          ) : get(data, 'buyer.email', '') === Cookies.get('email') &&
-          (data.status === 'registry_bank_pay' || (data.status === 'registry_token_amount' && !data.buyerFinancer)) ? (
-            <Button
-              size={'large'}
-              width={'150px'}
-              title="Pay Buyer Amount"
-              disabled={isLoading}
-              isLoading={isLoading}
-              type="button"
-              onClick={() => this.handlePay()}
-            />
-          ) : null} */}
         </PaymentTuple>
       </Paper>
     )

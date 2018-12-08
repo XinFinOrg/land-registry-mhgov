@@ -546,7 +546,6 @@ class BuyerDetailsForm extends Component {
                       </FieldGroupWithTitle>
                     </FormDetailsContainer>
                   )}
-
                   {/*
                 <FormDetailsContainer display="block">
                  <InformTitle>Details Of Parties</InformTitle>
@@ -560,7 +559,7 @@ class BuyerDetailsForm extends Component {
                   defaultPageSize={10}
                   minRows={0}
                 />
-              </FormDetailsContainer> */}
+                </FormDetailsContainer> */}
                   {/*  <FormDetailsContainer>
                 <InformTitle>Financier Details</InformTitle>
                 <FieldGroupWithTitle>

@@ -62,6 +62,9 @@ const UserImage = styled.div`
   align-items: center;
   justify-content: center;
   color: #fff;
+  h1 {
+    margin-top: 5px;
+  }
 `
 const StyledImage = styled.img``
 
