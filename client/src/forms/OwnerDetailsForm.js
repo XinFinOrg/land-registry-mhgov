@@ -47,7 +47,8 @@ class OwnerDetailsForm extends Component {
     addFinancier: false,
     openModal: false,
     addFinancerData: false,
-    isVerified: false
+    isVerified: false,
+    financerAddress: ''
   }
   skipFinancier = async () => {
     const {
@@ -303,9 +304,12 @@ class OwnerDetailsForm extends Component {
                       <SelectBox
                         label="Select Party Type"
                         onChange={selectPartyType => formikBag.setFieldValue('selectPartyType', selectPartyType.value)}
-                        options={[{ label: 'Admin', value: 'Admin' }, { label: 'User', value: 'User' }]}
+                        options={[
+                          { label: 'Individual', value: 'Individual' },
+                          { label: 'Corporate', value: 'Corporate' }
+                        ]}
                         placeholder="Select Party Type"
-                        defaultValue={{ label: 'Admin', value: 'Admin' }}
+                        defaultValue={{ label: 'Individual', value: 'Individual' }}
                         isSearchable={false}
                       />
                     )}
@@ -318,9 +322,12 @@ class OwnerDetailsForm extends Component {
                         onChange={selectPartyCategory =>
                           formikBag.setFieldValue('selectPartyCategory', selectPartyCategory.value)
                         }
-                        options={[{ label: 'Admin', value: 'Admin' }, { label: 'User', value: 'User' }]}
+                        options={[
+                          { label: 'Individual', value: 'Individual' },
+                          { label: 'Corporate', value: 'Corporate' }
+                        ]}
                         placeholder="Select Party Type"
-                        defaultValue={{ label: 'Admin', value: 'Admin' }}
+                        defaultValue={{ label: 'Individual', value: 'Individual' }}
                         isSearchable={false}
                       />
                     )}
@@ -622,7 +629,7 @@ class OwnerDetailsForm extends Component {
                     isLoading={isLoading}
                     disabled={isLoading}
                     width={'150px'}
-                    title="Add owner"
+                    title="Confirm owner"
                     type="submit"
                   />
                 ) : null}
@@ -664,7 +671,7 @@ class OwnerDetailsForm extends Component {
                         propertyId: Cookies.get('propertyId'),
                         ownerFinancer: {
                           email: values.email,
-                          address: Cookies.get('address'),
+                          address: this.state.financerAddress,
                           loanAmount: values.loanAmount,
                           outstandingLoan: values.outstandingLoan
                         },
@@ -688,6 +695,7 @@ class OwnerDetailsForm extends Component {
                       this.setState({ isLoading: true })
                       const { data } = await axios.get(`${API_URL}/getUserDetails?email=${values.email}`)
                       console.log('Add financier', data)
+                      await this.setState({ financerAddress: data.address })
                       await toast.success(`${'Email is verified!'}`, {
                         position: toast.POSITION.TOP_CENTER
                       })

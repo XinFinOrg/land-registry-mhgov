@@ -42,7 +42,8 @@ class BuyerDetailsForm extends Component {
     isLoadingReject: false,
     isLoadingSkip: false,
     addFinancier: false,
-    isVerified: false
+    isVerified: false,
+    financerAddress: ''
   }
   componentDidMount() {
     window.scrollTo(0, 0)
@@ -912,16 +913,18 @@ class BuyerDetailsForm extends Component {
                           buyerFinancer: {
                             email: values.email,
                             financeAmount: values.financeAmount,
-                            address: Cookies.get('address')
+                            address: this.state.financerAddress
                           },
                           status: 'registry_buyer_financer'
                         })
                         console.log('Add financier', data)
+
                         await toast.success(`${'Buyer financier added!'}`, {
                           position: toast.POSITION.TOP_CENTER
                         })
                         await this.setState({
-                          isLoading: false
+                          isLoading: false,
+                          addFinancier: false
                         })
                         // this.props.history.push('/dashboard')
                       } catch (error) {
@@ -936,6 +939,7 @@ class BuyerDetailsForm extends Component {
                         this.setState({ isLoading: true })
                         const { data } = await axios.get(`${API_URL}/getUserDetails?email=${values.email}`)
                         console.log('Add financier', data)
+                        await this.setState({ financerAddress: data.address })
                         await toast.success(`${'Email is verified!'}`, {
                           position: toast.POSITION.TOP_CENTER
                         })

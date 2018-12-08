@@ -66,7 +66,9 @@ const UserImage = styled.div`
     margin-top: 5px;
   }
 `
-const StyledImage = styled.img``
+const StyledImage = styled.img`
+  height: 50px;
+`
 
 class Header extends Component {
   state = {
@@ -146,7 +148,7 @@ class Header extends Component {
             validate={amountValidation}
             validateOnChange
             onSubmit={async values => {
-              this.setState({ isLoading: true })
+              this.setState({ isLoading: true, showModal: false })
               try {
                 const { data } = await axios.post(`${API_URL}/buyTokens`, {
                   address: Cookies.get('address'),

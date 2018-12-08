@@ -15,7 +15,6 @@ import {
   SelectBox,
   Close,
   CloseWrap,
-  // FieldGroupWithTitle,
   FormDetailsContainer,
   ModalScrollWrapper
 } from '../components'
@@ -431,7 +430,7 @@ class Home extends Component {
               validate={individualValidator}
               validateOnChange
               onSubmit={async (values, { resetForm }) => {
-                this.setState({ isLoading: true })
+                this.setState({ isLoading: true, openModal: false })
                 try {
                   const { data } = await axios.post(`${API_URL}/signup/`, {
                     userDetails: {
@@ -464,7 +463,7 @@ class Home extends Component {
                   toast.success(`${'Submitted successfully'}`, {
                     position: toast.POSITION.TOP_CENTER
                   })
-                  await this.setState({ isLoading: false })
+                  await this.setState({ isLoading: false, openModal: false })
                   resetForm()
                   console.log('DATA', data)
                 } catch (error) {
@@ -939,7 +938,7 @@ class Home extends Component {
               validate={governmentValidator}
               validateOnChange
               onSubmit={async (values, { resetForm }) => {
-                this.setState({ isLoading: true })
+                this.setState({ isLoading: true, openModal: false })
                 try {
                   const { data } = await axios.post(`${API_URL}/signup/`, {
                     userDetails: {
@@ -971,7 +970,6 @@ class Home extends Component {
                     <PaperTitle color>Government Details</PaperTitle>
                     <Close onClick={() => this.setState({ openModal: !openModal })} />
                   </CloseWrap>
-
                   <ModalScrollWrapper>
                     <BankFormWrapper>
                       <RadioGroup padding={'20px 0'}>

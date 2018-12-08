@@ -213,16 +213,17 @@ class StampDutyForm extends Component {
                   name="stampDutyPayment"
                   render={({ field }) => <TextInput {...field} label="Amount" placeholder={'Will'} required />}
                 />
-                {Cookies.get('email') === get(data, 'owner.email', '') && (
-                  <Button
-                    size={'medium'}
-                    width={'150px'}
-                    disabled={isLoading}
-                    isLoading={isLoading}
-                    title="Submit"
-                    type="submit"
-                  />
-                )}
+                {Cookies.get('email') === get(data, 'owner.email', '') &&
+                  get(data, 'status', {}) === 'registry_buyer_pay' && (
+                    <Button
+                      size={'medium'}
+                      width={'150px'}
+                      disabled={isLoading}
+                      isLoading={isLoading}
+                      title="Submit"
+                      type="submit"
+                    />
+                  )}
               </FormDetailsContainer>
             </Paper>
 

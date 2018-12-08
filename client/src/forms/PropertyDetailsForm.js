@@ -531,7 +531,7 @@ class PropertyDetailsForm extends Component {
                   sellPrice: values.sellPrice,
                   tokenAmt: values.tokenAmt
                 })
-                await this.setState({ isLoading: false })
+                await this.setState({ isLoading: false, openModal: false })
                 await toast.success(`${'Property on sale!'}`, {
                   position: toast.POSITION.TOP_CENTER
                 })

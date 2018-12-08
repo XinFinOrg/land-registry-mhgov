@@ -113,23 +113,27 @@ class DocumentDetails extends Component {
   }
   async componentDidMount() {
     this.fetchHistory()
+    console.log('object', this.props.match.params)
     const type = this.props.match.params.tab2
     const id = this.props.match.params.tab3
-    if (type === 'propertyId') {
-      try {
-        const { data } = await axios.get(`${API_URL}/getPropertyData?propertyId=${id}`)
-        // console.log('DATA', data.data)
-        this.setState({ dashboardData: data.data })
-      } catch (error) {
-        console.log('ERROR', error)
-      }
+    if (type === 'add-property') {
     } else {
-      try {
-        const { data } = await axios.get(`${API_URL}/getPropertyData?registryId=${id}`)
-        // console.log('DATA', data.data)
-        this.setState({ dashboardData: data.data })
-      } catch (error) {
-        //console.log('ERROR', error)
+      if (type === 'propertyId') {
+        try {
+          const { data } = await axios.get(`${API_URL}/getPropertyData?propertyId=${id}`)
+          // console.log('DATA', data.data)
+          this.setState({ dashboardData: data.data })
+        } catch (error) {
+          console.log('ERROR', error)
+        }
+      } else {
+        try {
+          const { data } = await axios.get(`${API_URL}/getPropertyData?registryId=${id}`)
+          // console.log('DATA', data.data)
+          this.setState({ dashboardData: data.data })
+        } catch (error) {
+          //console.log('ERROR', error)
+        }
       }
     }
   }
@@ -155,6 +159,7 @@ class DocumentDetails extends Component {
   }
 
   render() {
+    console.log('data for hash', this.props.data)
     console.log('document details page porps==>', this.state.dashboardData)
     // console.log('document details page porps', this.props)
     const columns = [
@@ -383,7 +388,7 @@ class DocumentDetails extends Component {
             </ButtonGroup>
           </React.Fragment>
         )}
-        {console.log({ historyData })}
+
         {get(historyData, 'propertyData', []).map(item => {
           // console.log('itemssssssssssss>>>>>>>>>>>', item)
           /*           const DocumentDutyTotal = [
@@ -539,7 +544,7 @@ class DocumentDetails extends Component {
           )
         })}
         {get(historyData, 'registryData', []).map(item => {
-          /*           const DocumentDutyTotal = [
+          /*const DocumentDutyTotal = [
             {
               propertyId: item.args.propertyId || 'None',
               registryId: item.args.registryId || 'None',
@@ -565,7 +570,6 @@ class DocumentDetails extends Component {
                   transform={isOpened === item.blockHash}
                 />
               </FlexWrapper>
-
               <FlexWrapper flexDirection="row" justifyContent="flex-start" padding={'10px 0'} borderWidth={'0 0 1px 0'}>
                 <IconCircle width={'50px'} height={'50px'} bgColor="transparent" borderColor="#ddd">
                   <h1>R</h1>
@@ -587,7 +591,8 @@ class DocumentDetails extends Component {
                     blockNumber: item.blockNumber,
                     id: '',
                     timestamp: '',
-                    remark: ''
+                    remark: '',
+                    txHash: item.transactionHash
                   }}
                   onSubmit={formValues => console.log(formValues)}
                   render={formikBag => (
@@ -599,6 +604,7 @@ class DocumentDetails extends Component {
                             <TextInput {...field} label="Block Address" placeholder={'Block Address'} disabled />
                           )}
                         />
+
                         <Field
                           name="blockNumber"
                           render={({ field }) => (
@@ -606,19 +612,27 @@ class DocumentDetails extends Component {
                           )}
                         />
                       </FieldsTuple>
+
+                      <Field
+                        name="txHash"
+                        render={({ field }) => (
+                          <TextInput {...field} label="Transaction Hash" placeholder={'Transaction Hash'} disabled />
+                        )}
+                      />
                     </Form>
                   )}
                 />
 
                 <TableDataWrapper>
                   {keys(rest).map((item, index) => (
-                    <div key={index}>
-                      {console.log('item', item)}
-                      <div>
-                        <h3>{item}</h3>
-                        <span>{rest[item]}</span>
+                    <React.Fragment>
+                      <div key={index}>
+                        <div>
+                          <h3>{item}</h3>
+                          <span>{rest[item]}</span>
+                        </div>
                       </div>
-                    </div>
+                    </React.Fragment>
                   ))}
                 </TableDataWrapper>
 
