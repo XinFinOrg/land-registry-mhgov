@@ -2,10 +2,10 @@ const Web3 = require('web3');
 if (typeof web3 !== 'undefined') {
     web3 = new Web3(web3.currentProvider);
 } else {
-    var provider = new Web3.providers.HttpProvider("http://localhost:8545");
+    var provider = new Web3.providers.HttpProvider(process.env.RPC);
     web3 = new Web3(provider);
 }
-var provider = new Web3.providers.HttpProvider("http://localhost:8545");
+var provider = new Web3.providers.HttpProvider(process.env.RPC);
 
 if (web3 && web3.isConnected()) {
     console.log('web3 is Connected')
@@ -14,7 +14,7 @@ if (web3 && web3.isConnected()) {
 }
 
 var unlockSync = function(address, phrase) {
-    return web3.personal.unlockAccount(address, phrase);
+    return web3.personal.unlockAccount(address, phrase, 15);
 };
 
 var unlockCoinbase = function() {
