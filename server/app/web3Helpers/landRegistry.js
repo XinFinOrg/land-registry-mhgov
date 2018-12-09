@@ -6,7 +6,7 @@ var init = require('./init.js');
 var helper = require('../routes/helper');
 web3 = init.web3;
 var testrpc = process.env.TESTRPC;
-
+console.log(testrpc);
 /*var config = require('../../config/config');
 var contractOwner = config.contractOwner;*/
 var getInstance = function(data) {
@@ -155,13 +155,25 @@ var addTokenSupply = async function(tokens) {
 };
 
 var buyTokens = async function(to, tokens) {
+    console.log("buyTokens", to, tokens);
+    console.log('testrpc', testrpc);
+    if (!testrpc) {
+        var unlock = init.unlockCoinbase();
+        console.log("unlock", unlock);
+    } else {
+        console.log("no unlock")
+    }    
     return await contractInstance.transfer(to, tokens, {from: web3.eth.coinbase, gas:1000000});
 };
 
 var sendTokens  = async function(_from, _to, tokens) {
+    console.log("sendTokens", _from, _to, tokens);
+    console.log('testrpc', testrpc)
     if (!testrpc) {
-        var unlock = init.unlockSync(_from, "123");        
+        var unlock = init.unlockSync(_from, "123");
         console.log("unlock", unlock);
+    } else {
+        console.log("no unlock")
     }
     return await contractInstance.transfer(_to, tokens, {from: _from, gas:1000000});
 };
