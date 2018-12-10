@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import Select from 'react-select'
-
 const SelectWrapper = styled.div`
   .css-1aya2g8 {
     background-color: transparent;

@@ -74,6 +74,11 @@ const PropertyDetailsWrapper = styled.div``
 const SubmissionWrap = styled.div`
   width: 360px;
 `
+
+const OgColor = styled.div`
+  color: #bf521a;
+`
+
 const TupleContainer = styled.div`
   display: flex;
   align-items: center;
@@ -277,13 +282,27 @@ class DocumentDetails extends Component {
           radius={'6px 6px 0 0'}
           shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
           margin={'0 95px'}>
-          <FlexWrapper justifyContent="space-between">
+          {console.log('urllllllllllll', this.props.match.params.tab2)}
+
+          {this.props.match.params.tab2 === 'add-property' ? null : (
             <InsideTitle>
-              <b>Property ID:</b> {Cookies.get('propertyId')} <b>Registry ID:</b> {Cookies.get('registryId')}
-              <b> Status: </b>
-              {get(statusMap[dashboardData.status], 'statusDesc', 'N.A')}
+              <p>
+                <b>Property ID:</b> {Cookies.get('propertyId')}
+              </p>
+
+              <p>
+                <b>Registry ID:</b> {Cookies.get('registryId')}
+              </p>
+
+              <p>
+                <OgColor>
+                  <b> Status: </b>
+                  {get(statusMap[dashboardData.status], 'statusDesc', 'N.A')}
+                </OgColor>
+              </p>
             </InsideTitle>
-          </FlexWrapper>
+          )}
+
           <Tabber>
             <Tab
               onClick={() => this.changeActiveTab(`/dashboard/property-details/${params.tab2}/${params.tab3}`)}
@@ -442,7 +461,7 @@ class DocumentDetails extends Component {
                 key={item.blockHash}>
                 <FlexWrapper justifyContent={'space-between'}>
                   <InformTitle paddingTop={'0'} paddingBottom={'0'}>
-                    Property History - {item.event}
+                    Property Historyyyy - {item.event}
                   </InformTitle>
                   <ArrowImg
                     src={require('../static/images/down-arrow.png')}

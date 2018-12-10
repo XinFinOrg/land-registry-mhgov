@@ -6,7 +6,6 @@ import {
   FormikForm,
   FormDetailsContainer,
   TextInput,
-  HalfWraper,
   InformTitle,
   Button,
   ButtonGroup,
@@ -26,7 +25,6 @@ import { API_URL } from '../constants'
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
 import { addFinancer } from '../utils/validator'
-
 const SingleForm = styled('div')`
   margin-top: -30px;
 `
@@ -37,7 +35,6 @@ const DesignForm = styled.div`
     margin-right: 10px;
   }
 `
-
 class OwnerDetailsForm extends Component {
   state = {
     isLoading: false,
@@ -54,7 +51,6 @@ class OwnerDetailsForm extends Component {
     const {
       match: { params }
     } = this.props
-
     try {
       this.setState({ isLoadingSkip: true })
       await axios.post(`${API_URL}/addOwnerFinancer`, {
@@ -523,7 +519,6 @@ class OwnerDetailsForm extends Component {
                         <TextInput {...field} disabled label="Mobile No." placeholder={'Mobile No.'} required />
                       )}
                     />
-
                     <Field
                       name="presentationExemption"
                       render={({ field }) => (
@@ -536,14 +531,12 @@ class OwnerDetailsForm extends Component {
                         />
                       )}
                     />
-
                     <Field
                       name="pinCode"
                       render={({ field }) => (
                         <TextInput {...field} disabled label="PIN Code" placeholder={'PIN Code'} required />
                       )}
                     />
-
                     <Field
                       name="addressSame"
                       render={({ field }) => (
@@ -556,21 +549,18 @@ class OwnerDetailsForm extends Component {
                         />
                       )}
                     />
-
                     <Field
                       name="district"
                       render={({ field }) => (
                         <TextInput {...field} disabled label="District" placeholder={'District'} required />
                       )}
                     />
-
                     <Field
                       name="taluka"
                       render={({ field }) => (
                         <TextInput {...field} disabled label="Taluka" placeholder={'Taluka'} required />
                       )}
                     />
-
                     <Field
                       name="village"
                       render={({ field }) => (
@@ -695,7 +685,7 @@ class OwnerDetailsForm extends Component {
                       this.setState({ isLoading: true })
                       const { data } = await axios.get(`${API_URL}/getUserDetails?email=${values.email}`)
                       console.log('Add financier', data)
-                      await this.setState({ financerAddress: data.address })
+                      await this.setState({ financerAddress: data.data.address })
                       await toast.success(`${'Email is verified!'}`, {
                         position: toast.POSITION.TOP_CENTER
                       })
@@ -727,6 +717,7 @@ class OwnerDetailsForm extends Component {
                           />
                         )}
                       />
+                      {console.log('this.state.financerAddress', this.state.financerAddress)}
                       {isVerified && (
                         <React.Fragment>
                           <Field

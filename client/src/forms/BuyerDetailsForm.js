@@ -123,14 +123,12 @@ class BuyerDetailsForm extends Component {
     }
   }
   render() {
-    console.log('new porpsssssssssss', get(this.props, 'data', {}).hasOwnProperty('buyer'))
     const {
       data,
       data: { buyer }
     } = this.props
-    console.log('userDetails==>', get(this.props.data.buyer, 'userDetails', []))
     const { isLoading, isLoadingReject, isLoadingSkip, addFinancier, isVerified } = this.state
-    // console.log('this.props', this.props)
+    console.log('this.props', data)
     /* const columns = [
       {
         Header: <StyledHead>Sr. No.</StyledHead>,
@@ -183,6 +181,9 @@ class BuyerDetailsForm extends Component {
         Cell: props => <Button size="action" shadow={'none'} title="View" radius={'4px'} />
       }
     ] */
+    {
+      console.log('buyer detail page', data)
+    }
 
     return (
       <React.Fragment>
@@ -332,7 +333,8 @@ class BuyerDetailsForm extends Component {
                   defaultPageSize={10}
                   minRows={0}
                 />
-              </FormDetailsContainer> */}
+                </FormDetailsContainer>
+              */}
                   <FormDetailsContainer flexBasis={'calc(50% - 10px)'}>
                     <div>
                       <Field
@@ -395,7 +397,6 @@ class BuyerDetailsForm extends Component {
                       />
                     </div>
                   </FormDetailsContainer>
-
                   {get(this.props, 'data', {}).hasOwnProperty('buyer') && (
                     <FormDetailsContainer>
                       <InformTitle>Parties Details</InformTitle>
@@ -938,7 +939,7 @@ class BuyerDetailsForm extends Component {
                       try {
                         this.setState({ isLoading: true })
                         const { data } = await axios.get(`${API_URL}/getUserDetails?email=${values.email}`)
-                        console.log('Add financier', data)
+                        console.log('Add financierrrrrrrrrrrrrrrrrrrr', data)
                         await this.setState({ financerAddress: data.address })
                         await toast.success(`${'Email is verified!'}`, {
                           position: toast.POSITION.TOP_CENTER
@@ -971,6 +972,7 @@ class BuyerDetailsForm extends Component {
                           />
                         )}
                       />
+
                       {isVerified && (
                         <React.Fragment>
                           <FlexWrapper flexDirection="column">
@@ -987,6 +989,43 @@ class BuyerDetailsForm extends Component {
                               )}
                             />
                           </FlexWrapper>
+                          {/* inputs form add */}
+                          <Field
+                            name="name"
+                            render={({ field }) => (
+                              <TextInput
+                                {...field}
+                                label={data.ownerFinancer.userDetails.name}
+                                disabled
+                                placeholder={data.ownerFinancer.userDetails.name}
+                              />
+                            )}
+                          />
+                          <StyledFlex justify="flex-start">
+                            <Field
+                              name="city"
+                              render={({ field }) => (
+                                <TextInput
+                                  {...field}
+                                  label={data.ownerFinancer.userDetails.city}
+                                  disabled
+                                  placeholder={'City'}
+                                />
+                              )}
+                            />
+                            <Field
+                              name="branch"
+                              render={({ field }) => (
+                                <TextInput
+                                  {...field}
+                                  label={data.ownerFinancer.userDetails.branch}
+                                  disabled
+                                  placeholder={'Branch'}
+                                />
+                              )}
+                            />
+                          </StyledFlex>
+                          {/*end inputs ads */}
                         </React.Fragment>
                       )}
                       <FlexWrapper justifyContent="center">

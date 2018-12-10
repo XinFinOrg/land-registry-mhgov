@@ -67,7 +67,8 @@ const UserImage = styled.div`
   }
 `
 const StyledImage = styled.img`
-  height: 50px;
+  height: 60px;
+  margin-right: 20px;
 `
 
 class Header extends Component {
@@ -121,12 +122,11 @@ class Header extends Component {
                   iconActiveColor="#fff"
                   component={
                     <UserImage>
-                      <h1>{Cookies.get('gender') === 'Male' && <Icon icon="male" />}</h1>
+                      <h1>{Cookies.get('role') === 'Male' && <Icon icon="male" />}</h1>
                       <h1>{Cookies.get('gender') === 'Female' && <Icon icon="female" />}</h1>
                       <h1>{Cookies.get('role') === 'bank' && <Icon icon="bank" color="#fff" />}</h1>
                       <h1>{Cookies.get('role') === 'corporation' && <Icon icon="corporate" />}</h1>
-
-                      {console.log(Cookies.get('role'))}
+                      <h1>{Cookies.get('role') === 'individual' && <Icon icon="male" />}</h1>
                     </UserImage>
                   }>
                   <p onClick={() => this.setState({ showModal: true })}>Deposit funds</p>

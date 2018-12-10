@@ -8,7 +8,6 @@ import {
   StaticFieldWrapper,
   StaticField,
   InformTitle,
-  // InformSubTitle,
   Font14,
   FieldsTuple,
   Input,
@@ -61,7 +60,6 @@ class PropertyDetailsForm extends Component {
       console.log('ERROR', error)
     }
   }
-
   render() {
     const { isLoading, isLoadingReject, openModal } = this.state
     const {
@@ -92,7 +90,7 @@ class PropertyDetailsForm extends Component {
             coveredParking: get(this.props.data, 'coveredParking', '10'),
             coveredParkingSquareMeter: '10',
             coveredParkingBulidArea: '10',
-            shopFloorBasement: get(this.props.data, 'shopFloor', '13356'),
+            shopFloorBasement: get(this.props.data, 'shopFloor', '0'),
             propertyAddress: get(this.props.data, 'address', 'Street Address'),
             propertyDescription: get(this.props.data, 'description', 'Ground floor')
           }}
@@ -419,7 +417,7 @@ class PropertyDetailsForm extends Component {
                         render={({ field }) => (
                           <TextInput
                             {...field}
-                            label="Basement"
+                            label="Floor Number"
                             placeholder={'Basement'}
                             required
                             disabled={isActive}

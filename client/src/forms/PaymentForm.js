@@ -10,7 +10,6 @@ import { toast } from 'react-toastify'
 
 class PaymentForm extends Component {
   state = { financerAmtPaid: false, tokenAmountpaid: false, buyerAmtPaid: false }
-
   handlePay = async () => {
     const {
       data,
@@ -117,12 +116,15 @@ class PaymentForm extends Component {
             (data.status === 'registry_stamp_duty' && get(data, 'buyer.email', '') === Cookies.get('email'))) ? (
             <StatusPage paid />
           ) : null}
+          {data.status === 'registry_token_amount' && <StatusPage paid />}
         </PaymentTuple>
-
         {/* Financer Amount */}
         {get(this.props, 'data', {}).hasOwnProperty('buyerFinancer') && (
           <PaymentTuple>
-            <PaymentText>Finance amount to be paid: {get(data, 'buyerFinancer.financeAmount')}</PaymentText>
+            <PaymentText>
+              Finance amount to be paid: {get(data, 'buyerFinancer.financeAmount')}
+              {data.status === 'registry_bank_pay' && <StatusPage paid />}
+            </PaymentText>
             {/* pay financer amount */}
             {get(data, 'buyerFinancer.email', '') === Cookies.get('email') &&
             data.status === 'registry_token_amount' ? (
@@ -142,11 +144,12 @@ class PaymentForm extends Component {
             ) : null}
           </PaymentTuple>
         )}
-
         {/* Buyer Amount */}
+        {console.log('payement form get real price', data.tokenAmt)}
         <PaymentTuple>
           <PaymentText>
-            Buyer's amount to be paid: {get(data, 'sellPrice', 0) - get(data.buyerFinancer, 'financeAmount', 0)}
+            Buyer's amount to be paid:{' '}
+            {get(data, 'sellPrice', 0) - get(data.buyerFinancer, 'financeAmount', 0) - get(data, 'tokenAmt', 0)}
           </PaymentText>
 
           {/* Pay Buyer Amount */}

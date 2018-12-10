@@ -59,7 +59,7 @@ export const statusMap = {
     statusName: 'Awaiting Token Payment',
     statusDesc: 'Awaiting Token Payment'
   },
-  registry_buyer_financer_confirmed: {
+  registry_buyer_financer_verified: {
     statusName: 'Buyer Financer Verified',
     statusDesc: 'Awaiting Token Payment'
   },

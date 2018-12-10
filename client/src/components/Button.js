@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import styled, { keyframes } from 'styled-components'
 
 const ButtonWrapper = styled.button`
-  width: ${props => {
+  min-width: ${props => {
     switch (props.size) {
       case 'action':
         return '100px'
       case 'medium':
-        return '138px'
+        return '188px'
       case 'large':
         return '296px'
       default:

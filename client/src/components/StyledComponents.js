@@ -34,11 +34,16 @@ const PaddingBlank = styled.div`
   padding: 11px;
 `
 
-const InsideTitle = styled.h3`
+const InsideTitle = styled.div`
   font-size: 20px;
   font-weight: 300;
   color: #333333;
+  display: flex;
+  p {
+    margin-right: 20px;
+  }
 `
+
 const Tabber = styled.div`
   display: flex;
   justify-content: space-between;
@@ -129,7 +134,7 @@ const StaticField = styled.div``
 const Font14 = styled.p`
   font-size: 14px;
   color: #333333;
-  padding: 28px 0 16px;
+  padding: 0px 0 10px;
   text-transform: uppercase;
 `
 const FieldsTuple = styled.div`
