@@ -905,7 +905,7 @@ router.post('/financerPayment', async function(req, res) {
 	            helper.web3StringToBytes32(registryData.propertyId),
 	            helper.web3StringToBytes32("buyerFin_to_owner"),
 	            buyerFinancer,
-	            ownerFinancer,
+	            owner,
 	            parseInt(oAmt),
 	        );
 	        console.log('customTransferEvent', m);
