@@ -22,7 +22,7 @@ var unlockCoinbase = function() {
 };
 
 var createAccount = function(phrase) {
-    return web3.personal.newAccount('phrase');
+    return web3.personal.newAccount(phrase);
 }
 
 module.exports = {
