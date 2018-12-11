@@ -1,7 +1,7 @@
 const db = require('./../config/db');
 const errorCodes = require('./../validation/errorCodes');
 var ethers = require('ethers');
-
+var constant = require('./../constants/constants');
 let arrayToObject = (arr, key) => {
     var result = Object.assign(...arr.map(x =>({[x[key]]:x})));
     //var result = a.reduce((obj, v)=> {obj[v[key]] = v; return obj} , {})
@@ -269,6 +269,37 @@ let processEventBigNumbers = (allEvents) => {
     return allEvents;
 };
 
+let getEventName = (event, status) => {
+    if (event == "SetStatus") {
+        return constant.statusNames[status];
+    } else {
+        return constant.eventNames[event];
+    }
+};
+
+let processEvents = (allEvents) => {
+    var event, obj, str;
+    for (var i in allEvents) {
+        event = allEvents[i];
+        obj = event.args;
+        event.dName = getEventName(event.event, obj.status||false)
+        event.created = new Date(obj.created||'');
+        /*for(var key in obj) {
+            if (typeof obj[key] == 'string') {
+                //process hex strings
+                str = obj[key];
+                if (str.length == 66 && isHex(str)) {
+                    obj[key] = bytesToStr(str);
+                }
+            } else if(obj.hasOwnProperty(key) && obj[key] && typeof obj[key] == 'object') {
+                //process bignumbers
+                obj[key] = obj[key].toNumber();
+            }
+        }*/
+    }
+    return allEvents;
+};
+
 let getName = (firstName, lastName) => {
     return (firstName && lastName) ? (firstName + ' ' + lastName) :
             (!firstName) ? lastName :
@@ -316,5 +347,6 @@ module.exports = {
     propertyStatusMap : propertyStatusMap,
     arrayToObject : arrayToObject,
     getName : getName,
-    isUserExist : isUserExist
+    isUserExist : isUserExist,
+    processEvents : processEvents
 };

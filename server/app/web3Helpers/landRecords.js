@@ -112,6 +112,8 @@ var getAllEvents = async function(propertyId) {
     allEvents = allEvents.filter(tx => tx.args && helper.bytesToStr(tx.args.propertyId) == propertyId);
     //handle bignumbers
     allEvents = helper.processEventBigNumbers(allEvents);
+    allEvents = helper.processEvents(allEvents);
+
     //sort events by timeline
     /*allEvents.sort(function(x, y){
         return x.args.created - y.args.created;
