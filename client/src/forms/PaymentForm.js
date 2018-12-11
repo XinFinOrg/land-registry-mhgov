@@ -109,22 +109,18 @@ class PaymentForm extends Component {
               type="button"
               onClick={() => this.handlePay()}
             />
-          ) : Cookies.get('amount_paid') === 'tokenAmountpaid' &&
-          (data.status === 'registry_token_amount' ||
-            data.status === 'registry_bank_pay' ||
-            data.status === 'registry_buyer_pay' ||
-            (data.status === 'registry_stamp_duty' && get(data, 'buyer.email', '') === Cookies.get('email'))) ? (
+          ) : data.status === 'registry_token_amount' ||
+          data.status === 'registry_bank_pay' ||
+          data.status === 'registry_buyer_pay' ||
+          data.status === 'registry_stamp_duty' ? (
             <StatusPage paid />
           ) : null}
-          {data.status === 'registry_token_amount' && <StatusPage paid />}
         </PaymentTuple>
+
         {/* Financer Amount */}
         {get(this.props, 'data', {}).hasOwnProperty('buyerFinancer') && (
           <PaymentTuple>
-            <PaymentText>
-              Finance amount to be paid: {get(data, 'buyerFinancer.financeAmount')}
-              {data.status === 'registry_bank_pay' && <StatusPage paid />}
-            </PaymentText>
+            <PaymentText>Finance amount to be paid: {get(data, 'buyerFinancer.financeAmount')} </PaymentText>
             {/* pay financer amount */}
             {get(data, 'buyerFinancer.email', '') === Cookies.get('email') &&
             data.status === 'registry_token_amount' ? (
@@ -139,6 +135,8 @@ class PaymentForm extends Component {
               />
             ) : (Cookies.get('amount_paid') === 'financerAmtPaid' && data.status === 'registry_bank_pay') ||
             data.status === 'registry_buyer_pay' ||
+            data.status === 'registry_bank_pay' ||
+            data.status === 'registry_stamp_duty' ||
             (data.status === 'registry_stamp_duty' && get(data, 'buyerFinancer.email', '') === Cookies.get('email')) ? (
               <StatusPage paid />
             ) : null}
@@ -164,9 +162,11 @@ class PaymentForm extends Component {
               type="button"
               onClick={() => this.handlePay()}
             />
-          ) : Cookies.get('amount_paid') === 'buyerAmtPaid' &&
-          (data.status === 'registry_buyer_pay' ||
-            (data.status === 'registry_stamp_duty' && get(data, 'buyer.email', '') === Cookies.get('email'))) ? (
+          ) : (console.log(data.status),
+          Cookies.get('amount_paid') === 'financerAmtPaid' && data.status === 'registry_buyer_pay') ||
+          data.status === 'registry_buyer_pay' ||
+          data.status === 'registry_stamp_duty' ||
+          (data.status === 'registry_stamp_duty' && get(data, 'buyerFinancer.email', '') === Cookies.get('email')) ? (
             <StatusPage paid />
           ) : null}
         </PaymentTuple>

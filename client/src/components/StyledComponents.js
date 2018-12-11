@@ -261,7 +261,7 @@ const IconWrapper = styled.div`
   padding-left: 8px;
 `
 const FormikForm = styled(Form)`
-  margin-bottom: ${props => (props.marginBottom ? props.marginBottom : '50px')};
+  margin-bottom: ${props => (props.marginBottom ? props.marginBottom : '80px')};
   width: 100%;
 `
 const ButtonGroup = styled.div`

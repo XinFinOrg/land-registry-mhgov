@@ -940,7 +940,7 @@ class BuyerDetailsForm extends Component {
                         this.setState({ isLoading: true })
                         const { data } = await axios.get(`${API_URL}/getUserDetails?email=${values.email}`)
                         console.log('Add financierrrrrrrrrrrrrrrrrrrr', data)
-                        await this.setState({ financerAddress: data.address })
+                        await this.setState({ financerAddress: data.data.address })
                         await toast.success(`${'Email is verified!'}`, {
                           position: toast.POSITION.TOP_CENTER
                         })
