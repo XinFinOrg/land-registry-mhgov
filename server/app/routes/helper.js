@@ -5,7 +5,7 @@ var ethers = require('ethers');
 let arrayToObject = (arr, key) => {
     var result = Object.assign(...arr.map(x =>({[x[key]]:x})));
     //var result = a.reduce((obj, v)=> {obj[v[key]] = v; return obj} , {})
-    console.log('arrayToObject:', result);
+    //console.log('arrayToObject:', result);
     return result;
 }
 /*var a = [
