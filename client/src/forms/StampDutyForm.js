@@ -9,6 +9,7 @@ import {
   FormDetailsContainer,
   TextInput,
   InformTitle,
+  StatusPage,
   // NormalFieldsTuple,
   Button,
   ButtonGroup
@@ -213,6 +214,9 @@ class StampDutyForm extends Component {
                   name="stampDutyPayment"
                   render={({ field }) => <TextInput {...field} label="Amount" placeholder={'Will'} required />}
                 />
+
+                {get(data, 'status', {}) === 'registry_stamp_duty' && <StatusPage paid />}
+
                 {Cookies.get('email') === get(data, 'owner.email', '') &&
                   get(data, 'status', {}) === 'registry_buyer_pay' && (
                     <Button

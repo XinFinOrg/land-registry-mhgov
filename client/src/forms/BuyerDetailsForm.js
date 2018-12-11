@@ -893,7 +893,7 @@ class BuyerDetailsForm extends Component {
           <React.Fragment>
             <Modal show={addFinancier}>
               <CloseWrap>
-                <PaperTitle color="#fff">Financer Details</PaperTitle>
+                <PaperTitle color="#fff">Financer Detailsssss</PaperTitle>
                 <Close onClick={() => this.setState({ addFinancier: !addFinancier })} />
               </CloseWrap>
               <ModalData>
@@ -975,8 +975,47 @@ class BuyerDetailsForm extends Component {
 
                       {isVerified && (
                         <React.Fragment>
+                          <Field
+                            name="name"
+                            render={({ field }) => (
+                              <TextInput
+                                {...field}
+                                label="Bank name"
+                                value={data.ownerFinancer.userDetails.name}
+                                disabled
+                                placeholder={data.ownerFinancer.userDetails.name}
+                              />
+                            )}
+                          />
+                          <StyledFlex justify="flex-start">
+                            <Field
+                              name="city"
+                              render={({ field }) => (
+                                <TextInput
+                                  {...field}
+                                  label="City"
+                                  value={data.ownerFinancer.userDetails.city}
+                                  disabled
+                                  placeholder={'City'}
+                                />
+                              )}
+                            />
+                            <Field
+                              name="branch"
+                              render={({ field }) => (
+                                <TextInput
+                                  {...field}
+                                  label="Branch"
+                                  value={data.ownerFinancer.userDetails.branch}
+                                  disabled
+                                  placeholder={'Branch'}
+                                />
+                              )}
+                            />
+                          </StyledFlex>
                           <FlexWrapper flexDirection="column">
                             <InformTitle>Finance Amount</InformTitle>
+
                             <Field
                               name="financeAmount"
                               render={({ field }) => (
@@ -990,41 +1029,7 @@ class BuyerDetailsForm extends Component {
                             />
                           </FlexWrapper>
                           {/* inputs form add */}
-                          <Field
-                            name="name"
-                            render={({ field }) => (
-                              <TextInput
-                                {...field}
-                                label={data.ownerFinancer.userDetails.name}
-                                disabled
-                                placeholder={data.ownerFinancer.userDetails.name}
-                              />
-                            )}
-                          />
-                          <StyledFlex justify="flex-start">
-                            <Field
-                              name="city"
-                              render={({ field }) => (
-                                <TextInput
-                                  {...field}
-                                  label={data.ownerFinancer.userDetails.city}
-                                  disabled
-                                  placeholder={'City'}
-                                />
-                              )}
-                            />
-                            <Field
-                              name="branch"
-                              render={({ field }) => (
-                                <TextInput
-                                  {...field}
-                                  label={data.ownerFinancer.userDetails.branch}
-                                  disabled
-                                  placeholder={'Branch'}
-                                />
-                              )}
-                            />
-                          </StyledFlex>
+
                           {/*end inputs ads */}
                         </React.Fragment>
                       )}

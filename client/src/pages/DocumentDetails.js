@@ -282,18 +282,16 @@ class DocumentDetails extends Component {
           radius={'6px 6px 0 0'}
           shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
           margin={'0 95px'}>
-          {console.log('urllllllllllll', this.props.match.params.tab2)}
-
           {this.props.match.params.tab2 === 'add-property' ? null : (
             <InsideTitle>
               <p>
                 <b>Property ID:</b> {Cookies.get('propertyId')}
               </p>
-
-              <p>
-                <b>Registry ID:</b> {Cookies.get('registryId')}
-              </p>
-
+              {Cookies.get('registryId') && (
+                <p>
+                  <b>Registry ID:</b> {Cookies.get('registryId')}
+                </p>
+              )}
               <p>
                 <OgColor>
                   <b> Status: </b>
@@ -302,7 +300,6 @@ class DocumentDetails extends Component {
               </p>
             </InsideTitle>
           )}
-
           <Tabber>
             <Tab
               onClick={() => this.changeActiveTab(`/dashboard/property-details/${params.tab2}/${params.tab3}`)}
@@ -462,7 +459,7 @@ class DocumentDetails extends Component {
                   key={item.blockHash}>
                   <FlexWrapper justifyContent={'space-between'}>
                     <InformTitle paddingTop={'0'} paddingBottom={'0'}>
-                      Property History - {item.event}
+                      Property - {item.dName}
                     </InformTitle>
                     <ArrowImg
                       src={require('../static/images/down-arrow.png')}
@@ -485,7 +482,7 @@ class DocumentDetails extends Component {
                         {item.blockHash}
                       </MediumText>
                       <MediumText paddingTop={'0'} paddingBottom={'0'}>
-                        {moment.unix(item.args.created).format('MM/DD/YYYY hh:mm:ss a')}
+                        {moment(get(item, 'created', '')).format('DD MMM YYYY hh:mm:ss A')}
                       </MediumText>
                     </FlexWrapper>
                   </FlexWrapper>
@@ -565,18 +562,18 @@ class DocumentDetails extends Component {
           )
         })}
 
-        {console.log('paramssssssssssssssssssssssssss>>>', params.tab2)}
+        {console.log('Data testtttttttttttttttt')}
 
         {params.tab2 === 'add-property'
           ? null
           : get(historyData, 'registryData', []).map(item => {
               /*const DocumentDutyTotal = [
               {
-                propertyId: item.args.propertyId || 'None',
-                registryId: item.args.registryId || 'None',
-                buyer: item.args.buyer || 'None'
+               propertyId: item.args.propertyId || 'None',
+               registryId: item.args.registryId || 'None',
+               buyer: item.args.buyer || 'None'
               }
-            ] */
+              ] */
               const { created, ...rest } = item.args
               return (
                 <Paper
@@ -587,7 +584,7 @@ class DocumentDetails extends Component {
                   key={item.blockHash}>
                   <FlexWrapper justifyContent={'space-between'}>
                     <InformTitle paddingTop={'0'} paddingBottom={'0'}>
-                      Registry Historyyyy - {item.event}
+                      Registry - {item.dName}
                     </InformTitle>
                     <ArrowImg
                       src={require('../static/images/down-arrow.png')}
@@ -609,7 +606,7 @@ class DocumentDetails extends Component {
                         {item.blockHash}
                       </MediumText>
                       <MediumText paddingTop={'0'} paddingBottom={'0'}>
-                        {moment.unix(item.args.created).format('MM/DD/YYYY hh:mm:ss a')}
+                        {moment(get(item, 'created', '')).format('DD MMM YYYY hh:mm:ss A')}
                       </MediumText>
                     </FlexWrapper>
                   </FlexWrapper>
