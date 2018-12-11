@@ -1,3 +1,26 @@
+const statusNames = {
+  property_new : "Add Property",
+  property_verified : "Property Verified",
+  property_rejected : "roperty Rejected",
+  registry_new : "Add Registry Record",
+  registry_owner : "Confirm Owner",
+  registry_owner_financer : "Add Owner Financer ",
+  registry_skip_owner_financer : "NA",
+  registry_owner_financer_verified : "Owner Financer Verified",
+  registry_owner_financer_rejected : "Owner Financer Rejected",
+  registry_buyer : "Add Buyer",
+  registry_buyer_confirmed : "Buyer Verified",
+  registry_buyer_rejected : "Buyer Rejected",
+  registry_buyer_financer : "Add Buyer Financer",
+  registry_skip_buyer_financer : "NA",
+  registry_buyer_financer_confirmed : "Buyer Financer Verified",
+  registry_buyer_financer_rejected : "Buyer Financer Rejected",
+  registry_token_amount : "Token Amount",
+  registry_bank_pay : "Financer Payment",
+  registry_buyer_pay : "Buyer Payment",
+  registry_stamp_duty : "Stamp Duty Payment"
+};
+
 const statusToTabMap = {
   property_new : 'property',
   property_verified : 'property',
@@ -19,6 +42,17 @@ const statusToTabMap = {
   registry_bank_pay : 'payment',
   registry_buyer_pay : 'stampDuty',
   registry_stamp_duty : 'stampDuty'
+};
+
+const eventNames = {
+  AddProperty : "Add Property",
+  SetStatus : "Set Status",
+  AddOwner : "Ownership Transfer",
+  AddRegistryRecord : "Add Registry Record",
+  AddBuyer : "Add Buyer",
+  AddOwnerFinancer : "Add Owner Financer",
+  AddBuyerFinancer : "Add Buyer Financer",
+  TransferTokens : "Transfer Balance"
 };
 
 
@@ -200,5 +234,7 @@ let dummyExplorerData = {
 
 module.exports = {
   dummyExplorerData : dummyExplorerData,
-  statusToTabMap : statusToTabMap
+  statusToTabMap : statusToTabMap,
+  statusNames : statusNames,
+  eventNames : eventNames
 };
