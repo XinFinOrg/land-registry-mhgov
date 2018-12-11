@@ -125,7 +125,7 @@ var customTransferEvent = async function(
     amount,
     created = Date.now()
 ) {
-    return await contractInstance.TransferTokens(
+    return await contractInstance.transferTokens(
         registryId,
         propertyId,
         type,
