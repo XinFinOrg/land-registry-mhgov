@@ -551,6 +551,7 @@ router.post('/addOwnerFinancer', async function(req, res) {
 		"registry_skip_owner_financer" : "registry_owner_financer"
 	);
 	if (web3Conf && status == 'registry_owner_financer') {
+		ownerFinancer.address = ownerFinancer.address || web3.eth.coinbase;
 		try {
 	        var m = await landRegistry.addOwnerFinancer(
 	            helper.web3StringToBytes32(registryId),
@@ -640,10 +641,27 @@ router.post('/addBuyer', async function(req, res) {
 	let propertyId = req.body.propertyId;
 	let buyerDetails = req.body.buyer;
 	let query = {registryId : registryId};
-	console.log('addBuyer', buyerDetails);
-	if (!buyerDetails.address) {
-		buyerDetails.address = "0xaca94ef8bd5ffee41947b4585a84bda5a3d3da6e";
+
+	if (
+		!registryId || !propertyId ||
+		!buyerDetails || !buyerDetails.email
+	) {
+		let error = helper.getErrorResponse('ResourceNotFound');
+		return res.status(error.statusCode).send(error.error);
 	}
+
+	var collection = db.getCollection('users');
+    let users = await collection.find({email : buyerDetails.email}).toArray();
+
+    if(users.length == 0) {
+		let error = helper.getErrorResponse('InvalidEmail');
+		return res.status(error.statusCode).send(error.error);
+    }
+
+	buyerDetails.address = users[0].address;
+
+	console.log('addBuyer', buyerDetails);
+
 	let updateQuery = {
 		$set : {
 			buyer : buyerDetails,
@@ -885,7 +903,7 @@ router.post('/financerPayment', async function(req, res) {
 	        m = await landRegistry.customTransferEvent(
 	            helper.web3StringToBytes32(registryId),
 	            helper.web3StringToBytes32(registryData.propertyId),
-	            helper.web3StringToBytes32("buyerFin_to_ownerFin"),
+	            helper.web3StringToBytes32("buyerFin_to_owner"),
 	            buyerFinancer,
 	            ownerFinancer,
 	            parseInt(oAmt),
