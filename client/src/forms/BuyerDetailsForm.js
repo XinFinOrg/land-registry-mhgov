@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Formik, Field } from 'formik'
 import styled from 'styled-components'
-
 import {
   Paper,
   FormikForm,
@@ -9,6 +8,7 @@ import {
   FormDetailsContainer,
   TextInput,
   InformTitle,
+  Loader,
   NormalFieldsTuple,
   Button,
   HalfWraper,
@@ -22,12 +22,10 @@ import {
   FlexWrapper,
   StyledFlex
 } from '../components'
-// import{customData, partyDetails } from '../constants'
 import withRouter from 'react-router/withRouter'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import get from 'lodash/get'
-// import isEmpty from 'lodash/isEmpty'
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify'
 import { buyerDetailValidation, buyerDetail } from '../utils/validator'
@@ -35,7 +33,6 @@ import { buyerDetailValidation, buyerDetail } from '../utils/validator'
 const ModalData = styled('div')`
   padding: 15px;
 `
-
 class BuyerDetailsForm extends Component {
   state = {
     isLoading: false,
@@ -47,7 +44,6 @@ class BuyerDetailsForm extends Component {
   }
   componentDidMount() {
     window.scrollTo(0, 0)
-
     // this.setState({ buyer: this.props.data })
   }
   rejectBuyer = async values => {
@@ -184,7 +180,6 @@ class BuyerDetailsForm extends Component {
     {
       console.log('buyer detail page', data)
     }
-
     return (
       <React.Fragment>
         <Formik
@@ -485,12 +480,10 @@ class BuyerDetailsForm extends Component {
                           name="occupation"
                           render={({ field }) => <TextInput {...field} label="Occupation" placeholder={'Occupation'} />}
                         />
-
                         <Field
                           name="gender"
                           render={({ field }) => <TextInput {...field} label="Gender" placeholder={'Gender'} />}
                         />
-
                         <Field
                           name="email"
                           render={({ field }) => (
@@ -502,12 +495,10 @@ class BuyerDetailsForm extends Component {
                             />
                           )}
                         />
-
                         <Field
                           name="mobileNo"
                           render={({ field }) => <TextInput {...field} label="Mobile No." placeholder={'Mobile No.'} />}
                         />
-
                         <Field
                           name="presentationExemption"
                           render={({ field }) => (
@@ -518,29 +509,24 @@ class BuyerDetailsForm extends Component {
                             />
                           )}
                         />
-
                         <Field
                           name="pinCode"
                           render={({ field }) => <TextInput {...field} label="PIN Code" placeholder={'PIN Code'} />}
                         />
-
                         <Field
                           name="addressSame"
                           render={({ field }) => (
                             <TextInput {...field} label="Address Same As Above" placeholder={'Address Same As Above'} />
                           )}
                         />
-
                         <Field
                           name="district"
                           render={({ field }) => <TextInput {...field} label="District" placeholder={'District'} />}
                         />
-
                         <Field
                           name="taluka"
                           render={({ field }) => <TextInput {...field} label="Taluka" placeholder={'Taluka'} />}
                         />
-
                         <Field
                           name="village"
                           render={({ field }) => <TextInput {...field} label="Village" placeholder={'Village'} />}
@@ -548,106 +534,79 @@ class BuyerDetailsForm extends Component {
                       </FieldGroupWithTitle>
                     </FormDetailsContainer>
                   )}
-                  {/*
-                <FormDetailsContainer display="block">
-                 <InformTitle>Details Of Parties</InformTitle>
-                  <CustomTable
-                  data={partyDetails}
-                  columns={partyDetailscolumns}
-                  resizable={false}
-                  sortable={false}
-                  showPagination={false}
-                  pageSize={10}
-                  defaultPageSize={10}
-                  minRows={0}
-                />
-                </FormDetailsContainer> */}
-                  {/*  <FormDetailsContainer>
-                <InformTitle>Financier Details</InformTitle>
-                <FieldGroupWithTitle>
-                  <Field
-                    name="financierName"
-                    render={({ field }) => (
-                      <TextInput {...field} label="Financier Name" placeholder={'Financier Name'} />
-                    )}
-                  />
-
-                  <Field
-                    name="city"
-                    render={({ field }) => <TextInput {...field} label="City" placeholder={'City'} />}
-                  />
-
-                  <Field
-                    name="branch"
-                    render={({ field }) => <TextInput {...field} label="Branch" placeholder={'Branch'} />}
-                  />
-
-                  <Field
-                    name="totalValueOfProperty"
-                    render={({ field }) => (
-                      <TextInput {...field} label="Total Value of Property" placeholder={'Total Value of Property'} />
-                    )}
-                  />
-
-                  <Field
-                    name="totalFinanceAmount"
-                    render={({ field }) => (
-                      <TextInput {...field} label="Total finance amount" placeholder={'Total finance amount'} />
-                    )}
-                  />
-
-                  <Field
-                    name="financeAmountDueNow"
-                    render={({ field }) => (
-                      <TextInput {...field} label="Finance amount due now" placeholder={'Finance amount due now'} />
-                    )}
-                  />
-                </FieldGroupWithTitle>
-              </FormDetailsContainer> */}
-                  {/* <FormDetailsContainer>
-                <InformTitle>Outstanding Loan Amount</InformTitle>
-                <NormalFieldsTuple shrink>
-                  <Field
-                    name="totalSaveAmount"
-                    render={({ field }) => (
-                      <TextInput {...field} label="Total save amount" placeholder={'Total save amount'} />
-                    )}
-                  />
-
-                  <Field
-                    name="tokenAmount"
-                    render={({ field }) => <TextInput {...field} label="Token amount" placeholder={'Token amount'} />}
-                  />
-                </NormalFieldsTuple>
-              </FormDetailsContainer>
-              <FormDetailsContainer>
-                <InformTitle>Buyer Details</InformTitle>
-                <FieldGroupWithTitle>
-                  <Field
-                    name="buyerFinancierName"
-                    render={({ field }) => (
-                      <TextInput {...field} label="Financier Name" placeholder={'Financier Name'} />
-                    )}
-                  />
-
-                  <Field
-                    name="buyerCity"
-                    render={({ field }) => <TextInput {...field} label="City" placeholder={'City'} />}
-                  />
-                  <Field
-                    name="buyerBranch"
-                    render={({ field }) => <TextInput {...field} label="Branch" placeholder={'Branch'} />}
-                  />
-                  <Field
-                    name="buyerFinanceAmount"
-                    render={({ field }) => (
-                      <TextInput {...field} label="Finance Amount" placeholder={'Finance Amount'} />
-                    )}
-                  />
-                </FieldGroupWithTitle>
-              </FormDetailsContainer> */}
                 </Paper>
 
+                {get(this.props, 'data', {}).hasOwnProperty('buyerFinancer') && (
+                  <Paper
+                    padding={'26px 31px 20px'}
+                    radius={'0 0 6px 6px'}
+                    shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+                    margin={'0px 95px 0px'}>
+                    <HalfWraper>
+                      <FlexWrapper flexDirection="column">
+                        <InformTitle>Buyer Finance detail</InformTitle>
+                        <React.Fragment>
+                          <Field
+                            name="name"
+                            render={({ field }) => (
+                              <TextInput
+                                {...field}
+                                label="Bank name"
+                                value={data.buyerFinancer.userDetails.name}
+                                disabled
+                                placeholder={data.buyerFinancer.userDetails.name}
+                              />
+                            )}
+                          />
+                          <StyledFlex justify="flex-start">
+                            <Field
+                              name="city"
+                              render={({ field }) => (
+                                <TextInput
+                                  {...field}
+                                  label="City"
+                                  value={data.buyerFinancer.userDetails.city}
+                                  disabled
+                                  placeholder={'City'}
+                                />
+                              )}
+                            />
+                            <Field
+                              name="branch"
+                              render={({ field }) => (
+                                <TextInput
+                                  {...field}
+                                  label="Branch"
+                                  value={data.buyerFinancer.userDetails.branch}
+                                  disabled
+                                  placeholder={'Branch'}
+                                />
+                              )}
+                            />
+                          </StyledFlex>
+                          <FlexWrapper flexDirection="column">
+                            <InformTitle>Finance Amount</InformTitle>
+                            <Field
+                              name="financeAmount"
+                              render={({ field }) => (
+                                <TextInput
+                                  {...field}
+                                  label="Finance Amount"
+                                  value={data.buyerFinancer.financeAmount}
+                                  placeholder={'Finance Amount'}
+                                  error={formikBag.errors.amount}
+                                />
+                              )}
+                            />
+                          </FlexWrapper>
+                          {/* inputs form add */}
+
+                          {/*end inputs ads */}
+                        </React.Fragment>
+                      </FlexWrapper>
+                    </HalfWraper>
+                  </Paper>
+                )}
                 <ButtonGroup>
                   {data.status === 'registry_buyer_confirmed' ? (
                     <React.Fragment>
@@ -723,33 +682,6 @@ class BuyerDetailsForm extends Component {
                   ) : null}
                 </ButtonGroup>
               </FormikForm>
-              {get(this.props, 'data', {}).hasOwnProperty('buyerFinancer') && (
-                <Paper
-                  padding={'26px 31px 20px'}
-                  radius={'0 0 6px 6px'}
-                  shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-                  margin={'0px 95px 0px'}>
-                  <HalfWraper>
-                    <FlexWrapper flexDirection="column">
-                      <InformTitle>Buyer Finance detail</InformTitle>
-                      <Formik
-                        enableReinitialize
-                        initialValues={{ financeAmount: '' }}
-                        render={formikBag => (
-                          <FormikForm marginBottom="0px">
-                            <Field
-                              name="financeAmount"
-                              render={({ field }) => (
-                                <TextInput {...field} label="Finance Amount" placeholder={'Finance Amount'} />
-                              )}
-                            />
-                          </FormikForm>
-                        )}
-                      />
-                    </FlexWrapper>
-                  </HalfWraper>
-                </Paper>
-              )}
             </React.Fragment>
           )}
         />
@@ -893,7 +825,7 @@ class BuyerDetailsForm extends Component {
           <React.Fragment>
             <Modal show={addFinancier}>
               <CloseWrap>
-                <PaperTitle color="#fff">Financer Detailsssss</PaperTitle>
+                <PaperTitle color="#fff">Financer Details</PaperTitle>
                 <Close onClick={() => this.setState({ addFinancier: !addFinancier })} />
               </CloseWrap>
               <ModalData>

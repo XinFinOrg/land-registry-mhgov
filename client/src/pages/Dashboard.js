@@ -6,6 +6,7 @@ import {
   MainWrapper,
   PageTitle,
   TopWrapper,
+  Loader,
   // Input,
   Button,
   Icon,
@@ -221,15 +222,14 @@ class Dashboard extends Component {
                   onClick={() => this.props.history.push('/dashboard/property-details/add-property/undefined')}
                 />
               )}
-
-              {/* <Input
+              {/*<Input
                 padding={'14px 36px'}
                 type="text"
                 icon="search"
                 background={'#fff'}
                 fill="rgba(46, 55, 59, 0.5)"
                 placeholder="Search"
-              /> */}
+              />*/}
             </FlexWrapper>
           </TopWrapper>
           <Table

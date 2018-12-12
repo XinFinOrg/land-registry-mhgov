@@ -641,7 +641,6 @@ class DocumentDetails extends Component {
                                 <TextInput {...field} label="Block Address" placeholder={'Block Address'} disabled />
                               )}
                             />
-
                             <Field
                               name="blockNumber"
                               render={({ field }) => (
@@ -709,7 +708,7 @@ class DocumentDetails extends Component {
                 </Paper>
               )
             })}
-        {/*  <Paper
+        {/*<Paper
           padding={'26px 31px 20px'}
           radius={'0 0 6px 6px'}
           shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
@@ -728,56 +727,55 @@ class DocumentDetails extends Component {
             defaultPageSize={10}
             minRows={0}
           />
-        </Paper> */}
-        {console.log('api tttttttttttttttt', historyData.propertyData)}
+        </Paper>*/}
 
-        <Paper
-          padding={'26px 31px 20px'}
-          radius={'0 0 6px 6px'}
-          shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-          margin={'30px 95px 30px'}>
-          <InformTitleTwo paddingTop={'0'} paddingBottom={'0'}>
-            Payment Details
-          </InformTitleTwo>
-          <br />
-          <TableWrapper>
-            <table>
-              <thead style={{ background: '#2f89f5', color: '#fff' }}>
-                <tr>
-                  <th>Name</th>
-                  <th>Date</th>
-                  <th width="30%">From</th>
-                  <th>To</th>
-                  <th>Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {get(historyData, 'registryData', []).map(
-                  (table, index) =>
-                    table.event === 'TransferTokens' ? (
-                      <tr>
-                        <td>{table.txName || 'Transfer Balance'}</td>
-                        <td> {moment(get(table, 'created', '')).format('DD MMM YYYY hh:mm A')}</td>
-                        <td>
-                          <p style={{ wordBreak: 'break-all' }}>{table.args.from}</p>
-                        </td>
-                        <td style={{ wordBreak: 'break-all' }}>{table.args.to}</td>
-                        <td>{table.args.amount}</td>
-                      </tr>
-                    ) : (
-                      ''
-                    )
-                )}
-              </tbody>
-            </table>
-          </TableWrapper>
-        </Paper>
+        {params.tab2 === 'add-property' ? null : (
+          <Paper
+            padding={'26px 31px 20px'}
+            radius={'0 0 6px 6px'}
+            shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+            margin={'30px 95px 30px'}>
+            <InformTitleTwo paddingTop={'0'} paddingBottom={'0'}>
+              Payment Details
+            </InformTitleTwo>
+            <br />
+            <TableWrapper>
+              <table>
+                <thead style={{ background: '#2f89f5', color: '#fff' }}>
+                  <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th width="30%">From</th>
+                    <th>To</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {get(historyData, 'registryData', []).map(
+                    (table, index) =>
+                      table.event === 'TransferTokens' ? (
+                        <tr>
+                          <td>{table.txName || 'Transfer Balance'}</td>
+                          <td>{moment(get(table, 'created', '')).format('DD MMM YYYY hh:mm A')}</td>
+                          <td>
+                            <p style={{ wordBreak: 'break-all' }}>{table.args.from}</p>
+                          </td>
+                          <td style={{ wordBreak: 'break-all' }}>{table.args.to}</td>
+                          <td>{table.args.amount}</td>
+                        </tr>
+                      ) : (
+                        ''
+                      )
+                  )}
+                </tbody>
+              </table>
+            </TableWrapper>
+          </Paper>
+        )}
         <br />
         <br />
         <br />
-
         <br />
-
         <Footer position={'fixed'} />
       </React.Fragment>
     )

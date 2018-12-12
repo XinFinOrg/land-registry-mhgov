@@ -16,7 +16,8 @@ import {
   PaperTitle,
   Modal,
   FlexWrapper,
-  StyledFlex
+  StyledFlex,
+  Loader
 } from '../components'
 import withRouter from 'react-router/withRouter'
 import get from 'lodash/get'
@@ -46,7 +47,8 @@ class OwnerDetailsForm extends Component {
     openModal: false,
     addFinancerData: false,
     isVerified: false,
-    financerAddress: ''
+    financerAddress: '',
+    isloader: true
   }
   skipFinancier = async () => {
     const {
@@ -172,165 +174,168 @@ class OwnerDetailsForm extends Component {
     ] */
     return (
       <React.Fragment>
-        <Formik
-          enableReinitialize={true}
-          initialValues={{
-            selectPartyType: 'Admin',
-            selectPartyCategory: 'Admin',
-            isExecuter: 'Yes',
-            salutation: get(userData, 'salutation', 'Mr'),
-            partyFirstName: get(userData, 'firstName', 'Saurav'),
-            partyMiddleName: get(userData, 'middleName', ''),
-            partyLastName: get(userData, 'lastName', 'Gupta'),
-            aliasName: get(userData, 'aliasName', 'saurav'),
-            identificationMark1: get(userData, 'identityMark1', 'Mole'),
-            identificationMark2: get(userData, 'identityMark2', 'Mole'),
-            dateOfBirth: get(userData, 'dob', '22/12/1994'),
-            age: get(userData, 'age', '24'),
-            uid: get(userData, 'uid', 'safffa'),
-            identificationTypeID: get(userData, 'identityTypeID', 'aasas'),
-            identificationDescription: get(userData, 'identityDesc', 'assa'),
-            panForm60: get(userData, 'pan', 'BHXHBH99'),
-            occupation: get(userData, 'occupation', 'Employee'),
-            gender: get(userData, 'gender', 'Male'),
-            email: get(userData, 'email', 's@s.com'),
-            mobileNo: get(userData, 'mobileNo', '999999999999'),
-            presentationExemption: 'Yes', //
-            pinCode: '110019', //
-            addressSame: get(userData, 'permAddress', 'Delhi'),
-            district: get(userData, 'district', 'Delhi'),
-            taluka: get(userData, 'taluka', 'Delhi'),
-            village: get(userData, 'village', 'Delhi')
-          }}
-          onSubmit={async (formData, { resetForm }) => {
-            const {
-              match: { params }
-            } = this.props
-            if (addOwnerStatus || get(data, 'status', {}) === 'registry_owner') {
-              try {
-                this.setState({ isLoading: true })
-                await axios.post(`${API_URL}/addOwner`, {
-                  registryId: params.tab3,
-                  propertyId: Cookies.get('propertyId'),
-                  owner: {
-                    email: Cookies.get('email'),
-                    address: Cookies.get('address'),
-                    partyType: formData.selectPartyType,
-                    partyCategory: formData.selectPartyCategory,
-                    isExecuter: formData.isExecuter === 'Yes' ? true : false
-                  }
-                })
-                await this.setState({ addOwnerStatus: true, isLoading: false })
-                Cookies.set('isOwner', 'yes')
-                await toast.success(`${'Owner Added!'}`, {
-                  position: toast.POSITION.TOP_CENTER
-                })
-                // this.props.history.push('/dashboard')
-              } catch (error) {
-                await this.setState({ isLoading: false })
-                toast.error(`${'Some error occurred!'}`, {
-                  position: toast.POSITION.TOP_CENTER
-                })
-                console.log('ERROR', error)
+        {
+          <Formik
+            enableReinitialize={true}
+            initialValues={{
+              selectPartyType: 'Admin',
+              selectPartyCategory: 'Admin',
+              isExecuter: 'Yes',
+              salutation: get(userData, 'salutation', 'Mr'),
+              partyFirstName: get(userData, 'firstName', 'Saurav'),
+              partyMiddleName: get(userData, 'middleName', ''),
+              partyLastName: get(userData, 'lastName', 'Gupta'),
+              aliasName: get(userData, 'aliasName', 'saurav'),
+              identificationMark1: get(userData, 'identityMark1', 'Mole'),
+              identificationMark2: get(userData, 'identityMark2', 'Mole'),
+              dateOfBirth: get(userData, 'dob', '22/12/1994'),
+              age: get(userData, 'age', '24'),
+              uid: get(userData, 'uid', 'safffa'),
+              identificationTypeID: get(userData, 'identityTypeID', 'aasas'),
+              identificationDescription: get(userData, 'identityDesc', 'assa'),
+              panForm60: get(userData, 'pan', 'BHXHBH99'),
+              occupation: get(userData, 'occupation', 'Employee'),
+              gender: get(userData, 'gender', 'Male'),
+              email: get(userData, 'email', 's@s.com'),
+              mobileNo: get(userData, 'mobileNo', '999999999999'),
+              presentationExemption: 'Yes', //
+              pinCode: '110019', //
+              addressSame: get(userData, 'permAddress', 'Delhi'),
+              district: get(userData, 'district', 'Delhi'),
+              taluka: get(userData, 'taluka', 'Delhi'),
+              village: get(userData, 'village', 'Delhi')
+            }}
+            onSubmit={async (formData, { resetForm }) => {
+              const {
+                match: { params }
+              } = this.props
+              if (addOwnerStatus || get(data, 'status', {}) === 'registry_owner') {
+                try {
+                  this.setState({ isLoading: true })
+                  await axios.post(`${API_URL}/addOwner`, {
+                    registryId: params.tab3,
+                    propertyId: Cookies.get('propertyId'),
+                    owner: {
+                      email: Cookies.get('email'),
+                      address: Cookies.get('address'),
+                      partyType: formData.selectPartyType,
+                      partyCategory: formData.selectPartyCategory,
+                      isExecuter: formData.isExecuter === 'Yes' ? true : false
+                    }
+                  })
+                  await this.setState({ addOwnerStatus: true, isLoading: false })
+                  Cookies.set('isOwner', 'yes')
+                  await toast.success(`${'Owner Added!'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                  // this.props.history.push('/dashboard')
+                } catch (error) {
+                  await this.setState({ isLoading: false })
+                  toast.error(`${'Some error occurred!'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                  console.log('ERROR', error)
+                }
+              } else if (
+                Cookies.get('email') === get(data, 'ownerFinancer.email', Cookies.get('email')) &&
+                get(data, 'status', {}) === 'registry_owner_financer'
+              ) {
+                try {
+                  this.setState({ isLoading: true })
+                  await axios.post(`${API_URL}/confirmFinancer`, {
+                    registryId: params.tab3,
+                    propertyId: Cookies.get('propertyId'),
+                    currentStatus: 'registry_owner_financer',
+                    approved: true
+                  })
+                  await this.setState({ isLoading: false })
+                  await toast.success(`${'Financier confirmed!'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                  this.props.history.push('/dashboard')
+                  // console.log('DATA', data)
+                } catch (error) {
+                  await this.setState({ isLoading: false })
+                  toast.error(`${'Some error occurred!'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                  console.log('ERROR', error)
+                }
+              } else {
+                try {
+                  this.setState({ isLoading: true })
+                  await axios.post(`${API_URL}/addOwner`, {
+                    registryId: params.tab3,
+                    propertyId: Cookies.get('propertyId'),
+                    owner: {
+                      email: Cookies.get('email'),
+                      address: Cookies.get('address'),
+                      partyType: formData.selectPartyType,
+                      partyCategory: formData.selectPartyCategory,
+                      isExecuter: formData.isExecuter === 'Yes' ? true : false
+                    }
+                  })
+                  await this.setState({ addOwnerStatus: true, isLoading: false })
+                  Cookies.set('isOwner', 'yes')
+                  await toast.success(`${'Owner Added!'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                  // this.props.history.push('/dashboard')
+                } catch (error) {
+                  await this.setState({ isLoading: false })
+                  toast.error(`${'Some error occurred!'}`, {
+                    position: toast.POSITION.TOP_CENTER
+                  })
+                  console.log('ERROR', error)
+                }
               }
-            } else if (
-              Cookies.get('email') === get(data, 'ownerFinancer.email', Cookies.get('email')) &&
-              get(data, 'status', {}) === 'registry_owner_financer'
-            ) {
-              try {
-                this.setState({ isLoading: true })
-                await axios.post(`${API_URL}/confirmFinancer`, {
-                  registryId: params.tab3,
-                  propertyId: Cookies.get('propertyId'),
-                  currentStatus: 'registry_owner_financer',
-                  approved: true
-                })
-                await this.setState({ isLoading: false })
-                await toast.success(`${'Financier confirmed!'}`, {
-                  position: toast.POSITION.TOP_CENTER
-                })
-                this.props.history.push('/dashboard')
-                // console.log('DATA', data)
-              } catch (error) {
-                await this.setState({ isLoading: false })
-                toast.error(`${'Some error occurred!'}`, {
-                  position: toast.POSITION.TOP_CENTER
-                })
-                console.log('ERROR', error)
-              }
-            } else {
-              try {
-                this.setState({ isLoading: true })
-                await axios.post(`${API_URL}/addOwner`, {
-                  registryId: params.tab3,
-                  propertyId: Cookies.get('propertyId'),
-                  owner: {
-                    email: Cookies.get('email'),
-                    address: Cookies.get('address'),
-                    partyType: formData.selectPartyType,
-                    partyCategory: formData.selectPartyCategory,
-                    isExecuter: formData.isExecuter === 'Yes' ? true : false
-                  }
-                })
-                await this.setState({ addOwnerStatus: true, isLoading: false })
-                Cookies.set('isOwner', 'yes')
-                await toast.success(`${'Owner Added!'}`, {
-                  position: toast.POSITION.TOP_CENTER
-                })
-                // this.props.history.push('/dashboard')
-              } catch (error) {
-                await this.setState({ isLoading: false })
-                toast.error(`${'Some error occurred!'}`, {
-                  position: toast.POSITION.TOP_CENTER
-                })
-                console.log('ERROR', error)
-              }
-            }
-          }}
-          render={formikBag => (
-            <FormikForm>
-              <Paper
-                padding={'0 31px 20px'}
-                radius={'0 0 6px 6px'}
-                shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-                margin={'0 95px'}>
-                <FormDetailsContainer flexBasis={'calc(50% - 10px)'}>
-                  <Field
-                    name="selectPartyType"
-                    render={({ field }) => (
-                      <SelectBox
-                        label="Select Party Type"
-                        onChange={selectPartyType => formikBag.setFieldValue('selectPartyType', selectPartyType.value)}
-                        options={[
-                          { label: 'Individual', value: 'Individual' },
-                          { label: 'Corporate', value: 'Corporate' }
-                        ]}
-                        placeholder="Select Party Type"
-                        defaultValue={{ label: 'Individual', value: 'Individual' }}
-                        isSearchable={false}
-                      />
-                    )}
-                  />
-                  <Field
-                    name="selectPartyCategory"
-                    render={({ field }) => (
-                      <SelectBox
-                        label="Select Party Category"
-                        onChange={selectPartyCategory =>
-                          formikBag.setFieldValue('selectPartyCategory', selectPartyCategory.value)
-                        }
-                        options={[
-                          { label: 'Individual', value: 'Individual' },
-                          { label: 'Corporate', value: 'Corporate' }
-                        ]}
-                        placeholder="Select Party Type"
-                        defaultValue={{ label: 'Individual', value: 'Individual' }}
-                        isSearchable={false}
-                      />
-                    )}
-                  />
-                </FormDetailsContainer>
-                {/* <FormDetailsContainer paddingTop={'0'} display={'block'}>
+            }}
+            render={formikBag => (
+              <FormikForm>
+                <Paper
+                  padding={'0 31px 20px'}
+                  radius={'0 0 6px 6px'}
+                  shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+                  margin={'0 95px'}>
+                  <FormDetailsContainer flexBasis={'calc(50% - 10px)'}>
+                    <Field
+                      name="selectPartyType"
+                      render={({ field }) => (
+                        <SelectBox
+                          label="Select Party Type"
+                          onChange={selectPartyType =>
+                            formikBag.setFieldValue('selectPartyType', selectPartyType.value)
+                          }
+                          options={[
+                            { label: 'Individual', value: 'Individual' },
+                            { label: 'Corporate', value: 'Corporate' }
+                          ]}
+                          placeholder="Select Party Type"
+                          defaultValue={{ label: 'Individual', value: 'Individual' }}
+                          isSearchable={false}
+                        />
+                      )}
+                    />
+                    <Field
+                      name="selectPartyCategory"
+                      render={({ field }) => (
+                        <SelectBox
+                          label="Select Party Category"
+                          onChange={selectPartyCategory =>
+                            formikBag.setFieldValue('selectPartyCategory', selectPartyCategory.value)
+                          }
+                          options={[
+                            { label: 'Individual', value: 'Individual' },
+                            { label: 'Corporate', value: 'Corporate' }
+                          ]}
+                          placeholder="Select Party Type"
+                          defaultValue={{ label: 'Individual', value: 'Individual' }}
+                          isSearchable={false}
+                        />
+                      )}
+                    />
+                  </FormDetailsContainer>
+                  {/* <FormDetailsContainer paddingTop={'0'} display={'block'}>
                 <InformTitle>List of Properties</InformTitle>
                 <CustomTable
                   data={customData}
@@ -343,372 +348,383 @@ class OwnerDetailsForm extends Component {
                   minRows={0}
                 />{' '}
               </FormDetailsContainer> */}
-                <FormDetailsContainer>
-                  <InformTitle>Parties Details</InformTitle>
-                  <FieldGroupWithTitle>
-                    <SingleForm>
+                  <FormDetailsContainer>
+                    <InformTitle>Parties Details</InformTitle>
+                    <FieldGroupWithTitle>
+                      <SingleForm>
+                        <Field
+                          name="isExecuter"
+                          render={({ field }) => (
+                            <SelectBox
+                              label="Is Executer?"
+                              onChange={isExecuter => formikBag.setFieldValue('isExecuter', isExecuter.value)}
+                              options={[{ label: 'Yes', value: 'Yes' }, { label: 'No', value: 'No' }]}
+                              placeholder="Select Party Type"
+                              defaultValue={{ label: 'Yes', value: 'Yes' }}
+                              isSearchable={false}
+                            />
+                          )}
+                        />
+                      </SingleForm>
+
                       <Field
-                        name="isExecuter"
+                        name="salutation"
                         render={({ field }) => (
-                          <SelectBox
-                            label="Is Executer?"
-                            onChange={isExecuter => formikBag.setFieldValue('isExecuter', isExecuter.value)}
-                            options={[{ label: 'Yes', value: 'Yes' }, { label: 'No', value: 'No' }]}
-                            placeholder="Select Party Type"
-                            defaultValue={{ label: 'Yes', value: 'Yes' }}
-                            isSearchable={false}
+                          <TextInput {...field} disabled label="Salutation" placeholder={'Salutation'} required />
+                        )}
+                      />
+
+                      <Field
+                        name="partyFirstName"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            disabled
+                            label="Party First Name"
+                            placeholder={'Party First Name'}
+                            required
                           />
                         )}
                       />
-                    </SingleForm>
 
-                    <Field
-                      name="salutation"
-                      render={({ field }) => (
-                        <TextInput {...field} disabled label="Salutation" placeholder={'Salutation'} required />
-                      )}
-                    />
+                      <Field
+                        name="partyMiddleName"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            disabled
+                            label="Party Middle Name"
+                            placeholder={'Party Middle Name'}
+                            required
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="partyFirstName"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          disabled
-                          label="Party First Name"
-                          placeholder={'Party First Name'}
-                          required
-                        />
-                      )}
-                    />
+                      <Field
+                        name="partyLastName"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            disabled
+                            label="Party Last Name"
+                            placeholder={'Party Last Name'}
+                            required
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="partyMiddleName"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          disabled
-                          label="Party Middle Name"
-                          placeholder={'Party Middle Name'}
-                          required
-                        />
-                      )}
-                    />
+                      <Field
+                        name="aliasName"
+                        render={({ field }) => (
+                          <TextInput {...field} disabled label="Alias Name" placeholder={'Alias Name'} required />
+                        )}
+                      />
 
-                    <Field
-                      name="partyLastName"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          disabled
-                          label="Party Last Name"
-                          placeholder={'Party Last Name'}
-                          required
-                        />
-                      )}
-                    />
+                      <Field
+                        name="identificationMark1"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            disabled
+                            label="Identification Mark 1"
+                            placeholder={'Identification Mark 1'}
+                            required
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="aliasName"
-                      render={({ field }) => (
-                        <TextInput {...field} disabled label="Alias Name" placeholder={'Alias Name'} required />
-                      )}
-                    />
+                      <Field
+                        name="identificationMark2"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            disabled
+                            label="Identification Mark 2"
+                            placeholder={'Identification Mark 2'}
+                            required
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="identificationMark1"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          disabled
-                          label="Identification Mark 1"
-                          placeholder={'Identification Mark 1'}
-                          required
-                        />
-                      )}
-                    />
+                      <Field
+                        name="dateOfBirth"
+                        render={({ field }) => (
+                          <TextInput {...field} disabled label="Date of Birth" placeholder={'Date of Birth'} required />
+                        )}
+                      />
 
-                    <Field
-                      name="identificationMark2"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          disabled
-                          label="Identification Mark 2"
-                          placeholder={'Identification Mark 2'}
-                          required
-                        />
-                      )}
-                    />
+                      <Field
+                        name="age"
+                        render={({ field }) => (
+                          <TextInput {...field} disabled label="Age" placeholder={'Age'} required />
+                        )}
+                      />
 
-                    <Field
-                      name="dateOfBirth"
-                      render={({ field }) => (
-                        <TextInput {...field} disabled label="Date of Birth" placeholder={'Date of Birth'} required />
-                      )}
-                    />
+                      <Field
+                        name="uid"
+                        render={({ field }) => (
+                          <TextInput {...field} disabled label="UID" placeholder={'UID'} required />
+                        )}
+                      />
 
-                    <Field
-                      name="age"
-                      render={({ field }) => <TextInput {...field} disabled label="Age" placeholder={'Age'} required />}
-                    />
+                      <Field
+                        name="identificationTypeID"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            disabled
+                            label="Identification Type ID"
+                            placeholder={'Identification Type ID'}
+                            required
+                          />
+                        )}
+                      />
 
-                    <Field
-                      name="uid"
-                      render={({ field }) => <TextInput {...field} disabled label="UID" placeholder={'UID'} required />}
-                    />
-
-                    <Field
-                      name="identificationTypeID"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          disabled
-                          label="Identification Type ID"
-                          placeholder={'Identification Type ID'}
-                          required
-                        />
-                      )}
-                    />
-
-                    <Field
-                      name="identificationDescription"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          disabled
-                          label="Identification Description"
-                          placeholder={'Identification Description'}
-                          required
-                        />
-                      )}
-                    />
-                    <Field
-                      name="panForm60"
-                      render={({ field }) => (
-                        <TextInput {...field} disabled label="PAN/Form 60/61" placeholder={'PAN/Form 60/61'} required />
-                      )}
-                    />
-                    <Field
-                      name="occupation"
-                      render={({ field }) => (
-                        <TextInput {...field} disabled label="Occupation" placeholder={'Occupation'} required />
-                      )}
-                    />
-                    <Field
-                      name="gender"
-                      render={({ field }) => (
-                        <TextInput {...field} disabled label="Gender" placeholder={'Gender'} required />
-                      )}
-                    />
-                    <Field
-                      name="email"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          disabled
-                          label="E-mail"
-                          placeholder={'E-mail'}
-                          required
-                          error={formikBag.errors.email}
-                        />
-                      )}
-                    />
-                    <Field
-                      name="mobileNo"
-                      render={({ field }) => (
-                        <TextInput {...field} disabled label="Mobile No." placeholder={'Mobile No.'} required />
-                      )}
-                    />
-                    <Field
-                      name="presentationExemption"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          disabled
-                          label="Presentation Exemption"
-                          placeholder={'Presentation Exemption'}
-                          required
-                        />
-                      )}
-                    />
-                    <Field
-                      name="pinCode"
-                      render={({ field }) => (
-                        <TextInput {...field} disabled label="PIN Code" placeholder={'PIN Code'} required />
-                      )}
-                    />
-                    <Field
-                      name="addressSame"
-                      render={({ field }) => (
-                        <TextInput
-                          {...field}
-                          disabled
-                          label="Address Same As Above"
-                          placeholder={'Address Same As Above'}
-                          required
-                        />
-                      )}
-                    />
-                    <Field
-                      name="district"
-                      render={({ field }) => (
-                        <TextInput {...field} disabled label="District" placeholder={'District'} required />
-                      )}
-                    />
-                    <Field
-                      name="taluka"
-                      render={({ field }) => (
-                        <TextInput {...field} disabled label="Taluka" placeholder={'Taluka'} required />
-                      )}
-                    />
-                    <Field
-                      name="village"
-                      render={({ field }) => (
-                        <TextInput {...field} disabled label="Village" placeholder={'Village'} required />
-                      )}
-                    />
-                  </FieldGroupWithTitle>
-                </FormDetailsContainer>
-              </Paper>
-
-              {get(this.props, 'data', {}).hasOwnProperty('ownerFinancer') && (
-                <Paper
-                  padding={'26px 31px 20px'}
-                  radius={'0 0 6px 6px'}
-                  shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-                  margin={'0px 95px 0px'}>
-                  <FlexWrapper flexDirection="column">
-                    <InformTitle>Owner Finance Details</InformTitle>
-                    <Formik
-                      enableReinitialize
-                      initialValues={{
-                        email: get(data.ownerFinancer, 'email', 'N.A'),
-                        name: get(data.ownerFinancer.userDetails, 'name', 'N.A'),
-                        city: get(data.ownerFinancer.userDetails, 'city', 'N.A'),
-                        branch: get(data.ownerFinancer.userDetails, 'branch', 'N.A'),
-                        loanAmount: get(data.ownerFinancer, 'loanAmount', 'N.A'),
-                        outstandingLoan: get(data.ownerFinancer, 'outstandingLoan', 'N.A')
-                      }}
-                      render={formikBag => (
-                        <React.Fragment>
-                          <FieldGroupWithTitle>
-                            <Field
-                              name="name"
-                              render={({ field }) => (
-                                <TextInput {...field} label="Name" disabled placeholder={'Name'} />
-                              )}
-                            />
-
-                            <Field
-                              name="email"
-                              render={({ field }) => (
-                                <TextInput {...field} disabled label="E-mail" placeholder={'E-mail'} required />
-                              )}
-                            />
-
-                            <Field
-                              name="city"
-                              render={({ field }) => (
-                                <TextInput {...field} label="City" disabled placeholder={'City'} />
-                              )}
-                            />
-                            <Field
-                              name="branch"
-                              render={({ field }) => (
-                                <TextInput {...field} label="Branch" disabled placeholder={'Branch'} />
-                              )}
-                            />
-                          </FieldGroupWithTitle>
-
-                          <InformTitle>Outstanding Loan Amount</InformTitle>
-                          <DesignForm>
-                            <Field
-                              name="loanAmount"
-                              render={({ field }) => (
-                                <TextInput
-                                  {...field}
-                                  label="Loan amount"
-                                  placeholder={'Loan amount'}
-                                  error={formikBag.errors.loanAmount}
-                                />
-                              )}
-                            />
-                            <Field
-                              name="outstandingLoan"
-                              render={({ field }) => (
-                                <TextInput
-                                  {...field}
-                                  label="Outstanding Loan amount"
-                                  placeholder={'Outstanding Loan amount'}
-                                  error={formikBag.errors.outstandingLoan}
-                                />
-                              )}
-                            />
-                          </DesignForm>
-                        </React.Fragment>
-                      )}
-                    />
-                  </FlexWrapper>
+                      <Field
+                        name="identificationDescription"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            disabled
+                            label="Identification Description"
+                            placeholder={'Identification Description'}
+                            required
+                          />
+                        )}
+                      />
+                      <Field
+                        name="panForm60"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            disabled
+                            label="PAN/Form 60/61"
+                            placeholder={'PAN/Form 60/61'}
+                            required
+                          />
+                        )}
+                      />
+                      <Field
+                        name="occupation"
+                        render={({ field }) => (
+                          <TextInput {...field} disabled label="Occupation" placeholder={'Occupation'} required />
+                        )}
+                      />
+                      <Field
+                        name="gender"
+                        render={({ field }) => (
+                          <TextInput {...field} disabled label="Gender" placeholder={'Gender'} required />
+                        )}
+                      />
+                      <Field
+                        name="email"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            disabled
+                            label="E-mail"
+                            placeholder={'E-mail'}
+                            required
+                            error={formikBag.errors.email}
+                          />
+                        )}
+                      />
+                      <Field
+                        name="mobileNo"
+                        render={({ field }) => (
+                          <TextInput {...field} disabled label="Mobile No." placeholder={'Mobile No.'} required />
+                        )}
+                      />
+                      <Field
+                        name="presentationExemption"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            disabled
+                            label="Presentation Exemption"
+                            placeholder={'Presentation Exemption'}
+                            required
+                          />
+                        )}
+                      />
+                      <Field
+                        name="pinCode"
+                        render={({ field }) => (
+                          <TextInput {...field} disabled label="PIN Code" placeholder={'PIN Code'} required />
+                        )}
+                      />
+                      <Field
+                        name="addressSame"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            disabled
+                            label="Address Same As Above"
+                            placeholder={'Address Same As Above'}
+                            required
+                          />
+                        )}
+                      />
+                      <Field
+                        name="district"
+                        render={({ field }) => (
+                          <TextInput {...field} disabled label="District" placeholder={'District'} required />
+                        )}
+                      />
+                      <Field
+                        name="taluka"
+                        render={({ field }) => (
+                          <TextInput {...field} disabled label="Taluka" placeholder={'Taluka'} required />
+                        )}
+                      />
+                      <Field
+                        name="village"
+                        render={({ field }) => (
+                          <TextInput {...field} disabled label="Village" placeholder={'Village'} required />
+                        )}
+                      />
+                    </FieldGroupWithTitle>
+                  </FormDetailsContainer>
                 </Paper>
-              )}
-              <ButtonGroup>
-                {addOwnerStatus || get(data, 'status', {}) === 'registry_owner' ? (
-                  <React.Fragment>
+
+                {get(this.props, 'data', {}).hasOwnProperty('ownerFinancer') && (
+                  <Paper
+                    padding={'26px 31px 20px'}
+                    radius={'0 0 6px 6px'}
+                    shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+                    margin={'0px 95px 0px'}>
+                    <FlexWrapper flexDirection="column">
+                      <InformTitle>Owner Finance Details</InformTitle>
+                      <Formik
+                        enableReinitialize
+                        initialValues={{
+                          email: get(data.ownerFinancer, 'email', 'N.A'),
+                          name: get(data.ownerFinancer.userDetails, 'name', 'N.A'),
+                          city: get(data.ownerFinancer.userDetails, 'city', 'N.A'),
+                          branch: get(data.ownerFinancer.userDetails, 'branch', 'N.A'),
+                          loanAmount: get(data.ownerFinancer, 'loanAmount', 'N.A'),
+                          outstandingLoan: get(data.ownerFinancer, 'outstandingLoan', 'N.A')
+                        }}
+                        render={formikBag => (
+                          <React.Fragment>
+                            <FieldGroupWithTitle>
+                              <Field
+                                name="name"
+                                render={({ field }) => (
+                                  <TextInput {...field} label="Name" disabled placeholder={'Name'} />
+                                )}
+                              />
+
+                              <Field
+                                name="email"
+                                render={({ field }) => (
+                                  <TextInput {...field} disabled label="E-mail" placeholder={'E-mail'} required />
+                                )}
+                              />
+
+                              <Field
+                                name="city"
+                                render={({ field }) => (
+                                  <TextInput {...field} label="City" disabled placeholder={'City'} />
+                                )}
+                              />
+                              <Field
+                                name="branch"
+                                render={({ field }) => (
+                                  <TextInput {...field} label="Branch" disabled placeholder={'Branch'} />
+                                )}
+                              />
+                            </FieldGroupWithTitle>
+
+                            <InformTitle>Outstanding Loan Amount</InformTitle>
+                            <DesignForm>
+                              <Field
+                                name="loanAmount"
+                                render={({ field }) => (
+                                  <TextInput
+                                    {...field}
+                                    label="Loan amount"
+                                    placeholder={'Loan amount'}
+                                    error={formikBag.errors.loanAmount}
+                                  />
+                                )}
+                              />
+                              <Field
+                                name="outstandingLoan"
+                                render={({ field }) => (
+                                  <TextInput
+                                    {...field}
+                                    label="Outstanding Loan amount"
+                                    placeholder={'Outstanding Loan amount'}
+                                    error={formikBag.errors.outstandingLoan}
+                                  />
+                                )}
+                              />
+                            </DesignForm>
+                          </React.Fragment>
+                        )}
+                      />
+                    </FlexWrapper>
+                  </Paper>
+                )}
+                <ButtonGroup>
+                  {addOwnerStatus || get(data, 'status', {}) === 'registry_owner' ? (
+                    <React.Fragment>
+                      <Button
+                        size={'medium'}
+                        width={'150px'}
+                        title="Add Financier"
+                        type="button"
+                        onClick={() => this.setState({ addFinancier: true, openModal: true })}
+                      />
+                      <Button
+                        size={'medium'}
+                        width={'150px'}
+                        title="Skip Financier"
+                        type="button"
+                        isLoading={isLoadingSkip}
+                        disabled={isLoadingSkip}
+                        onClick={() => this.skipFinancier()}
+                      />
+                    </React.Fragment>
+                  ) : Cookies.get('email') === get(data, 'ownerFinancer.email', '') &&
+                  data.status === 'registry_owner_financer' &&
+                  Cookies.get('role') === 'bank' ? (
+                    <React.Fragment>
+                      <Button
+                        size={'large'}
+                        width={'150px'}
+                        isLoading={isLoadingReject}
+                        title="reject financer"
+                        type="button"
+                        disabled={isLoadingReject}
+                        onClick={() => this.rejectBuyerFinancer()}
+                      />
+                      <Button
+                        size={'large'}
+                        width={'150px'}
+                        isLoading={isLoading}
+                        disabled={isLoading}
+                        title="Confirm financer"
+                        type="submit"
+                      />
+                    </React.Fragment>
+                  ) : get(data, 'status', {}) === 'registry_new' &&
+                  get(data, 'owner.email', {}) === Cookies.get('email') ? (
                     <Button
                       size={'medium'}
-                      width={'150px'}
-                      title="Add Financier"
-                      type="button"
-                      onClick={() => this.setState({ addFinancier: true, openModal: true })}
-                    />
-                    <Button
-                      size={'medium'}
-                      width={'150px'}
-                      title="Skip Financier"
-                      type="button"
-                      isLoading={isLoadingSkip}
-                      disabled={isLoadingSkip}
-                      onClick={() => this.skipFinancier()}
-                    />
-                  </React.Fragment>
-                ) : Cookies.get('email') === get(data, 'ownerFinancer.email', '') &&
-                data.status === 'registry_owner_financer' &&
-                Cookies.get('role') === 'bank' ? (
-                  <React.Fragment>
-                    <Button
-                      size={'large'}
-                      width={'150px'}
-                      isLoading={isLoadingReject}
-                      title="reject financer"
-                      type="button"
-                      disabled={isLoadingReject}
-                      onClick={() => this.rejectBuyerFinancer()}
-                    />
-                    <Button
-                      size={'large'}
-                      width={'150px'}
                       isLoading={isLoading}
                       disabled={isLoading}
-                      title="Confirm financer"
+                      width={'150px'}
+                      title="Confirm owner"
                       type="submit"
                     />
-                  </React.Fragment>
-                ) : get(data, 'status', {}) === 'registry_new' &&
-                get(data, 'owner.email', {}) === Cookies.get('email') ? (
-                  <Button
-                    size={'medium'}
-                    isLoading={isLoading}
-                    disabled={isLoading}
-                    width={'150px'}
-                    title="Confirm owner"
-                    type="submit"
-                  />
-                ) : null}
-              </ButtonGroup>
-            </FormikForm>
-          )}
-        />
+                  ) : null}
+                </ButtonGroup>
+              </FormikForm>
+            )}
+          />
+        }
         {addFinancier && (
           <React.Fragment>
             <Modal show={openModal}>
