@@ -57,6 +57,31 @@ var getErrorCodes = function(errorKey) {
 			appErrorCode : 1008,
 			errMessage : 'Invalid email'
 		},
+		InvalidBuyer : {
+			statusCode : 409,
+			appErrorCode : 1008,
+			errMessage : 'Buyer can not be same as owner'
+		},
+		TokenAmtCheck : {
+			statusCode : 409,
+			appErrorCode : 1008,
+			errMessage : "Token amount can not be greater than Sell Price"
+		},
+		LoanAmountCheck : {
+			statusCode : 409,
+			appErrorCode : 1008,
+			errMessage : "Loan amount can not be greater than sell price"
+		},
+		OutstandingLoanCheck : {
+			statusCode : 409,
+			appErrorCode : 1008,
+			errMessage : "Outstanding loan can not be greater than loan amount"
+		},
+		FinanceAmountCheck : {
+			statusCode : 409,
+			appErrorCode : 1008,
+			errMessage : "Finance amount can not be greater than Sell Price"
+		},
 		InvalidDate : {
 			statusCode : 400,
 			appErrorCode : 1009,
