@@ -417,11 +417,13 @@ router.post('/sellProperty', async function(req, res) {
 
 	if (!propertyId || !owner || !owner.email ||
 		!owner.address || !sellPrice || !tokenAmt) {
-		return res.send({status : false, error : "ResourceNotFound"});
+		let error = helper.getErrorResponse('ResourceNotFound');
+		return res.status(error.statusCode).send(error.error);
 	}
 
 	if (tokenAmt > sellPrice) {
-		return res.send({status : false, error : "Token amount can not be greater than Sell Price"});
+		let error = helper.getErrorResponse('TokenAmtCheck');
+		return res.status(error.statusCode).send(error.error);
 	}
 
 	let registryId = shortid.generate();
@@ -546,6 +548,26 @@ router.post('/addOwnerFinancer', async function(req, res) {
 		let error = helper.getErrorResponse('ResourceNotFound');
 		return res.status(error.statusCode).send(error.error);
 	}
+
+	if (ownerFinancer && (!ownerFinancer.loanAmount || !ownerFinancer.outstandingLoan)) {
+		let error = helper.getErrorResponse('ResourceNotFound');
+		return res.status(error.statusCode).send(error.error);
+	}
+
+	let collection = db.getCollection('registry');
+	let registryData = await collection.findOne({registryId : registryId});
+	let sellPrice = registryData.sellPrice;
+
+	if (ownerFinancer && (ownerFinancer.loanAmount > sellPrice)) {
+		let error = helper.getErrorResponse('LoanAmountCheck');
+		return res.status(error.statusCode).send(error.error);
+	}
+
+	if (ownerFinancer && (ownerFinancer.outstandingLoan > ownerFinancer.loanAmount)) {
+		let error = helper.getErrorResponse('OutstandingLoanCheck');
+		return res.status(error.statusCode).send(error.error);		
+	}
+
 	let status = req.body.status || (
 		!ownerFinancer ?
 		"registry_skip_owner_financer" : "registry_owner_financer"
@@ -650,13 +672,25 @@ router.post('/addBuyer', async function(req, res) {
 		return res.status(error.statusCode).send(error.error);
 	}
 
-	var collection = db.getCollection('users');
-    let users = await collection.find({email : buyerDetails.email}).toArray();
+	try {
+		let collection = db.getCollection('registry');
+		let registryData;
+		registryData = await collection.findOne({registryId : registryId});
+		if (registryData.owner.email == buyerDetails.email) {
+			let error = helper.getErrorResponse('InvalidBuyer');
+			return res.status(error.statusCode).send(error.error);
+		}
 
-    if(users.length == 0) {
-		let error = helper.getErrorResponse('InvalidEmail');
-		return res.status(error.statusCode).send(error.error);
-    }
+		var collection = db.getCollection('users');
+	    let users = await collection.find({email : buyerDetails.email}).toArray();
+
+	    if(users.length == 0) {
+			let error = helper.getErrorResponse('InvalidEmail');
+			return res.status(error.statusCode).send(error.error);
+	    }
+	} catch(e) {
+		console.log(e)
+	}
 
 	buyerDetails.address = users[0].address;
 
@@ -742,6 +776,20 @@ router.post('/addBuyerFinancer', async function(req, res) {
 		!buyerFinancer ?
 		"registry_skip_buyer_financer" : "registry_buyer_financer"
 	);
+
+	let collection = db.getCollection('registry');
+	let registryData = await collection.findOne({registryId : registryId});
+	let sellPrice = registryData.sellPrice;
+
+	if (buyerFinancer && (!buyerFinancer.email || !buyerFinancer.financeAmount)) {
+		let error = helper.getErrorResponse('ResourceNotFound');
+		return res.status(error.statusCode).send(error.error);
+	}
+
+	if (buyerFinancer && buyerFinancer.financeAmount > sellPrice) {
+		let error = helper.getErrorResponse('FinanceAmountCheck');
+		return res.status(error.statusCode).send(error.error);
+	}
 
     if (web3Conf && status == 'registry_buyer_financer') {
 		try {
