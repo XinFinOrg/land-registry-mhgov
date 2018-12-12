@@ -36,8 +36,8 @@ var addProperty = async function(
         coveredParking,
         floorNo,
         owner,
-        created,
         status,
+        created,
         {from: web3.eth.coinbase, gas:1000000}
     );
 };
@@ -115,9 +115,9 @@ var getAllEvents = async function(propertyId) {
     allEvents = helper.processEvents(allEvents);
 
     //sort events by timeline
-    /*allEvents.sort(function(x, y){
+    allEvents.sort(function(x, y){
         return x.args.created - y.args.created;
-    })*/
+    })
     return allEvents;
 };
 
