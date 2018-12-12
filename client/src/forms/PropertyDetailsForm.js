@@ -74,7 +74,7 @@ class PropertyDetailsForm extends Component {
           enableReinitialize={true}
           initialValues={{
             district: get(this.props.data, 'district', 'Pune'),
-            landType: get(this.props.data, 'landType', 'Agricultural'),
+            landType: get(this.props.data, 'landType', 'Residential'),
             taluka: get(this.props.data, 'taluka', 'Pune'),
             localGoverning: get(this.props.data, 'localGovNo', 'MV123'),
             cityVillage: get(this.props.data, 'city', 'Pune'),
@@ -91,8 +91,12 @@ class PropertyDetailsForm extends Component {
             coveredParkingSquareMeter: '10',
             coveredParkingBulidArea: '10',
             shopFloorBasement: get(this.props.data, 'shopFloor', '0'),
-            propertyAddress: get(this.props.data, 'address', 'Street Address'),
-            propertyDescription: get(this.props.data, 'description', 'Ground floor')
+            propertyAddress: get(this.props.data, 'address', 'Little Earth, Deccan, Pune'),
+            propertyDescription: get(
+              this.props.data,
+              'description',
+              'A Lavish 2 BHK with amazing location and senaric view'
+            )
           }}
           validate={governmentValidator}
           validateOnChange

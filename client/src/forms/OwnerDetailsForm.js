@@ -28,6 +28,7 @@ import { addFinancer } from '../utils/validator'
 const SingleForm = styled('div')`
   margin-top: -30px;
 `
+
 const DesignForm = styled.div`
   display: flex;
 

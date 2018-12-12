@@ -105,6 +105,13 @@ const InformTitle = styled.p`
   padding-top: ${props => (props.paddingTop ? props.paddingTop : 26)}px;
   padding-bottom: ${props => (props.paddingBottom ? props.paddingBottom : 26)}px;
 `
+const InformTitleTwo = styled.p`
+  font-size: 24px;
+  color: #1f89f5;
+  font-weight: bold;
+  padding-top: ${props => (props.paddingTop ? props.paddingTop : 26)}px;
+  padding-bottom: ${props => (props.paddingBottom ? props.paddingBottom : 26)}px;
+`
 const InformSubTitle = styled.p`
   font-size: 15.5px;
   line-height: 2.26;
@@ -371,6 +378,7 @@ export {
   FieldGroupWithTitle,
   StyledHeader,
   IconWrapper,
+  InformTitleTwo,
   FormikForm,
   ButtonGroup,
   StyledHead,

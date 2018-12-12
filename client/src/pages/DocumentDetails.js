@@ -19,6 +19,7 @@ import {
   Input,
   TextInput,
   InformTitle,
+  InformTitleTwo,
   Button,
   // PaymentTuple,
   // PaymentText,
@@ -47,6 +48,25 @@ import get from 'lodash/get'
 import keys from 'lodash/keys'
 // import values from 'lodash/values'
 import moment from 'moment'
+
+const TableWrapper = styled.div`
+  table,
+  td,
+  th {
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding: 15px;
+  }
+`
 
 const HalfWraper = styled.div`
   width: 50%;
@@ -158,11 +178,9 @@ class DocumentDetails extends Component {
   changeActiveTab = activeTab => {
     this.setState({ activeTab })
   }
-
   collapsHandle = index => {
     this.setState({ isOpened: index === this.state.isOpened ? '' : index })
   }
-
   render() {
     console.log('data for hash', this.props.data)
     console.log('document details page porps==>', this.state.dashboardData)
@@ -260,6 +278,7 @@ class DocumentDetails extends Component {
       }
     ]*/
     const { activeTab, dashboardData, historyData, isOpened } = this.state
+
     const {
       match: { params }
     } = this.props
@@ -562,18 +581,9 @@ class DocumentDetails extends Component {
           )
         })}
 
-        {console.log('Data testtttttttttttttttt')}
-
         {params.tab2 === 'add-property'
           ? null
           : get(historyData, 'registryData', []).map(item => {
-              /*const DocumentDutyTotal = [
-              {
-               propertyId: item.args.propertyId || 'None',
-               registryId: item.args.registryId || 'None',
-               buyer: item.args.buyer || 'None'
-              }
-              ] */
               const { created, ...rest } = item.args
               return (
                 <Paper
@@ -719,6 +729,55 @@ class DocumentDetails extends Component {
             minRows={0}
           />
         </Paper> */}
+        {console.log('api tttttttttttttttt', historyData.propertyData)}
+
+        <Paper
+          padding={'26px 31px 20px'}
+          radius={'0 0 6px 6px'}
+          shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+          margin={'30px 95px 30px'}>
+          <InformTitleTwo paddingTop={'0'} paddingBottom={'0'}>
+            Payment Details
+          </InformTitleTwo>
+          <br />
+          <TableWrapper>
+            <table>
+              <thead style={{ background: '#2f89f5', color: '#fff' }}>
+                <tr>
+                  <th>Name</th>
+                  <th>Date</th>
+                  <th width="30%">From</th>
+                  <th>To</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {get(historyData, 'registryData', []).map(
+                  (table, index) =>
+                    table.event === 'TransferTokens' ? (
+                      <tr>
+                        <td>{table.txName || 'Transfer Balance'}</td>
+                        <td> {moment(get(table, 'created', '')).format('DD MMM YYYY hh:mm A')}</td>
+                        <td>
+                          <p style={{ wordBreak: 'break-all' }}>{table.args.from}</p>
+                        </td>
+                        <td style={{ wordBreak: 'break-all' }}>{table.args.to}</td>
+                        <td>{table.args.amount}</td>
+                      </tr>
+                    ) : (
+                      ''
+                    )
+                )}
+              </tbody>
+            </table>
+          </TableWrapper>
+        </Paper>
+        <br />
+        <br />
+        <br />
+
+        <br />
+
         <Footer position={'fixed'} />
       </React.Fragment>
     )
