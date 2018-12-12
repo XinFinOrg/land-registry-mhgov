@@ -222,9 +222,9 @@ var getAllEvents = async function(registryId) {
     events = await (Promisify(cb => eventInstance.get(cb)));
     allEvents = allEvents.concat(events);
 
-    eventInstance = contractInstance.SetRegistrationFees(f1,  f2);
+    /*eventInstance = contractInstance.SetRegistrationFees(f1,  f2);
     events = await (Promisify(cb => eventInstance.get(cb)));
-    allEvents = allEvents.concat(events);
+    allEvents = allEvents.concat(events);*/
 
     eventInstance = contractInstance.TransferTokens(f1,  f2);
     events = await (Promisify(cb => eventInstance.get(cb)));
@@ -238,9 +238,9 @@ var getAllEvents = async function(registryId) {
     allEvents = helper.processEventBigNumbers(allEvents);
     allEvents = helper.processEvents(allEvents);
     //sort events by timeline
-    /*allEvents.sort(function(x, y){
+    allEvents.sort(function(x, y){
         return x.args.created - y.args.created;
-    })*/
+    })
     return allEvents;
 };
 
