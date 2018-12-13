@@ -316,7 +316,7 @@ class OwnerDetailsForm extends Component {
                         />
                       )}
                     />
-                    <Field
+                    {/* <Field
                       name="selectPartyCategory"
                       render={({ field }) => (
                         <SelectBox
@@ -333,7 +333,7 @@ class OwnerDetailsForm extends Component {
                           isSearchable={false}
                         />
                       )}
-                    />
+                    /> */}
                   </FormDetailsContainer>
                   {/* <FormDetailsContainer paddingTop={'0'} display={'block'}>
                 <InformTitle>List of Properties</InformTitle>
@@ -643,8 +643,8 @@ class OwnerDetailsForm extends Component {
                                 render={({ field }) => (
                                   <TextInput
                                     {...field}
-                                    label="Loan amount"
-                                    placeholder={'Loan amount'}
+                                    label="Total Loan amount"
+                                    placeholder={'Total  Loan amount'}
                                     error={formikBag.errors.loanAmount}
                                   />
                                 )}
@@ -673,14 +673,14 @@ class OwnerDetailsForm extends Component {
                       <Button
                         size={'medium'}
                         width={'150px'}
-                        title="Add Financier"
+                        title="Add Financer"
                         type="button"
                         onClick={() => this.setState({ addFinancier: true, openModal: true })}
                       />
                       <Button
                         size={'medium'}
                         width={'150px'}
-                        title="Skip Financier"
+                        title="Skip Financer"
                         type="button"
                         isLoading={isLoadingSkip}
                         disabled={isLoadingSkip}
@@ -695,7 +695,7 @@ class OwnerDetailsForm extends Component {
                         size={'large'}
                         width={'150px'}
                         isLoading={isLoadingReject}
-                        title="reject financer"
+                        title="Reject Finance Details"
                         type="button"
                         disabled={isLoadingReject}
                         onClick={() => this.rejectBuyerFinancer()}
@@ -705,7 +705,7 @@ class OwnerDetailsForm extends Component {
                         width={'150px'}
                         isLoading={isLoading}
                         disabled={isLoading}
-                        title="Confirm financer"
+                        title="Confirm Finance Details"
                         type="submit"
                       />
                     </React.Fragment>
@@ -842,8 +842,8 @@ class OwnerDetailsForm extends Component {
                               render={({ field }) => (
                                 <TextInput
                                   {...field}
-                                  label="Loan amount"
-                                  placeholder={'Loan amount'}
+                                  label="Total Loan amount"
+                                  placeholder={'Total  Loan amount'}
                                   error={formikBag.errors.loanAmount}
                                 />
                               )}

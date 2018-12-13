@@ -332,6 +332,7 @@ class BuyerDetailsForm extends Component {
               */}
                   <FormDetailsContainer flexBasis={'calc(50% - 10px)'}>
                     <div>
+                      <PaddingBlank />
                       <Field
                         name="selectPartyType"
                         render={({ field }) => (
@@ -340,15 +341,18 @@ class BuyerDetailsForm extends Component {
                             onChange={selectPartyType =>
                               formikBag.setFieldValue('selectPartyType', selectPartyType.value)
                             }
-                            options={[{ label: 'Admin', value: 'Admin' }, { label: 'User', value: 'User' }]}
+                            options={[
+                              { label: 'Individual', value: 'Individual' },
+                              { label: 'Corporate', value: 'Corporate' }
+                            ]}
                             placeholder="Select Party Type"
-                            defaultValue={{ label: 'Admin', value: 'Admin' }}
+                            defaultValue={{ label: 'Individual', value: 'Individual' }}
                             isSearchable={false}
                           />
                         )}
                       />
-                      <PaddingBlank />
-                      <Field
+
+                      {/* <Field
                         name="selectPartyCategory"
                         render={({ field }) => (
                           <SelectBox
@@ -362,10 +366,10 @@ class BuyerDetailsForm extends Component {
                             isSearchable={false}
                           />
                         )}
-                      />
+                      /> */}
                     </div>
                     <div>
-                      <Field
+                      {/*  <Field
                         name="isExecuter"
                         render={({ field }) => (
                           <SelectBox
@@ -377,7 +381,7 @@ class BuyerDetailsForm extends Component {
                             isSearchable={false}
                           />
                         )}
-                      />
+                      /> */}
                       <Field
                         name="email"
                         render={({ field }) => (
@@ -608,19 +612,19 @@ class BuyerDetailsForm extends Component {
                   </Paper>
                 )}
                 <ButtonGroup>
-                  {data.status === 'registry_buyer_confirmed' ? (
+                  {data.status === 'registry_buyer_confirmed' && Cookies.get('email') === get(buyer, 'email', '') ? (
                     <React.Fragment>
                       <Button
                         size={'medium'}
                         width={'150px'}
-                        title="Add Financier"
+                        title="Add Financer"
                         type="button"
                         onClick={() => this.setState({ addFinancier: !addFinancier })}
                       />
                       <Button
                         size={'medium'}
                         width={'150px'}
-                        title="Skip Financier"
+                        title="Skip Financer"
                         type="button"
                         isLoading={isLoadingSkip}
                         disabled={isLoadingSkip}
@@ -655,7 +659,7 @@ class BuyerDetailsForm extends Component {
                         size={'large'}
                         width={'150px'}
                         isLoading={isLoadingReject}
-                        title="reject financer"
+                        title="Reject Finance Details"
                         type="button"
                         disabled={isLoadingReject}
                         onClick={() => this.rejectBuyerFinancer()}
@@ -665,7 +669,7 @@ class BuyerDetailsForm extends Component {
                         width={'150px'}
                         isLoading={isLoading}
                         disabled={isLoading}
-                        title="Confirm financer"
+                        title="Confirm Finance Details"
                         type="submit"
                       />
                     </React.Fragment>

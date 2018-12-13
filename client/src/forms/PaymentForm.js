@@ -94,7 +94,7 @@ class PaymentForm extends Component {
         shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
         margin={'0 95px'}>
         <PaymentTuple>
-          <PaymentText>Token amount to be paid: {data.tokenAmt}</PaymentText>
+          <PaymentText>Token Amount : {data.tokenAmt}</PaymentText>
           {/* PayTokenAmout */}
 
           {get(data, 'buyer.email', '') === Cookies.get('email') &&
@@ -120,7 +120,7 @@ class PaymentForm extends Component {
         {/* Financer Amount */}
         {get(this.props, 'data', {}).hasOwnProperty('buyerFinancer') && (
           <PaymentTuple>
-            <PaymentText>Finance amount to be paid: {get(data, 'buyerFinancer.financeAmount')} </PaymentText>
+            <PaymentText>Finance Amount : {get(data, 'buyerFinancer.financeAmount')} </PaymentText>
             {/* pay financer amount */}
             {get(data, 'buyerFinancer.email', '') === Cookies.get('email') &&
             data.status === 'registry_token_amount' ? (
@@ -146,7 +146,7 @@ class PaymentForm extends Component {
         {console.log('payement form get real price', data.tokenAmt)}
         <PaymentTuple>
           <PaymentText>
-            Buyer's amount to be paid:{' '}
+            Buyer's Amount :{' '}
             {get(data, 'sellPrice', 0) - get(data.buyerFinancer, 'financeAmount', 0) - get(data, 'tokenAmt', 0)}
           </PaymentText>
 

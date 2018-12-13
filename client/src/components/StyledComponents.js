@@ -143,14 +143,18 @@ const Font14 = styled.p`
   color: #333333;
   padding: 0px 0 10px;
   text-transform: uppercase;
+  span {
+    text-transform: capitalize;
+  }
 `
 const FieldsTuple = styled.div`
   margin-top: 10px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: inherit;
   & > div {
     flex-basis: ${props => (props.flexBasis ? props.flexBasis : 'calc(33.33% - 10px)')};
+    margin-right: 15px;
     & > div {
       flex-basis: ${props => (props.flexBasis ? props.flexBasis : 'calc(33.33% - 10px)')};
     }

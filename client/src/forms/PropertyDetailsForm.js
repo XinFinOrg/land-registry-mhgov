@@ -83,13 +83,13 @@ class PropertyDetailsForm extends Component {
             propertyUsage: get(this.props.data, 'propertyUsage', 'Shop'),
             usage: get(this.props.data, 'usage', 'Non-Agriculture'),
             areaOfConstructurePropertySquareMeter: get(this.props.data, 'constructedArea', '20'),
-            areaOfConstructurePropertyBuildUpArea: '30',
+            areaOfConstructurePropertyBuildUpArea: get(this.props.data, 'constructedCarpetArea', '20'),
             areaOfConstructureProperty: '30',
-            openParking: get(this.props.data, 'openParking', 'yes'),
-            openParkingSquareMeter: '10',
+            openParking: get(this.props.data, 'openParkingCars', '1'),
+            openParkingSquareMeter: get(this.props.data, 'openParking', '10'),
             coveredParking: get(this.props.data, 'coveredParking', '10'),
-            coveredParkingSquareMeter: '10',
-            coveredParkingBulidArea: '10',
+            coveredParkingSquareMeter: get(this.props.data, 'coveredParkingCars', '1'),
+            coveredParkingBulidArea: get(this.props.data, 'coveredParking', '10'),
             shopFloorBasement: get(this.props.data, 'shopFloor', '0'),
             propertyAddress: get(this.props.data, 'address', 'Little Earth, Deccan, Pune'),
             propertyDescription: get(
@@ -277,34 +277,17 @@ class PropertyDetailsForm extends Component {
                 <FormDetailsContainer display={'block'} paddingTop={46}>
                   <InformTitle>Non Agriculture Build and open >> Shop >> Big Shop in Complex</InformTitle>
                   <StaticField>
-                    <Font14>Area of constructure Property</Font14>
+                    <Font14>
+                      Area of constructure Property <span> (Square meter)</span>
+                    </Font14>
                     <FieldsTuple>
-                      <Field
-                        name="areaOfConstructureProperty"
-                        render={({ field }) => (
-                          <Input
-                            {...field}
-                            width={'100%'}
-                            height={'100%'}
-                            marginBottom={30}
-                            padding={'18px 16px 23px'}
-                            background={'rgba(235,235,235,0.2)'}
-                            radius={'4'}
-                            border={false}
-                            shadow={'none'}
-                            type="text"
-                            disabled={isActive}
-                            error={formikBag.errors.areaOfConstructureProperty}
-                          />
-                        )}
-                      />
                       <Field
                         name="areaOfConstructurePropertySquareMeter"
                         render={({ field }) => (
                           <TextInput
                             {...field}
-                            label="Sqaure Meter"
-                            placeholder={'Sqaure Meter'}
+                            label="Build Up Area"
+                            placeholder={'Build Up Area'}
                             required
                             disabled={isActive}
                             error={formikBag.errors.areaOfConstructurePropertySquareMeter}
@@ -316,8 +299,8 @@ class PropertyDetailsForm extends Component {
                         render={({ field }) => (
                           <TextInput
                             {...field}
-                            label="Build Up Area"
-                            placeholder={'Build Up Area'}
+                            label="Carpet Area"
+                            placeholder={'Carpet Area'}
                             required
                             disabled={isActive}
                             error={formikBag.errors.areaOfConstructurePropertyBuildUpArea}
@@ -327,34 +310,31 @@ class PropertyDetailsForm extends Component {
                     </FieldsTuple>
                   </StaticField>
                   <StaticField>
-                    <Font14>Open Parking</Font14>
+                    <Font14>
+                      Open Parking <span> (Square meter)</span>
+                    </Font14>
                     <NormalFieldsTuple>
                       <Field
                         name="openParking"
                         render={({ field }) => (
-                          <Input
+                          <TextInput
                             {...field}
-                            width={'100%'}
-                            height={'100%'}
-                            marginBottom={30}
-                            padding={'18px 16px 23px'}
-                            background={'rgba(235,235,235,0.2)'}
-                            radius={'4'}
-                            border={false}
-                            shadow={'none'}
-                            type="text"
+                            label="Number of cars"
+                            placeholder={'Number of cars '}
                             required
                             disabled={isActive}
+                            error={formikBag.errors.openParkingSquareMeter}
                           />
                         )}
                       />
+
                       <Field
                         name="openParkingSquareMeter"
                         render={({ field }) => (
                           <TextInput
                             {...field}
-                            label="Sqaure Meter"
-                            placeholder={'Sqaure Meter'}
+                            label="Build Up Area"
+                            placeholder={'Build Up Area'}
                             required
                             disabled={isActive}
                             error={formikBag.errors.openParkingSquareMeter}
@@ -364,34 +344,17 @@ class PropertyDetailsForm extends Component {
                     </NormalFieldsTuple>
                   </StaticField>
                   <StaticField>
-                    <Font14>Covered Parking</Font14>
+                    <Font14>
+                      Covered Parking <span> (Square meter)</span>
+                    </Font14>
                     <FieldsTuple>
-                      <Field
-                        name="coveredParking"
-                        render={({ field }) => (
-                          <Input
-                            {...field}
-                            width={'100%'}
-                            height={'100%'}
-                            marginBottom={30}
-                            padding={'18px 16px 23px'}
-                            background={'rgba(235,235,235,0.2)'}
-                            radius={'4'}
-                            border={false}
-                            type="text"
-                            required
-                            disabled={isActive}
-                            error={formikBag.errors.coveredParking}
-                          />
-                        )}
-                      />
                       <Field
                         name="coveredParkingSquareMeter"
                         render={({ field }) => (
                           <TextInput
                             {...field}
-                            label="Sqaure Meter"
-                            placeholder={'Sqaure Meter'}
+                            label="Number of cars"
+                            placeholder={'Number of cars'}
                             required
                             disabled={isActive}
                             error={formikBag.errors.coveredParkingSquareMeter}
@@ -414,7 +377,7 @@ class PropertyDetailsForm extends Component {
                     </FieldsTuple>
                   </StaticField>
                   <StaticField>
-                    <Font14>Shop Floor</Font14>
+                    <Font14>Shop Floor </Font14>
                     <FieldsTuple>
                       <Field
                         name="shopFloorBasement"
@@ -486,15 +449,37 @@ class PropertyDetailsForm extends Component {
                 ) : Cookies.get('role') === 'individual' &&
                 get(data, 'owner.email', {}) === Cookies.get('email') &&
                 get(data, 'status', {}) === 'property_verified' ? (
-                  <Button
-                    size={'medium'}
-                    width={'150px'}
-                    isLoading={isLoading}
-                    disabled={isLoading}
-                    title="Sell Property"
-                    type="button"
-                    onClick={() => this.setState({ openModal: true })}
-                  />
+                  <React.Fragment>
+                    <Button
+                      size={'medium'}
+                      width={'150px'}
+                      isLoading={isLoading}
+                      disabled={true}
+                      title="Gift Property"
+                      type="button"
+                      onClick={() => this.setState({ openModal: true })}
+                    />
+
+                    <Button
+                      size={'medium'}
+                      width={'150px'}
+                      isLoading={isLoading}
+                      disabled={true}
+                      title="Rent Property"
+                      type="button"
+                      onClick={() => this.setState({ openModal: true })}
+                    />
+
+                    <Button
+                      size={'medium'}
+                      width={'150px'}
+                      isLoading={isLoading}
+                      disabled={isLoading}
+                      title="Sell Property"
+                      type="button"
+                      onClick={() => this.setState({ openModal: true })}
+                    />
+                  </React.Fragment>
                 ) : params.tab2 === 'add-property' ? (
                   <Button
                     size={'large'}
