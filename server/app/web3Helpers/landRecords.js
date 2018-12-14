@@ -2,7 +2,7 @@ const contract = require('truffle-contract');
 const Web3 = require('web3');
 var Promise = require('promise');
 var contractJson = require('../../deployer/build/contracts/LandRecordContract.json');
-
+var testrpc = process.env.TESTRPC;
 var init = require('./init.js')
 var helper = require('../routes/helper');
 web3 = init.web3;
