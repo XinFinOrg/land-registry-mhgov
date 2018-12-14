@@ -472,7 +472,8 @@ router.post('/sellProperty', async function(req, res) {
 	    }
 
 	   	//console.log(data);
-	   	let stampDuty = (sellPrice * 5)/100 + 2000;
+	   	let stampDuty = (sellPrice * 5)/100;
+	   	stampDuty += (sellPrice/100 < 30000) ? 3000 : sellPrice/100;
 		query = {
 			registryId : registryId,
 			propertyId : propertyId,
