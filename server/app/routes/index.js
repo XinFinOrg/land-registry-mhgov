@@ -556,14 +556,16 @@ router.post('/addOwnerFinancer', async function(req, res) {
 
 	let collection = db.getCollection('registry');
 	let registryData = await collection.findOne({registryId : registryId});
-	let sellPrice = registryData.sellPrice;
+	let sellPrice = parseInt(registryData.sellPrice);
 
-	if (ownerFinancer && (ownerFinancer.loanAmount > sellPrice)) {
+	if (ownerFinancer && (parseInt(ownerFinancer.loanAmount) > sellPrice)) {
 		let error = helper.getErrorResponse('LoanAmountCheck');
 		return res.status(error.statusCode).send(error.error);
 	}
 
-	if (ownerFinancer && (ownerFinancer.outstandingLoan > ownerFinancer.loanAmount)) {
+	console.log('outstandingLoan', )
+
+	if (ownerFinancer && (parseInt(ownerFinancer.outstandingLoan) > parseInt(ownerFinancer.loanAmount))) {
 		let error = helper.getErrorResponse('OutstandingLoanCheck');
 		return res.status(error.statusCode).send(error.error);		
 	}
@@ -681,18 +683,17 @@ router.post('/addBuyer', async function(req, res) {
 			return res.status(error.statusCode).send(error.error);
 		}
 
-		var collection = db.getCollection('users');
+		collection = db.getCollection('users');
 	    let users = await collection.find({email : buyerDetails.email}).toArray();
 
 	    if(users.length == 0) {
 			let error = helper.getErrorResponse('InvalidEmail');
 			return res.status(error.statusCode).send(error.error);
 	    }
+		buyerDetails.address = users[0].address;
 	} catch(e) {
 		console.log(e)
 	}
-
-	buyerDetails.address = users[0].address;
 
 	console.log('addBuyer', buyerDetails);
 
