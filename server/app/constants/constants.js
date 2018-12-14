@@ -13,7 +13,7 @@ const statusNames = {
   registry_buyer_rejected : "Buyer Rejected",
   registry_buyer_financer : "Add Buyer Financer",
   registry_skip_buyer_financer : "NA",
-  registry_buyer_financer_confirmed : "Buyer Financer Verified",
+  registry_buyer_financer_verified : "Buyer Financer Verified",
   registry_buyer_financer_rejected : "Buyer Financer Rejected",
   registry_token_amount : "Token Amount",
   registry_bank_pay : "Financer Payment",
