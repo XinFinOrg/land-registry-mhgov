@@ -98,7 +98,6 @@ const SubmissionWrap = styled.div`
 const OgColor = styled.div`
   color: #bf521a;
 `
-
 const TupleContainer = styled.div`
   display: flex;
   align-items: center;
@@ -218,7 +217,8 @@ class DocumentDetails extends Component {
         )
       }
     ]
-    /*     const DocumentDutyColumns = [
+    /*
+      const DocumentDutyColumns = [
       {
         Header: <StyledHead>Property Id</StyledHead>,
         accessor: 'propertyId',
@@ -663,7 +663,6 @@ class DocumentDetails extends Component {
                         </Form>
                       )}
                     />
-
                     <TableDataWrapper>
                       {keys(rest).map((item, index) => (
                         <React.Fragment>
@@ -676,7 +675,6 @@ class DocumentDetails extends Component {
                         </React.Fragment>
                       ))}
                     </TableDataWrapper>
-
                     {/* <TupleContainer>
                     <TupleWrapper>
                       {keys(rest).map((item, index) => (
@@ -729,48 +727,52 @@ class DocumentDetails extends Component {
           />
         </Paper>*/}
 
-        {params.tab2 === 'add-property' ? null : (
-          <Paper
-            padding={'26px 31px 20px'}
-            radius={'0 0 6px 6px'}
-            shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
-            margin={'30px 95px 30px'}>
-            <InformTitleTwo paddingTop={'0'} paddingBottom={'0'}>
-              Payment Details
-            </InformTitleTwo>
-            <br />
-            <TableWrapper>
-              <table>
-                <thead style={{ background: '#2f89f5', color: '#fff' }}>
-                  <tr>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th width="30%">From</th>
-                    <th>To</th>
-                    <th>Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {get(historyData, 'registryData', []).map(
-                    (table, index) =>
-                      table.event === 'TransferTokens' ? (
-                        <tr>
-                          <td>{table.txName || 'Transfer Balance'}</td>
-                          <td>{moment(get(table, 'created', '')).format('DD MMM YYYY hh:mm A')}</td>
-                          <td>
-                            <p style={{ wordBreak: 'break-all' }}>{table.args.from}</p>
-                          </td>
-                          <td style={{ wordBreak: 'break-all' }}>{table.args.to}</td>
-                          <td>{table.args.amount}</td>
-                        </tr>
-                      ) : (
-                        ''
-                      )
-                  )}
-                </tbody>
-              </table>
-            </TableWrapper>
-          </Paper>
+        {get(historyData, 'txFlag', []) ? (
+          params.tab2 === 'add-property' ? null : (
+            <Paper
+              padding={'26px 31px 20px'}
+              radius={'0 0 6px 6px'}
+              shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
+              margin={'30px 95px 30px'}>
+              <InformTitleTwo paddingTop={'0'} paddingBottom={'0'}>
+                Payment Details
+              </InformTitleTwo>
+              <br />
+              <TableWrapper>
+                <table>
+                  <thead style={{ background: '#2f89f5', color: '#fff' }}>
+                    <tr>
+                      <th>Name</th>
+                      <th>Date</th>
+                      <th width="30%">From</th>
+                      <th>To</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {get(historyData, 'registryData', []).map(
+                      (table, index) =>
+                        table.event === 'TransferTokens' ? (
+                          <tr>
+                            <td>{table.txName || 'Transfer Balance'}</td>
+                            <td>{moment(get(table, 'created', '')).format('DD MMM YYYY hh:mm A')}</td>
+                            <td>
+                              <p style={{ wordBreak: 'break-all' }}>{table.args.from}</p>
+                            </td>
+                            <td style={{ wordBreak: 'break-all' }}>{table.args.to}</td>
+                            <td>{table.args.amount}</td>
+                          </tr>
+                        ) : (
+                          ''
+                        )
+                    )}
+                  </tbody>
+                </table>
+              </TableWrapper>
+            </Paper>
+          )
+        ) : (
+          ''
         )}
         <br />
         <br />

@@ -131,8 +131,10 @@ class Header extends Component {
                   }>
                   <p onClick={() => this.setState({ showModal: true })}>Deposit funds</p>
                 </IconMenu>
-
-                <p>{Cookies.get('name') || 'John Doe'}</p>
+                <p>
+                  {Cookies.get('name') || 'John Doe'}
+                  <p style={{ textTransform: 'capitalize' }}>{Cookies.get('role')}</p>
+                </p>
               </IconWrapper>
             </DashboardWrapper>
           )}

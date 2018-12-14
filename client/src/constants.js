@@ -17,15 +17,15 @@ export const statusMap = {
   },
   registry_new: {
     statusName: 'On Sell',
-    statusDesc: 'Awaiting owner to add extra Information'
+    statusDesc: 'Awaiting owner to add extra information'
   },
   registry_owner: {
     statusName: 'Owner Added',
-    statusDesc: 'Awaiting Owner to add financer information'
+    statusDesc: 'Awaiting Owner to add finance details'
   },
   registry_owner_financer: {
     statusName: 'Owner Financer Added',
-    statusDesc: 'Owner awaiting Financer Confirmation'
+    statusDesc: 'Owner awaiting Financer confirmation'
   },
   registry_skip_owner_financer: {
     statusName: 'Owner Added',
@@ -37,7 +37,7 @@ export const statusMap = {
   },
   registry_owner_financer_rejected: {
     statusName: 'Owner Financer Rejected',
-    statusDesc: 'Owner Financer Rejected'
+    statusDesc: 'Owner finance details rejected'
   },
   registry_buyer: {
     statusName: 'Buyer Added',
@@ -45,7 +45,7 @@ export const statusMap = {
   },
   registry_buyer_confirmed: {
     statusName: 'Buyer Verified',
-    statusDesc: 'Awaiting buyer to add financer information'
+    statusDesc: 'Awaiting buyer to add finance details'
   },
   registry_buyer_rejected: {
     statusName: 'Buyer Rejected',
@@ -69,11 +69,11 @@ export const statusMap = {
   },
   registry_token_amount: {
     statusName: 'Token Payment',
-    statusDesc: 'Awaiting Financer Payment'
+    statusDesc: 'Awaiting payment from financer'
   },
   registry_bank_pay: {
     statusName: 'Financer Payment',
-    statusDesc: 'Awaiting Buyer Payment'
+    statusDesc: 'Awaiting payment from buyer'
   },
   registry_buyer_pay: {
     statusName: 'Buyer Payment',

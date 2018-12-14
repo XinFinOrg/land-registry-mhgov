@@ -333,9 +333,9 @@ class Home extends Component {
                       await this.setState({ isLoading: false })
                       resetForm()
                     } catch (error) {
-                      console.log('ERROR', error)
+                      console.log('ERROR', error.response.data.errMessage)
                       await this.setState({ isLoading: false })
-                      toast.error('User does not exist', {
+                      toast.error(error.response.data.errMessage, {
                         position: toast.POSITION.TOP_CENTER
                       })
                     }

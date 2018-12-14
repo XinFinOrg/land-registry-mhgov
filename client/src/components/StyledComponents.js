@@ -250,14 +250,12 @@ const StyledFlex = styled(FieldGroupWithTitle)`
     margin: 0;
   }
 `
-
 const HalfWraper = styled.div`
   width: 50%;
   div {
     width: 100%;
   }
 `
-
 const StyledHeader = styled.div`
   font-size: 16px;
   font-weight: 600;
@@ -315,7 +313,6 @@ const FlexWrapper = styled.div`
 const MediumText = styled.p`
   font-size: 16px;
 `
-
 const ArrowImg = styled.img`
   cursor: pointer;
   transform: ${props => (props.transform ? 'rotate(180deg)' : 'rotate(0deg)')};
