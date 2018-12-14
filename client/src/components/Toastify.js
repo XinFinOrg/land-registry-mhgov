@@ -5,6 +5,8 @@ import 'react-toastify/dist/ReactToastify.css'
 
 const ToastifyWrapper = styled.div`
   font-family: 'Open Sans', sans-serif !important;
+  position: relative;
+  z-index: 99999;
   & > div > div:first-child {
     min-width: 350px;
     font-size: 15px;

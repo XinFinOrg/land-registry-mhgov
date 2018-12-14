@@ -133,7 +133,15 @@ class Header extends Component {
                 </IconMenu>
                 <p>
                   {Cookies.get('name') || 'John Doe'}
-                  <p style={{ textTransform: 'capitalize' }}>{Cookies.get('role')}</p>
+                  <p
+                    style={{
+                      textTransform: 'capitalize',
+                      fontSize: '12px',
+                      textAlign: 'center',
+                      fontWeight: ' bold'
+                    }}>
+                    ({Cookies.get('role') === 'bank' ? 'financer' : Cookies.get('role')})
+                  </p>
                 </p>
               </IconWrapper>
             </DashboardWrapper>

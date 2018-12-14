@@ -11,7 +11,7 @@ const Overlay = styled.div`
   right: 0;
   bottom: 0;
   background-color: rgba(211, 211, 211, 0.7);
-  z-index: 99999;
+  z-index: 999;
   cursor: pointer;
   max-width: 768px;
   display: flex;
