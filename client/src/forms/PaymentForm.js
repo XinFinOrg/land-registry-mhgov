@@ -31,7 +31,7 @@ class PaymentForm extends Component {
         console.log('DATA', data)
       } catch (error) {
         await this.setState({ isLoading: false })
-        toast.error(`${'Error!!!'}`, {
+        toast.error(error.response.data.errMessage, {
           position: toast.POSITION.TOP_CENTER
         })
         console.log('ERROR', error)
@@ -55,7 +55,7 @@ class PaymentForm extends Component {
         console.log('DATA', data)
       } catch (error) {
         await this.setState({ isLoading: false })
-        toast.error(`${'Error!!!'}`, {
+        toast.error(error.response.data.errMessage, {
           position: toast.POSITION.TOP_CENTER
         })
         console.log('ERROR', error)
@@ -76,7 +76,7 @@ class PaymentForm extends Component {
         console.log('DATA', data)
       } catch (error) {
         await this.setState({ isLoading: false })
-        toast.error(`${'Error!!!'}`, {
+        toast.error(error.response.data.errMessage, {
           position: toast.POSITION.TOP_CENTER
         })
         console.log('ERROR', error)

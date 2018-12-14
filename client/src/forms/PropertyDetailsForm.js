@@ -54,7 +54,7 @@ class PropertyDetailsForm extends Component {
       this.props.history.push('/dashboard')
     } catch (error) {
       await this.setState({ isLoadingReject: false })
-      toast.error(`${'Some error occurred!'}`, {
+      toast.error(error.response.data.errMessage, {
         position: toast.POSITION.TOP_CENTER
       })
       console.log('ERROR', error)
@@ -118,7 +118,7 @@ class PropertyDetailsForm extends Component {
                 this.props.history.push('/dashboard')
               } catch (error) {
                 await this.setState({ isLoading: false })
-                toast.error(`${'Some error occurred!'}`, {
+                toast.error(error.response.data.errMessage, {
                   position: toast.POSITION.TOP_CENTER
                 })
                 console.log('ERROR', error)
@@ -161,7 +161,7 @@ class PropertyDetailsForm extends Component {
                 this.props.history.push('/dashboard')
               } catch (error) {
                 await this.setState({ isLoading: false })
-                toast.error(`${'Error!!!'}`, {
+                toast.error(error.response.data.errMessage, {
                   position: toast.POSITION.TOP_CENTER
                 })
                 console.log('ERROR', error)
@@ -525,7 +525,7 @@ class PropertyDetailsForm extends Component {
                 this.props.history.push('/dashboard')
               } catch (error) {
                 await this.setState({ isLoading: false })
-                toast.error(`${'Some error occurred!'}`, {
+                toast.error(error.response.data.errMessage, {
                   position: toast.POSITION.TOP_CENTER
                 })
                 console.log('ERROR', error)

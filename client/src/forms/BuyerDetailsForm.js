@@ -65,7 +65,7 @@ class BuyerDetailsForm extends Component {
       // console.log('DATA', data)
     } catch (error) {
       await this.setState({ isLoadingReject: false })
-      toast.error(`${'Some error occurred!'}`, {
+      toast.error(error.response.data.errMessage, {
         position: toast.POSITION.TOP_CENTER
       })
       console.log('ERROR', error)
@@ -91,7 +91,7 @@ class BuyerDetailsForm extends Component {
       // console.log('DATA', data)
     } catch (error) {
       await this.setState({ isLoading: false })
-      toast.error(`${'Some error occurred!'}`, {
+      toast.error(error.response.data.errMessage, {
         position: toast.POSITION.TOP_CENTER
       })
       console.log('ERROR', error)
@@ -112,7 +112,7 @@ class BuyerDetailsForm extends Component {
       })
       await this.setState({ isLoadingSkip: false })
     } catch (error) {
-      toast.error(`${'Some error occurred!'}`, {
+      toast.error(error.response.data.errMessage, {
         position: toast.POSITION.TOP_CENTER
       })
       console.log('ERROR', error)
@@ -249,7 +249,7 @@ class BuyerDetailsForm extends Component {
                 // console.log('DATA', data)
               } catch (error) {
                 await this.setState({ isLoading: false })
-                toast.error(`${'Some error occurred!'}`, {
+                toast.error(error.response.data.errMessage, {
                   position: toast.POSITION.TOP_CENTER
                 })
                 console.log('ERROR', error)
@@ -274,7 +274,7 @@ class BuyerDetailsForm extends Component {
                 // console.log('DATA', data)
               } catch (error) {
                 await this.setState({ isLoading: false })
-                toast.error(`${'Some error occurred!'}`, {
+                toast.error(error.response.data.errMessage, {
                   position: toast.POSITION.TOP_CENTER
                 })
                 console.log('ERROR', error)
@@ -301,7 +301,7 @@ class BuyerDetailsForm extends Component {
                 this.props.history.push('/dashboard')
               } catch (error) {
                 await this.setState({ isLoading: false })
-                toast.error(`${'Some error occurred!'}`, {
+                toast.error(error.response.data.errMessage, {
                   position: toast.POSITION.TOP_CENTER
                 })
                 console.log('ERROR', error)
@@ -866,7 +866,7 @@ class BuyerDetailsForm extends Component {
                         // this.props.history.push('/dashboard')
                       } catch (error) {
                         await this.setState({ isLoading: false })
-                        toast.error(`${'Some error occurred!'}`, {
+                        toast.error(error.response.data.errMessage, {
                           position: toast.POSITION.TOP_CENTER
                         })
                         console.log('ERROR', error)
@@ -875,7 +875,7 @@ class BuyerDetailsForm extends Component {
                       try {
                         this.setState({ isLoading: true })
                         const { data } = await axios.get(`${API_URL}/getUserDetails?email=${values.email}`)
-                        console.log('Add financierrrrrrrrrrrrrrrrrrrr', data)
+                        console.log('Add financier', data)
                         await this.setState({ financerAddress: data.data.address })
                         await toast.success(`${'Email is verified!'}`, {
                           position: toast.POSITION.TOP_CENTER
@@ -888,7 +888,7 @@ class BuyerDetailsForm extends Component {
                         // this.props.history.push('/dashboard')
                       } catch (error) {
                         await this.setState({ isLoading: false })
-                        toast.error(`${'Some error occurred!'}`, {
+                        toast.error(error.response.data.errMessage, {
                           position: toast.POSITION.TOP_CENTER
                         })
                         console.log('ERROR', error)
@@ -908,7 +908,6 @@ class BuyerDetailsForm extends Component {
                           />
                         )}
                       />
-
                       {isVerified && (
                         <React.Fragment>
                           <Field
@@ -951,7 +950,6 @@ class BuyerDetailsForm extends Component {
                           </StyledFlex>
                           <FlexWrapper flexDirection="column">
                             <InformTitle>Finance Amount</InformTitle>
-
                             <Field
                               name="financeAmount"
                               render={({ field }) => (
@@ -983,5 +981,4 @@ class BuyerDetailsForm extends Component {
     )
   }
 }
-
 export default withRouter(BuyerDetailsForm)

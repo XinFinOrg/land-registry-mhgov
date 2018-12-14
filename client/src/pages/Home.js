@@ -333,7 +333,6 @@ class Home extends Component {
                       await this.setState({ isLoading: false })
                       resetForm()
                     } catch (error) {
-                      console.log('ERROR', error.response.data.errMessage)
                       await this.setState({ isLoading: false })
                       toast.error(error.response.data.errMessage, {
                         position: toast.POSITION.TOP_CENTER
@@ -467,7 +466,7 @@ class Home extends Component {
                   resetForm()
                   console.log('DATA', data)
                 } catch (error) {
-                  toast.error(`${'Error!!!'}`, {
+                  toast.error(error.response.data.errMessage, {
                     position: toast.POSITION.TOP_CENTER
                   })
                   this.setState({ isLoading: false })
@@ -853,7 +852,7 @@ class Home extends Component {
                 } catch (error) {
                   console.log('ERROR', error)
                   this.setState({ isLoading: false })
-                  toast.error(`${'Error!!!'}`, {
+                  toast.error(error.response.data.errMessage, {
                     position: toast.POSITION.TOP_CENTER
                   })
                 }
@@ -959,7 +958,7 @@ class Home extends Component {
                 } catch (error) {
                   console.log('ERROR', error)
                   this.setState({ isLoading: false })
-                  toast.error(`${'Error!!!'}`, {
+                  toast.error(error.response.data.errMessage, {
                     position: toast.POSITION.TOP_CENTER
                   })
                 }

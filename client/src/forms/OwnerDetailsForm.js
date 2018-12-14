@@ -70,7 +70,7 @@ class OwnerDetailsForm extends Component {
       }) */
       // this.props.history.push('/dashboard')
     } catch (error) {
-      toast.error(`${'Some error occurred!'}`, {
+      toast.error(error.response.data.errMessage, {
         position: toast.POSITION.TOP_CENTER
       })
       console.log('ERROR', error)
@@ -96,7 +96,7 @@ class OwnerDetailsForm extends Component {
       // console.log('DATA', data)
     } catch (error) {
       await this.setState({ isLoading: false })
-      toast.error(`${'Some error occurred!'}`, {
+      toast.error(error.response.data.errMessage, {
         position: toast.POSITION.TOP_CENTER
       })
       console.log('ERROR', error)
@@ -231,7 +231,7 @@ class OwnerDetailsForm extends Component {
                   // this.props.history.push('/dashboard')
                 } catch (error) {
                   await this.setState({ isLoading: false })
-                  toast.error(`${'Some error occurred!'}`, {
+                  toast.error(error.response.data.errMessage, {
                     position: toast.POSITION.TOP_CENTER
                   })
                   console.log('ERROR', error)
@@ -256,7 +256,7 @@ class OwnerDetailsForm extends Component {
                   // console.log('DATA', data)
                 } catch (error) {
                   await this.setState({ isLoading: false })
-                  toast.error(`${'Some error occurred!'}`, {
+                  toast.error(error.response.data.errMessage, {
                     position: toast.POSITION.TOP_CENTER
                   })
                   console.log('ERROR', error)
@@ -283,7 +283,7 @@ class OwnerDetailsForm extends Component {
                   // this.props.history.push('/dashboard')
                 } catch (error) {
                   await this.setState({ isLoading: false })
-                  toast.error(`${'Some error occurred!'}`, {
+                  toast.error(error.response.data.errMessage, {
                     position: toast.POSITION.TOP_CENTER
                   })
                   console.log('ERROR', error)
@@ -773,7 +773,7 @@ class OwnerDetailsForm extends Component {
                       this.props.history.push('/dashboard')
                     } catch (error) {
                       await this.setState({ isLoading: false })
-                      toast.error(`${'Some error occurred!'}`, {
+                      toast.error(error.response.data.errMessage, {
                         position: toast.POSITION.TOP_CENTER
                       })
                       console.log('ERROR', error)
@@ -794,7 +794,7 @@ class OwnerDetailsForm extends Component {
                       })
                     } catch (error) {
                       await this.setState({ isLoading: false })
-                      toast.error(`${'Some error occurred!'}`, {
+                      toast.error(error.response.data.errMessage, {
                         position: toast.POSITION.TOP_CENTER
                       })
                       console.log('ERROR', error)
