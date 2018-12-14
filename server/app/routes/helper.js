@@ -280,10 +280,10 @@ let getEventName = (event, status) => {
 let getTxName = (txType) => {
     let map = {
         token_amt : "Token Payment",
-        buyerFin_to_ownerFin : "Financer Payment(to Owner Financer)",
-        buyerFin_to_owner : "Financer Payment(to Owner)",
-        buyer_to_ownerFin : "Buyer Payment(to Owner Financer)",
-        buyer_to_owner : "Buyer Payment(to Owner",
+        buyerFin_to_ownerFin : "Financer Payment (to Owner Financer)",
+        buyerFin_to_owner : "Financer Payment (to Owner)",
+        buyer_to_ownerFin : "Buyer Payment (to Owner Financer)",
+        buyer_to_owner : "Buyer Payment (to Owner)",
         stampDuty : "Stamp Duty Payment"
     }
     return map[txType];
@@ -297,7 +297,7 @@ let processEvents = (allEvents) => {
         event.dName = getEventName(event.event, obj.status||false)
         event.created = new Date(obj.created||'');
         if(event.event == "TransferTokens") {
-            event.txName = getTxName(obj.type);
+            event.txName = getTxName(obj.transactionType);
         }
 
         /*for(var key in obj) {

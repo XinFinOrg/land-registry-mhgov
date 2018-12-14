@@ -315,6 +315,11 @@ router.post('/getExplorer', async function(req, res) {
 	} else {
 		data = constants.dummyExplorerData;
 	}
+
+	data.txFlag = data.registryData.reduce(function(result, obj) {
+		return result || (obj.event == 'TransferTokens' ? true : false);
+	}, false);
+
     return res.send({status : true, data : data});
 });
 
