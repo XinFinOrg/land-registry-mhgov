@@ -27,6 +27,9 @@ var addProperty = async function(
     status,
     created = Date.now()
 ) {
+    if (!testrpc) {
+        var unlock = init.unlockCoinbase();
+    }
     return await contractInstance.addProperty(
         propertyId,
         surveyNo,
@@ -48,6 +51,9 @@ var setStatus = async function(
     created = Date.now()
 ) {
     console.log(propertyId, status, created)
+    if (!testrpc) {
+        var unlock = init.unlockCoinbase();
+    }
     return await contractInstance.setStatus(
         propertyId,
         status,
@@ -61,6 +67,9 @@ var addOwner = async function(
     owner,
     created = Date.now()
 ) {
+    if (!testrpc) {
+        var unlock = init.unlockCoinbase();
+    }
     return await contractInstance.addOwner(
         propertyId,
         owner,

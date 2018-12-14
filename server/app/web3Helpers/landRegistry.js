@@ -24,6 +24,9 @@ var addRegistryRecord = async function(
     tokenAmount,
     created = Date.now()
 ) {
+    if (!testrpc) {
+        var unlock = init.unlockCoinbase();
+    }
     return await contractInstance.addRegistryRecord(
         registryId,
         propertyId,
@@ -41,6 +44,9 @@ var addBuyer = async function(
     buyer,
     created = Date.now()
 ) {
+    if (!testrpc) {
+        var unlock = init.unlockCoinbase();
+    }
     return await contractInstance.addBuyer(
         registryId,
         propertyId,
@@ -58,6 +64,9 @@ var addOwnerFinancer = async function(
     outstandingLoan,
     created = Date.now()
 ) {
+    if (!testrpc) {
+        var unlock = init.unlockCoinbase();
+    }
     return await contractInstance.addOwnerFinancer(
         registryId,
         propertyId,
@@ -76,6 +85,9 @@ var addBuyerFinancer = async function(
     buyerFinanceAmount,
     created = Date.now()
 ) {
+    if (!testrpc) {
+        var unlock = init.unlockCoinbase();
+    }
     return await contractInstance.addBuyerFinancer(
         registryId,
         propertyId,
@@ -92,6 +104,9 @@ var setRegistrationFees = async function(
     registartionCharges,
     created = Date.now()
 ) {
+    if (!testrpc) {
+        var unlock = init.unlockCoinbase();
+    }
     return await contractInstance.setRegistrationFees(
         registryId,
         propertyId,
@@ -107,6 +122,9 @@ var setStatus = async function(
     status,
     created = Date.now()
 ) {
+    if (!testrpc) {
+        var unlock = init.unlockCoinbase();
+    }
     return await contractInstance.setStatus(
         registryId,
         propertyId,
@@ -125,6 +143,9 @@ var customTransferEvent = async function(
     amount,
     created = Date.now()
 ) {
+    if (!testrpc) {
+        var unlock = init.unlockCoinbase();
+    }
     return await contractInstance.transferTokens(
         registryId,
         propertyId,
@@ -151,6 +172,9 @@ var setTotalSupply = async function(tokens) {
 };
 
 var addTokenSupply = async function(tokens) {
+    if (!testrpc) {
+        var unlock = init.unlockCoinbase();
+    }
     return await contractInstance.addTokenSupply(tokens, {from: web3.eth.coinbase, gas:100000});
 };
 
