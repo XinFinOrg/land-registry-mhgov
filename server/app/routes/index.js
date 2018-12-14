@@ -547,7 +547,7 @@ router.post('/addOwnerFinancer', async function(req, res) {
 	let registryId = req.body.registryId;
 	let propertyId = req.body.propertyId;
 	let ownerFinancer  = req.body.ownerFinancer || false;
-	console.log('addOwnerFinancer', ownerFinancer);
+
 	if (ownerFinancer && !ownerFinancer.email) {
 		console.log('ownerFinancer : improper data');
 		let error = helper.getErrorResponse('ResourceNotFound');
@@ -568,17 +568,21 @@ router.post('/addOwnerFinancer', async function(req, res) {
 		return res.status(error.statusCode).send(error.error);
 	}
 
-	console.log('outstandingLoan', )
-
 	if (ownerFinancer && (parseInt(ownerFinancer.outstandingLoan) > parseInt(ownerFinancer.loanAmount))) {
 		let error = helper.getErrorResponse('OutstandingLoanCheck');
-		return res.status(error.statusCode).send(error.error);		
+		return res.status(error.statusCode).send(error.error);
 	}
 
 	let status = req.body.status || (
 		!ownerFinancer ?
 		"registry_skip_owner_financer" : "registry_owner_financer"
 	);
+
+	if (ownerFinancer) {
+		ownerFinancer.loanAmount = parseInt(ownerFinancer.loanAmount);
+		ownerFinancer.outstandingLoan = parseInt(ownerFinancer.outstandingLoan);
+	}
+
 	if (web3Conf && status == 'registry_owner_financer') {
 		ownerFinancer.address = ownerFinancer.address || web3.eth.coinbase;
 		try {
@@ -603,6 +607,9 @@ router.post('/addOwnerFinancer', async function(req, res) {
 		status : status,
 		modified : Date.now()
 	}};
+
+	console.log('ownerFinancer', ownerFinancer);
+
 	helper.updateCollection('registry', query, updateQuery,
 		function(err, data) {
 	    if (err) {
@@ -797,6 +804,10 @@ router.post('/addBuyerFinancer', async function(req, res) {
 		return res.status(error.statusCode).send(error.error);
 	}
 
+	if (buyerFinancer) {
+		buyerFinancer.financeAmount = parseInt(buyerFinancer.financeAmount);
+	}
+
     if (web3Conf && status == 'registry_buyer_financer') {
 		try {
 	        m = await landRegistry.addBuyerFinancer(
@@ -906,13 +917,14 @@ router.post('/financerPayment', async function(req, res) {
 	if (!registryData.buyerFinancer) {
 		return res.send({status : false, error : 'financer not available'})
 	}
-	let financeAmount = registryData.buyerFinancer.financeAmount;
+	let financeAmount = parseInt(registryData.buyerFinancer.financeAmount);
 	let outstandingLoan = (!registryData.ownerFinancer) ? 0 :
-		registryData.ownerFinancer.outstandingLoan;
-	let paymentRemaining = registryData.paymentRemaining || 0;
+		parseInt(registryData.ownerFinancer.outstandingLoan);
+	let paymentRemaining = parseInt(registryData.paymentRemaining) || 0;
 	//if (buyerFinancer.balance < financeAmount) => return("insufficient balance");
 
     let fAmt, oAmt;
+    console.log('financeAmount', financeAmount, 'outstandingLoan', outstandingLoan);
 	if (financeAmount > outstandingLoan) {
 		//transfer(buyerFinancer, ownerFinancer, outstandingLoan)
 		fAmt = outstandingLoan;
@@ -928,7 +940,7 @@ router.post('/financerPayment', async function(req, res) {
 		paymentRemaining -= financeAmount;
 		outstandingLoan -= financeAmount;		
 	}
-
+	console.log('fAmt', fAmt, 'oAmt', oAmt)
     if (web3Conf) {
     	let ownerFinancer = registryData.ownerFinancer.address;
     	let buyerFinancer = registryData.buyerFinancer.address;
