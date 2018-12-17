@@ -40,13 +40,13 @@ export const individualValidator = values => {
 }
 export const bankValidator = values => {
   let errors = {}
-  if (!values.name || !values.name.match(/^[a-zA-Z]+$/)) {
+  if (!values.name || !values.name.match(/^[a-zA-Z ]+$/)) {
     errors.name = 'Please enter only alphabets'
   }
-  if (!values.city || !values.city.match(/^[a-zA-Z]+$/)) {
+  if (!values.city || !values.city.match(/^[a-zA-Z ]+$/)) {
     errors.city = 'Please enter city'
   }
-  if (!values.branch || !values.branch.match(/^[a-zA-Z]+$/)) {
+  if (!values.branch || !values.branch.match(/^[a-zA-Z ]+$/)) {
     errors.branch = 'Please enter branch'
   }
   return errors
@@ -92,6 +92,16 @@ export const governmentValidator = values => {
   //only number
   if (!values.shopFloorBasement || !values.shopFloorBasement.match(/^\d+$/)) {
     errors.shopFloorBasement = 'Please enter area'
+  }
+
+  return errors
+}
+
+export const governmentValidatorModal = values => {
+  let errors = {}
+
+  if (!values.name || !values.name.match(/^[a-zA-Z ]+$/)) {
+    errors.name = 'Please enter only alphabets'
   }
 
   return errors

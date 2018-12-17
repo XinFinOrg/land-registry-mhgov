@@ -23,7 +23,8 @@ import {
   signUpValidator,
   individualValidator,
   bankValidator,
-  governmentValidator
+  governmentValidator,
+  governmentValidatorModal
 } from '../utils/validator'
 import house from '../static/images/house.jpeg'
 import { Formik, Form, Field } from 'formik'
@@ -934,7 +935,7 @@ class Home extends Component {
                 department: 'Housing and Urban Development',
                 govType: 'igr'
               }}
-              validate={governmentValidator}
+              validate={governmentValidatorModal}
               validateOnChange
               onSubmit={async (values, { resetForm }) => {
                 this.setState({ isLoading: true, openModal: false })
