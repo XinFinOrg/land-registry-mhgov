@@ -1,0 +1,23 @@
+title: API Reference
+
+language_tabs:
+  - bash
+  - javascript
+
+toc_footers:
+  - <a href='#'>Sign Up for a Developer Key</a>
+  - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
+
+includes:
+  - main
+  - _api_interaction
+  - _users
+  - _wallet
+  - _property
+  - _registry
+  - _general_apis
+  - _errors
+
+search: true
+
+highlight_theme: monokai
