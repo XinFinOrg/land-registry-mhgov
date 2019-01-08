@@ -40,7 +40,8 @@ class BuyerDetailsForm extends Component {
     isLoadingSkip: false,
     addFinancier: false,
     isVerified: false,
-    financerAddress: ''
+    financerAddress: '',
+    financerAddedSuccess: false
   }
   componentDidMount() {
     window.scrollTo(0, 0)
@@ -123,7 +124,7 @@ class BuyerDetailsForm extends Component {
       data,
       data: { buyer }
     } = this.props
-    const { isLoading, isLoadingReject, isLoadingSkip, addFinancier, isVerified } = this.state
+    const { isLoading, isLoadingReject, isLoadingSkip, addFinancier, isVerified, financerAddedSuccess } = this.state
     console.log('this.props', data)
     /* const columns = [
       {
@@ -612,7 +613,9 @@ class BuyerDetailsForm extends Component {
                   </Paper>
                 )}
                 <ButtonGroup>
-                  {data.status === 'registry_buyer_confirmed' && Cookies.get('email') === get(buyer, 'email', '') ? (
+                  {data.status === 'registry_buyer_confirmed' &&
+                  Cookies.get('email') === get(buyer, 'email', '') &&
+                  data.status !== true ? (
                     <React.Fragment>
                       <Button
                         size={'medium'}
@@ -855,15 +858,16 @@ class BuyerDetailsForm extends Component {
                           status: 'registry_buyer_financer'
                         })
                         console.log('Add financier', data)
-
                         await toast.success(`${'Buyer financier added!'}`, {
                           position: toast.POSITION.TOP_CENTER
                         })
                         await this.setState({
                           isLoading: false,
-                          addFinancier: false
+                          addFinancier: false,
+                          financerAddedSuccess: true
                         })
                         // this.props.history.push('/dashboard')
+                        window.location.reload()
                       } catch (error) {
                         await this.setState({ isLoading: false })
                         toast.error(error.response.data.errMessage, {
@@ -881,6 +885,8 @@ class BuyerDetailsForm extends Component {
                           position: toast.POSITION.TOP_CENTER
                         })
                         await this.setState({
+                          financerAddedSuccess: true,
+                          addFinancier: false,
                           isLoading: false,
                           addFinancerData: data.data,
                           isVerified: get(data.data, 'role', '') === 'bank' ? true : false
@@ -968,7 +974,7 @@ class BuyerDetailsForm extends Component {
                         </React.Fragment>
                       )}
                       <FlexWrapper justifyContent="center">
-                        <Button size={'medium'} width={'150px'} title="Submit" type="submit" />
+                        <Button size={'medium'} width={'150px'} title="Submit" type="submit" isLoading={isLoading} />
                       </FlexWrapper>
                     </FormikForm>
                   )}
