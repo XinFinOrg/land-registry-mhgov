@@ -404,28 +404,28 @@ class Home extends Component {
               enableReinitialize={true}
               initialValues={{
                 salutation: 'Mr.',
-                firstName: signUpData.firstName || 'Viral',
-                middleName: 'Mahendra',
-                lastName: signUpData.lastName || 'Pasad',
-                aliasName: 'viral',
-                identificationMark1: 'Mole on Left Hand',
-                identificationMark2: 'Mark above left eye',
-                dateOfBirth: '07/12/1995',
-                age: '28',
-                uid: '912739494919',
-                identificationTypeID: 'Aadhar',
-                identificationDescription: 'Aadhar card',
-                panForm60: 'BCPPT9089H',
-                occupation: 'Salaried Employee',
-                gender: 'Male',
+                firstName: signUpData.firstName || '',
+                middleName: '',
+                lastName: signUpData.lastName || '',
+                aliasName: '',
+                identificationMark1: '',
+                identificationMark2: '',
+                dateOfBirth: '',
+                age: '',
+                uid: '',
+                identificationTypeID: '',
+                identificationDescription: '',
+                panForm60: '',
+                occupation: '',
+                gender: '',
                 email: signUpData.email || '',
-                mobileNo: '9664818286',
-                perAddress: 'Pali Hill, Bandra',
-                tempAddress: 'Pali Hill, Bandra',
+                mobileNo: '',
+                perAddress: '',
+                tempAddress: '',
                 addressSame: '',
-                district: 'Mumbai',
-                taluka: 'Mumbai',
-                village: 'Mumbai'
+                district: '',
+                taluka: '',
+                village: ''
               }}
               validate={individualValidator}
               validateOnChange
@@ -684,7 +684,6 @@ class Home extends Component {
                             onChange={gender => formikBag.setFieldValue('gender', gender.value)}
                             options={[{ label: 'Male', value: 'Male' }, { label: 'Female', value: 'Female' }]}
                             placeholder="Gender"
-                            defaultValue={{ label: 'Male', value: 'Male' }}
                             isSearchable={false}
                             label="Gender"
                           />
@@ -1011,7 +1010,6 @@ class Home extends Component {
                             options={statesOptions}
                             placeholder="City"
                             label="City"
-                            defaultValue={{ label: 'Maharashtra', value: 'Maharashtra' }}
                           />
                         )}
                       />
