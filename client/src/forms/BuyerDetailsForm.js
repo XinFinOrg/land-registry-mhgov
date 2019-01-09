@@ -112,6 +112,7 @@ class BuyerDetailsForm extends Component {
         status: 'registry_skip_buyer_financer'
       })
       await this.setState({ isLoadingSkip: false })
+      this.props.history.push('/dashboard')
     } catch (error) {
       toast.error(error.response.data.errMessage, {
         position: toast.POSITION.TOP_CENTER
