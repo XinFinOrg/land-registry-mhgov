@@ -25,6 +25,8 @@ import get from 'lodash/get'
 const Status = styled.div`
   border-radius: 4px;
   color: #fff;
+  margin-right: 5px;
+  text-align: center;
   background: ${props => {
     switch (props.type) {
       case 'rejected':
