@@ -547,6 +547,7 @@ router.post('/sellProperty', async function(req, res) {
 	}
 
 	if (propertyDetails.onSale) {
+		console.log('onSale : true');
 		let error = helper.getErrorResponse('ResourceNotFound');
 		error.error.errorMsg = 'Property already on sale';
 		return res.status(error.statusCode).send(error.error);
@@ -1221,6 +1222,7 @@ router.post('/payStampDuty', async function(req, res) {
 	    	owner : {email : allData.buyer.email, address : allData.buyer.address}
 	    }};
 
+		var collection = db.getCollection('properties');
 	    var pu = await collection.update({propertyId : allData.propertyId}, updtQuery);
 
 	    if (web3Conf) {
