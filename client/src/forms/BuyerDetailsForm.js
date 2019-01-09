@@ -554,9 +554,9 @@ class BuyerDetailsForm extends Component {
                               <TextInput
                                 {...field}
                                 label="Bank name"
-                                value={data.buyerFinancer.userDetails.name}
+                                value={get(data, 'buyerFinancer.userDetails.name', '')}
                                 disabled
-                                placeholder={data.buyerFinancer.userDetails.name}
+                                placeholder={get(data, 'buyerFinancer.userDetails.name', '')}
                               />
                             )}
                           />
@@ -567,7 +567,7 @@ class BuyerDetailsForm extends Component {
                                 <TextInput
                                   {...field}
                                   label="City"
-                                  value={data.buyerFinancer.userDetails.city}
+                                  value={get(data, 'buyerFinancer.userDetails.city', '')}
                                   disabled
                                   placeholder={'City'}
                                 />
@@ -579,7 +579,7 @@ class BuyerDetailsForm extends Component {
                                 <TextInput
                                   {...field}
                                   label="Branch"
-                                  value={data.buyerFinancer.userDetails.branch}
+                                  value={get(data, 'buyerFinancer.userDetails.branch', '')}
                                   disabled
                                   placeholder={'Branch'}
                                 />
@@ -594,7 +594,7 @@ class BuyerDetailsForm extends Component {
                                 <TextInput
                                   {...field}
                                   label="Finance Amount"
-                                  value={data.buyerFinancer.financeAmount}
+                                  value={get(data, 'buyerFinancer.financeAmount', '')}
                                   placeholder={'Finance Amount'}
                                   error={formikBag.errors.amount}
                                 />
