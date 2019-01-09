@@ -96,12 +96,13 @@ class Dashboard extends Component {
     } catch (error) {
       console.log('ERROR', error)
     }
-
-    try {
-      const { data } = await axios.get(`${API_URL}/getStampdutySummary`)
-      this.setState({ stampDutySummary: data })
-    } catch (error) {
-      console.log(error)
+    if (Cookies.get('role') === 'igr') {
+      try {
+        const { data } = await axios.get(`${API_URL}/getStampdutySummary`)
+        this.setState({ stampDutySummary: data })
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
