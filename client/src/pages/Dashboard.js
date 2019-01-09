@@ -78,7 +78,8 @@ const TableDataWrapper = styled.div`
 
 class Dashboard extends Component {
   state = {
-    dashboardData: []
+    dashboardData: [],
+    stampDutySummary: {}
   }
   handlePageChange = currentPage => {
     // this.setState({ currentPage })
@@ -95,6 +96,13 @@ class Dashboard extends Component {
     } catch (error) {
       console.log('ERROR', error)
     }
+
+    try {
+      const { data } = await axios.get(`${API_URL}/getStampdutySummary`)
+      this.setState({ stampDutySummary: data })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   handleRedirect = (registryId, propertyId, nextTab) => {
@@ -107,7 +115,7 @@ class Dashboard extends Component {
     }
   }
   render() {
-    const { dashboardData } = this.state
+    const { dashboardData, stampDutySummary } = this.state
     // console.log('dashboardData=====>', dashboardData)
     const tableData = dashboardData.map((item, index) => {
       console.log('STATUS', get(statusMap[item.status], 'statusName', ''))
@@ -241,32 +249,34 @@ class Dashboard extends Component {
       <React.Fragment>
         <Header />
         <MainWrapper>
-          <PaperWrapper>
-            <h2>IGR Dashboard</h2>
-            <h3>Sale Summary</h3>
-            <TableDataWrapper>
-              <div>
-                <span>Today: </span>
-                <h3>9/Jan/2019</h3>
-              </div>
-              <div>
-                <span>Last Week:</span>
-                <h3>Saturday</h3>
-              </div>
-              <div>
-                <span>Last Month:</span>
-                <h3>Febuary</h3>
-              </div>
-              <div>
-                <span>Last Year:</span>
-                <h3>2018</h3>
-              </div>
-              <div>
-                <span>Pending:</span>
-                <h3>5</h3>
-              </div>
-            </TableDataWrapper>
-          </PaperWrapper>
+          {Cookies.get('role') === 'igr' && (
+            <PaperWrapper>
+              <h2>IGR Dashboard</h2>
+              <h3>Sale Summary</h3>
+              <TableDataWrapper>
+                <div>
+                  <span>Today: </span>
+                  <h3>{get(stampDutySummary, 'data.day', 'NA')}</h3>
+                </div>
+                <div>
+                  <span>Last Week:</span>
+                  <h3>{get(stampDutySummary, 'data.week', 'NA')}</h3>
+                </div>
+                <div>
+                  <span>Last Month:</span>
+                  <h3>{get(stampDutySummary, 'data.month', 'NA')}</h3>
+                </div>
+                <div>
+                  <span>Last Year:</span>
+                  <h3>{get(stampDutySummary, 'data.year', 'NA')}</h3>
+                </div>
+                <div>
+                  <span>Pending:</span>
+                  <h3>{get(stampDutySummary, 'data.pending', 'NA')}</h3>
+                </div>
+              </TableDataWrapper>
+            </PaperWrapper>
+          )}
 
           <TopWrapper>
             <PageTitle>Dashboard</PageTitle>
