@@ -132,6 +132,20 @@ class Dashboard extends Component {
         nextTab: nextTab[item.status]
       }
     })
+    const igrData = dashboardData.map((item, index) => {
+      console.log('STATUS', get(statusMap[item.status], 'statusName', ''))
+      return {
+        srNo: index + 1,
+        propertyId: item.propertyId,
+        txType: item.txType || 'NA',
+        sellPrice: get(item, 'sellPrice', 'NA'),
+        stampDuty: get(item, 'stampDuty', 'NA'),
+        date: get(item, 'stampDutyDate', '') === false ? 'NA' : get(item, 'stampDutyDate', 'NA'),
+        statusStyle: item.status,
+        status: get(statusMap[item.status], 'statusName', 'N.A'),
+        nextTab: nextTab[item.status]
+      }
+    })
     const columns = [
       {
         Header: (
@@ -246,6 +260,132 @@ class Dashboard extends Component {
         }
       }
     ]
+    const igrColumns = [
+      {
+        Header: (
+          <StyledHeader>
+            Sr. No.
+            <IconWrapper>
+              <Icon icon="downarrow" /> <Icon icon="uparrow" />
+            </IconWrapper>
+          </StyledHeader>
+        ),
+        accessor: 'srNo',
+        maxWidth: 100
+      },
+      {
+        Header: (
+          <StyledHeader>
+            Property Id
+            <IconWrapper>
+              <Icon icon="downarrow" /> <Icon icon="uparrow" />
+            </IconWrapper>
+          </StyledHeader>
+        ),
+        accessor: 'propertyId',
+        minWidth: 100,
+        Cell: props => <span>{props.value}</span>
+      },
+      {
+        Header: (
+          <StyledHeader>
+            Transaction Type
+            <IconWrapper>
+              <Icon icon="downarrow" /> <Icon icon="uparrow" />
+            </IconWrapper>
+          </StyledHeader>
+        ),
+        accessor: 'txType',
+        minwidth: 200
+      },
+      {
+        Header: (
+          <StyledHeader>
+            Sell Price
+            <IconWrapper>
+              <Icon icon="downarrow" /> <Icon icon="uparrow" />
+            </IconWrapper>
+          </StyledHeader>
+        ),
+        accessor: 'sellPrice',
+        minwidth: 100
+      },
+      {
+        Header: (
+          <StyledHeader>
+            Stamp Duty
+            <IconWrapper>
+              <Icon icon="downarrow" /> <Icon icon="uparrow" />
+            </IconWrapper>
+          </StyledHeader>
+        ),
+        accessor: 'stampDuty',
+        maxWidth: 150
+      },
+      {
+        Header: (
+          <StyledHeader>
+            Date
+            <IconWrapper>
+              <Icon icon="downarrow" /> <Icon icon="uparrow" />
+            </IconWrapper>
+          </StyledHeader>
+        ),
+        accessor: 'date',
+        maxWidth: 100
+      },
+      {
+        Header: (
+          <StyledHeader>
+            Status
+            <IconWrapper>
+              <Icon icon="downarrow" /> <Icon icon="uparrow" />
+            </IconWrapper>
+          </StyledHeader>
+        ),
+        accessor: 'status',
+        minWidth: 100,
+        maxWidth: 250,
+        Cell: props => {
+          const {
+            original: { status, statusStyle }
+          } = props
+          console.log('props', statusStyle)
+          return (
+            <Status
+              type={
+                statusColor[statusStyle] === 'yellow'
+                  ? 'financer'
+                  : statusColor[statusStyle] === 'red'
+                    ? 'rejected'
+                    : 'verified'
+              }>
+              {status}
+            </Status>
+          )
+        }
+      },
+      {
+        Header: 'View',
+        accessor: 'view',
+        maxWidth: 150,
+        Cell: props => {
+          const {
+            original,
+            original: { nextTab }
+          } = props
+          return (
+            <Button
+              size="action"
+              shadow={'none'}
+              title="View"
+              radius={'4px'}
+              onClick={() => this.handleRedirect(original.registryId, original.propertyId, nextTab)}
+            />
+          )
+        }
+      }
+    ]
     return (
       <React.Fragment>
         <Header />
@@ -305,8 +445,8 @@ class Dashboard extends Component {
             onSortedChange={(newSorted, column, shiftKey) => {
               console.log(newSorted)
             }}
-            data={tableData}
-            columns={columns}
+            data={Cookies.get('role') === 'igr' ? igrData : tableData}
+            columns={Cookies.get('role') === 'igr' ? igrColumns : columns}
             resizable={false}
             pageSize={10000}
             minRows={0}
