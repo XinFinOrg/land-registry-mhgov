@@ -50,7 +50,7 @@ class OwnerDetailsForm extends Component {
     financerAddress: '',
     isloader: true
   }
-  skipFinancier = async () => {
+  skipFinancer = async () => {
     const {
       match: { params }
     } = this.props
@@ -64,11 +64,10 @@ class OwnerDetailsForm extends Component {
       })
       await this.setState({ isLoadingSkip: false })
       await this.props.changeActiveTab(`/dashboard/buyer-details/${params.tab2}/${params.tab3}`)
-      this.props.history.push(`/dashboard/buyer-details/${params.tab2}/${params.tab3}`)
-      /* await toast.success(`${'Owner Added!'}`, {
-        position: toast.POSITION.TOP_CENTER
-      }) */
-      // this.props.history.push('/dashboard')
+      this.props.history.push({
+        pathname: `/dashboard/buyer-details/${params.tab2}/${params.tab3}`,
+        state: 'skippedFinancer'
+      })
     } catch (error) {
       toast.error(error.response.data.errMessage, {
         position: toast.POSITION.TOP_CENTER
@@ -684,7 +683,7 @@ class OwnerDetailsForm extends Component {
                         type="button"
                         isLoading={isLoadingSkip}
                         disabled={isLoadingSkip}
-                        onClick={() => this.skipFinancier()}
+                        onClick={() => this.skipFinancer()}
                       />
                     </React.Fragment>
                   ) : Cookies.get('email') === get(data, 'ownerFinancer.email', '') &&

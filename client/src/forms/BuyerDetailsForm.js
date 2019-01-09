@@ -125,7 +125,6 @@ class BuyerDetailsForm extends Component {
       data: { buyer }
     } = this.props
     const { isLoading, isLoadingReject, isLoadingSkip, addFinancier, isVerified, financerAddedSuccess } = this.state
-    console.log('this.props', data)
     /* const columns = [
       {
         Header: <StyledHead>Sr. No.</StyledHead>,
@@ -673,17 +672,21 @@ class BuyerDetailsForm extends Component {
                         type="submit"
                       />
                     </React.Fragment>
-                  ) : Cookies.get('email') === get(data.owner, 'email', '') &&
-                  (data.status === 'registry_skip_owner_financer' ||
-                    data.status === 'registry_owner_financer_verified') ? (
-                    <Button
-                      size={'medium'}
-                      width={'150px'}
-                      title="Add Buyer"
-                      isLoading={isLoading}
-                      disabled={isLoading}
-                    />
-                  ) : null}
+                  ) : (
+                    (this.props.location.state =
+                      'skippedFinancer' ||
+                      (Cookies.get('email') === get(data.owner, 'email', '') &&
+                        (data.status === 'registry_skip_owner_financer' ||
+                          data.status === 'registry_owner_financer_verified')) ? (
+                        <Button
+                          size={'medium'}
+                          width={'150px'}
+                          title="Add Buyer"
+                          isLoading={isLoading}
+                          disabled={isLoading}
+                        />
+                      ) : null)
+                  )}
                 </ButtonGroup>
               </FormikForm>
             </React.Fragment>
@@ -863,8 +866,6 @@ class BuyerDetailsForm extends Component {
                           addFinancier: false,
                           financerAddedSuccess: true
                         })
-                        // this.props.history.push('/dashboard')
-                        // window.location.reload()
                       } catch (error) {
                         await this.setState({ isLoading: false })
                         toast.error(error.response.data.errMessage, {
@@ -887,7 +888,6 @@ class BuyerDetailsForm extends Component {
                           addFinancerData: data.data,
                           isVerified: get(data.data, 'role', '') === 'bank' ? true : false
                         })
-                        // this.props.history.push('/dashboard')
                       } catch (error) {
                         await this.setState({ isLoading: false })
                         toast.error(error.response.data.errMessage, {

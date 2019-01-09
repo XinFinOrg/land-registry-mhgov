@@ -498,7 +498,7 @@ class PropertyDetailsForm extends Component {
         <Modal show={openModal}>
           <CloseWrap>
             <PaperTitle color="#fff">Sell property</PaperTitle>
-            <Close onClick={() => this.setState({ show: !openModal })} />
+            <Close onClick={() => this.setState({ openModal: !openModal })} />
           </CloseWrap>
           <Formik
             enableReinitialize={true}
