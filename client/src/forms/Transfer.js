@@ -55,10 +55,6 @@ class Transfer extends Component {
           shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
           margin={'0 95px'}>
           {data.status === 'registry_stamp_duty' ? (
-            <FlexWrapper justifyContent="center" padding="20px 0">
-              <h1>No data available</h1>
-            </FlexWrapper>
-          ) : (
             <React.Fragment>
               <FlexWrapper padding="10px 0">
                 <h3>Ownership Transfer Details</h3>
@@ -76,7 +72,7 @@ class Transfer extends Component {
                 </PaymentText>
               </PaymentTuple>
               <PaymentTuple>
-                <PaymentText>Sell Price : {get(data, 'sellPrice', 'NA')}</PaymentText>
+                <PaymentText>Sell Price : ₹ {get(data, 'sellPrice', 'NA')}</PaymentText>
               </PaymentTuple>
               <PaymentTuple>
                 <PaymentText>Date : {moment(get(data, 'modified', '')).format('DD MMM YYYY hh:mm:ss A')}</PaymentText>
@@ -116,6 +112,10 @@ class Transfer extends Component {
                 </React.Fragment>
               )}
             </React.Fragment>
+          ) : (
+            <FlexWrapper justifyContent="center" padding="20px 0">
+              <h1>No data available</h1>
+            </FlexWrapper>
           )}
         </Paper>
         <Modal show={openModal}>

@@ -453,7 +453,6 @@ class PropertyDetailsForm extends Component {
                     <Button
                       size={'medium'}
                       width={'150px'}
-                      isLoading={isLoading}
                       disabled={true}
                       title="Gift Property"
                       type="button"
@@ -463,7 +462,6 @@ class PropertyDetailsForm extends Component {
                     <Button
                       size={'medium'}
                       width={'150px'}
-                      isLoading={isLoading}
                       disabled={true}
                       title="Rent Property"
                       type="button"
@@ -503,8 +501,8 @@ class PropertyDetailsForm extends Component {
           <Formik
             enableReinitialize={true}
             initialValues={{
-              sellPrice: 10000000,
-              tokenAmt: 50000
+              sellPrice: 0,
+              tokenAmt: 0
             }}
             onSubmit={async values => {
               this.setState({ isLoading: true })

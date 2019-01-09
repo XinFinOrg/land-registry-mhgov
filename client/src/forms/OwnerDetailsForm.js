@@ -738,11 +738,11 @@ class OwnerDetailsForm extends Component {
                   email: get(addFinancerData, 'email', ''),
                   city: get(addFinancerData, 'city', ''),
                   branch: get(addFinancerData, 'branch', ''),
-                  totalValueOfProperty: '1000000',
-                  totalFinanceAmount: '10000',
-                  financeAmountDueNow: '1000000',
-                  loanAmount: '1000000',
-                  outstandingLoan: '100000'
+                  totalValueOfProperty: '0',
+                  totalFinanceAmount: '0',
+                  financeAmountDueNow: '0',
+                  loanAmount: '0',
+                  outstandingLoan: '0'
                 }}
                 validate={addFinancer}
                 validateOnChange

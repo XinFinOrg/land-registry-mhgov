@@ -672,21 +672,17 @@ class BuyerDetailsForm extends Component {
                         type="submit"
                       />
                     </React.Fragment>
-                  ) : (
-                    (this.props.location.state =
-                      'skippedFinancer' ||
-                      (Cookies.get('email') === get(data.owner, 'email', '') &&
-                        (data.status === 'registry_skip_owner_financer' ||
-                          data.status === 'registry_owner_financer_verified')) ? (
-                        <Button
-                          size={'medium'}
-                          width={'150px'}
-                          title="Add Buyer"
-                          isLoading={isLoading}
-                          disabled={isLoading}
-                        />
-                      ) : null)
-                  )}
+                  ) : Cookies.get('email') === get(data.owner, 'email', '') &&
+                  (data.status === 'registry_skip_owner_financer' ||
+                    data.status === 'registry_owner_financer_verified') ? (
+                    <Button
+                      size={'medium'}
+                      width={'150px'}
+                      title="Add Buyer"
+                      isLoading={isLoading}
+                      disabled={isLoading}
+                    />
+                  ) : null}
                 </ButtonGroup>
               </FormikForm>
             </React.Fragment>
@@ -837,7 +833,7 @@ class BuyerDetailsForm extends Component {
               </CloseWrap>
               <ModalData>
                 <Formik
-                  initialValues={{ email: '', financeAmount: '1000000' }}
+                  initialValues={{ email: '', financeAmount: '0' }}
                   validate={buyerDetail}
                   validateOnChange
                   onSubmit={async values => {
@@ -877,13 +873,11 @@ class BuyerDetailsForm extends Component {
                       try {
                         this.setState({ isLoading: true })
                         const { data } = await axios.get(`${API_URL}/getUserDetails?email=${values.email}`)
-                        console.log('Add financier', data)
                         await this.setState({ financerAddress: data.data.address })
                         await toast.success(`${'Email is verified!'}`, {
                           position: toast.POSITION.TOP_CENTER
                         })
                         await this.setState({
-                          addFinancier: false,
                           isLoading: false,
                           addFinancerData: data.data,
                           isVerified: get(data.data, 'role', '') === 'bank' ? true : false
