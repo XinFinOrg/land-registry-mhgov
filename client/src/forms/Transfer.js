@@ -132,8 +132,9 @@ class Transfer extends Component {
             onSubmit={async values => {
               this.setState({ isLoading: true })
               try {
+                console.log('property id ................', get(data, 'propertyId', ''))
                 await axios.post(`${API_URL}/sellProperty`, {
-                  propertyId: params.tab3,
+                  propertyId: get(data, 'propertyId', ''),
                   owner: {
                     email: get(data, 'buyer.email', ''),
                     address: get(data, 'buyer.address', '')
