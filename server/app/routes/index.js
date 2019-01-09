@@ -549,7 +549,7 @@ router.post('/sellProperty', async function(req, res) {
 	if (propertyDetails.onSale) {
 		console.log('onSale : true');
 		let error = helper.getErrorResponse('ResourceNotFound');
-		error.error.errorMsg = 'Property already on sale';
+		error.error.errMessage = 'Property already on sale';
 		return res.status(error.statusCode).send(error.error);
 	}
 
