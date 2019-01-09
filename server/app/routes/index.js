@@ -143,7 +143,7 @@ router.post('/getDashboard', async function(req, res) {
 	    if (role == 'igr') {
 			for (var i in records) {
 				records[i].txType = 'Sale';
-				records[i].stampDutyDate = (records[i].status == 'completed') ?
+				records[i].stampDutyDate = (records[i].status == 'registry_stamp_duty') ?
 								records[i].modified : false;
 			}
 	    }
