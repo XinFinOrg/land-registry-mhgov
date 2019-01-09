@@ -27,6 +27,42 @@ router.get('/getFinancers', async function(req, res) {
     });																																																																																																																								
 });
 
+router.get('/getStampdutySummary', async function(req, res) {
+	console.log('getFinancers : start');
+	var day = Date.now() - (1000 * 60 * 60 * 24);
+	var week = Date.now() - (1000 * 60 * 60 * 24 * 7);
+	var month = Date.now() - (1000 * 60 * 60 * 24 * 30);
+	var year = Date.now() - (1000 * 60 * 60 * 24 * 365);
+
+	var collection = db.getCollection('registry');
+
+	let p = await collection.aggregate([
+	    {
+	        "$match": {
+	            "created": { "$lte": Date.now(), "$gte":  month}
+	        }
+	    },
+	    {
+	        "$group": {
+	            "_id": null,
+	            "total": { "$sum": "$stampDuty" },
+	            "count": { "$sum": 1 }
+	        }
+	    }
+	]).toArray();
+
+	console.log(p);
+	var summary = {
+			day : p[0].total,
+			week : p[0].total,
+			month : p[0].total,
+			year : p[0].total,
+			pending : p[0].total
+		};
+    return res.send({status : true, data : summary});
+});
+
+
 router.post('/getDashboard', async function(req, res) {
 	console.log('getDashboard : start');
 	let email = req.body.email;
@@ -72,6 +108,15 @@ router.post('/getDashboard', async function(req, res) {
 	    records.sort(function(x, y){
 	        return y.created - x.created;
 	    });   
+
+	    if (role == 'igr') {
+			for (var i in records) {
+				records[i].txType = 'Sale';
+				records[i].stampDutyDate = (records[i].status == 'completed') ?
+								records[i].modified : false;
+			}
+	    }
+
 		return res.send({status : true, data : records});
 	} catch(err) {
 		console.log(err);
