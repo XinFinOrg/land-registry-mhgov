@@ -178,9 +178,6 @@ class BuyerDetailsForm extends Component {
         Cell: props => <Button size="action" shadow={'none'} title="View" radius={'4px'} />
       }
     ] */
-    {
-      console.log('buyer detail page', data)
-    }
     return (
       <React.Fragment>
         <Formik
@@ -613,7 +610,7 @@ class BuyerDetailsForm extends Component {
                   </Paper>
                 )}
                 <ButtonGroup>
-                  {data.status === 'registry_buyer_confirmed' &&
+                  {financerAddedSuccess ? null : data.status === 'registry_buyer_confirmed' &&
                   Cookies.get('email') === get(buyer, 'email', '') &&
                   data.status !== true ? (
                     <React.Fragment>
@@ -867,7 +864,7 @@ class BuyerDetailsForm extends Component {
                           financerAddedSuccess: true
                         })
                         // this.props.history.push('/dashboard')
-                        window.location.reload()
+                        // window.location.reload()
                       } catch (error) {
                         await this.setState({ isLoading: false })
                         toast.error(error.response.data.errMessage, {
@@ -885,7 +882,6 @@ class BuyerDetailsForm extends Component {
                           position: toast.POSITION.TOP_CENTER
                         })
                         await this.setState({
-                          financerAddedSuccess: true,
                           addFinancier: false,
                           isLoading: false,
                           addFinancerData: data.data,
