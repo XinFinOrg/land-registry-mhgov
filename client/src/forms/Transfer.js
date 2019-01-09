@@ -54,7 +54,7 @@ class Transfer extends Component {
           radius={'0 0 6px 6px'}
           shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
           margin={'0 95px'}>
-          {data.status === 'completed' ? (
+          {data.status === 'registry_stamp_duty' ? (
             <FlexWrapper justifyContent="center" padding="20px 0">
               <h1>No data available</h1>
             </FlexWrapper>
