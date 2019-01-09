@@ -289,7 +289,7 @@ class Dashboard extends Component {
       {
         Header: (
           <StyledHeader>
-            Transaction Type
+            Txn Type
             <IconWrapper>
               <Icon icon="downarrow" /> <Icon icon="uparrow" />
             </IconWrapper>
@@ -392,28 +392,27 @@ class Dashboard extends Component {
         <MainWrapper>
           {Cookies.get('role') === 'igr' && (
             <PaperWrapper>
-              <h2>IGR Dashboard</h2>
-              <h3>Sale Summary</h3>
+              <h2>Stamp Duty Summary</h2>
               <TableDataWrapper>
                 <div>
                   <span>Today: </span>
-                  <h3>{get(stampDutySummary, 'data.day', 'NA')}</h3>
+                  <h3> ₹ {get(stampDutySummary, 'data.day', 'NA')}</h3>
                 </div>
                 <div>
                   <span>Last Week:</span>
-                  <h3>{get(stampDutySummary, 'data.week', 'NA')}</h3>
+                  <h3> ₹ {get(stampDutySummary, 'data.week', 'NA')}</h3>
                 </div>
                 <div>
                   <span>Last Month:</span>
-                  <h3>{get(stampDutySummary, 'data.month', 'NA')}</h3>
+                  <h3> ₹ {get(stampDutySummary, 'data.month', 'NA')}</h3>
                 </div>
                 <div>
                   <span>Last Year:</span>
-                  <h3>{get(stampDutySummary, 'data.year', 'NA')}</h3>
+                  <h3> ₹ {get(stampDutySummary, 'data.year', 'NA')}</h3>
                 </div>
                 <div>
                   <span>Pending:</span>
-                  <h3>{get(stampDutySummary, 'data.pending', 'NA')}</h3>
+                  <h3> ₹ {get(stampDutySummary, 'data.pending', 'NA')}</h3>
                 </div>
               </TableDataWrapper>
             </PaperWrapper>
