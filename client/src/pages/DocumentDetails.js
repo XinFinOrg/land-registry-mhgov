@@ -138,7 +138,6 @@ class DocumentDetails extends Component {
   }
   async componentDidMount() {
     this.fetchHistory()
-    console.log('object', this.props.match.params)
     const type = this.props.match.params.tab2
     const id = this.props.match.params.tab3
     if (type === 'add-property') {
@@ -182,9 +181,6 @@ class DocumentDetails extends Component {
     this.setState({ isOpened: index === this.state.isOpened ? '' : index })
   }
   render() {
-    console.log('data for hash', this.props.data)
-    console.log('document details page porps==>', this.state.dashboardData)
-    // console.log('document details page porps', this.props)
     const columns = [
       {
         Header: <StyledHead>Document Details</StyledHead>,
@@ -552,7 +548,6 @@ class DocumentDetails extends Component {
                     <TableDataWrapper>
                       {keys(rest).map((item, index) => (
                         <div key={index}>
-                          {console.log('item', item)}
                           <div>
                             <h3>{item}</h3>
                             <span>{rest[item]}</span>

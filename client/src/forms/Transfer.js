@@ -4,9 +4,10 @@ import Cookies from 'js-cookie'
 import axios from 'axios'
 import { API_URL } from '../constants'
 import get from 'lodash/get'
-import { Paper, PaymentText, Button, PaymentTuple, StatusPage } from '../components'
+import { Paper, PaymentText, Button, PaymentTuple, StatusPage, FlexWrapper } from '../components'
 import withRouter from 'react-router/withRouter'
 import { toast } from 'react-toastify'
+import moment from 'moment'
 
 const TransferButton = styled.div`
   padding-top: 15px;
@@ -25,137 +26,79 @@ const InformTitle = styled.p`
 
 class Transfer extends Component {
   state = { financerAmtPaid: false, tokenAmountpaid: false, buyerAmtPaid: false }
-  handlePay = async () => {
-    const {
-      data,
-      match: { params }
-    } = this.props
-    if (get(data, 'buyerFinancer.email', '') === Cookies.get('email') && data.status === 'registry_token_amount') {
-      try {
-        this.setState({ isLoading: true })
-        const { data } = await axios.post(`${API_URL}/financerPayment`, {
-          registryId: params.tab3,
-          propertyId: Cookies.get('propertyId')
-        })
-        await this.setState({ isLoading: false, financerAmtPaid: true })
-        await Cookies.set('amount_paid', 'financerAmtPaid')
-        await toast.success(`${'Financer amount paid!'}`, {
-          position: toast.POSITION.TOP_CENTER
-        })
-        this.props.history.push('/dashboard')
-        console.log('DATA', data)
-      } catch (error) {
-        await this.setState({ isLoading: false })
-        toast.error(error.response.data.errMessage, {
-          position: toast.POSITION.TOP_CENTER
-        })
-        console.log('ERROR', error)
-      }
-    } else if (
-      get(data, 'buyer.email', '') === Cookies.get('email') &&
-      (data.status === 'registry_bank_pay' || (data.status === 'registry_token_amount' && !data.buyerFinancer))
-    ) {
-      try {
-        this.setState({ isLoading: true })
-        const { data } = await axios.post(`${API_URL}/buyerPayment`, {
-          propertyId: Cookies.get('propertyId'),
-          registryId: params.tab3
-        })
-        await this.setState({ isLoading: false, buyerAmtPaid: true })
-        await Cookies.set('amount_paid', 'buyerAmtPaid')
-        await toast.success(`${'Buyer amount paid!'}`, {
-          position: toast.POSITION.TOP_CENTER
-        })
-        this.props.history.push('/dashboard')
-        console.log('DATA', data)
-      } catch (error) {
-        await this.setState({ isLoading: false })
-        toast.error(error.response.data.errMessage, {
-          position: toast.POSITION.TOP_CENTER
-        })
-        console.log('ERROR', error)
-      }
-    } else {
-      try {
-        this.setState({ isLoading: true })
-        const { data } = await axios.post(`${API_URL}/payTokenAmount`, {
-          propertyId: Cookies.get('propertyId'),
-          registryId: params.tab3
-        })
-        await this.setState({ isLoading: false, tokenAmountpaid: true })
-        await Cookies.set('amount_paid', 'tokenAmountpaid')
-        await toast.success(`${'Token amount paid!'}`, {
-          position: toast.POSITION.TOP_CENTER
-        })
-        this.props.history.push('/dashboard')
-        console.log('DATA', data)
-      } catch (error) {
-        await this.setState({ isLoading: false })
-        toast.error(error.response.data.errMessage, {
-          position: toast.POSITION.TOP_CENTER
-        })
-        console.log('ERROR', error)
-      }
-    }
-  }
+
   render() {
     const { isLoading } = this.state
     const { data } = this.props
-    console.log('object', data)
+    console.log('DATA', data)
     return (
       <Paper
         padding={'0 31px 20px'}
         radius={'0 0 6px 6px'}
         shadow={'0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06)'}
         margin={'0 95px'}>
-        <InformTitle>IGR Dashboard</InformTitle>
-        <h3>Sale Summary</h3>
+        {data.status === 'completed' ? (
+          <FlexWrapper justifyContent="center" padding="20px 0">
+            <h1>No data available</h1>
+          </FlexWrapper>
+        ) : (
+          <React.Fragment>
+            <FlexWrapper padding="10px 0">
+              <h3>Ownership Transfer Details</h3>
+            </FlexWrapper>
+            <PaymentTuple>
+              <PaymentText>
+                Previous Owner :{' '}
+                {get(data.owner, 'userDetails.firstName', 'NA') + ' ' + get(data.owner, 'userDetails.lastName', '')}
+              </PaymentText>
+            </PaymentTuple>
+            <PaymentTuple>
+              <PaymentText>
+                Current Owner :{' '}
+                {get(data.buyer, 'userDetails.firstName', 'NA') + ' ' + get(data.buyer, 'userDetails.lastName', '')}
+              </PaymentText>
+            </PaymentTuple>
+            <PaymentTuple>
+              <PaymentText>Sell Price : {get(data, 'sellPrice', 'NA')}</PaymentText>
+            </PaymentTuple>
+            <PaymentTuple>
+              <PaymentText>Date : {moment(get(data, 'modified', '')).format('DD MMM YYYY hh:mm:ss A')}</PaymentText>
+            </PaymentTuple>
 
-        <PaymentTuple>
-          <PaymentText>Previous Owner : {data.tokenAmt}</PaymentText>
-        </PaymentTuple>
-        <PaymentTuple>
-          <PaymentText>Current Owner : {data.tokenAmt}</PaymentText>
-        </PaymentTuple>
-        <PaymentTuple>
-          <PaymentText>Sell Price : {data.tokenAmt}</PaymentText>
-        </PaymentTuple>
-        <PaymentTuple>
-          <PaymentText>Date : {data.tokenAmt}</PaymentText>
-        </PaymentTuple>
+            <React.Fragment>
+              <TransferButton>
+                <Button
+                  size={'medium'}
+                  width={'150px'}
+                  isLoading={isLoading}
+                  disabled={true}
+                  title="Gift Property"
+                  type="button"
+                  onClick={() => this.setState({ openModal: true })}
+                />
+                <Button
+                  size={'medium'}
+                  width={'150px'}
+                  isLoading={isLoading}
+                  disabled={true}
+                  title="Rent Property"
+                  type="button"
+                  onClick={() => this.setState({ openModal: true })}
+                />
 
-        <React.Fragment>
-          <TransferButton>
-            <Button
-              size={'medium'}
-              width={'150px'}
-              isLoading={isLoading}
-              disabled={true}
-              title="Gift Property"
-              type="button"
-              onClick={() => this.setState({ openModal: true })}
-            />
-            <Button
-              size={'medium'}
-              width={'150px'}
-              isLoading={isLoading}
-              disabled={true}
-              title="Rent Property"
-              type="button"
-              onClick={() => this.setState({ openModal: true })}
-            />
-
-            <Button
-              size={'medium'}
-              width={'150px'}
-              isLoading={isLoading}
-              disabled={isLoading}
-              title="Sale Property"
-              type="button"
-              onClick={() => this.setState({ openModal: true })}
-            />
-          </TransferButton>
-        </React.Fragment>
+                <Button
+                  size={'medium'}
+                  width={'150px'}
+                  isLoading={isLoading}
+                  disabled={isLoading}
+                  title="Sale Property"
+                  type="button"
+                  onClick={() => this.setState({ openModal: true })}
+                />
+              </TransferButton>
+            </React.Fragment>
+          </React.Fragment>
+        )}
       </Paper>
     )
   }
