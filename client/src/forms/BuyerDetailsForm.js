@@ -912,9 +912,9 @@ class BuyerDetailsForm extends Component {
                               <TextInput
                                 {...field}
                                 label="Bank name"
-                                value={data.ownerFinancer.userDetails.name}
+                                value={get(data, 'ownerFinancer.userDetails.name', '')}
                                 disabled
-                                placeholder={data.ownerFinancer.userDetails.name}
+                                placeholder={get(data, 'ownerFinancer.userDetails.name', '')}
                               />
                             )}
                           />
@@ -925,7 +925,7 @@ class BuyerDetailsForm extends Component {
                                 <TextInput
                                   {...field}
                                   label="City"
-                                  value={data.ownerFinancer.userDetails.city}
+                                  value={get(data, 'ownerFinancer.userDetails.city', '')}
                                   disabled
                                   placeholder={'City'}
                                 />
@@ -937,7 +937,7 @@ class BuyerDetailsForm extends Component {
                                 <TextInput
                                   {...field}
                                   label="Branch"
-                                  value={data.ownerFinancer.userDetails.branch}
+                                  value={get(data, 'ownerFinancer.userDetails.branch', '')}
                                   disabled
                                   placeholder={'Branch'}
                                 />
