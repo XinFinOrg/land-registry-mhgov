@@ -121,7 +121,7 @@ class Transfer extends Component {
           <PaymentText>Sell Price : {data.tokenAmt}</PaymentText>
         </PaymentTuple>
         <PaymentTuple>
-          <PaymentText>Rate : {data.tokenAmt}</PaymentText>
+          <PaymentText>Date : {data.tokenAmt}</PaymentText>
         </PaymentTuple>
 
         <React.Fragment>
