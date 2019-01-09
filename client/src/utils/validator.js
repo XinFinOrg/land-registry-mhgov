@@ -23,8 +23,8 @@ export const signUpValidator = values => {
     errors.password = 'Field is required  '
   }
 
-  if (!values.firstName || !values.firstName.match(/^[a-zA-Z]+$/)) {
-    errors.firstName = 'Please enter only alphabets'
+  if (!values.firstName) {
+    errors.firstName = 'Field is required'
   }
   return errors
 }
