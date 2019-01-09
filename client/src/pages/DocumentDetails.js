@@ -48,6 +48,7 @@ import get from 'lodash/get'
 import keys from 'lodash/keys'
 // import values from 'lodash/values'
 import moment from 'moment'
+import Transfer from '../forms/Transfer'
 
 const TableWrapper = styled.div`
   table,
@@ -353,6 +354,12 @@ class DocumentDetails extends Component {
               selected={activeTab === `/dashboard/stamp-duty/${params.tab2}/${params.tab3}`}>
               Stamp Duty
             </Tab>
+            <Tab
+              onClick={() => this.changeActiveTab(`/dashboard/transfer/${params.tab2}/${params.tab3}`)}
+              to={`/dashboard/transfer/${params.tab2}/${params.tab3}`}
+              selected={activeTab === `/dashboard/transfer/${params.tab2}/${params.tab3}`}>
+              Transfer
+            </Tab>
             {/*<Tab
               onClick={() => this.changeActiveTab(`/dashboard/registeration/${params.tab2}`)}
               to={`/dashboard/registeration/${params.tab2}`}
@@ -390,6 +397,13 @@ class DocumentDetails extends Component {
         {activeTab === `/dashboard/stamp-duty/${params.tab2}/${params.tab3}` && (
           <StampDutyForm data={get(this.state, 'dashboardData', [])} />
         )}
+
+        {activeTab === `/dashboard/transfer/${params.tab2}/${params.tab3}` && (
+          <React.Fragment>
+            <Transfer data={dashboardData} changeActiveTab={this.changeActiveTab} />
+          </React.Fragment>
+        )}
+
         {activeTab === `/dashboard/upload-document/${params.tab2}` && (
           <React.Fragment>
             <Paper
