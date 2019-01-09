@@ -45,6 +45,37 @@ const Status = styled.div`
   word-break: break-all;
 `
 
+const PaperWrapper = styled.div`
+  border-radius: 6px 6px 0 0;
+  background-color: #ffffff;
+  box-shadow: 0px 2px 6.5px 0.5px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  margin-bottom: 20px;
+`
+
+const TableDataWrapper = styled.div`
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  div {
+    display: inline-block;
+    background: #fbfbfb;
+    padding: 5px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: 48%;
+    span {
+      width: 60%;
+    }
+    h3 {
+      display: inline-block;
+      margin-left: 5px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+`
+
 class Dashboard extends Component {
   state = {
     dashboardData: []
@@ -210,6 +241,33 @@ class Dashboard extends Component {
       <React.Fragment>
         <Header />
         <MainWrapper>
+          <PaperWrapper>
+            <h2>IGR Dashboard</h2>
+            <h3>Sale Summary</h3>
+            <TableDataWrapper>
+              <div>
+                <span>Today: </span>
+                <h3>9/Jan/2019</h3>
+              </div>
+              <div>
+                <span>Last Week:</span>
+                <h3>Saturday</h3>
+              </div>
+              <div>
+                <span>Last Month:</span>
+                <h3>Febuary</h3>
+              </div>
+              <div>
+                <span>Last Year:</span>
+                <h3>2018</h3>
+              </div>
+              <div>
+                <span>Pending:</span>
+                <h3>5</h3>
+              </div>
+            </TableDataWrapper>
+          </PaperWrapper>
+
           <TopWrapper>
             <PageTitle>Dashboard</PageTitle>
             <FlexWrapper>
