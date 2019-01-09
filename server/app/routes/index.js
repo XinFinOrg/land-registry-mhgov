@@ -36,7 +36,7 @@ router.get('/getStampdutySummary', async function(req, res) {
 
 	var collection = db.getCollection('registry');
 
-	let p = await collection.aggregate([
+	/*let p = await collection.aggregate([
 	    {
 	        "$match": {
 	            "created": { "$lte": Date.now(), "$gte":  month}
@@ -49,15 +49,46 @@ router.get('/getStampdutySummary', async function(req, res) {
 	            "count": { "$sum": 1 }
 	        }
 	    }
-	]).toArray();
+	]).toArray();*/
 
-	console.log(p);
+    let q = await collection.find({}).toArray();
+
+	var dayStats = q.reduce(function(total, obj) {
+      return total + (
+      	(obj.status == 'registry_stamp_duty' && obj.modified > day) ?
+      	obj.stampDuty||0 : 0);
+    },0);
+
+	var weekStats = q.reduce(function(total, obj) {
+      return total + (
+      	(obj.status == 'registry_stamp_duty' && obj.modified > week) ?
+      	obj.stampDuty||0 : 0);
+    },0);
+
+	var monthStats = q.reduce(function(total, obj) {
+      return total + (
+      	(obj.status == 'registry_stamp_duty' && obj.modified > month) ?
+      	obj.stampDuty||0 : 0);
+    },0);
+
+	var yearStats = q.reduce(function(total, obj) {
+      return total + (
+      	(obj.status == 'registry_stamp_duty' && obj.modified > year) ?
+      	obj.stampDuty||0 : 0);
+    },0);
+
+	var pendingStats = q.reduce(function(total, obj) {
+      return total + (
+      	(obj.status != 'registry_stamp_duty') ?
+      	obj.stampDuty||0 : 0);
+    },0);
+
 	var summary = {
-			day : p[0].total,
-			week : p[0].total,
-			month : p[0].total,
-			year : p[0].total,
-			pending : p[0].total
+			day : dayStats,
+			week : weekStats,
+			month : monthStats,
+			year : yearStats,
+			pending : pendingStats
 		};
     return res.send({status : true, data : summary});
 });
