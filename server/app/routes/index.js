@@ -34,6 +34,9 @@ router.get('/getStampdutySummary', async function(req, res) {
 	var month = Date.now() - (1000 * 60 * 60 * 24 * 30);
 	var year = Date.now() - (1000 * 60 * 60 * 24 * 365);
 
+	const interval = 1000 * 60 * 60 * 24;
+	let startOfDay = Math.floor(Date.now() / interval) * interval;
+
 	var collection = db.getCollection('registry');
 
 	/*let p = await collection.aggregate([
@@ -55,7 +58,7 @@ router.get('/getStampdutySummary', async function(req, res) {
 
 	var dayStats = q.reduce(function(total, obj) {
       return total + (
-      	(obj.status == 'registry_stamp_duty' && obj.modified > day) ?
+      	(obj.status == 'registry_stamp_duty' && obj.modified > startOfDay) ?
       	obj.stampDuty||0 : 0);
     },0);
 
@@ -92,6 +95,8 @@ router.get('/getStampdutySummary', async function(req, res) {
 		};
     return res.send({status : true, data : summary});
 });
+
+
 
 
 router.post('/getDashboard', async function(req, res) {
@@ -246,6 +251,20 @@ router.post('/buyTokens', async function(req, res) {
 	} else {
 		return res.send({status : true});
 	}
+});
+
+router.post('/getCurrentOwner', async function(req, res) {
+	console.log('getCurrentOwner : start');
+	let propertyId = req.body.propertyId;
+	if (!propertyId) {
+		let error = helper.getErrorResponse('MissingParameter');
+		return res.status(error.statusCode).send(error.error);
+	}
+	console.log(propertyId)
+	var collection = db.getCollection('properties');
+    var p = await collection.findOne({propertyId : propertyId});
+    console.log(p);
+	return res.send({status : true, data : {propertyId : propertyId, owner : p.owner}});
 });
 
 router.get('/getUserDetails', function(req, res) {
@@ -526,6 +545,13 @@ router.post('/sellProperty', async function(req, res) {
 		let error = helper.getErrorResponse('DBError');
 		return res.status(error.statusCode).send(error.error);
 	}
+
+	if (propertyDetails.onSale) {
+		let error = helper.getErrorResponse('ResourceNotFound');
+		error.error.errorMsg = 'Property already on sale';
+		return res.status(error.statusCode).send(error.error);
+	}
+
 	helper.updateCollection('properties', query,
 		updateQuery, async function(err, data) {
 	    if (err) {
@@ -1161,7 +1187,7 @@ router.post('/buyerPayment', async function(req, res) {
 });
 
 router.post('/payStampDuty', async function(req, res) {
-	//doownertransfership
+	//downertransfership
 
 	console.log('payStampDuty : start');
 	let registryId = req.body.registryId;
@@ -1181,9 +1207,19 @@ router.post('/payStampDuty', async function(req, res) {
 			let error = helper.getErrorResponse('DbError');
 			return res.status(error.statusCode).send(error.error);
 	    }
+
+		var collection = db.getCollection('registry');
+	    var allData = await collection.findOne({registryId : registryId});
+
+	    //update property
+	    let updtQuery = {$set : {
+	    	onSale : false,
+	    	owner : {email : allData.buyer.email, address : allData.buyer.address}
+	    }};
+
+	    var pu = await collection.update({propertyId : allData.propertyId}, updtQuery);
+
 	    if (web3Conf) {
-			var collection = db.getCollection('registry');
-		    let allData = await collection.findOne({registryId : registryId});
 		    console.log('sendTokens', allData.owner.address,  web3.eth.coinbase, allData.stampDuty);
 		    if (allData.owner && allData.buyer) {
 		        let balance = await landRegistry.getBalance(allData.owner.address);
