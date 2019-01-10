@@ -41,6 +41,7 @@ class BuyerDetailsForm extends Component {
     addFinancier: false,
     isVerified: false,
     financerAddress: '',
+    addFinancerData: {},
     financerAddedSuccess: false
   }
   componentDidMount() {
@@ -125,7 +126,15 @@ class BuyerDetailsForm extends Component {
       data,
       data: { buyer }
     } = this.props
-    const { isLoading, isLoadingReject, isLoadingSkip, addFinancier, isVerified, financerAddedSuccess } = this.state
+    const {
+      isLoading,
+      isLoadingReject,
+      isLoadingSkip,
+      addFinancier,
+      isVerified,
+      financerAddedSuccess,
+      addFinancerData
+    } = this.state
     /* const columns = [
       {
         Header: <StyledHead>Sr. No.</StyledHead>,
@@ -834,7 +843,14 @@ class BuyerDetailsForm extends Component {
               </CloseWrap>
               <ModalData>
                 <Formik
-                  initialValues={{ email: '', financeAmount: '0' }}
+                  enableReinitialize
+                  initialValues={{
+                    name: get(addFinancerData, 'name', ''),
+                    email: '',
+                    financeAmount: '0',
+                    city: get(addFinancerData, 'city', ''),
+                    branch: get(addFinancerData, 'branch', '')
+                  }}
                   validate={buyerDetail}
                   validateOnChange
                   onSubmit={async values => {
@@ -910,38 +926,20 @@ class BuyerDetailsForm extends Component {
                           <Field
                             name="name"
                             render={({ field }) => (
-                              <TextInput
-                                {...field}
-                                label="Bank name"
-                                value={get(data, 'ownerFinancer.userDetails.name', '')}
-                                disabled
-                                placeholder={get(data, 'ownerFinancer.userDetails.name', '')}
-                              />
+                              <TextInput {...field} label="Bank name" disabled placeholder={'Bank Name'} />
                             )}
                           />
                           <StyledFlex justify="flex-start">
                             <Field
                               name="city"
                               render={({ field }) => (
-                                <TextInput
-                                  {...field}
-                                  label="City"
-                                  value={get(data, 'ownerFinancer.userDetails.city', '')}
-                                  disabled
-                                  placeholder={'City'}
-                                />
+                                <TextInput {...field} label="City" disabled placeholder={'City'} />
                               )}
                             />
                             <Field
                               name="branch"
                               render={({ field }) => (
-                                <TextInput
-                                  {...field}
-                                  label="Branch"
-                                  value={get(data, 'ownerFinancer.userDetails.branch', '')}
-                                  disabled
-                                  placeholder={'Branch'}
-                                />
+                                <TextInput {...field} label="Branch" disabled placeholder={'Branch'} />
                               )}
                             />
                           </StyledFlex>
@@ -959,9 +957,6 @@ class BuyerDetailsForm extends Component {
                               )}
                             />
                           </FlexWrapper>
-                          {/* inputs form add */}
-
-                          {/*end inputs ads */}
                         </React.Fragment>
                       )}
                       <FlexWrapper justifyContent="center">

@@ -45,7 +45,7 @@ class OwnerDetailsForm extends Component {
     addOwnerStatus: false,
     addFinancier: false,
     openModal: false,
-    addFinancerData: false,
+    addFinancerData: {},
     isVerified: false,
     financerAddress: '',
     isloader: true
