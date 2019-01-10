@@ -34,8 +34,9 @@ router.get('/getStampdutySummary', async function(req, res) {
 	var month = Date.now() - (1000 * 60 * 60 * 24 * 30);
 	var year = Date.now() - (1000 * 60 * 60 * 24 * 365);
 
-	const interval = 1000 * 60 * 60 * 24;
-	let startOfDay = Math.floor(Date.now() / interval) * interval;
+	var d = new Date();
+	d.setHours(0,0,0,0);
+	let startOfDay = d.getTime();
 
 	var collection = db.getCollection('registry');
 
