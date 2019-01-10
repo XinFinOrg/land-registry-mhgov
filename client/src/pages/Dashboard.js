@@ -15,12 +15,12 @@ import {
   FlexWrapper
 } from '../components'
 import { Table } from '../components/Table'
-// import { data } from '../constants'
+import moment from 'moment'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import { API_URL, statusMap, statusColor, nextTab } from '../constants'
 import styled from 'styled-components'
-import get from 'lodash/get'
+import { get, has } from 'lodash'
 
 const Status = styled.div`
   border-radius: 4px;
@@ -83,17 +83,12 @@ class Dashboard extends Component {
     dashboardData: [],
     stampDutySummary: {}
   }
-  handlePageChange = currentPage => {
-    // this.setState({ currentPage })
-    // console.log('CURRENT PAGE', currentPage)
-  }
   async componentDidMount() {
     try {
       const { data } = await axios.post(`${API_URL}/getDashboard`, {
         email: Cookies.get('email'),
         role: Cookies.get('role')
       })
-      // console.log('DATA', data.data)
       this.setState({ dashboardData: data.data })
     } catch (error) {
       console.log('ERROR', error)
@@ -117,9 +112,20 @@ class Dashboard extends Component {
       this.props.history.push(`/dashboard/${nextTab}/registryId/${registryId}`)
     }
   }
+  handleIgrRedirect = obj => {
+    console.log('OBJ', obj)
+    Cookies.set('propertyId', obj.propertyId)
+    Cookies.set('registryId', obj.registryId)
+    if (has(obj, 'propertyId')) {
+      this.props.history.push(`/dashboard/${obj.nextTab}/propertyId/${obj.propertyId}`)
+    } else if (has(obj, 'registryId')) {
+      this.props.history.push(`/dashboard/${obj.nextTab}/registryId/${obj.registryId}`)
+    } else {
+      return null
+    }
+  }
   render() {
     const { dashboardData, stampDutySummary } = this.state
-    // console.log('dashboardData=====>', dashboardData)
     const tableData = dashboardData.map((item, index) => {
       console.log('STATUS', get(statusMap[item.status], 'statusName', ''))
       return {
@@ -140,9 +146,12 @@ class Dashboard extends Component {
         srNo: index + 1,
         propertyId: item.propertyId,
         txType: item.txType || 'NA',
-        sellPrice: get(item, 'sellPrice', 'NA'),
-        stampDuty: get(item, 'stampDuty', 'NA'),
-        date: get(item, 'stampDutyDate', '') === false ? 'NA' : get(item, 'stampDutyDate', 'NA'),
+        sellPrice: has(item, 'sellPrice') ? `₹ ${get(item, 'sellPrice', 'NA')}` : 'NA',
+        stampDuty: has(item, 'stampDuty') ? `₹ ${get(item, 'stampDuty', '')}` : 'NA',
+        date:
+          get(item, 'stampDutyDate', '') === false
+            ? 'NA'
+            : moment(get(item, 'stampDutyDate', '')).format('DD MMM YYYY hh:mm:ss A'),
         statusStyle: item.status,
         status: get(statusMap[item.status], 'statusName', 'N.A'),
         nextTab: nextTab[item.status]
@@ -285,7 +294,7 @@ class Dashboard extends Component {
           </StyledHeader>
         ),
         accessor: 'propertyId',
-        minWidth: 100,
+        minWidth: 60,
         Cell: props => <span>{props.value}</span>
       },
       {
@@ -298,7 +307,7 @@ class Dashboard extends Component {
           </StyledHeader>
         ),
         accessor: 'txType',
-        minwidth: 200
+        minwidth: 60
       },
       {
         Header: (
@@ -310,7 +319,7 @@ class Dashboard extends Component {
           </StyledHeader>
         ),
         accessor: 'sellPrice',
-        minwidth: 100
+        minwidth: 80
       },
       {
         Header: (
@@ -334,7 +343,7 @@ class Dashboard extends Component {
           </StyledHeader>
         ),
         accessor: 'date',
-        maxWidth: 100
+        minWidth: 100
       },
       {
         Header: (
@@ -352,7 +361,6 @@ class Dashboard extends Component {
           const {
             original: { status, statusStyle }
           } = props
-          console.log('props', statusStyle)
           return (
             <Status
               type={
@@ -372,6 +380,7 @@ class Dashboard extends Component {
         accessor: 'view',
         maxWidth: 150,
         Cell: props => {
+          console.log('props', props.original)
           const {
             original,
             original: { nextTab }
@@ -382,7 +391,7 @@ class Dashboard extends Component {
               shadow={'none'}
               title="View"
               radius={'4px'}
-              onClick={() => this.handleRedirect(original.registryId, original.propertyId, nextTab)}
+              onClick={() => this.handleIgrRedirect(original)}
             />
           )
         }

@@ -63,11 +63,9 @@ class OwnerDetailsForm extends Component {
         status: 'registry_skip_owner_financer'
       })
       await this.setState({ isLoadingSkip: false })
+      this.props.history.push('/dashboard')
       await this.props.changeActiveTab(`/dashboard/buyer-details/${params.tab2}/${params.tab3}`)
-      this.props.history.push({
-        pathname: `/dashboard/buyer-details/${params.tab2}/${params.tab3}`,
-        state: 'skippedFinancer'
-      })
+      this.props.history.push(`/dashboard/buyer-details/${params.tab2}/${params.tab3}`)
     } catch (error) {
       toast.error(error.response.data.errMessage, {
         position: toast.POSITION.TOP_CENTER

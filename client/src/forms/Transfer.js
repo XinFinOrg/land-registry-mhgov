@@ -38,10 +38,20 @@ const InformTitle = styled.p`
 ` */
 
 class Transfer extends Component {
-  state = { financerAmtPaid: false, tokenAmountpaid: false, buyerAmtPaid: false, openModal: false }
-
+  state = { financerAmtPaid: false, tokenAmountpaid: false, buyerAmtPaid: false, openModal: false, ownerDetails: {} }
+  async componentDidMount() {
+    try {
+      const { data } = await axios.post(`${API_URL}/getCurrentOwner`, {
+        propertyId: Cookies.get('propertyId')
+      })
+      this.setState({ ownerDetails: data })
+      console.log('DATA', data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   render() {
-    const { isLoading, openModal } = this.state
+    const { isLoading, openModal, ownerDetails } = this.state
     const {
       match: { params },
       data
@@ -77,40 +87,41 @@ class Transfer extends Component {
               <PaymentTuple>
                 <PaymentText>Date : {moment(get(data, 'modified', '')).format('DD MMM YYYY hh:mm:ss A')}</PaymentText>
               </PaymentTuple>
-              {Cookies.get('email') === get(data, 'buyer.email', '') && (
-                <React.Fragment>
-                  <TransferButton>
-                    <Button
-                      size={'medium'}
-                      width={'150px'}
-                      isLoading={isLoading}
-                      disabled={true}
-                      title="Gift Property"
-                      type="button"
-                      onClick={() => this.setState({ openModal: true })}
-                    />
-                    <Button
-                      size={'medium'}
-                      width={'150px'}
-                      isLoading={isLoading}
-                      disabled={true}
-                      title="Rent Property"
-                      type="button"
-                      onClick={() => this.setState({ openModal: true })}
-                    />
+              {Cookies.get('email') === get(data, 'buyer.email', '') &&
+                Cookies.get('email') === get(ownerDetails, 'data.owner.email', '') && (
+                  <React.Fragment>
+                    <TransferButton>
+                      <Button
+                        size={'medium'}
+                        width={'150px'}
+                        isLoading={isLoading}
+                        disabled={true}
+                        title="Gift Property"
+                        type="button"
+                        onClick={() => this.setState({ openModal: true })}
+                      />
+                      <Button
+                        size={'medium'}
+                        width={'150px'}
+                        isLoading={isLoading}
+                        disabled={true}
+                        title="Rent Property"
+                        type="button"
+                        onClick={() => this.setState({ openModal: true })}
+                      />
 
-                    <Button
-                      size={'medium'}
-                      width={'150px'}
-                      isLoading={isLoading}
-                      disabled={isLoading}
-                      title="Sell Property"
-                      type="button"
-                      onClick={() => this.setState({ openModal: true })}
-                    />
-                  </TransferButton>
-                </React.Fragment>
-              )}
+                      <Button
+                        size={'medium'}
+                        width={'150px'}
+                        isLoading={isLoading}
+                        disabled={isLoading}
+                        title="Sell Property"
+                        type="button"
+                        onClick={() => this.setState({ openModal: true })}
+                      />
+                    </TransferButton>
+                  </React.Fragment>
+                )}
             </React.Fragment>
           ) : (
             <FlexWrapper justifyContent="center" padding="20px 0">
