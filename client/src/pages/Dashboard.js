@@ -112,18 +112,16 @@ class Dashboard extends Component {
       this.props.history.push(`/dashboard/${nextTab}/registryId/${registryId}`)
     }
   }
-  handleIgrRedirect = obj => {
-    console.log('OBJ', obj)
-    Cookies.set('propertyId', obj.propertyId)
-    Cookies.set('registryId', obj.registryId)
-    if (has(obj, 'propertyId')) {
-      this.props.history.push(`/dashboard/${obj.nextTab}/propertyId/${obj.propertyId}`)
-    } else if (has(obj, 'registryId')) {
-      this.props.history.push(`/dashboard/${obj.nextTab}/registryId/${obj.registryId}`)
+
+  /*  handleIgrRedirect = (registryId, propertyId, nextTab) => {
+    Cookies.set('propertyId', propertyId)
+    Cookies.set('registryId', registryId)
+    if (registryId === '') {
+      this.props.history.push(`/dashboard/${nextTab}/propertyId/${propertyId}`)
     } else {
-      return null
+      this.props.history.push(`/dashboard/${nextTab}/registryId/${registryId}`)
     }
-  }
+  } */
   render() {
     const { dashboardData, stampDutySummary } = this.state
     const tableData = dashboardData.map((item, index) => {
@@ -145,6 +143,7 @@ class Dashboard extends Component {
       return {
         srNo: index + 1,
         propertyId: item.propertyId,
+        registryId: item.registryId || '',
         txType: item.txType || 'NA',
         sellPrice: has(item, 'sellPrice') ? `₹ ${get(item, 'sellPrice', 'NA')}` : 'NA',
         stampDuty: has(item, 'stampDuty') ? `₹ ${get(item, 'stampDuty', '')}` : 'NA',
@@ -391,7 +390,7 @@ class Dashboard extends Component {
               shadow={'none'}
               title="View"
               radius={'4px'}
-              onClick={() => this.handleIgrRedirect(original)}
+              onClick={() => this.handleRedirect(original.registryId, original.propertyId, nextTab)}
             />
           )
         }
@@ -402,31 +401,35 @@ class Dashboard extends Component {
         <Header />
         <MainWrapper>
           {Cookies.get('role') === 'igr' && (
-            <PaperWrapper>
-              <h2>Stamp Duty Summary</h2>
-              <TableDataWrapper>
-                <div>
-                  <span>Today: </span>
-                  <h3> ₹ {get(stampDutySummary, 'data.day', 'NA')}</h3>
-                </div>
-                <div>
-                  <span>Last Week:</span>
-                  <h3> ₹ {get(stampDutySummary, 'data.week', 'NA')}</h3>
-                </div>
-                <div>
-                  <span>Last Month:</span>
-                  <h3> ₹ {get(stampDutySummary, 'data.month', 'NA')}</h3>
-                </div>
-                <div>
-                  <span>Last Year:</span>
-                  <h3> ₹ {get(stampDutySummary, 'data.year', 'NA')}</h3>
-                </div>
-                <div>
-                  <span>Pending:</span>
-                  <h3> ₹ {get(stampDutySummary, 'data.pending', 'NA')}</h3>
-                </div>
-              </TableDataWrapper>
-            </PaperWrapper>
+            <React.Fragment>
+              <TopWrapper>
+                <PageTitle>Stamp Duty Summary</PageTitle>
+              </TopWrapper>
+              <PaperWrapper>
+                <TableDataWrapper>
+                  <div>
+                    <span>Today: </span>
+                    <h3> ₹ {get(stampDutySummary, 'data.day', 'NA')}</h3>
+                  </div>
+                  <div>
+                    <span>Last Week:</span>
+                    <h3> ₹ {get(stampDutySummary, 'data.week', 'NA')}</h3>
+                  </div>
+                  <div>
+                    <span>Last Month:</span>
+                    <h3> ₹ {get(stampDutySummary, 'data.month', 'NA')}</h3>
+                  </div>
+                  <div>
+                    <span>Last Year:</span>
+                    <h3> ₹ {get(stampDutySummary, 'data.year', 'NA')}</h3>
+                  </div>
+                  <div>
+                    <span>Pending:</span>
+                    <h3> ₹ {get(stampDutySummary, 'data.pending', 'NA')}</h3>
+                  </div>
+                </TableDataWrapper>
+              </PaperWrapper>
+            </React.Fragment>
           )}
 
           <TopWrapper>

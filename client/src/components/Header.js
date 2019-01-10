@@ -10,6 +10,7 @@ import { Formik, Form, Field } from 'formik'
 import { TextInput } from './TextInput'
 import { toast } from 'react-toastify'
 import { amountValidation } from '../utils/validator'
+import { toUpper } from 'lodash'
 const HeaderOuter = styled.nav`
   width: 100%;
   position: fixed;
@@ -138,9 +139,9 @@ class Header extends Component {
                       textTransform: 'capitalize',
                       fontSize: '12px',
                       textAlign: 'center',
-                      fontWeight: ' bold'
+                      fontWeight: 'bold'
                     }}>
-                    ({Cookies.get('role') === 'bank' ? 'financer' : Cookies.get('role')})
+                    ({Cookies.get('role') === 'bank' ? 'financer' : toUpper(Cookies.get('role'))})
                   </p>
                 </p>
               </IconWrapper>

@@ -14,7 +14,8 @@ import {
   Modal,
   CloseWrap,
   PaperTitle,
-  Close
+  Close,
+  InformTitle
 } from '../components'
 import withRouter from 'react-router/withRouter'
 import { toast } from 'react-toastify'
@@ -67,61 +68,30 @@ class Transfer extends Component {
           {data.status === 'registry_stamp_duty' ? (
             <React.Fragment>
               <FlexWrapper padding="10px 0">
-                <h3>Ownership Transfer Details</h3>
+                <InformTitle>Ownership Transfer Details</InformTitle>
               </FlexWrapper>
               <PaymentTuple>
                 <PaymentText>
-                  Previous Owner :{' '}
+                  <b>Previous Owner</b> :{' '}
                   {get(data.owner, 'userDetails.firstName', 'NA') + ' ' + get(data.owner, 'userDetails.lastName', '')}
                 </PaymentText>
               </PaymentTuple>
               <PaymentTuple>
                 <PaymentText>
-                  Current Owner :{' '}
+                  <b>Current Owner</b> :{' '}
                   {get(data.buyer, 'userDetails.firstName', 'NA') + ' ' + get(data.buyer, 'userDetails.lastName', '')}
                 </PaymentText>
               </PaymentTuple>
               <PaymentTuple>
-                <PaymentText>Sell Price : ₹ {get(data, 'sellPrice', 'NA')}</PaymentText>
+                <PaymentText>
+                  <b>Sell Price</b> : ₹ {get(data, 'sellPrice', 'NA')}
+                </PaymentText>
               </PaymentTuple>
               <PaymentTuple>
-                <PaymentText>Date : {moment(get(data, 'modified', '')).format('DD MMM YYYY hh:mm:ss A')}</PaymentText>
+                <PaymentText>
+                  <b>Date</b> : {moment(get(data, 'modified', '')).format('DD MMM YYYY hh:mm:ss A')}
+                </PaymentText>
               </PaymentTuple>
-              {Cookies.get('email') === get(data, 'buyer.email', '') &&
-                Cookies.get('email') === get(ownerDetails, 'data.owner.email', '') && (
-                  <React.Fragment>
-                    <TransferButton>
-                      <Button
-                        size={'medium'}
-                        width={'150px'}
-                        isLoading={isLoading}
-                        disabled={true}
-                        title="Gift Property"
-                        type="button"
-                        onClick={() => this.setState({ openModal: true })}
-                      />
-                      <Button
-                        size={'medium'}
-                        width={'150px'}
-                        isLoading={isLoading}
-                        disabled={true}
-                        title="Rent Property"
-                        type="button"
-                        onClick={() => this.setState({ openModal: true })}
-                      />
-
-                      <Button
-                        size={'medium'}
-                        width={'150px'}
-                        isLoading={isLoading}
-                        disabled={isLoading}
-                        title="Sell Property"
-                        type="button"
-                        onClick={() => this.setState({ openModal: true })}
-                      />
-                    </TransferButton>
-                  </React.Fragment>
-                )}
             </React.Fragment>
           ) : (
             <FlexWrapper justifyContent="center" padding="20px 0">
@@ -129,6 +99,41 @@ class Transfer extends Component {
             </FlexWrapper>
           )}
         </Paper>
+        {Cookies.get('email') === get(data, 'buyer.email', '') &&
+          Cookies.get('email') === get(ownerDetails, 'data.owner.email', '') && (
+            <React.Fragment>
+              <TransferButton>
+                <Button
+                  size={'medium'}
+                  width={'150px'}
+                  isLoading={isLoading}
+                  disabled={true}
+                  title="Gift Property"
+                  type="button"
+                  onClick={() => this.setState({ openModal: true })}
+                />
+                <Button
+                  size={'medium'}
+                  width={'150px'}
+                  isLoading={isLoading}
+                  disabled={true}
+                  title="Rent Property"
+                  type="button"
+                  onClick={() => this.setState({ openModal: true })}
+                />
+
+                <Button
+                  size={'medium'}
+                  width={'150px'}
+                  isLoading={isLoading}
+                  disabled={isLoading}
+                  title="Sell Property"
+                  type="button"
+                  onClick={() => this.setState({ openModal: true })}
+                />
+              </TransferButton>
+            </React.Fragment>
+          )}
         <Modal show={openModal}>
           <CloseWrap>
             <PaperTitle color="#fff">Sell property</PaperTitle>
