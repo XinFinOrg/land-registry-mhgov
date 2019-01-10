@@ -30,6 +30,7 @@ const TransferButton = styled.div`
   button {
     margin: 0px 5px;
   }
+  margin: 0 95px;
 `
 /* 
 const InformTitle = styled.p`
