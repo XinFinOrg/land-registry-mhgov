@@ -773,7 +773,7 @@ class Home extends Component {
                           />
                         )}
                       />
-                      
+
                       <Field
                         name="taluka"
                         render={({ field }) => (
@@ -1009,8 +1009,8 @@ class Home extends Component {
                           <SelectBox
                             onChange={state => formikBag.setFieldValue('state', state.value)}
                             options={statesOptions}
-                            placeholder="City"
-                            label="City"
+                            placeholder="State"
+                            label="State"
                           />
                         )}
                       />

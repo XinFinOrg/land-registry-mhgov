@@ -73,29 +73,29 @@ class PropertyDetailsForm extends Component {
         <Formik
           enableReinitialize={true}
           initialValues={{
-            district: get(this.props.data, 'district', 'Pune'),
-            landType: get(this.props.data, 'landType', 'Residential'),
-            taluka: get(this.props.data, 'taluka', 'Pune'),
-            localGoverning: get(this.props.data, 'localGovNo', 'MV123'),
-            cityVillage: get(this.props.data, 'city', 'Pune'),
-            location: get(this.props.data, 'location', 'Maharastra'),
-            surveyNumber: get(this.props.data, 'surveyNo', '12345'),
-            propertyUsage: get(this.props.data, 'propertyUsage', 'Shop'),
-            usage: get(this.props.data, 'usage', 'Non-Agriculture'),
-            areaOfConstructurePropertySquareMeter: get(this.props.data, 'constructedArea', '20'),
-            areaOfConstructurePropertyBuildUpArea: get(this.props.data, 'constructedCarpetArea', '20'),
-            areaOfConstructureProperty: '30',
-            openParking: get(this.props.data, 'openParkingCars', '1'),
-            openParkingSquareMeter: get(this.props.data, 'openParking', '10'),
-            coveredParking: get(this.props.data, 'coveredParking', '10'),
-            coveredParkingSquareMeter: get(this.props.data, 'coveredParkingCars', '1'),
-            coveredParkingBulidArea: get(this.props.data, 'coveredParking', '10'),
-            shopFloorBasement: get(this.props.data, 'shopFloor', '0'),
-            propertyAddress: get(this.props.data, 'address', 'Little Earth, Deccan, Pune'),
+            district: get(this.props.data, 'district', ''),
+            landType: get(this.props.data, 'landType', ''),
+            taluka: get(this.props.data, 'taluka', ''),
+            localGoverning: get(this.props.data, 'localGovNo', ''),
+            cityVillage: get(this.props.data, 'city', ''),
+            location: get(this.props.data, 'location', ''),
+            surveyNumber: get(this.props.data, 'surveyNo', ''),
+            propertyUsage: get(this.props.data, 'propertyUsage', ''),
+            usage: get(this.props.data, 'usage', ''),
+            areaOfConstructurePropertySquareMeter: get(this.props.data, 'constructedArea', ''),
+            areaOfConstructurePropertyBuildUpArea: get(this.props.data, 'constructedCarpetArea', ''),
+            areaOfConstructureProperty: '',
+            openParking: get(this.props.data, 'openParkingCars', ''),
+            openParkingSquareMeter: get(this.props.data, 'openParking', ''),
+            coveredParking: get(this.props.data, 'coveredParking', ''),
+            coveredParkingSquareMeter: get(this.props.data, 'coveredParkingCars', ''),
+            coveredParkingBulidArea: get(this.props.data, 'coveredParking', ''),
+            shopFloorBasement: get(this.props.data, 'shopFloor', ''),
+            propertyAddress: get(this.props.data, 'address', ''),
             propertyDescription: get(
               this.props.data,
               'description',
-              'A Lavish 2 BHK with amazing location and senaric view'
+              ''
             )
           }}
           validate={governmentValidator}
