@@ -727,8 +727,8 @@ class Home extends Component {
                             required
                             width={'100%'}
                             height={'64px'}
-                            label="Permanent Address"
-                            placeholder={'Permanent Address'}
+                            label="Address"
+                            placeholder={'Address'}
                           />
                         )}
                       />
@@ -754,8 +754,36 @@ class Home extends Component {
                             required
                             width={'100%'}
                             height={'64px'}
-                            label="Temporary Address"
-                            placeholder={'Temporary Address'}
+                            label="Pin Code"
+                            placeholder={'Pin Code'}
+                          />
+                        )}
+                      />
+
+                      <Field
+                        name="village"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Village"
+                            placeholder={'Village'}
+                          />
+                        )}
+                      />
+                      
+                      <Field
+                        name="taluka"
+                        render={({ field }) => (
+                          <TextInput
+                            {...field}
+                            required
+                            width={'100%'}
+                            height={'64px'}
+                            label="Taluka"
+                            placeholder={'Taluka'}
                           />
                         )}
                       />
@@ -774,33 +802,6 @@ class Home extends Component {
                         )}
                       />
 
-                      <Field
-                        name="taluka"
-                        render={({ field }) => (
-                          <TextInput
-                            {...field}
-                            required
-                            width={'100%'}
-                            height={'64px'}
-                            label="Taluka"
-                            placeholder={'Taluka'}
-                          />
-                        )}
-                      />
-
-                      <Field
-                        name="village"
-                        render={({ field }) => (
-                          <TextInput
-                            {...field}
-                            required
-                            width={'100%'}
-                            height={'64px'}
-                            label="Village"
-                            placeholder={'Village'}
-                          />
-                        )}
-                      />
                       <Button
                         fontSize={20}
                         width={'100%'}
