@@ -49,20 +49,26 @@ const BackgroundWrapper = styled.div`
   min-height: 100vh;
   & > div:first-child {
     flex-basis: 50%;
-    padding-top: 80px;
+    padding-top: 0px;
   }
   & > div:last-child {
     flex-basis: 40%;
   }
 `
 const BigText = styled.h1`
-  font-size: 70px;
+  font-size: 40px;
   font-weight: 300;
   letter-spacing: 0.4px;
   color: #ffffff;
 `
 const MidText = styled.h1`
-  font-size: 32px;
+  font-size: 28px;
+  text-shadow: 1px 2px 2px #194984;
+  color: #ffffff;
+  margin-top: ${props => props.marginTop && props.marginTop};
+`
+const MidText1 = styled.h1`
+  font-size: 17px;
   text-shadow: 1px 2px 2px #194984;
   color: #ffffff;
   margin-top: ${props => props.marginTop && props.marginTop};
@@ -186,6 +192,16 @@ class Home extends Component {
           <Wrapper>
             <BigText>Welcome To Land Registry</BigText>
             <MidText marginTop="20px;">Government of Maharashtra</MidText>
+            <MidText1 marginTop="20px;">XinFin has conceptualized end-to-end land registry record management solutions 
+            using Blockchain technology. XinFin's objective is to access, verify and transfer 
+            ownership pertaining to land records in real-time to reduce inefficiency in the current 
+            manual process.</MidText1>
+            <MidText1 marginTop="20px;">XinFin is currently working with regulatory financial institutions and government 
+            on developing land record solutions. Our smart contract integration helps combat 
+            fraud prevention and our digital online database makes access, verification, and 
+            transfer of title ownership effortless. With our easy-to-use smartphone/web-app based 
+            workflow, XinFin is building a seamless ecosystem of participants, 
+            banks and authorities for land registry record management.</MidText1>
           </Wrapper>
           <Wrapper>
             <Paper padding={'30px 35px'}>
